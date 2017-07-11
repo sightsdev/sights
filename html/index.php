@@ -12,6 +12,7 @@
 		<script src="assets/jquery.min.js"></script>
 		<script src="assets/bootstrap.min.js"></script>
 		<script src="controlscript.php"></script>
+                <script src="rawdata.php"></script>
 	</head>
 
 	<body onLoad="doUptime();">
@@ -142,13 +143,10 @@
 						</div>
 						<div class="modal-body">
 							<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
-								<object id="rawDataObj" width="600" height="400">
-    Click "Refresh" to load raw data.
 							</object>
 							</div>
 						</div>
 						<div class="modal-footer">
-						<button type="button" class="btn btn-default" onclick="doRawDataReload();">Refresh</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>

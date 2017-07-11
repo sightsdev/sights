@@ -3,7 +3,7 @@
   </head>
   <body>
     <script>
-      var ws = new WebSocket("ws://10.0.2.4:5555"),
+      var ws = new WebSocket("ws://10.0.2.4:5556"),
         messages = document.createElement('ul');
       ws.onmessage = function(event){
         var messages = document.getElementsByTagName('ul')[0],

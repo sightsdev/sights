@@ -1,16 +1,6 @@
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
-	<body>
-		<div class="rawdata">
-<?php
-$dataString = shell_exec("sudo cat /var/log/syslog");
-echo nl2br($dataString);
-?>
-		</div>
-	</body>
-</html>
+var rawDataSocket = new WebSocket("ws://<?php echo $_SERVER['SERVER_ADDR'] ?>:5556");
 
-<!--http://stackoverflow.com/questions/16864221/accessing-var-log-files-from-php-->
+rawDataSocket.onmessage = function(event)
+{
+    $(".scroller").prepend(event.data + "<br>");
+}
