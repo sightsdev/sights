@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="assets/style.css">
 		<link rel="stylesheet" href="assets/bootstrap.css">
 		<!--Link the favicon-->
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
 	</head>
 	<body>
 		<div class="loader"><!--Create a div that can be referenced in CSS-->
