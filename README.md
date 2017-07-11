@@ -7,7 +7,7 @@ The scripts and programs written by the SFXRescue team for the SART v.2 rescue r
 - [html/**controlscript.php**](current/html/controlscript.php): JavaScript file that listens to keystrokes and sends a movement type and speed to the websocket server run by movement.py. The PHP file extension lets the server pass the IP, but the rest of the file is JavaScript.
 #### CSS:
 #### Python:
-- [python/actual scripts/**movement.py**](current/python/actual%20scripts/movement.py): This script controls the movement of the robot. It has 3 dependancies: pyax12, asyncio and websockets.
+- [python/**movement.py**](current/python/actual%20scripts/movement.py): This script controls the movement of the robot. It has 3 dependancies: pyax12, asyncio and websockets.
 #### Arduino:
 
 ## Testing
