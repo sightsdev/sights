@@ -56,12 +56,12 @@
 				  | | |  _  /   | |  | | / __| __/ _` | '_ \ / __/ _ \
 				 _| |_| | \ \   | |__| | \__ \ || (_| | | | | (_|  __/
 				|_____|_|  \_\  |_____/|_|___/\__\__,_|_| |_|\___\___|-->
-			<div class="modal fade" id="sonarModal" role="dialog">
+			<div class="modal fade" id="irModal" role="dialog">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<img src="assets/image/circle-sonar.png"/>
+							<img src="assets/image/circle-ir.png"/>
 							<h4 class="modal-title">IR Distance Viewer</h4>
 						</div>
 						<div class="modal-body">
@@ -419,8 +419,8 @@
 						</div>
 						<!--IR Distance-->
 						<div class="thumbnail">
-							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sonarModal">
-								<img src="assets/image/circle-sonar.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-sonar.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
+							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#irModal">
+								<img src="assets/image/circle-ir.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ir.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
 							</button>
 						</div>
 						<div class="thumbnail">
