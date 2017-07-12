@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php
+	$out = exec("sudo reboot");//Sends the command to restart the Pi
+		echo $out;
+?>
 <html>
 	<title>Restarting</title><!--The title displayed in the browser tab bar-->
 	<head>
@@ -25,6 +29,31 @@
 	var request = new XMLHttpRequest();
 request.open("GET", "restartscript.php", true);<!--Open restart.php to restart the S.A.R.T-->
 request.send(null);
+
+function isReachable() {
+  // IE vs. standard XHR creation
+  var x = new ( window.ActiveXObject || XMLHttpRequest )( "Microsoft.XMLHTTP" ),
+      s;
+  x.open(
+    // requesting the headers is faster, and just enough
+    "HEAD",
+    // append a random string to the current hostname,
+    // to make sure we're not hitting the cache
+    "//" + window.location.hostname + "/?rand=" + Math.random(),
+    // make a synchronous request
+    false
+  );
+  try {
+    x.send();
+    s = x.status;
+    // Make sure the server is reachable
+    return ( s >= 200 && s < 300 || s === 304 );
+  // catch network & other problems
+  } catch (e) {
+    return false;
+  }
+}
+
 var tries = 0;
 var seconds = 6;
 
@@ -38,24 +67,12 @@ setInterval(function () {
         if(timeLeft === 0){<!--when 0 seconds left to retry-->
 			tries++;
             clearInterval(cinterval);
-			if (navigator.onLine == false) {<!--Check if user is not connected-->
+			if (isReachable == false) {<!--Check if user is not connected-->
 				<!--Add a message telling the user not to worry-->
 				if (tries === 10){//10
 					document.getElementById('message').innerHTML = "Don't worry, restarting can often take a minute or two.";
 				}
-				if (tries === 20){//20
-					document.getElementById('message').innerHTML = "The S.A.R.T should be online. Reconnect to the S.A.R.T network.";
-				}
-				if (tries === 25){
-					document.getElementById('message').innerHTML = "Something may be wrong... Are you sure you reconnected to the S.A.R.T network?";
-				}
-				if (tries === 30){
-					document.getElementById('message').innerHTML = "Something is wrong.";
-				}
-				if (tries === 35){
-					document.getElementById('message').innerHTML = "Total System Failure";
-				}
-				if (tries === 37){//37
+				if (tries === 30){//37
 					document.getElementById('heading').innerHTML = "I'm sorry, Dave. I'm afraid I can't do that.";
 					document.getElementById('message').style.display = "none";
 					document.getElementById('timerCounter').style.display = "none";
