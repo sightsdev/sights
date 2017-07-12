@@ -8,6 +8,11 @@ var lastKey = 0;
 
 function onKeyDown(event) {
   var key = event.keyCode;
+  
+  if (lastKey == key) {
+	  return;
+  }
+  lastKey = key;
 
   switch (key) {
     case 49: //1
@@ -41,47 +46,28 @@ function onKeyDown(event) {
       speed = 10;
       break;
     case 87: //w
-      if(lastKey == 87) {
-        break;
-      } else {
         document.getElementById("controlFeedback").innerHTML = "Forward " + speed * 10 + "%";
         controlSocket.send("1 " + speed);
-        lastKey = 87;
         break;
-      }
     case 65: //A
-      if(lastKey == 65) {
-        break;
-      } else {
         document.getElementById("controlFeedback").innerHTML = "Spin Left " + speed * 10 + "%";
         controlSocket.send("3 " + speed);
-        lastKey = 65;
         break;
-      }
     case 83: //S
-      if(lastKey == 83) {
-        break;
-      } else {
         document.getElementById("controlFeedback").innerHTML = "Reverse " + speed * 10 + "%";
         controlSocket.send("2 " + speed);
-        lastKey = 83;
         break;
-      }
     case 68: //D
-      if(lastKey == 68) {
-        break;
-      } else {
         document.getElementById("controlFeedback").innerHTML = "Spin Right " + speed * 10 + "%";
         controlSocket.send("4 " + speed);
-        lastKey = 68
         break;
-      }
   }
 }
 
+//Untested. If it doesn't work add the switch statement back.
 function onKeyUp(event) {
   var key = event.keyCode;
-  if(key = 87 || key = 65 || key = 83 || key = 68) {
+  if(key == 87 || key == 65 || key == 83 || key == 68) {
       document.getElementById("controlFeedback").innerHTML = "Stationary";
       controlSocket.send("0 0");
       lastKey = 0;
