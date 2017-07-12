@@ -42,7 +42,7 @@
 							<p>You can also check the stream settings. Make sure framerate is set to 60FPS.</p>
 							<br>
 							<h4><b>Stream is black</b></h4>
-							<p>If you have access to the S.A.R.T, ensure that the camera has not moved or fallen. The stream has poor low-light performance, so if the camera is too close to an object in poor light, the stream may be black.</p>
+							<p>If you have access to the S.A.R.T, ensure that the camera has not moved or fallen. If the camera is too close to an object in poor light, the stream may appear black.</p>
 							<p>If the S.A.R.T is on a mission, reverse a short distance. The S.A.R.T may be against a wall, blocking the camera.</p>
 							
 							<br>

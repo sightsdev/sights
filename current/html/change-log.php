@@ -27,6 +27,7 @@
 					</div>
 					<div class="col-md-10">
 						<h3>Change Log</h3>
+						<p><code>Wednesday, 12 July 2017, 8:00 PM</code> - Help file additions</p>
 						<p><code>Wednesday, 12 July 2017, 6:50 PM</code> - Changed sonar to IR and updated icons</p>
 						<p><code>Wednesday, 12 July 2017, 3:15 PM</code> - Index.php readability improvements</p>
 						<p><code>Wednesday, 12 July 2017, 1:49 PM</code> - Removed reference to circles.css in performance.php</p>

@@ -37,14 +37,14 @@
 							<h3>Help Articles</h3>
 							<p><a href="stream.php">Video Stream</a></p>
 							<p><a href="ssh.php">SSH</a></p>
-							<p><a href="sonar.php">Sonar Map</a></p>
-							<p><a href="data.php">Raw Data</a></p>
+							<p><a href="ir.php">Infared Distance Map</a></p>
+							<p><a href="data.php">Raw Data Log</a></p>
 							<p><a href="charge.php">Charge Remaining</a></p>
 							<p><a href="controls.php">Controls</a></p>
 							<p><a href="accelerometer.php">Accelerometer</a></p>
 							<p><a href="ftp.php">FTP File Access</a></p>
 							<p><a href="settings.php">Settings</a></p>
-							<p><a href="power.php">Power</a></p>
+							<p><a href="power.php">Power Options</a></p>
 							<p><a href="performance.php">Performance</a></p>
 							<p><a href="connection.php">Connection Issues</a></p>
 						</div>

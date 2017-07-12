@@ -39,14 +39,14 @@ function get_ip(){
 							
 							<h3>Troubleshooting</h3>
 							<h4><b>SSH console doesn't accept my input</b></h4>
-							<p>You need to focus the window. Open the SSH console and click anywhere inside the border. You can log in and run your commands.</p>
+							<p>You may need to focus the window. Open the SSH console and click anywhere inside the border. You can log in and run your commands.</p>
 							<br>
 							<h4><b>SSH console is white</b></h4>
-							<p>This happens when the SSH console hasn't fully loaded. You can fix it by refreshing the homepage, however it should work anyway.</p>
+							<p>This happens when the SSH console hasn't fully loaded. While it will still work, you can fix this by clicking "Open New Terminal".</p>
 							<p>If the issue persists, the IP of the S.A.R.T has changed. You will need to visit this page (<a href="http://<?php echo get_ip(); ?>:4200"><?php echo get_ip(); ?>:4200</a> and click "proceed" to bypass the "Your connection is not private" screen.</p>
 							<br>
 							<h4><b>Other</b></h4>
-							<p>Most SSH console issues can be fixed by refreshing the homepage. Refreshing the homepage opens a new instance of the console.</p>
+							<p>Most SSH console issues can be fixed by clicking the "Open New Terminal" button. Refreshing the main page will also open a new instance of the console.</p>
 							<p>If a command you entered in the SSH console has rendered the S.A.R.T unresponsive, you can attempt to restart the device.</p>
 							<br>
 							<p><a href="index.php">Back to Help</a></li><p>
