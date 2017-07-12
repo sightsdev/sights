@@ -81,26 +81,9 @@ function onKeyDown(event) {
 
 function onKeyUp(event) {
   var key = event.keyCode;
-  switch (key) {
-    case 87: //w
+  if(key = 87 || key = 65 || key = 83 || key = 68) {
       document.getElementById("controlFeedback").innerHTML = "Stationary";
-      controlSocket.send("1 0");
+      controlSocket.send("0 0");
       lastKey = 0;
-      break;
-    case 65: //A
-      document.getElementById("controlFeedback").innerHTML = "Stationary";
-      controlSocket.send("3 0");
-      lastKey = 0;
-      break;
-    case 83: //S
-      document.getElementById("controlFeedback").innerHTML = "Stationary";
-      controlSocket.send("2 0");
-      lastKey = 0;      
-      break;
-    case 68: //D
-      document.getElementById("controlFeedback").innerHTML = "Stationary";
-      controlSocket.send("4 0");
-      lastKey = 0;
-      break;
   }
 }
