@@ -15,12 +15,9 @@
 			<br>
 			<p>You may close this page at any time</p>
 		</div>
-
-<!--Check if device is connected to a network before redirecting to main page-->
-<script language="javascript" type="text/javascript">
-	var request = new XMLHttpRequest();
-request.open("GET", "shutdownscript.php", true);<!--Open restart.php to restart the S.A.R.T-->
-request.send(null);
-</script>
 	</body>
 </html>
+<?php
+	$out = exec("sudo poweroff");//Sends the command to stop the Pi
+		echo $out;
+?>

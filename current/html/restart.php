@@ -21,7 +21,7 @@
 			var timeDec = setInterval(function (){
 				document.getElementById('countdown').innerHTML = timeLeft;//Display the time left until connection attempt
 				if(timeLeft === 0){//when 0 seconds left to retry
-					window.location.href = "index.php";<!--Redirect the user back home-->
+					window.location.href = "index.php";//Redirect the user back home
 				}
 				timeLeft--;//Subtract 1 from time left
 			}, 1000);//1 second loop
