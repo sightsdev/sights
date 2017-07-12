@@ -41,11 +41,11 @@ def leftRightRun(key, s):								#Function for going left and right on the spot
 	if (key == 3):									#--- turn left ---
 		runMotorGroup([1,3], bytes([0,0]))#run motors on left side back and right side forward
 		runMotor(2, fwd)
-		runMotor(4, bwd)#run motors on right side forward and left side backward
+		runMotor(4, fwd)#run motors on right side forward and left side backward
 		return None	
 	elif (key == 4):								#--- turn right ---
 		runMotorGroup([2,4], bytes([0,0]))			#run motors on left side back and right side forward
-		runMotor(1, fwd)
+		runMotor(1, bwd)
 		runMotor(3, bwd)				#run right side back
 	print("Left and Right??? got a weird key: " + str(key)) #error if neither keys 3 or 4 are given
 
