@@ -22,10 +22,10 @@
 		<div class="page-content">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-4">
-						<img src="assets/image/circle-log.png" width="245px" />
+					<div class="col-md-2">
+						<img src="assets/image/circle-log.png" width="100%" vspace="25px"/>
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-10">
 						<h3>Change Log</h3>
 						<p><code>Wednesday, 12 July 2017, 6:50 PM</code> - Changed sonar to IR and updated icons</p>
 						<p><code>Wednesday, 12 July 2017, 3:15 PM</code> - Index.php readability improvements</p>
