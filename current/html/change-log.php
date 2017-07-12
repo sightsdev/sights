@@ -27,6 +27,26 @@
 					</div>
 					<div class="col-md-8">
 						<h3>Change Log</h3>
+						<p><code>Wednesday, 12 July 2017, 6:50 PM</code> - Changed sonar to IR and updated icons</p>
+						<p><code>Wednesday, 12 July 2017, 3:15 PM</code> - Index.php readability improvements</p>
+						<p><code>Wednesday, 12 July 2017, 1:49 PM</code> - Removed reference to circles.css in performance.php</p>
+						<p><code>Wednesday, 12 July 2017, 1:25 PM</code> - Simplified last key checker in controlscript</p>
+						<p><code>Wednesday, 12 July 2017, 1:18 PM</code> - Simplified onKeyUp in controlscript</p>
+						<p><code>Wednesday, 12 July 2017, 1:10 PM</code> - Formatting fixes across the site</p>
+						<p><code>Wednesday, 12 July 2017, 12:55 PM</code> - Merged shutdown.php and shutdownscript.php</p>
+						<p><code>Wednesday, 12 July 2017, 12:40 PM</code> - Simplified restart script code</p>
+						<p><code>Wednesday, 12 July 2017, 10:37 AM</code> - Merged restart.php and restartscript.php</p>
+						<br>
+						<p><code>Tuesday, 11 July 2017, 9:45 PM</code> - Moved favicon to assets (Folder restructuring)</p>
+						<p><code>Tuesday, 11 July 2017, 9:35 PM</code> - Removed older ExecuteCommand script</p>
+						<p><code>Tuesday, 11 July 2017, 1:15 PM</code> - Updated raw data using WebSockets instead of PHP</p>
+						<br>
+						<p><code>Friday, 7 July 2017, 11:49 AM</code> - Removed primitive arc left/right support</p>
+						<br>
+						<p><code>Tuesday, 4 July 2017, 1:45 PM</code> - Implemented WebSockets in controlscript for communication</p>
+						<br>
+						<p><code>Friday, 30 June 2017, 12:45 PM</code> - Created controlscript.php to capture control keystrokes</p>
+						<br>
 						<p><code>Wednesday, 5 May 2017, 2:00 PM</code> - Implemented "Open New Terminal" feature</p>
 						<p><code>Wednesday, 5 May 2017, 1:22 PM</code> - Implemented "Refresh Stream" feature</p>
 						<br>
