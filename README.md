@@ -16,12 +16,12 @@ The scripts and programs written by the SFXRescue team for the SART v.2 rescue r
 #### Python:
 - [python/**movement.py**](current/python/movement.py): This script controls the movement of the robot. It has 3 dependancies: pyax12, asyncio and websockets.
 #### Arduino:
--Libraries:
--Sensor IR: https://github.com/guillaume-rico/SharpIR
--Compass: https://github.com/adafruit/Adafruit_LSM303DLHC
--Adafruit Sensor Library: https://github.com/adafruit/Adafruit_Sensor
--Temp Sensor: https://github.com/adafruit/Adafruit-MLX90614-Library
-
+- [arduino/**sensor_party.ino**](current/arduino/sensor_party.ino):
+    - Libraries:
+	    - Sensor IR: https://github.com/guillaume-rico/SharpIR
+		- Compass: https://github.com/adafruit/Adafruit_LSM303DLHC
+		- Adafruit Sensor Library: https://github.com/adafruit/Adafruit_Sensor
+		- Temp Sensor: https://github.com/adafruit/Adafruit-MLX90614-Library
 ## Testing
 **Testing** contains old code or test scripts that for whatever reason still need to be used.
 #### HTML:
@@ -30,4 +30,4 @@ The scripts and programs written by the SFXRescue team for the SART v.2 rescue r
 - [python/tests/**websockettest.py**](testing/python/tests/websockettest.py): Companion Python file for websockettest.py. Testing script for the websocket.
 
 ## Retired
-**Retired** contains code that is not used in the current project but may need to be referred to.
+**Retired** contains code that is not used in the current project or testing but may need to be referred to.
