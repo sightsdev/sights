@@ -12,10 +12,10 @@
 		<script src="assets/jquery.min.js"></script>
 		<script src="assets/bootstrap.min.js"></script>
 		<script src="controlscript.php"></script>
-                <script src="rawdata.php"></script>
+		<script src="rawdata.php"></script>
 	</head>
 
-	<body onLoad="doUptime();">
+	<body onLoad="doUptime(); doPerformanceReload();">
 	<!--  __  __           _       _     
          |  \/  |         | |     | |    
 		 | \  / | ___   __| | __ _| |___ 
@@ -44,28 +44,28 @@
 							<button type="button" class="btn btn-default" onclick="refreshSSH();">Open New Terminal</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							<div class="modal-float-left">
-								<p>To log in, type <b>sart</b> and then type <b>sart99</b> when prompted.<p>
+								<p>To log in, focus the window, type <b>sart</b> and then type <b>sart99</b> when prompted.<p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!--  ____        _    __      ___               
-				 |  _ \      | |   \ \    / (_)              
-				 | |_) | __ _| |_   \ \  / / _  _____      __
-				 |  _ < / _` | __|   \ \/ / | |/ _ \ \ /\ / /
-				 | |_) | (_| | |_     \  /  | |  __/\ V  V / 
-				 |____/ \__,_|\__|     \/   |_|\___| \_/\_/  -->
+			<!-- _____ _____     _____  _     _                       
+				|_   _|  __ \   |  __ \(_)   | |                      
+				  | | | |__) |  | |  | |_ ___| |_ __ _ _ __   ___ ___ 
+				  | | |  _  /   | |  | | / __| __/ _` | '_ \ / __/ _ \
+				 _| |_| | \ \   | |__| | \__ \ || (_| | | | | (_|  __/
+				|_____|_|  \_\  |_____/|_|___/\__\__,_|_| |_|\___\___|-->
 			<div class="modal fade" id="sonarModal" role="dialog">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 							<img src="assets/image/circle-sonar.png"/>
-							<h4 class="modal-title">BatView &#174 Sonar Viewer</h4>
+							<h4 class="modal-title">IR Distance Viewer</h4>
 						</div>
 						<div class="modal-body">
-							<p>sonar view iframe</p>
+							<p>IR Distance view iframe</p>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Save Screenshot</button>
@@ -94,10 +94,9 @@
 							</div>
 						</div>
 						<div class="modal-footer"><!-- Footer of the modal (where any buttons go) -->
-
 							<button type="button" class="btn btn-default" onclick="refreshStream();">Refresh</button>
-							<button type="button" class="btn btn-default" onclick="snapshot();">Take Snapshot</button>
-							<button type="button" class="btn btn-default" onclick="recordEvent();">Record Event</button>
+							<button type="button" class="btn btn-default" onclick="snapshotStream();">Take Snapshot</button>
+							<button type="button" class="btn btn-default" onclick="recordStreamEvent();">Record Event</button>
 							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#streamSettingsModal">Settings</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
@@ -143,7 +142,6 @@
 						</div>
 						<div class="modal-body">
 							<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
-							</object>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -172,14 +170,14 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='restart.php';">Restart</button>
-							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#shutdownYesNoModal">Shut Down</button>
+							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#shutdownWarningModal">Shut Down</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-			<div class="modal fade" id="shutdownYesNoModal" role="dialog">
+			<!--Shut down warning modal-->
+			<div class="modal fade" id="shutdownWarningModal" role="dialog">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -213,14 +211,13 @@
 						</div>
 						<div class="modal-body">
 							<h4>A Web Control Interface for the S.A.R.T Robot</h4>
-							<p>Version 0.2.0</p>
+							<p>Version 1.2.0</p>
 							<p>Developed by Jack Williams</p>
-							<br>
-							<br>
+							<br><br>
 							<p>Current S.A.R.T IP: <?php echo $_SERVER['SERVER_ADDR'] ?></p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default"aids onclick="location.href='help/index.php';" data-dismiss="modal">Help</button>
+							<button type="button" class="btn btn-default" onclick="location.href='help/index.php';" data-dismiss="modal">Help</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
 					</div>
@@ -385,6 +382,7 @@
 					 | |___| (_) | | |_| | | | | | | | | | | |__| | | | |  __/
 					  \_____\___/|_|\__,_|_| |_| |_|_| |_|  \____/|_| |_|\__-->
 					<div class="col-md-3">
+						<!--Not Set-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" onclick="location.href='undefined.php';">
 								<img src="assets/image/circle-console.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-console.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -393,13 +391,14 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Not Set</p>
 						</div>
+						<!--SSH Terminal-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sshModal">
 								<img src="assets/image/circle-ssh.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ssh.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
 							</button>
 						</div>
 						<div class="thumbnail">
-							<p style="text-align: center">SSH</p>
+							<p style="text-align: center">SSH Terminal</p>
 						</div>
 					</div>
                 <!--   _____      _                         _______            
@@ -409,6 +408,7 @@
 					 | |___| (_) | | |_| | | | | | | | | |    | |\ V  V / (_) |
 					  \_____\___/|_|\__,_|_| |_| |_|_| |_|    |_| \_/\_/ \__-->
 					<div class="col-md-3">
+						<!--Video Stream-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#streamModal">
 								<img src="assets/image/circle-stream.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-stream.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -417,13 +417,14 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Video Stream</p>
 						</div>
+						<!--IR Distance-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sonarModal">
 								<img src="assets/image/circle-sonar.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-sonar.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
 							</button>
 						</div>
 						<div class="thumbnail">
-							<p style="text-align: center">Sonar</p>
+							<p style="text-align: center">IR Distance</p>
 						</div>
 					</div>
                 
@@ -434,6 +435,7 @@
 					 | |___| (_) | | |_| | | | | | | | | |    | |  | | | | | |  __/  __/
 					  \_____\___/|_|\__,_|_| |_| |_|_| |_|    |_|  |_| |_|_|  \___|\__-->
 					<div class="col-md-3">
+						<!--Raw Data-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#rawdataModal">
 								<img src="assets/image/circle-rawdata.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-rawdata.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -442,6 +444,7 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Raw Data</p>
 						</div>
+						<!--Settings-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#settingsModal">
 								<img src="assets/image/circle-settings.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-settings.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -458,6 +461,7 @@
 					 | |___| (_) | | |_| | | | | | | | | | | | | (_) | |_| | |   
 					  \_____\___/|_|\__,_|_| |_| |_|_| |_| |_|  \___/ \__,_-->
 					<div class="col-md-3">
+						<!--FTP File Access-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" onclick="window.open('/mftp/');">
 								<img src="assets/image/circle-ftp.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ftp.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -466,7 +470,7 @@
 						<div class="thumbnail">
 							<p style="text-align: center">FTP File Access</p>
 						</div>
-							
+						<!--Power Options-->
 						<div class="thumbnail">
 						<!-- Trigger the modal with a button -->
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#powerModal">
@@ -521,10 +525,9 @@ $uptimeSecs = $uptime[0];
 
 // get the static uptime
 $staticUptime = "".format_uptime($uptimeSecs);
-
 ?>
-						<script language="javascript">
-<!--
+
+<script language="javascript">
 var upSeconds=<?php echo $uptimeSecs; ?>;//Get the current uptime from the PHP script
 function doUptime() {
 	var uptimeString = "";//Create an empty string
@@ -570,31 +573,24 @@ function doRawDataReload() {
 	$('#rawDataObj').load(new_url2);
 }
 
-$(window).load(function() {
-	setTimeout(5000)
-	doPerformanceReload();
-})
-// -->
+function refreshStream() {
+	document.getElementById('streamImage').src = "http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/?time="+new Date().getTime();
+}
 
-function refreshStream()
-{
- document.getElementById('streamImage').src = "http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/?time="+new Date().getTime();
+function refreshSSH() {
+	document.getElementById('sshiframe').src += '';
 }
-function refreshSSH()
-{
- document.getElementById('sshiframe').src += '';
+
+function snapshotStream() {
+	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/snapshot");
+	
+	setTimeout(function()  {
+		window.open("http://<?php echo $_SERVER['SERVER_ADDR'] ?>/downloadsnapshot.php");
+	}, 2000);
 }
-function snapshot()
-{
- $.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/snapshot");
- setTimeout(function()
- {
-  window.open("http://<?php echo $_SERVER['SERVER_ADDR'] ?>/downloadsnapshot.php");
- }, 2000);
-}
-function recordEvent()
-{
- $.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/makemovie");
+
+function recordStreamEvent() {
+	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/makemovie");
 }
 </script>
 		<div class="page-content">
@@ -619,9 +615,8 @@ function recordEvent()
 					<div class="col-md-9">
 						<div class="performance">
 							<object id="performanceObj" width="600" height="400">
-    Loading Performance Information...
+								<p>Loading Performance Information...</p>
 							</object>
-
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -654,6 +649,5 @@ function recordEvent()
 				</div>
 			</div>
 		</div>
-                <iframe id="hiddenIframe" src="" style="width:0;border:0;border:none;"></iframe>
 	</body>
 </html>
