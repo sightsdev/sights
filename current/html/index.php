@@ -182,16 +182,24 @@
 											</div>
 										</div>
 									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
 								</div>
 								<div id="rawDataLog" class="tab-pane fade">
 									<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
 									</div>
+									<div class="modal-footer">
+										<label for="rawDataLogClearTimeInput">Clear Log Every:</label>
+										<div class="input-group" style="width: 150px">
+											<input type="text" id="rawDataLogClearTimeInput" class="form-control" placeholder="10" aria-describedby="basic-addon2">
+											<span class="input-group-addon" id="basic-addon2">Minutes</span>
+										</div>
+										<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
 					</div>
 				</div>
