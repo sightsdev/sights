@@ -139,9 +139,54 @@
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 							<img src="assets/image/circle-ssh.png"/>
 							<h4 class="modal-title">Raw Data</h4>
+							<br>
+							<ul class="nav nav-pills">
+								<li class="active"><a data-toggle="pill" href="#rawDataDisplay">Display</a></li>
+								<li><a data-toggle="pill" href="#rawDataLog">Log</a></li>
+							</ul>
 						</div>
 						<div class="modal-body">
-							<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
+							<div class="tab-content">
+								<div id="rawDataDisplay" class="tab-pane fade in active">
+									<div class="container">
+										<div class="row">
+											<h4>Servo Voltages</h4>
+											<div class="col-md-2">
+												<p><b>Servo 1 (Front Left)</b></p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Servo 2 (Front Right)</b></p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Servo 3 (Rear Left)</b></p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Servo 4 (Rear Right)</b></p>
+											</div>
+										</div>
+									</div>
+									<div class="container">
+										<div class="row">
+											<h4>Servo Temperatures</h4>
+											<div class="col-md-2">
+												<p><b>Servo 1 (Front Left)</b></p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Servo 2 (Front Right)</b></p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Servo 3 (Rear Left)</b></p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Servo 4 (Rear Right)</b></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="rawDataLog" class="tab-pane fade">
+									<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="modal-footer">

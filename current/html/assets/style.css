@@ -31,20 +31,28 @@
     padding-bottom: 4px;
 	height: 90px
 }
-.nav a {
+.topnav a {
   color: #d8d8d8;
   font-size: 18px;
   font-weight: bold;
   padding: 30px 20px;
 }
-.nav ul {
+.topnav ul {
     padding-left: 0;
     padding-top: 8px;
     padding-bottom: 8px;
 	display:inline-table;
 }
-.nav li {
+.topnav li {
   display: inline;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+	background-color: #FF5A00;
+}
+
+.nav-pills a {
+	color: #FF5A00;
 }
 
 /*     _                 _           _                   
