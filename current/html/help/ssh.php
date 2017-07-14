@@ -14,7 +14,7 @@ function get_ip(){
 	</head>
 
 	<body>
-		<div class="nav">
+		<div class="nav topnav">
 			<div class="container">
 				<ul>
 					<li><br></li>
