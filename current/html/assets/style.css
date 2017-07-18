@@ -184,6 +184,10 @@
  bottom: initial!important;
 }
 
+.modal-footer {
+      background-color: #f9f9f9;
+  }
+
 /*__  __ _            
  |  \/  (_)           
  | \  / |_ ___  ___   

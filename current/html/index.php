@@ -42,11 +42,9 @@
 							<iframe id="sshiframe" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:4200" width="100%" height="400px"></iframe>
 						</div>
 						<div class="modal-footer">
+							<p style="float:left;">To log in, focus the window, type <b>sart</b> and then type <b>sart99</b> when prompted.<p>
 							<button type="button" class="btn btn-default" onclick="refreshSSH();">Open New Terminal</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<div class="modal-float-left">
-								<p>To log in, focus the window, type <b>sart</b> and then type <b>sart99</b> when prompted.<p>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -226,10 +224,10 @@
 										</div>
 									</div>
 								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								</div>
 							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
 					</div>
 				</div>
@@ -327,10 +325,10 @@
 								<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
 								</div>
 							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
 					</div>
 				</div>
