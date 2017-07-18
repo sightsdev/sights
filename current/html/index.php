@@ -141,106 +141,92 @@
 							<img src="assets/image/circle-ssh.png"/>
 							<h4 class="modal-title">Raw Data</h4>
 							<br>
-							<ul class="nav nav-pills">
-								<li class="active"><a data-toggle="pill" href="#rawDataDisplay">Display</a></li>
-								<li><a data-toggle="pill" href="#rawDataLog">Log</a></li>
-							</ul>
 						</div>
 						<div class="modal-body">
 							<div class="tab-content">
-								<div id="rawDataDisplay" class="tab-pane fade in active">
-									<div class="container">
-										<div class="row">
-											<div class="col-md-3">
-												<h4>Temperature</h4>
-												<p><b>Ambient</b><br><span id="temperatureAmbient"></span> &degC </p>
-											</div>
-											<div class="col-md-3">
-												<h4 style="color:#FFFFFF;">.</h4>
-												<p><b>Object</b><br><span id="temperatureObject"></span> &degC </p>
-											</div>
-											<div class="col-md-6">
-												<h4>Compass Bearing</h4>
-												<p><span id="compassBearing"></span> &deg </p>
-											</div>
+								<div class="container">
+									<div class="row">
+										<div class="col-md-3">
+											<h4>Temperature</h4>
+											<p><b>Ambient</b><br><span id="temperatureAmbient"></span> &degC </p>
 										</div>
-									</div>
-									<div class="container">
-										<div class="row">
-											<h4>Accelerometer</h4>
-											<div class="col-md-3">
-												<p><b>X-Axis</b><br><span id="irFront"></span> ms^-2</p>
-											</div>
-											<div class="col-md-3">
-												<p><b>Y-Axis</b><br><span id="irRight"></span> ms^-2</p>
-											</div>
-											<div class="col-md-3">
-												<p><b>Z-Axis</b><br><span id="irRear"></span> ms^-2</p>
-											</div>
+										<div class="col-md-3">
+											<h4 style="color:#FFFFFF;">.</h4>
+											<p><b>Object</b><br><span id="temperatureObject"></span> &degC </p>
 										</div>
-									</div>
-									<div class="container">
-										<div class="row">
-											<h4>Infared Distance Sensors</h4>
-											<div class="col-md-2">
-												<p><b>Front (A0)</b><br><span id="irFront"></span> cm</p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Right (A1)</b><br><span id="irRight"></span> cm</p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Rear (A2)</b><br><span id="irRear"></span> cm</p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Left (A3)</b><br><span id="irLeft"></span> cm</p>
-											</div>
+										<div class="col-md-6">
+											<h4>Compass Bearing</h4>
+											<p><span id="compassBearing"></span> &deg </p>
 										</div>
-									</div>
-									<div class="container">
-										<div class="row">
-											<h4>Servo Voltages</h4>
-											<div class="col-md-2">
-												<p><b>Servo 1 (Front Left)</b><br><span id="servoOneVoltage"></span> volts</p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Servo 2 (Front Right)</b><br><span id="servoTwoVoltage"></span> volts</p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Servo 3 (Rear Left)</b><br><span id="servoThreeVoltage"></span> volts</p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Servo 4 (Rear Right)</b><br><span id="ServoFourVoltage"></span> volts</p>
-											</div>
-										</div>
-									</div>
-									<div class="container">
-										<div class="row">
-											<h4>Servo Temperatures</h4>
-											<div class="col-md-2">
-												<p><b>Servo 1 (Front Left)</b><br><span id="servoOneTemperature"></span> &degC </p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Servo 2 (Front Right)</b><br><span id="servoTwoTemperature"></span> &degC </p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Servo 3 (Rear Left)</b><br><span id="servoThreeTemperature"></span> &degC </p>
-											</div>
-											<div class="col-md-2">
-												<p><b>Servo 4 (Rear Right)</b><br><span id="servoFourTemperature"></span> &degC </p>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 									</div>
 								</div>
-								<div id="rawDataLog" class="tab-pane fade">
-									<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
+								<div class="container">
+									<div class="row">
+										<h4>Accelerometer</h4>
+										<div class="col-md-3">
+											<p><b>X-Axis</b><br><span id="irFront"></span> ms^-2</p>
+										</div>
+										<div class="col-md-3">
+											<p><b>Y-Axis</b><br><span id="irRight"></span> ms^-2</p>
+										</div>
+										<div class="col-md-3">
+											<p><b>Z-Axis</b><br><span id="irRear"></span> ms^-2</p>
+										</div>
 									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+								<div class="container">
+									<div class="row">
+										<h4>Infared Distance Sensors</h4>
+										<div class="col-md-2">
+											<p><b>Front (A0)</b><br><span id="irFront"></span> cm</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Right (A1)</b><br><span id="irRight"></span> cm</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Rear (A2)</b><br><span id="irRear"></span> cm</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Left (A3)</b><br><span id="irLeft"></span> cm</p>
+										</div>
 									</div>
+								</div>
+								<div class="container">
+									<div class="row">
+										<h4>Servo Voltages</h4>
+										<div class="col-md-2">
+											<p><b>Servo 1 (Front Left)</b><br><span id="servoOneVoltage"></span> volts</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 2 (Front Right)</b><br><span id="servoTwoVoltage"></span> volts</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 3 (Rear Left)</b><br><span id="servoThreeVoltage"></span> volts</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 4 (Rear Right)</b><br><span id="ServoFourVoltage"></span> volts</p>
+										</div>
+									</div>
+								</div>
+								<div class="container">
+									<div class="row">
+										<h4>Servo Temperatures</h4>
+										<div class="col-md-2">
+											<p><b>Servo 1 (Front Left)</b><br><span id="servoOneTemperature"></span> &degC </p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 2 (Front Right)</b><br><span id="servoTwoTemperature"></span> &degC </p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 3 (Rear Left)</b><br><span id="servoThreeTemperature"></span> &degC </p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 4 (Rear Right)</b><br><span id="servoFourTemperature"></span> &degC </p>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 								</div>
 							</div>
 						</div>
@@ -319,118 +305,31 @@
 					</div>
 				</div>
 			</div>
-			<!--_____      _   _   _                     __  __           _       _ 
-			   / ____|    | | | | (_)                   |  \/  |         | |     | |
-			  | (___   ___| |_| |_ _ _ __   __ _ ___    | \  / | ___   __| | __ _| |
-			   \___ \ / _ \ __| __| | '_ \ / _` / __|   | |\/| |/ _ \ / _` |/ _` | |
-			   ____) |  __/ |_| |_| | | | | (_| \__ \   | |  | | (_) | (_| | (_| | |
-			  |_____/ \___|\__|\__|_|_| |_|\__, |___/   |_|  |_|\___/ \__,_|\__,_|_|
-										    __/ |                                 
-										   |___/-->
-			<div class="modal fade" id="settingsModal" role="dialog">
+			<!--  _                   __  __           _       _ 
+				 | |                 |  \/  |         | |     | |
+				 | |     ___   __ _  | \  / | ___   __| | __ _| |
+				 | |    / _ \ / _` | | |\/| |/ _ \ / _` |/ _` | |
+				 | |___| (_) | (_| | | |  | | (_) | (_| | (_| | |
+				 |______\___/ \__, | |_|  |_|\___/ \__,_|\__,_|_|
+							   __/ |                             
+							  |___/-->
+			<div class="modal fade" id="logModal" role="dialog">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<img src="assets/image/circle-settings.png"/>
-							<h4 class="modal-title">Settings</h4>
+							<img src="assets/image/circle-log.png"/>
+							<h4 class="modal-title">Log</h4>
 						</div>
 						<div class="modal-body">
-							<h4>Change multiple S.A.R.T settings via the Control Interface</h4>
-							<br>
-							<div class="container">
-								<div class="row">
-									<div class="col-md-3">
-										<label for="videoStreamFramerateInput">Video Stream Framerate</label>
-										<div class="input-group">
-											<input type="text" id="videoStreamFramerateInput" class="form-control" placeholder="30" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2">FPS</span>
-										</div>
-									</div>
-									<div class="col-md-3">
-										<label for="sonarMapStreamFramerateInput">Sonar Map Stream Framerate</label>
-										<div class="input-group">
-											<input type="text" id="sonarMapStreamFramerateInput" class="form-control" placeholder="5" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2">FPS</span>
-										</div>
-									</div>
-									<div class="col-md-3">
-										<label for="accelerometerStreamFramerateInput">Accelerometer Stream Framerate</label>
-										<div class="input-group">
-											<input type="text" id="accelerometerStreamFramerateInput" class="form-control" placeholder="5" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2">FPS</span>
-										</div>
-									</div>
-								</div>
-								<p>Lower framerates can reduce network strain, power consumption and CPU usage.</p>
-							</div>
-							<br>
-							<div class="container">
-								<div class="row">
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="runProgramSelector">Run Program on Startup</label>
-											<select class="form-control" id="runProgramSelector">
-											<option>line follow.py</option>
-											<option>control by ps3.py</option>
-											<option>web interface control.py</option>
-											<option>None</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="runSecondProgramSelector">Run Second Program on Startup</label>
-											<select class="form-control" id="runSecondProgramSelector">
-											<option>line follow.py</option>
-											<option>control by ps3.py</option>
-											<option>web interface control.py</option>
-											<option>None</option>
-											</select>
-										</div>
-									</div>
+							<div id="rawDataLog" class="tab-pane fade">
+								<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
 								</div>
 							</div>
-							<br>
-							<div class="container">
-								<div class="row">
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="fullBatteryAction">Power Plan</label>
-											<select class="form-control" id="fullBatteryAction">
-											<option>Maximum Performance</option>
-											<option>Balanced</option>
-											<option>Power Saver</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="lowBatteryAction">Low Battery Action</label>
-											<select class="form-control" id="lowBatteryAction">
-											<option>Low Power Mode</option>
-											<option>Shut Down</option>
-											<option>Do Nothing</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="criticalBatteryAction">Critical Battery Action</label>
-											<select class="form-control" id="criticalBatteryAction">
-											<option>Low Power Mode</option>
-											<option>Shut Down</option>
-											<option>Do Nothing</option>
-											</select>
-										</div>
-									</div>
-								</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-default">Apply</button>
 						</div>
 					</div>
 				</div>
@@ -543,12 +442,12 @@
 						</div>
 						<!--Settings-->
 						<div class="thumbnail">
-							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#settingsModal">
-								<img src="assets/image/circle-settings.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-settings.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
+							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#logModal">
+								<img src="assets/image/circle-log.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-log.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
 							</button>
 						</div>
 						<div class="thumbnail">
-							<p style="text-align: center">Settings</p>
+							<p style="text-align: center">Log</p>
 						</div>
 					</div>
                 <!--   _____      _                         ______               
