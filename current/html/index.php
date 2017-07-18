@@ -95,6 +95,7 @@
 						</div>
 						<div class="modal-footer"><!-- Footer of the modal (where any buttons go) -->
 							<button type="button" class="btn btn-default" onclick="refreshStream();">Refresh</button>
+							<button type="button" class="btn btn-default" onclick="flipStream();">Flip Footage</button>
 							<button type="button" class="btn btn-default" onclick="snapshotStream();">Take Snapshot</button>
 							<button type="button" class="btn btn-default" onclick="recordStreamEvent();">Record Event</button>
 							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#streamSettingsModal">Settings</button>
@@ -644,6 +645,23 @@ function snapshotStream() {
 
 function recordStreamEvent() {
 	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/makemovie");
+}
+
+var flipped = false;
+
+function flipStream() {
+	var flip = document.getElementById("streamImage");
+	
+	if(flipped == false){
+		flip.style.transform = "rotatex(180deg)";
+		flip.style.transitionDuration = "0.5s"
+		flipped = true;
+	}
+	else{
+		flip.style.transform = "rotatex(0deg)";
+		flip.style.transitionDuration = "0.5s"
+		flipped = false;
+	}
 }
 </script>
 		<div class="page-content">
