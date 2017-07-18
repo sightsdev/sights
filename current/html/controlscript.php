@@ -51,12 +51,11 @@ function onKeyDown(event) {
         controlSocket.send("1 " + speed);
         break;
     case 65: //A
+		document.getElementById("controlFeedback").innerHTML = "Spin Left " + speed * 10 + "%";
 		if(flipped == true){
-			document.getElementById("controlFeedback").innerHTML = "Spin Left (Flipped) " + speed * 10 + "%";
 			controlSocket.send("4 " + speed);		
 		}
 		else {
-			document.getElementById("controlFeedback").innerHTML = "Spin Left " + speed * 10 + "%";
 			controlSocket.send("3 " + speed);
 		}
         break;
@@ -65,21 +64,22 @@ function onKeyDown(event) {
         controlSocket.send("2 " + speed);
         break;
     case 68: //D
+		document.getElementById("controlFeedback").innerHTML = "Spin Right " + speed * 10 + "%";
 		if(flipped == true){
-			document.getElementById("controlFeedback").innerHTML = "Spin Right (Flipped) " + speed * 10 + "%";
 			controlSocket.send("3 " + speed);	
 		}
 		else {
-			document.getElementById("controlFeedback").innerHTML = "Spin Right " + speed * 10 + "%";
 			controlSocket.send("4 " + speed);
 		}
         break;
 	case 70: //F
 		if(flipped == false){
+			document.getElementById("flipFeedback").innerHTML = "Flipped Controls"
 			flipped = true;
 		}
 		else {
 			flipped = false;
+			document.getElementById("flipFeedback").innerHTML = ""
 		}
 		break;		
   }
@@ -88,7 +88,7 @@ function onKeyDown(event) {
 //Untested. If it doesn't work add the switch statement back.
 function onKeyUp(event) {
   var key = event.keyCode;
-  if(key == 87 || key == 65 || key == 83 || key == 68) {
+  if(key == 87 || key == 65 || key == 83 || key == 68 || key == 70) {
       document.getElementById("controlFeedback").innerHTML = "Stationary";
       controlSocket.send("0 0");
       lastKey = 0;

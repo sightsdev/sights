@@ -406,6 +406,7 @@
 			<div class="container">
 				<ul>
 					<li><br></li>
+					<li><a href="#"><span id="flipFeedback" style="position: absolute; left: 200px"></span></a></li>
 					<li><a href="#">Home</a></li>
 					<li><strong>|</strong></li>
 					<li><a href="help/index.php">Help</a></li>
