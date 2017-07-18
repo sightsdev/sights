@@ -5,6 +5,7 @@ var controlSocket = new WebSocket("ws://<?php echo $_SERVER['SERVER_ADDR'] ?>:55
 
 var speed = 10;
 var lastKey = 0;
+var flipped = false;
 
 function onKeyDown(event) {
   var key = event.keyCode;
@@ -50,17 +51,37 @@ function onKeyDown(event) {
         controlSocket.send("1 " + speed);
         break;
     case 65: //A
-        document.getElementById("controlFeedback").innerHTML = "Spin Left " + speed * 10 + "%";
-        controlSocket.send("3 " + speed);
+		if(flipped == true){
+			document.getElementById("controlFeedback").innerHTML = "Spin Left (Flipped) " + speed * 10 + "%";
+			controlSocket.send("4 " + speed);		
+		}
+		else {
+			document.getElementById("controlFeedback").innerHTML = "Spin Left " + speed * 10 + "%";
+			controlSocket.send("3 " + speed);
+		}
         break;
     case 83: //S
         document.getElementById("controlFeedback").innerHTML = "Reverse " + speed * 10 + "%";
         controlSocket.send("2 " + speed);
         break;
     case 68: //D
-        document.getElementById("controlFeedback").innerHTML = "Spin Right " + speed * 10 + "%";
-        controlSocket.send("4 " + speed);
+		if(flipped == true){
+			document.getElementById("controlFeedback").innerHTML = "Spin Right (Flipped) " + speed * 10 + "%";
+			controlSocket.send("3 " + speed);	
+		}
+		else {
+			document.getElementById("controlFeedback").innerHTML = "Spin Right " + speed * 10 + "%";
+			controlSocket.send("4 " + speed);
+		}
         break;
+	case 70: //F
+		if(flipped == false){
+			flipped = true;
+		}
+		else {
+			flipped = false;
+		}
+		break;		
   }
 }
 
