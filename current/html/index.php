@@ -151,18 +151,65 @@
 								<div id="rawDataDisplay" class="tab-pane fade in active">
 									<div class="container">
 										<div class="row">
+											<div class="col-md-3">
+												<h4>Temperature</h4>
+												<p><b>Ambient</b><br><span id="temperatureAmbient"></span> &degC </p>
+											</div>
+											<div class="col-md-3">
+												<h4 style="color:#FFFFFF;">.</h4>
+												<p><b>Object</b><br><span id="temperatureObject"></span> &degC </p>
+											</div>
+											<div class="col-md-6">
+												<h4>Compass Bearing</h4>
+												<p><span id="compassBearing"></span> &deg </p>
+											</div>
+										</div>
+									</div>
+									<div class="container">
+										<div class="row">
+											<h4>Accelerometer</h4>
+											<div class="col-md-3">
+												<p><b>X-Axis</b><br><span id="irFront"></span> ms^-2</p>
+											</div>
+											<div class="col-md-3">
+												<p><b>Y-Axis</b><br><span id="irRight"></span> ms^-2</p>
+											</div>
+											<div class="col-md-3">
+												<p><b>Z-Axis</b><br><span id="irRear"></span> ms^-2</p>
+											</div>
+										</div>
+									</div>
+									<div class="container">
+										<div class="row">
+											<h4>Infared Distance Sensors</h4>
+											<div class="col-md-2">
+												<p><b>Front (A0)</b><br><span id="irFront"></span> cm</p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Right (A1)</b><br><span id="irRight"></span> cm</p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Rear (A2)</b><br><span id="irRear"></span> cm</p>
+											</div>
+											<div class="col-md-2">
+												<p><b>Left (A3)</b><br><span id="irLeft"></span> cm</p>
+											</div>
+										</div>
+									</div>
+									<div class="container">
+										<div class="row">
 											<h4>Servo Voltages</h4>
 											<div class="col-md-2">
-												<p><b>Servo 1 (Front Left)</b></p>
+												<p><b>Servo 1 (Front Left)</b><br><span id="servoOneVoltage"></span> volts</p>
 											</div>
 											<div class="col-md-2">
-												<p><b>Servo 2 (Front Right)</b></p>
+												<p><b>Servo 2 (Front Right)</b><br><span id="servoTwoVoltage"></span> volts</p>
 											</div>
 											<div class="col-md-2">
-												<p><b>Servo 3 (Rear Left)</b></p>
+												<p><b>Servo 3 (Rear Left)</b><br><span id="servoThreeVoltage"></span> volts</p>
 											</div>
 											<div class="col-md-2">
-												<p><b>Servo 4 (Rear Right)</b></p>
+												<p><b>Servo 4 (Rear Right)</b><br><span id="ServoFourVoltage"></span> volts</p>
 											</div>
 										</div>
 									</div>
@@ -170,16 +217,16 @@
 										<div class="row">
 											<h4>Servo Temperatures</h4>
 											<div class="col-md-2">
-												<p><b>Servo 1 (Front Left)</b></p>
+												<p><b>Servo 1 (Front Left)</b><br><span id="servoOneTemperature"></span> &degC </p>
 											</div>
 											<div class="col-md-2">
-												<p><b>Servo 2 (Front Right)</b></p>
+												<p><b>Servo 2 (Front Right)</b><br><span id="servoTwoTemperature"></span> &degC </p>
 											</div>
 											<div class="col-md-2">
-												<p><b>Servo 3 (Rear Left)</b></p>
+												<p><b>Servo 3 (Rear Left)</b><br><span id="servoThreeTemperature"></span> &degC </p>
 											</div>
 											<div class="col-md-2">
-												<p><b>Servo 4 (Rear Right)</b></p>
+												<p><b>Servo 4 (Rear Right)</b><br><span id="servoFourTemperature"></span> &degC </p>
 											</div>
 										</div>
 									</div>
@@ -191,11 +238,6 @@
 									<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
 									</div>
 									<div class="modal-footer">
-										<label for="rawDataLogClearTimeInput">Clear Log Every:</label>
-										<div class="input-group" style="width: 150px">
-											<input type="text" id="rawDataLogClearTimeInput" class="form-control" placeholder="10" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2">Minutes</span>
-										</div>
 										<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 									</div>
