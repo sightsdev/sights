@@ -180,6 +180,10 @@
 	margin-top: -5%;
 }
 
+.modal{
+ bottom: initial!important;
+}
+
 /*__  __ _            
  |  \/  (_)           
  | \  / |_ ___  ___   

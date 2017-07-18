@@ -11,6 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="assets/jquery.min.js"></script>
 		<script src="assets/bootstrap.min.js"></script>
+		<script src="assets/drag-drop.min.js"></script>
 		<script src="controlscript.php"></script>
 		<script src="rawdata.php"></script>
 	</head>
@@ -29,7 +30,7 @@
 				  \___ \\___ \|  __  |   | |\/| |/ _ \ / _` |/ _` | |
 				  ____) |___) | |  | |   | |  | | (_) | (_| | (_| | |
 				 |_____/_____/|_|  |_|   |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="sshModal" role="dialog">
+			<div class="modal fade" id="sshModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -56,7 +57,7 @@
 				  | | |  _  /   | |  | | / __| __/ _` | '_ \ / __/ _ \
 				 _| |_| | \ \   | |__| | \__ \ || (_| | | | | (_|  __/
 				|_____|_|  \_\  |_____/|_|___/\__\__,_|_| |_|\___\___|-->
-			<div class="modal fade" id="irModal" role="dialog">
+			<div class="modal fade" id="irModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -80,7 +81,7 @@
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
 					 \/   |_|\__,_|\___|\___/  |_____/ \__|_|  \___|\__,_|_| |_| |_| |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="streamModal" role="dialog">
+			<div class="modal fade" id="streamModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg"><!--Bootstrap: Large modal-->
 					<div class="modal-content">
 						<div class="modal-header"><!-- Modal header -->
@@ -110,7 +111,7 @@
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
 					 \/   |_|\__,_|\___|\___/  |_____/ \__|_|  \___|\__,_|_| |_| |_| |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="streamSettingsModal" role="dialog">
+			<div class="modal fade" id="streamSettingsModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -133,7 +134,7 @@
 			   |  _  // _` \ \ /\ / / | |  | |/ _` | __/ _` | | |\/| |/ _ \ / _` |/ _` | |
 			   | | \ \ (_| |\ V  V /  | |__| | (_| | || (_| | | |  | | (_) | (_| | (_| | |
 			   |_|  \_\__,_| \_/\_/   |_____/ \__,_|\__\__,_| |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="rawdataModal" role="dialog">
+			<div class="modal fade" id="rawdataModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -283,7 +284,7 @@
 		   / /\ \ | '_ \ / _ \| | | | __|   | |\/| |/ _ \ / _` |/ _` | |
 		  / ____ \| |_) | (_) | |_| | |_    | |  | | (_) | (_| | (_| | |
 		 /_/    \_\_.__/ \___/ \__,_|\__|   |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="aboutModal" role="dialog">
+			<div class="modal fade" id="aboutModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -313,7 +314,7 @@
 				 |______\___/ \__, | |_|  |_|\___/ \__,_|\__,_|_|
 							   __/ |                             
 							  |___/-->
-			<div class="modal fade" id="logModal" role="dialog">
+			<div class="modal fade" id="logModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -371,23 +372,8 @@
 		<div class="home-options">
 			<div class="container">
 				<div class="row">
-				<!--   _____      _                          ____             
-				      / ____|    | |                        / __ \            
-					 | |     ___ | |_   _ _ __ ___  _ __   | |  | |_ __   ___ 
-				     | |    / _ \| | | | | '_ ` _ \| '_ \  | |  | | '_ \ / _ \
-					 | |___| (_) | | |_| | | | | | | | | | | |__| | | | |  __/
-					  \_____\___/|_|\__,_|_| |_| |_|_| |_|  \____/|_| |_|\__-->
-					<div class="col-md-3">
-						<!--Not Set-->
-						<div class="thumbnail">
-							<button type="button" class="btn btn-info btn-lg" onclick="location.href='undefined.php';">
-								<img src="assets/image/circle-console.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-console.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
-							</button>
-						</div>
-						<div class="thumbnail">
-							<p style="text-align: center">Not Set</p>
-						</div>
-						<!--SSH Terminal-->
+					<div class="col-md-4">
+					<!--SSH Terminal-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sshModal">
 								<img src="assets/image/circle-ssh.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ssh.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -397,14 +383,8 @@
 							<p style="text-align: center">SSH Terminal</p>
 						</div>
 					</div>
-                <!--   _____      _                         _______            
-                      / ____|    | |                       |__   __|           
-					 | |     ___ | |_   _ _ __ ___  _ __      | |_      _____  
-					 | |    / _ \| | | | | '_ ` _ \| '_ \     | \ \ /\ / / _ \ 
-					 | |___| (_) | | |_| | | | | | | | | |    | |\ V  V / (_) |
-					  \_____\___/|_|\__,_|_| |_| |_|_| |_|    |_| \_/\_/ \__-->
-					<div class="col-md-3">
-						<!--Video Stream-->
+					<div class="col-md-4">
+					<!--Video Stream-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#streamModal">
 								<img src="assets/image/circle-stream.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-stream.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -413,7 +393,9 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Video Stream</p>
 						</div>
-						<!--IR Distance-->
+					</div>
+					<div class="col-md-4">
+					<!--IR Distance-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#irModal">
 								<img src="assets/image/circle-ir.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ir.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -423,15 +405,12 @@
 							<p style="text-align: center">IR Distance</p>
 						</div>
 					</div>
-                
-				<!--   _____      _                         _______ _                   
-                      / ____|    | |                       |__   __| |                  
-					 | |     ___ | |_   _ _ __ ___  _ __      | |  | |__  _ __ ___  ___ 
-					 | |    / _ \| | | | | '_ ` _ \| '_ \     | |  | '_ \| '__/ _ \/ _ \
-					 | |___| (_) | | |_| | | | | | | | | |    | |  | | | | | |  __/  __/
-					  \_____\___/|_|\__,_|_| |_| |_|_| |_|    |_|  |_| |_|_|  \___|\__-->
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
 					<div class="col-md-3">
-						<!--Raw Data-->
+					<!--Raw Data-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#rawdataModal">
 								<img src="assets/image/circle-rawdata.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-rawdata.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -440,7 +419,9 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Raw Data</p>
 						</div>
-						<!--Settings-->
+					</div>
+					<div class="col-md-3">
+					<!--Log-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#logModal">
 								<img src="assets/image/circle-log.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-log.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -450,14 +431,8 @@
 							<p style="text-align: center">Log</p>
 						</div>
 					</div>
-                <!--   _____      _                         ______               
-				      / ____|    | |                       |  ____|              
-					 | |     ___ | |_   _ _ __ ___  _ __   | |__ ___  _   _ _ __ 
-					 | |    / _ \| | | | | '_ ` _ \| '_ \  |  __/ _ \| | | | '__|
-					 | |___| (_) | | |_| | | | | | | | | | | | | (_) | |_| | |   
-					  \_____\___/|_|\__,_|_| |_| |_|_| |_| |_|  \___/ \__,_-->
 					<div class="col-md-3">
-						<!--FTP File Access-->
+					<!--FTP File Access-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" onclick="window.open('/mftp/');">
 								<img src="assets/image/circle-ftp.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ftp.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -466,7 +441,9 @@
 						<div class="thumbnail">
 							<p style="text-align: center">FTP File Access</p>
 						</div>
-						<!--Power Options-->
+					</div>
+					<div class="col-md-3">
+					<!--Power Options-->
 						<div class="thumbnail">
 						<!-- Trigger the modal with a button -->
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#powerModal">
@@ -476,7 +453,7 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Power Options</p>
 						</div>
-					</div>        
+					</div>
 				</div>
 			</div>
         </div>
@@ -606,6 +583,15 @@ function flipStream() {
 	}
 }
 </script>
+
+<script>
+DragDrop.bind(sshModal);
+DragDrop.bind(irModal);
+DragDrop.bind(streamModal);
+DragDrop.bind(rawdataModal);
+DragDrop.bind(logModal);
+DragDrop.bind(aboutModal);
+DragDrop.bind(consoleModal);</script>
 		<div class="page-content">
 			<div class="container">
 				<div class="row">
