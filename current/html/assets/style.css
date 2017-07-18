@@ -163,21 +163,20 @@
  | |\/| |/ _ \ / _` |/ _` | |
  | |  | | (_) | (_| | (_| | |
  |_|  |_|\___/ \__,_|\__,_|*/
+ 
+.modal-header {
+      background-color: #FF5A00;
+}
 .modal-header img {
   float: left;
-  width: 32px;
+  width: 48px;
   background: transparent;
 }
 
 .modal-header h4 {
-  position: relative;
-  top: 4px;
-  left: 10px;
-}
-
-.modal-float-left {
-	text-align: left;
-	margin-top: -5%;
+	color:white !important;
+      text-align: center;
+      font-size: 30px;
 }
 
 .modal{
@@ -185,8 +184,17 @@
 }
 
 .modal-footer {
-      background-color: #f9f9f9;
+      background-color: #f7f7f7;
   }
+  
+.modal-dialog {
+      margin: 0px !important;
+  }
+  
+.modal {
+	margin-left: 25%;
+	margin-top: 2%;
+}
 
 /*__  __ _            
  |  \/  (_)           
@@ -198,6 +206,9 @@
 .btn:focus,.btn:active {/*Remove the outline and background from the buttons*/
    outline: none !important;
    background: none !important;
+}
+.btn {
+	border-radius: 0px;
 }
 
 .batcharge h4 {/*Centre the headings in the charge remaining area*/

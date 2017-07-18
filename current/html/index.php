@@ -43,8 +43,8 @@
 						</div>
 						<div class="modal-footer">
 							<p style="float:left;">To log in, focus the window, type <b>sart</b> and then type <b>sart99</b> when prompted.<p>
-							<button type="button" class="btn btn-default" onclick="refreshSSH();">Open New Terminal</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();">Open New Terminal</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -67,8 +67,8 @@
 							<p>IR Distance view iframe</p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Save Screenshot</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-warning btn-default" data-dismiss="modal">Save Screenshot</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -80,25 +80,25 @@
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
 					 \/   |_|\__,_|\___|\___/  |_____/ \__|_|  \___|\__,_|_| |_| |_| |_|  |_|\___/ \__,_|\__,_|_|-->
 			<div class="modal fade" id="streamModal" role="dialog" data-backdrop="false">
-				<div class="modal-dialog modal-lg"><!--Bootstrap: Large modal-->
+				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
-						<div class="modal-header"><!-- Modal header -->
-							<button type="button" class="close" data-dismiss="modal">&times;</button><!--Add a small close button (x)-->
-							<img src="assets/image/circle-stream.png"/><!--Add a small icon to the header-->
-							<h4 class="modal-title">Video Stream</h4><!--Add a title to the header-->
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<img src="assets/image/circle-stream.png"/>
+							<h4 class="modal-title">Video Stream</h4>
 						</div>
-						<div class="modal-body"><!--Modal body, where all the content goes-->
+						<div class="modal-body">
 							<div class="stream">
-								<img id="streamImage" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/"/><!--IP and port of the stream-->
+								<img id="streamImage" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/"/>
 							</div>
 						</div>
-						<div class="modal-footer"><!-- Footer of the modal (where any buttons go) -->
-							<button type="button" class="btn btn-default" onclick="refreshStream();">Refresh</button>
-							<button type="button" class="btn btn-default" onclick="flipStream();">Flip Footage</button>
-							<button type="button" class="btn btn-default" onclick="snapshotStream();">Take Snapshot</button>
-							<button type="button" class="btn btn-default" onclick="recordStreamEvent();">Record Event</button>
-							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#streamSettingsModal">Settings</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-warning btn-default" onclick="refreshStream();">Refresh</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="flipStream();">Flip Footage</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="snapshotStream();">Take Snapshot</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="recordStreamEvent();">Record Event</button>
+							<button type="button" class="btn btn-warning btn-default" data-toggle="modal" data-target="#streamSettingsModal">Settings</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -121,7 +121,7 @@
 							<iframe id="streamSettingsiframe" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080" width="100%" height="400px"></iframe>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -227,7 +227,7 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -250,9 +250,9 @@
 							<p>Are you sure you want to power down?</p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='restart.php';">Restart</button>
-							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#shutdownWarningModal">Shut Down</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-warning btn-default" data-dismiss="modal" onclick="location.href='restart.php';">Restart</button>
+							<button type="button" class="btn btn-warning btn-default" data-toggle="modal" data-target="#shutdownWarningModal">Shut Down</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -270,8 +270,8 @@
 							<p>You will have to reboot the S.A.R.T manually.<br><br>Make sure you have access to the S.A.R.T and that it is not in the middle of a mission.</p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='shutdown.php';">Shut Down</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-warning btn-default" data-dismiss="modal" onclick="location.href='shutdown.php';">Shut Down</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -298,8 +298,8 @@
 							<p>Current S.A.R.T IP: <?php echo $_SERVER['SERVER_ADDR'] ?></p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" onclick="location.href='help/index.php';" data-dismiss="modal">Help</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="location.href='help/index.php';" data-dismiss="modal">Help</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -313,7 +313,7 @@
 							   __/ |                             
 							  |___/-->
 			<div class="modal fade" id="logModal" role="dialog" data-backdrop="false">
-				<div class="modal-dialog modal-lg">
+				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -327,8 +327,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-warning btn-default" data-dismiss="modal">Clear</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
