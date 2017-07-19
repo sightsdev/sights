@@ -503,11 +503,6 @@ DragDrop.bind(rawdataModal);
 DragDrop.bind(logModal);
 DragDrop.bind(aboutModal);
 DragDrop.bind(consoleModal);
-
-$('.modal').on('hide.bs.modal', function (e) {
-            e.stopPropagation();
-            $('body').css('padding-right','');
-        }); 
 </script>
 		<div class="page-content">
 			<div class="container">

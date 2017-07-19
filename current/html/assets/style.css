@@ -203,6 +203,10 @@
  | |  | | \__ \ (__ _ 
  |_|  |_|_|___/\___(_)
  */
+body {
+padding-right:0px !important;
+margin-right:0px !important;
+}
  
 .btn:focus,.btn:active {/*Remove the outline and background from the buttons*/
    outline: none !important;
