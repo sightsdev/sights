@@ -18,7 +18,7 @@ def sendSensorData(websocket, path):
 			
 		
 		
-start_server = websockets.serve(sendSensorData, "10.0.2.5", 5555)
+start_server = websockets.serve(sendSensorData, "10.0.2.5", 5557)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
 	
