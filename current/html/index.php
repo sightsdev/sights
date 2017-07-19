@@ -14,7 +14,7 @@
 		<script src="assets/drag-drop.min.js"></script>
 	</head>
 
-	<body onLoad="doPerformanceReload();">
+	<body>
 	<!--  __  __           _       _     
 		 |  \/  |         | |     | |    
 		 | \  / | ___   __| | __ _| |___ 
@@ -459,14 +459,6 @@
 			 | |  |  __/ |  | || (_) | |  | | | | | | (_| | | | | (_|  __/  _| |_| | | | || (_) | |  | | | | | | (_| | |_| | (_) | | | |
 			 |_|   \___|_|  |_| \___/|_|  |_| |_| |_|\__,_|_| |_|\___\___| |_____|_| |_|_| \___/|_|  |_| |_| |_|\__,_|\__|_|\___/|_| |_|-->
 <script language="javascript">
-function doPerformanceReload() {
-	var new_url = 'performance.php';
-	$('#performanceObj').attr('data', new_url);
-	$('#performanceObj').load(new_url);
-
-	setTimeout("doPerformanceReload()",1000);	
-}
-
 function refreshStream() {
 	document.getElementById('streamImage').src = "http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/?time="+new Date().getTime();
 }
@@ -511,6 +503,11 @@ DragDrop.bind(rawdataModal);
 DragDrop.bind(logModal);
 DragDrop.bind(aboutModal);
 DragDrop.bind(consoleModal);
+
+$('.modal').on('hide.bs.modal', function (e) {
+            e.stopPropagation();
+            $('body').css('padding-right','');
+        }); 
 </script>
 		<div class="page-content">
 			<div class="container">
