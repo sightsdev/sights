@@ -71,7 +71,7 @@ def scanForRobot():
 		print(j)
 		if j == "10.0.2.4":
 			return j
-		elif j == "10.0.2.3" and not online_ips[i + 1] == "10.0.2.4":
+		elif j == "10.0.2.3":
 			return j
 		i = i + 1
 					
