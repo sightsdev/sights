@@ -1,13 +1,31 @@
 window.addEventListener("keydown", onKeyDown, false);
 window.addEventListener("keyup", onKeyUp, false);
 
+console.log("Attempting to connect to the websosocket server");
 var controlSocket = new WebSocket("ws://<?php echo $_SERVER['SERVER_ADDR'] ?>:5555");
+
+function socketState() {
+	var state = controlSocket.readyState
+	switch (state) {
+		case 0:
+			return "Connecting (The connection is not yet open)";
+		case 1:
+			return "Open (The connection is open and ready to communicate)";
+		case 2:
+			return "Closing (The connection is in the process of closing)";
+		case 3:
+			return "Closed (The connection is closed or couldn't be opened)";
+	}
+}
+
+console.log("Attempt result: " + socketState());
 
 var speed = 10;
 var lastKey = 0;
 var flipped = false;
 
 function onKeyDown(event) {
+	console.log("(Key Down) Socket Status: " + socketState());
   var key = event.keyCode;
   
   if (lastKey == key) {
@@ -87,6 +105,7 @@ function onKeyDown(event) {
 
 //Untested. If it doesn't work add the switch statement back.
 function onKeyUp(event) {
+	console.log("(Key Up) Socket Status: " + socketState());
   var key = event.keyCode;
   if(key == 87 || key == 65 || key == 83 || key == 68 || key == 70) {
       document.getElementById("controlFeedback").innerHTML = "Stationary";
