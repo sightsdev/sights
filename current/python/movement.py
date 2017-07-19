@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from pyax12.connection import Connection
 import time
 import websockets
