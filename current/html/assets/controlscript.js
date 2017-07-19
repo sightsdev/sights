@@ -1,8 +1,10 @@
+var ip = window.location.hostname;
+
 window.addEventListener("keydown", onKeyDown, false);
 window.addEventListener("keyup", onKeyUp, false);
 
 console.log("Attempting to connect to the websosocket server");
-var controlSocket = new WebSocket("ws://<?php echo $_SERVER['SERVER_ADDR'] ?>:5555");
+var controlSocket = new WebSocket("ws://" + ip + ":5555");
 
 function socketState() {
 	var state = controlSocket.readyState

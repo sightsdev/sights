@@ -348,7 +348,7 @@
 					<li><a href="#">Home</a></li>
 					<li><strong>|</strong></li>
 					<li><a href="help/index.php">Help</a></li>
-					<li><a href="#"><span id="controlFeedback" style="position: absolute; right: 200px">Stationary</span></a></li>
+					<li><a href="#" onclick="reloadControlScript();"><span id="controlFeedback" style="position: absolute; right: 200px">Stationary</span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -576,8 +576,8 @@ DragDrop.bind(consoleModal);
 				</div>
 			</div>
 		</div>
-		<script src="controlscript.php"></script>
-		<script src="logscript.php"></script>
-		<script src="performancescript.js"></script>
+		<script src="assets/controlscript.js"></script>
+		<script src="assets/logscript.js"></script>
+		<script src="assets/performancescript.js"></script>
 	</body>
 </html>
