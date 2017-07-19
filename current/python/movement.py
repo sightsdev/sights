@@ -92,6 +92,7 @@ def run(websocket, path):
 				print("Stop")
 		else:
 			runMotorGroup([1,2,3,4], bytes([0,0]))
+	
 			
 
 start_server = websockets.serve(run, scanForRobot(), 5555)
