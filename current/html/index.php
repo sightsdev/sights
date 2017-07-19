@@ -13,7 +13,7 @@
 		<script src="assets/bootstrap.min.js"></script>
 		<script src="assets/drag-drop.min.js"></script>
 		<script src="controlscript.php"></script>
-		<script src="rawdata.php"></script>
+		<script src="logscript.php"></script>
 	</head>
 
 	<body onLoad="doUptime(); doPerformanceReload();">
@@ -321,8 +321,8 @@
 							<h4 class="modal-title">Log</h4>
 						</div>
 						<div class="modal-body">
-							<div id="rawDataLog" class="tab-pane fade">
-								<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
+							<div id="log" class="tab-pane fade">
+								<div class="logScroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
 								</div>
 							</div>
 						</div>
@@ -535,12 +535,6 @@ function doPerformanceReload() {
 	$('#performanceObj').load(new_url);
 
 	setTimeout("doPerformanceReload()",1000);	
-}
-
-function doRawDataReload() {
-	var new_url2 = 'rawdata.php';
-	$('#rawDataObj').attr('data', new_url2);
-	$('#rawDataObj').load(new_url2);
 }
 
 function refreshStream() {
