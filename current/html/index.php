@@ -18,14 +18,14 @@
 
 	<body onLoad="doUptime(); doPerformanceReload();">
 	<!--  __  __           _       _     
-         |  \/  |         | |     | |    
+		 |  \/  |         | |     | |    
 		 | \  / | ___   __| | __ _| |___ 
 		 | |\/| |/ _ \ / _` |/ _` | / __|
 		 | |  | | (_) | (_| | (_| | \__ \
 		 |_|  |_|\___/ \__,_|\__,_|_|___/-->
 		<div class="container">
 			<!--   _____ _____ _    _     __  __           _       _ 
-			      / ____/ ____| |  | |   |  \/  |         | |     | |
+				  / ____/ ____| |  | |   |  \/  |         | |     | |
 				 | (___| (___ | |__| |   | \  / | ___   __| | __ _| |
 				  \___ \\___ \|  __  |   | |\/| |/ _ \ / _` |/ _` | |
 				  ____) |___) | |  | |   | |  | | (_) | (_| | (_| | |
@@ -74,7 +74,7 @@
 				</div>
 			</div>
 			<!-- __      ___     _               _____ _                              __  __           _       _ 
-			     \ \    / (_)   | |             / ____| |                            |  \/  |         | |     | |
+				 \ \    / (_)   | |             / ____| |                            |  \/  |         | |     | |
 				  \ \  / / _  __| | ___  ___   | (___ | |_ _ __ ___  __ _ _ __ ___   | \  / | ___   __| | __ _| |
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
@@ -104,7 +104,7 @@
 				</div>
 			</div>
 			<!-- __      ___     _               _____ _  SETTINGS                    __  __           _       _ 
-			     \ \    / (_)   | |             / ____| | SETTINGS                   |  \/  |         | |     | |
+				 \ \    / (_)   | |             / ____| | SETTINGS                   |  \/  |         | |     | |
 				  \ \  / / _  __| | ___  ___   | (___ | |_ _ __ ___  __ _ _ __ ___   | \  / | ___   __| | __ _| |
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
@@ -233,7 +233,7 @@
 				</div>
 			</div>
 			<!--  _____                           __  __           _       _ 
-			     |  __ \                         |  \/  |         | |     | |
+				 |  __ \                         |  \/  |         | |     | |
 				 | |__) |____      _____ _ __    | \  / | ___   __| | __ _| |
 				 |  ___/ _ \ \ /\ / / _ \ '__|   | |\/| |/ _ \ / _` |/ _` | |
 				 | |  | (_) \ V  V /  __/ |      | |  | | (_) | (_| | (_| | |
@@ -277,7 +277,7 @@
 				</div>
 			</div>
 			<!--   _                 _       __  __           _       _ 
-		     /\   | |               | |     |  \/  |         | |     | |
+			 /\   | |               | |     |  \/  |         | |     | |
 			/  \  | |__   ___  _   _| |_    | \  / | ___   __| | __ _| |
 		   / /\ \ | '_ \ / _ \| | | | __|   | |\/| |/ _ \ / _` |/ _` | |
 		  / ____ \| |_) | (_) | |_| | |_    | |  | | (_) | (_| | (_| | |
@@ -340,7 +340,7 @@
 			 | . ` |/ _` \ \ / / |/ _` |/ _` | __| |/ _ \| '_ \ 
 			 | |\  | (_| |\ V /| | (_| | (_| | |_| | (_) | | | |
 			 |_| \_|\__,_| \_/ |_|\__, |\__,_|\__|_|\___/|_| |_|
-                                   __/ |                        
+								   __/ |                        
 								  |___/-->
 		<div class="nav topnav">
 			<div class="container">
@@ -355,18 +355,17 @@
 			</div>
 		</div>
 		
-		<!--       _                 _           _                   
+			<!--   _                 _           _                   
 				  | |               | |         | |                  
 				  | |_   _ _ __ ___ | |__   ___ | |_ _ __ ___  _ __  
 			  _   | | | | | '_ ` _ \| '_ \ / _ \| __| '__/ _ \| '_ \ 
 			 | |__| | |_| | | | | | | |_) | (_) | |_| | | (_) | | | |
-		      \____/ \__,_|_| |_| |_|_.__/ \___/ \__|_|  \___/|_| |_|-->
+			  \____/ \__,_|_| |_| |_|_.__/ \___/ \__|_|  \___/|_| |_|-->
 		<div class="jumbotron">
 			<div class="container">
 				<h1><span style="color: #FF5A00">S.A.R.T</span> <span style="color: #d8d8d8">Control Interface</span></h1>
 			</div>
 		</div>
-        
 		<div class="home-options">
 			<div class="container">
 				<div class="row">
@@ -465,28 +464,28 @@
 // format the uptime in case the browser doesn't support dhtml/javascript
 // static uptime string
 function format_uptime($seconds) {
-  $secs = intval($seconds % 60);
-  $mins = intval($seconds / 60 % 60);
-  $hours = intval($seconds / 3600 % 24);
-  $days = intval($seconds / 86400);
+	$secs = intval($seconds % 60);
+	$mins = intval($seconds / 60 % 60);
+	$hours = intval($seconds / 3600 % 24);
+	$days = intval($seconds / 86400);
   
-  if ($days > 0) {
-    $uptimeString .= $days;
-    $uptimeString .= (($days == 1) ? " day" : " days");
-  }
-  if ($hours > 0) {
-    $uptimeString .= (($days > 0) ? ", " : "") . $hours;
-    $uptimeString .= (($hours == 1) ? " hour" : " hours");
-  }
-  if ($mins > 0) {
-    $uptimeString .= (($days > 0 || $hours > 0) ? ", " : "") . $mins;
-    $uptimeString .= (($mins == 1) ? " minute" : " minutes");
-  }
-  if ($secs > 0) {
-    $uptimeString .= (($days > 0 || $hours > 0 || $mins > 0) ? ", " : "") . $secs;
-    $uptimeString .= (($secs == 1) ? " second" : " seconds");
-  }
-  return $uptimeString;
+	if ($days > 0) {
+		$uptimeString .= $days;
+		$uptimeString .= (($days == 1) ? " day" : " days");
+	}
+	if ($hours > 0) {
+		$uptimeString .= (($days > 0) ? ", " : "") . $hours;
+		$uptimeString .= (($hours == 1) ? " hour" : " hours");
+	}
+	if ($mins > 0) {
+		$uptimeString .= (($days > 0 || $hours > 0) ? ", " : "") . $mins;
+	$uptimeString .= (($mins == 1) ? " minute" : " minutes");
+	}
+	if ($secs > 0) {
+		$uptimeString .= (($days > 0 || $hours > 0 || $mins > 0) ? ", " : "") . $secs;
+		$uptimeString .= (($secs == 1) ? " second" : " seconds");
+	}
+	return $uptimeString;
 }
 
 // read in the uptime (using exec)
