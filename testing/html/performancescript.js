@@ -1,10 +1,10 @@
-/*var performanceSocket = new WebSocket("ws://<?php echo $_SERVER['SERVER_ADDR'] ?>:5558");
+var ip = window.location.hostname;
+
+var performanceSocket = new WebSocket(ip + ":5558");
 
 performanceSocket.onmessage = function(event){
-	
-	
-}*/
-var str = "3963 80.345 34";
+
+var str = event.data;
 
 var performanceArray = str.split(' '),
     ram = Math.round(performanceArray[0]), cpu = Math.round(performanceArray[1]), cpuTemp = Math.round(performanceArray[2]);
@@ -22,4 +22,5 @@ document.getElementById("cpu").innerHTML = "" + cpu + "%";
 document.getElementById("cpuPercentage").className = "c100 big orange p" + cpu;
 
 document.getElementById("cpuTemp").innerHTML = "" + cpuTemp + "%";
-document.getElementById("cpuTempPercentage").className = "c100 big orange p" + cpuTemp;
+document.getElementById("cpuTempPercentage").className = "c100 big orange p" + cpuTemp;	
+}
