@@ -11,6 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="assets/jquery.min.js"></script>
 		<script src="assets/bootstrap.min.js"></script>
+		<script src="assets/drag-drop.min.js"></script>
 		<script src="controlscript.php"></script>
 		<script src="rawdata.php"></script>
 	</head>
@@ -29,7 +30,7 @@
 				  \___ \\___ \|  __  |   | |\/| |/ _ \ / _` |/ _` | |
 				  ____) |___) | |  | |   | |  | | (_) | (_| | (_| | |
 				 |_____/_____/|_|  |_|   |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="sshModal" role="dialog">
+			<div class="modal fade" id="sshModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -41,11 +42,9 @@
 							<iframe id="sshiframe" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:4200" width="100%" height="400px"></iframe>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" onclick="refreshSSH();">Open New Terminal</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<div class="modal-float-left">
-								<p>To log in, focus the window, type <b>sart</b> and then type <b>sart99</b> when prompted.<p>
-							</div>
+							<p style="float:left;">To log in, focus the window, type <b>sart</b> and then type <b>sart99</b> when prompted.<p>
+							<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();">Open New Terminal</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -56,7 +55,7 @@
 				  | | |  _  /   | |  | | / __| __/ _` | '_ \ / __/ _ \
 				 _| |_| | \ \   | |__| | \__ \ || (_| | | | | (_|  __/
 				|_____|_|  \_\  |_____/|_|___/\__\__,_|_| |_|\___\___|-->
-			<div class="modal fade" id="irModal" role="dialog">
+			<div class="modal fade" id="irModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -68,8 +67,8 @@
 							<p>IR Distance view iframe</p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Save Screenshot</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-warning btn-default" data-dismiss="modal">Save Screenshot</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -80,25 +79,26 @@
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
 					 \/   |_|\__,_|\___|\___/  |_____/ \__|_|  \___|\__,_|_| |_| |_| |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="streamModal" role="dialog">
-				<div class="modal-dialog modal-lg"><!--Bootstrap: Large modal-->
+			<div class="modal fade" id="streamModal" role="dialog" data-backdrop="false">
+				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
-						<div class="modal-header"><!-- Modal header -->
-							<button type="button" class="close" data-dismiss="modal">&times;</button><!--Add a small close button (x)-->
-							<img src="assets/image/circle-stream.png"/><!--Add a small icon to the header-->
-							<h4 class="modal-title">Video Stream</h4><!--Add a title to the header-->
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<img src="assets/image/circle-stream.png"/>
+							<h4 class="modal-title">Video Stream</h4>
 						</div>
-						<div class="modal-body"><!--Modal body, where all the content goes-->
+						<div class="modal-body">
 							<div class="stream">
-								<img id="streamImage" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/"/><!--IP and port of the stream-->
+								<img id="streamImage" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/"/>
 							</div>
 						</div>
-						<div class="modal-footer"><!-- Footer of the modal (where any buttons go) -->
-							<button type="button" class="btn btn-default" onclick="refreshStream();">Refresh</button>
-							<button type="button" class="btn btn-default" onclick="snapshotStream();">Take Snapshot</button>
-							<button type="button" class="btn btn-default" onclick="recordStreamEvent();">Record Event</button>
-							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#streamSettingsModal">Settings</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-warning btn-default" onclick="refreshStream();">Refresh</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="flipStream();">Flip Footage</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="snapshotStream();">Take Snapshot</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="recordStreamEvent();">Record Event</button>
+							<button type="button" class="btn btn-warning btn-default" data-toggle="modal" data-target="#streamSettingsModal">Settings</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -109,7 +109,7 @@
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
 					 \/   |_|\__,_|\___|\___/  |_____/ \__|_|  \___|\__,_|_| |_| |_| |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="streamSettingsModal" role="dialog">
+			<div class="modal fade" id="streamSettingsModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -121,7 +121,7 @@
 							<iframe id="streamSettingsiframe" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080" width="100%" height="400px"></iframe>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -132,21 +132,102 @@
 			   |  _  // _` \ \ /\ / / | |  | |/ _` | __/ _` | | |\/| |/ _ \ / _` |/ _` | |
 			   | | \ \ (_| |\ V  V /  | |__| | (_| | || (_| | | |  | | (_) | (_| | (_| | |
 			   |_|  \_\__,_| \_/\_/   |_____/ \__,_|\__\__,_| |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="rawdataModal" role="dialog">
+			<div class="modal fade" id="rawdataModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 							<img src="assets/image/circle-ssh.png"/>
 							<h4 class="modal-title">Raw Data</h4>
+							<br>
 						</div>
 						<div class="modal-body">
-							<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
+							<div class="tab-content">
+								<div class="container">
+									<div class="row">
+										<div class="col-md-3">
+											<h4>Temperature</h4>
+											<p><b>Ambient</b><br><span id="temperatureAmbient"></span> &degC </p>
+										</div>
+										<div class="col-md-3">
+											<h4 style="color:#FFFFFF;">.</h4>
+											<p><b>Object</b><br><span id="temperatureObject"></span> &degC </p>
+										</div>
+										<div class="col-md-6">
+											<h4>Compass Bearing</h4>
+											<p><span id="compassBearing"></span> &deg </p>
+										</div>
+									</div>
+								</div>
+								<div class="container">
+									<div class="row">
+										<h4>Accelerometer</h4>
+										<div class="col-md-3">
+											<p><b>X-Axis</b><br><span id="irFront"></span> ms^-2</p>
+										</div>
+										<div class="col-md-3">
+											<p><b>Y-Axis</b><br><span id="irRight"></span> ms^-2</p>
+										</div>
+										<div class="col-md-3">
+											<p><b>Z-Axis</b><br><span id="irRear"></span> ms^-2</p>
+										</div>
+									</div>
+								</div>
+								<div class="container">
+									<div class="row">
+										<h4>Infared Distance Sensors</h4>
+										<div class="col-md-2">
+											<p><b>Front (A0)</b><br><span id="irFront"></span> cm</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Right (A1)</b><br><span id="irRight"></span> cm</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Rear (A2)</b><br><span id="irRear"></span> cm</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Left (A3)</b><br><span id="irLeft"></span> cm</p>
+										</div>
+									</div>
+								</div>
+								<div class="container">
+									<div class="row">
+										<h4>Servo Voltages</h4>
+										<div class="col-md-2">
+											<p><b>Servo 1 (Front Left)</b><br><span id="servoOneVoltage"></span> volts</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 2 (Front Right)</b><br><span id="servoTwoVoltage"></span> volts</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 3 (Rear Left)</b><br><span id="servoThreeVoltage"></span> volts</p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 4 (Rear Right)</b><br><span id="ServoFourVoltage"></span> volts</p>
+										</div>
+									</div>
+								</div>
+								<div class="container">
+									<div class="row">
+										<h4>Servo Temperatures</h4>
+										<div class="col-md-2">
+											<p><b>Servo 1 (Front Left)</b><br><span id="servoOneTemperature"></span> &degC </p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 2 (Front Right)</b><br><span id="servoTwoTemperature"></span> &degC </p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 3 (Rear Left)</b><br><span id="servoThreeTemperature"></span> &degC </p>
+										</div>
+										<div class="col-md-2">
+											<p><b>Servo 4 (Rear Right)</b><br><span id="servoFourTemperature"></span> &degC </p>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Clear</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -169,9 +250,9 @@
 							<p>Are you sure you want to power down?</p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='restart.php';">Restart</button>
-							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#shutdownWarningModal">Shut Down</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-warning btn-default" data-dismiss="modal" onclick="location.href='restart.php';">Restart</button>
+							<button type="button" class="btn btn-warning btn-default" data-toggle="modal" data-target="#shutdownWarningModal">Shut Down</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -189,8 +270,8 @@
 							<p>You will have to reboot the S.A.R.T manually.<br><br>Make sure you have access to the S.A.R.T and that it is not in the middle of a mission.</p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='shutdown.php';">Shut Down</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-warning btn-default" data-dismiss="modal" onclick="location.href='shutdown.php';">Shut Down</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -201,7 +282,7 @@
 		   / /\ \ | '_ \ / _ \| | | | __|   | |\/| |/ _ \ / _` |/ _` | |
 		  / ____ \| |_) | (_) | |_| | |_    | |  | | (_) | (_| | (_| | |
 		 /_/    \_\_.__/ \___/ \__,_|\__|   |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="aboutModal" role="dialog">
+			<div class="modal fade" id="aboutModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -217,124 +298,37 @@
 							<p>Current S.A.R.T IP: <?php echo $_SERVER['SERVER_ADDR'] ?></p>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" onclick="location.href='help/index.php';" data-dismiss="modal">Help</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-warning btn-default" onclick="location.href='help/index.php';" data-dismiss="modal">Help</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!--_____      _   _   _                     __  __           _       _ 
-			   / ____|    | | | | (_)                   |  \/  |         | |     | |
-			  | (___   ___| |_| |_ _ _ __   __ _ ___    | \  / | ___   __| | __ _| |
-			   \___ \ / _ \ __| __| | '_ \ / _` / __|   | |\/| |/ _ \ / _` |/ _` | |
-			   ____) |  __/ |_| |_| | | | | (_| \__ \   | |  | | (_) | (_| | (_| | |
-			  |_____/ \___|\__|\__|_|_| |_|\__, |___/   |_|  |_|\___/ \__,_|\__,_|_|
-										    __/ |                                 
-										   |___/-->
-			<div class="modal fade" id="settingsModal" role="dialog">
-				<div class="modal-dialog modal-lg">
+			<!--  _                   __  __           _       _ 
+				 | |                 |  \/  |         | |     | |
+				 | |     ___   __ _  | \  / | ___   __| | __ _| |
+				 | |    / _ \ / _` | | |\/| |/ _ \ / _` |/ _` | |
+				 | |___| (_) | (_| | | |  | | (_) | (_| | (_| | |
+				 |______\___/ \__, | |_|  |_|\___/ \__,_|\__,_|_|
+							   __/ |                             
+							  |___/-->
+			<div class="modal fade" id="logModal" role="dialog" data-backdrop="false">
+				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<img src="assets/image/circle-settings.png"/>
-							<h4 class="modal-title">Settings</h4>
+							<img src="assets/image/circle-log.png"/>
+							<h4 class="modal-title">Log</h4>
 						</div>
 						<div class="modal-body">
-							<h4>Change multiple S.A.R.T settings via the Control Interface</h4>
-							<br>
-							<div class="container">
-								<div class="row">
-									<div class="col-md-3">
-										<label for="videoStreamFramerateInput">Video Stream Framerate</label>
-										<div class="input-group">
-											<input type="text" id="videoStreamFramerateInput" class="form-control" placeholder="30" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2">FPS</span>
-										</div>
-									</div>
-									<div class="col-md-3">
-										<label for="sonarMapStreamFramerateInput">Sonar Map Stream Framerate</label>
-										<div class="input-group">
-											<input type="text" id="sonarMapStreamFramerateInput" class="form-control" placeholder="5" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2">FPS</span>
-										</div>
-									</div>
-									<div class="col-md-3">
-										<label for="accelerometerStreamFramerateInput">Accelerometer Stream Framerate</label>
-										<div class="input-group">
-											<input type="text" id="accelerometerStreamFramerateInput" class="form-control" placeholder="5" aria-describedby="basic-addon2">
-											<span class="input-group-addon" id="basic-addon2">FPS</span>
-										</div>
-									</div>
-								</div>
-								<p>Lower framerates can reduce network strain, power consumption and CPU usage.</p>
-							</div>
-							<br>
-							<div class="container">
-								<div class="row">
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="runProgramSelector">Run Program on Startup</label>
-											<select class="form-control" id="runProgramSelector">
-											<option>line follow.py</option>
-											<option>control by ps3.py</option>
-											<option>web interface control.py</option>
-											<option>None</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="runSecondProgramSelector">Run Second Program on Startup</label>
-											<select class="form-control" id="runSecondProgramSelector">
-											<option>line follow.py</option>
-											<option>control by ps3.py</option>
-											<option>web interface control.py</option>
-											<option>None</option>
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<br>
-							<div class="container">
-								<div class="row">
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="fullBatteryAction">Power Plan</label>
-											<select class="form-control" id="fullBatteryAction">
-											<option>Maximum Performance</option>
-											<option>Balanced</option>
-											<option>Power Saver</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="lowBatteryAction">Low Battery Action</label>
-											<select class="form-control" id="lowBatteryAction">
-											<option>Low Power Mode</option>
-											<option>Shut Down</option>
-											<option>Do Nothing</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="criticalBatteryAction">Critical Battery Action</label>
-											<select class="form-control" id="criticalBatteryAction">
-											<option>Low Power Mode</option>
-											<option>Shut Down</option>
-											<option>Do Nothing</option>
-											</select>
-										</div>
-									</div>
+							<div id="rawDataLog" class="tab-pane fade">
+								<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-default">Apply</button>
+							<button type="button" class="btn btn-warning btn-default" data-dismiss="modal">Clear</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>
 				</div>
@@ -348,10 +342,11 @@
 			 |_| \_|\__,_| \_/ |_|\__, |\__,_|\__|_|\___/|_| |_|
                                    __/ |                        
 								  |___/-->
-		<div class="nav">
+		<div class="nav topnav">
 			<div class="container">
 				<ul>
 					<li><br></li>
+					<li><a href="#"><span id="flipFeedback" style="position: absolute; left: 200px"></span></a></li>
 					<li><a href="#">Home</a></li>
 					<li><strong>|</strong></li>
 					<li><a href="help/index.php">Help</a></li>
@@ -375,23 +370,8 @@
 		<div class="home-options">
 			<div class="container">
 				<div class="row">
-				<!--   _____      _                          ____             
-				      / ____|    | |                        / __ \            
-					 | |     ___ | |_   _ _ __ ___  _ __   | |  | |_ __   ___ 
-				     | |    / _ \| | | | | '_ ` _ \| '_ \  | |  | | '_ \ / _ \
-					 | |___| (_) | | |_| | | | | | | | | | | |__| | | | |  __/
-					  \_____\___/|_|\__,_|_| |_| |_|_| |_|  \____/|_| |_|\__-->
-					<div class="col-md-3">
-						<!--Not Set-->
-						<div class="thumbnail">
-							<button type="button" class="btn btn-info btn-lg" onclick="location.href='undefined.php';">
-								<img src="assets/image/circle-console.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-console.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
-							</button>
-						</div>
-						<div class="thumbnail">
-							<p style="text-align: center">Not Set</p>
-						</div>
-						<!--SSH Terminal-->
+					<div class="col-md-4">
+					<!--SSH Terminal-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sshModal">
 								<img src="assets/image/circle-ssh.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ssh.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -401,14 +381,8 @@
 							<p style="text-align: center">SSH Terminal</p>
 						</div>
 					</div>
-                <!--   _____      _                         _______            
-                      / ____|    | |                       |__   __|           
-					 | |     ___ | |_   _ _ __ ___  _ __      | |_      _____  
-					 | |    / _ \| | | | | '_ ` _ \| '_ \     | \ \ /\ / / _ \ 
-					 | |___| (_) | | |_| | | | | | | | | |    | |\ V  V / (_) |
-					  \_____\___/|_|\__,_|_| |_| |_|_| |_|    |_| \_/\_/ \__-->
-					<div class="col-md-3">
-						<!--Video Stream-->
+					<div class="col-md-4">
+					<!--Video Stream-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#streamModal">
 								<img src="assets/image/circle-stream.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-stream.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -417,7 +391,9 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Video Stream</p>
 						</div>
-						<!--IR Distance-->
+					</div>
+					<div class="col-md-4">
+					<!--IR Distance-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#irModal">
 								<img src="assets/image/circle-ir.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ir.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -427,15 +403,12 @@
 							<p style="text-align: center">IR Distance</p>
 						</div>
 					</div>
-                
-				<!--   _____      _                         _______ _                   
-                      / ____|    | |                       |__   __| |                  
-					 | |     ___ | |_   _ _ __ ___  _ __      | |  | |__  _ __ ___  ___ 
-					 | |    / _ \| | | | | '_ ` _ \| '_ \     | |  | '_ \| '__/ _ \/ _ \
-					 | |___| (_) | | |_| | | | | | | | | |    | |  | | | | | |  __/  __/
-					  \_____\___/|_|\__,_|_| |_| |_|_| |_|    |_|  |_| |_|_|  \___|\__-->
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
 					<div class="col-md-3">
-						<!--Raw Data-->
+					<!--Raw Data-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#rawdataModal">
 								<img src="assets/image/circle-rawdata.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-rawdata.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -444,24 +417,20 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Raw Data</p>
 						</div>
-						<!--Settings-->
+					</div>
+					<div class="col-md-3">
+					<!--Log-->
 						<div class="thumbnail">
-							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#settingsModal">
-								<img src="assets/image/circle-settings.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-settings.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
+							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#logModal">
+								<img src="assets/image/circle-log.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-log.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
 							</button>
 						</div>
 						<div class="thumbnail">
-							<p style="text-align: center">Settings</p>
+							<p style="text-align: center">Log</p>
 						</div>
 					</div>
-                <!--   _____      _                         ______               
-				      / ____|    | |                       |  ____|              
-					 | |     ___ | |_   _ _ __ ___  _ __   | |__ ___  _   _ _ __ 
-					 | |    / _ \| | | | | '_ ` _ \| '_ \  |  __/ _ \| | | | '__|
-					 | |___| (_) | | |_| | | | | | | | | | | | | (_) | |_| | |   
-					  \_____\___/|_|\__,_|_| |_| |_|_| |_| |_|  \___/ \__,_-->
 					<div class="col-md-3">
-						<!--FTP File Access-->
+					<!--FTP File Access-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" onclick="window.open('/mftp/');">
 								<img src="assets/image/circle-ftp.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-ftp.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
@@ -470,7 +439,9 @@
 						<div class="thumbnail">
 							<p style="text-align: center">FTP File Access</p>
 						</div>
-						<!--Power Options-->
+					</div>
+					<div class="col-md-3">
+					<!--Power Options-->
 						<div class="thumbnail">
 						<!-- Trigger the modal with a button -->
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#powerModal">
@@ -480,7 +451,7 @@
 						<div class="thumbnail">
 							<p style="text-align: center">Power Options</p>
 						</div>
-					</div>        
+					</div>
 				</div>
 			</div>
         </div>
@@ -592,6 +563,31 @@ function snapshotStream() {
 function recordStreamEvent() {
 	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/makemovie");
 }
+
+var flipped = false;
+
+function flipStream() {
+	var flip = document.getElementById("streamImage");
+	
+	if(flipped == false){
+		flip.style.transform = "rotatex(180deg)";
+		flip.style.transitionDuration = "0.5s"
+		flipped = true;
+	}
+	else{
+		flip.style.transform = "rotatex(0deg)";
+		flip.style.transitionDuration = "0.5s"
+		flipped = false;
+	}
+}
+
+DragDrop.bind(sshModal);
+DragDrop.bind(irModal);
+DragDrop.bind(streamModal);
+DragDrop.bind(rawdataModal);
+DragDrop.bind(logModal);
+DragDrop.bind(aboutModal);
+DragDrop.bind(consoleModal);
 </script>
 		<div class="page-content">
 			<div class="container">
