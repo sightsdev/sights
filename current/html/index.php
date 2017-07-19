@@ -580,16 +580,15 @@ function flipStream() {
 		flipped = false;
 	}
 }
-</script>
 
-<script>
 DragDrop.bind(sshModal);
 DragDrop.bind(irModal);
 DragDrop.bind(streamModal);
 DragDrop.bind(rawdataModal);
 DragDrop.bind(logModal);
 DragDrop.bind(aboutModal);
-DragDrop.bind(consoleModal);</script>
+DragDrop.bind(consoleModal);
+</script>
 		<div class="page-content">
 			<div class="container">
 				<div class="row">
