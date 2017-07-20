@@ -16,6 +16,7 @@ The scripts and programs written by the SFXRescue team for the SART v.2 rescue r
 - [python/**sensor_party_server.py**](current/python/servo_party_server.py): This script creates a websocket server to send sensor data collected from the robot to the control panel. It has 3 dependancies: pyserial, asyncio and websockets.
 - [python/**performance_party_data.py**](current/python/performance_party_data.py): This script creates a websocket server to send robot performance data to be displayed on the control panel. It has 3 dependancies: psutil, asyncio and websockets.
 - [python/**servo_party_data.py**](current/python/servo_party_data.py): This script creates a websocket server to send servo performance data to the control panel to be displayed. It has 3 dependancies: pyax12, asyncio and websockets.
+- Websocket ports include: servo_party = 5555, servo_party_data = 5556, sensor_party_server = 5557 and performance_party_data = 5558
 #### Arduino:
 - [arduino/**sensor_party.ino**](current/arduino/sensor_party.ino):
     - Libraries:
