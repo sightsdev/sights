@@ -181,6 +181,9 @@
 
 .modal{
  bottom: initial!important;
+ right: initial!important;
+ margin-left: 25%;
+margin-top: 2%;
 }
 
 .modal-footer {
@@ -190,11 +193,6 @@
 .modal-dialog {
       margin: 0px !important;
   }
-  
-.modal {
-	margin-left: 25%;
-	margin-top: 2%;
-}
 
 /*__  __ _            
  |  \/  (_)           
@@ -237,13 +235,20 @@ margin-right:0px !important;
   position: fixed;
   top: 50%;
   left: 50%;
-  /* bring your own prefixes */
   transform: translate(-50%, -50%);
   text-align: center;
 }
 
 .stream {
 	text-align: center;
+}
+
+.middle-adjust {
+	margin-left: 40%;
+}
+
+.dragHeader {
+	cursor: move;
 }
 
 /* Let's get this party started */
