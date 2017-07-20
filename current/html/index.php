@@ -3,9 +3,9 @@
 	<title>S.A.R.T Interface</title><!--The title displayed in the browser tab bar-->
 	<head>
 		<!--Link CSS and scripts-->
+		<link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="assets/bootstrap.css">
 		<link rel="stylesheet" href="assets/style.css">
-		<link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="assets/circle.css">
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,7 +28,7 @@
 				  \___ \\___ \|  __  |   | |\/| |/ _ \ / _` |/ _` | |
 				  ____) |___) | |  | |   | |  | | (_) | (_| | (_| | |
 				 |_____/_____/|_|  |_|   |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="sshModal" role="dialog" data-backdrop="false">
+			<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -53,7 +53,7 @@
 				  | | |  _  /   | |  | | / __| __/ _` | '_ \ / __/ _ \
 				 _| |_| | \ \   | |__| | \__ \ || (_| | | | | (_|  __/
 				|_____|_|  \_\  |_____/|_|___/\__\__,_|_| |_|\___\___|-->
-			<div class="modal fade" id="irModal" role="dialog" data-backdrop="false">
+			<div class="modal fade top" id="irModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -77,7 +77,7 @@
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
 					 \/   |_|\__,_|\___|\___/  |_____/ \__|_|  \___|\__,_|_| |_| |_| |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="streamModal" role="dialog" data-backdrop="false">
+			<div class="modal fade top" id="streamModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -130,7 +130,7 @@
 			   |  _  // _` \ \ /\ / / | |  | |/ _` | __/ _` | | |\/| |/ _ \ / _` |/ _` | |
 			   | | \ \ (_| |\ V  V /  | |__| | (_| | || (_| | | |  | | (_) | (_| | (_| | |
 			   |_|  \_\__,_| \_/\_/   |_____/ \__,_|\__\__,_| |_|  |_|\___/ \__,_|\__,_|_|-->
-			<div class="modal fade" id="rawdataModal" role="dialog" data-backdrop="false">
+			<div class="modal fade top" id="rawdataModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -458,52 +458,6 @@
 			 |  ___/ _ \ '__|  _/ _ \| '__| '_ ` _ \ / _` | '_ \ / __/ _ \   | | | '_ \|  _/ _ \| '__| '_ ` _ \ / _` | __| |/ _ \| '_ \ 
 			 | |  |  __/ |  | || (_) | |  | | | | | | (_| | | | | (_|  __/  _| |_| | | | || (_) | |  | | | | | | (_| | |_| | (_) | | | |
 			 |_|   \___|_|  |_| \___/|_|  |_| |_| |_|\__,_|_| |_|\___\___| |_____|_| |_|_| \___/|_|  |_| |_| |_|\__,_|\__|_|\___/|_| |_|-->
-<script language="javascript">
-function refreshStream() {
-	document.getElementById('streamImage').src = "http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/?time="+new Date().getTime();
-}
-
-function refreshSSH() {
-	document.getElementById('sshiframe').src += '';
-}
-
-function snapshotStream() {
-	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/snapshot");
-	
-	setTimeout(function()  {
-		window.open("http://<?php echo $_SERVER['SERVER_ADDR'] ?>/downloadsnapshot.php");
-	}, 2000);
-}
-
-function recordStreamEvent() {
-	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/makemovie");
-}
-
-var flipped = false;
-
-function flipStream() {
-	var flip = document.getElementById("streamImage");
-	
-	if(flipped == false){
-		flip.style.transform = "rotatex(180deg)";
-		flip.style.transitionDuration = "0.5s"
-		flipped = true;
-	}
-	else{
-		flip.style.transform = "rotatex(0deg)";
-		flip.style.transitionDuration = "0.5s"
-		flipped = false;
-	}
-}
-
-DragDrop.bind(sshModal);
-DragDrop.bind(irModal);
-DragDrop.bind(streamModal);
-DragDrop.bind(rawdataModal);
-DragDrop.bind(logModal);
-DragDrop.bind(aboutModal);
-DragDrop.bind(consoleModal);
-</script>
 		<div class="page-content">
 			<div class="container">
 				<div class="row">
@@ -568,6 +522,7 @@ DragDrop.bind(consoleModal);
 				</div>
 			</div>
 		</div>
+		<script src="assets/otherscript.js"></script>
 		<script src="assets/controlscript.js"></script>
 		<script src="assets/logscript.js"></script>
 		<script src="assets/performancescript.js"></script>
