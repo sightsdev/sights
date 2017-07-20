@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
-	<title>Change Log</title><!--The title displayed in the browser tab bar-->
+	<title>Change Log</title>
 	<head>
-		<!--Link Bootstrap-->
 		<link rel="stylesheet" href="assets/bootstrap.css">
 		<link rel="stylesheet" href="assets/style.css">
 		<link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
 	</head>
-
 	<body>
 		<div class="nav topnav">
 			<div class="container">
@@ -27,6 +25,20 @@
 					</div>
 					<div class="col-md-10">
 						<h3>Change Log</h3>
+						<p><code>Wednesday, 19 July 2017, 5:40 PM</code> - Created debugging systems for controlscript.php</p>
+						<br>
+						<p><code>Tuesday, 18 July 2017, 8:40 PM</code> - New modal theme implemented</p>
+						<p><code>Tuesday, 18 July 2017, 8:20 PM</code> - Basic drag and drop support for modals</p>
+						<p><code>Tuesday, 18 July 2017, 7:30 PM</code> - Removed settings</p>
+						<p><code>Tuesday, 18 July 2017, 5:55 PM</code> - Finished Raw Data modal placeholders</p>
+						<p><code>Tuesday, 18 July 2017, 1:40 PM</code> - Added control flipping</p>
+						<p><code>Tuesday, 18 July 2017, 1:20 PM</code> - Added stream flipping</p>
+						<br>
+						<p><code>Saturday, 15 July 2017, 12:05 AM</code> - Clear the Raw Data Log every x minutes (Reduces spam and lag)</p>
+						<br>
+						<p><code>Friday, 14 July 2017, 11:45 PM</code> - Initial front end development for Raw Data Display</p>
+						<p><code>Friday, 14 July 2017, 10:30 AM</code> - Changed nav div for custom CSS</p>
+						<br>
 						<p><code>Wednesday, 12 July 2017, 8:00 PM</code> - Help file additions</p>
 						<p><code>Wednesday, 12 July 2017, 6:50 PM</code> - Changed sonar to IR and updated icons</p>
 						<p><code>Wednesday, 12 July 2017, 3:15 PM</code> - Index.php readability improvements</p>

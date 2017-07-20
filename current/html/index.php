@@ -12,20 +12,18 @@
 		<script src="assets/jquery.min.js"></script>
 		<script src="assets/bootstrap.min.js"></script>
 		<script src="assets/drag-drop.min.js"></script>
-		<script src="controlscript.php"></script>
-		<script src="rawdata.php"></script>
 	</head>
 
-	<body onLoad="doUptime(); doPerformanceReload();">
+	<body>
 	<!--  __  __           _       _     
-         |  \/  |         | |     | |    
+		 |  \/  |         | |     | |    
 		 | \  / | ___   __| | __ _| |___ 
 		 | |\/| |/ _ \ / _` |/ _` | / __|
 		 | |  | | (_) | (_| | (_| | \__ \
 		 |_|  |_|\___/ \__,_|\__,_|_|___/-->
 		<div class="container">
 			<!--   _____ _____ _    _     __  __           _       _ 
-			      / ____/ ____| |  | |   |  \/  |         | |     | |
+				  / ____/ ____| |  | |   |  \/  |         | |     | |
 				 | (___| (___ | |__| |   | \  / | ___   __| | __ _| |
 				  \___ \\___ \|  __  |   | |\/| |/ _ \ / _` |/ _` | |
 				  ____) |___) | |  | |   | |  | | (_) | (_| | (_| | |
@@ -74,7 +72,7 @@
 				</div>
 			</div>
 			<!-- __      ___     _               _____ _                              __  __           _       _ 
-			     \ \    / (_)   | |             / ____| |                            |  \/  |         | |     | |
+				 \ \    / (_)   | |             / ____| |                            |  \/  |         | |     | |
 				  \ \  / / _  __| | ___  ___   | (___ | |_ _ __ ___  __ _ _ __ ___   | \  / | ___   __| | __ _| |
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
@@ -104,7 +102,7 @@
 				</div>
 			</div>
 			<!-- __      ___     _               _____ _  SETTINGS                    __  __           _       _ 
-			     \ \    / (_)   | |             / ____| | SETTINGS                   |  \/  |         | |     | |
+				 \ \    / (_)   | |             / ____| | SETTINGS                   |  \/  |         | |     | |
 				  \ \  / / _  __| | ___  ___   | (___ | |_ _ __ ___  __ _ _ __ ___   | \  / | ___   __| | __ _| |
 				   \ \/ / | |/ _` |/ _ \/ _ \   \___ \| __| '__/ _ \/ _` | '_ ` _ \  | |\/| |/ _ \ / _` |/ _` | |
 				    \  /  | | (_| |  __/ (_) |  ____) | |_| | |  __/ (_| | | | | | | | |  | | (_) | (_| | (_| | |
@@ -233,7 +231,7 @@
 				</div>
 			</div>
 			<!--  _____                           __  __           _       _ 
-			     |  __ \                         |  \/  |         | |     | |
+				 |  __ \                         |  \/  |         | |     | |
 				 | |__) |____      _____ _ __    | \  / | ___   __| | __ _| |
 				 |  ___/ _ \ \ /\ / / _ \ '__|   | |\/| |/ _ \ / _` |/ _` | |
 				 | |  | (_) \ V  V /  __/ |      | |  | | (_) | (_| | (_| | |
@@ -277,7 +275,7 @@
 				</div>
 			</div>
 			<!--   _                 _       __  __           _       _ 
-		     /\   | |               | |     |  \/  |         | |     | |
+			 /\   | |               | |     |  \/  |         | |     | |
 			/  \  | |__   ___  _   _| |_    | \  / | ___   __| | __ _| |
 		   / /\ \ | '_ \ / _ \| | | | __|   | |\/| |/ _ \ / _` |/ _` | |
 		  / ____ \| |_) | (_) | |_| | |_    | |  | | (_) | (_| | (_| | |
@@ -321,8 +319,8 @@
 							<h4 class="modal-title">Log</h4>
 						</div>
 						<div class="modal-body">
-							<div id="rawDataLog" class="tab-pane fade">
-								<div class="scroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
+							<div id="log" class="tab-pane fade">
+								<div class="logScroller" style="overflow-y:scroll; overflow-x:hidden; height:400px;">
 								</div>
 							</div>
 						</div>
@@ -340,7 +338,7 @@
 			 | . ` |/ _` \ \ / / |/ _` |/ _` | __| |/ _ \| '_ \ 
 			 | |\  | (_| |\ V /| | (_| | (_| | |_| | (_) | | | |
 			 |_| \_|\__,_| \_/ |_|\__, |\__,_|\__|_|\___/|_| |_|
-                                   __/ |                        
+								   __/ |                        
 								  |___/-->
 		<div class="nav topnav">
 			<div class="container">
@@ -350,23 +348,22 @@
 					<li><a href="#">Home</a></li>
 					<li><strong>|</strong></li>
 					<li><a href="help/index.php">Help</a></li>
-					<li><a href="#"><span id="controlFeedback" style="position: absolute; right: 200px">Stationary</span></a></li>
+					<li><a href="#" onclick="reloadControlScript();"><span id="controlFeedback" style="position: absolute; right: 200px">Stationary</span></a></li>
 				</ul>
 			</div>
 		</div>
 		
-		<!--       _                 _           _                   
+			<!--   _                 _           _                   
 				  | |               | |         | |                  
 				  | |_   _ _ __ ___ | |__   ___ | |_ _ __ ___  _ __  
 			  _   | | | | | '_ ` _ \| '_ \ / _ \| __| '__/ _ \| '_ \ 
 			 | |__| | |_| | | | | | | |_) | (_) | |_| | | (_) | | | |
-		      \____/ \__,_|_| |_| |_|_.__/ \___/ \__|_|  \___/|_| |_|-->
+			  \____/ \__,_|_| |_| |_|_.__/ \___/ \__|_|  \___/|_| |_|-->
 		<div class="jumbotron">
 			<div class="container">
 				<h1><span style="color: #FF5A00">S.A.R.T</span> <span style="color: #d8d8d8">Control Interface</span></h1>
 			</div>
 		</div>
-        
 		<div class="home-options">
 			<div class="container">
 				<div class="row">
@@ -461,89 +458,7 @@
 			 |  ___/ _ \ '__|  _/ _ \| '__| '_ ` _ \ / _` | '_ \ / __/ _ \   | | | '_ \|  _/ _ \| '__| '_ ` _ \ / _` | __| |/ _ \| '_ \ 
 			 | |  |  __/ |  | || (_) | |  | | | | | | (_| | | | | (_|  __/  _| |_| | | | || (_) | |  | | | | | | (_| | |_| | (_) | | | |
 			 |_|   \___|_|  |_| \___/|_|  |_| |_| |_|\__,_|_| |_|\___\___| |_____|_| |_|_| \___/|_|  |_| |_| |_|\__,_|\__|_|\___/|_| |_|-->
-<?php 
-// format the uptime in case the browser doesn't support dhtml/javascript
-// static uptime string
-function format_uptime($seconds) {
-  $secs = intval($seconds % 60);
-  $mins = intval($seconds / 60 % 60);
-  $hours = intval($seconds / 3600 % 24);
-  $days = intval($seconds / 86400);
-  
-  if ($days > 0) {
-    $uptimeString .= $days;
-    $uptimeString .= (($days == 1) ? " day" : " days");
-  }
-  if ($hours > 0) {
-    $uptimeString .= (($days > 0) ? ", " : "") . $hours;
-    $uptimeString .= (($hours == 1) ? " hour" : " hours");
-  }
-  if ($mins > 0) {
-    $uptimeString .= (($days > 0 || $hours > 0) ? ", " : "") . $mins;
-    $uptimeString .= (($mins == 1) ? " minute" : " minutes");
-  }
-  if ($secs > 0) {
-    $uptimeString .= (($days > 0 || $hours > 0 || $mins > 0) ? ", " : "") . $secs;
-    $uptimeString .= (($secs == 1) ? " second" : " seconds");
-  }
-  return $uptimeString;
-}
-
-// read in the uptime (using exec)
-$uptime = exec("cat /proc/uptime");
-$uptime = split(" ",$uptime);
-$uptimeSecs = $uptime[0];
-
-// get the static uptime
-$staticUptime = "".format_uptime($uptimeSecs);
-?>
-
 <script language="javascript">
-var upSeconds=<?php echo $uptimeSecs; ?>;//Get the current uptime from the PHP script
-function doUptime() {
-	var uptimeString = "";//Create an empty string
-	var secs = parseInt(upSeconds % 60);
-	var mins = parseInt(upSeconds / 60 % 60);
-	var hours = parseInt(upSeconds / 3600 % 24);
-	var days = parseInt(upSeconds / 86400);
-	if (days > 0) {
-		uptimeString += days;
-		uptimeString += ((days == 1) ? " day" : " days");
-	}
-	if (hours > 0) {
-		uptimeString += ((days > 0) ? ", " : "") + hours;
-		uptimeString += ((hours == 1) ? " hour" : " hours");
-	}
-	if (mins > 0) {
-		uptimeString += ((days > 0 || hours > 0) ? ", " : "") + mins;
-		uptimeString += ((mins == 1) ? " minute" : " minutes");
-	}
-	if (secs > 0) {
-		uptimeString += ((days > 0 || hours > 0 || mins > 0) ? ", " : "") + secs;
-		uptimeString += ((secs == 1) ? " second" : " seconds");
-	}
-	var span_el = document.getElementById("uptime");
-	var replaceWith = document.createTextNode(uptimeString);
-	span_el.replaceChild(replaceWith, span_el.childNodes[0]);
-	upSeconds++;//Add 1 second to the uptime
-
-	setTimeout("doUptime()",1000);//Perform the doUptime function every second
-}
-
-function doPerformanceReload() {
-	var new_url = 'performance.php';
-	$('#performanceObj').attr('data', new_url);
-	$('#performanceObj').load(new_url);
-
-	setTimeout("doPerformanceReload()",1000);	
-}
-
-function doRawDataReload() {
-	var new_url2 = 'rawdata.php';
-	$('#rawDataObj').attr('data', new_url2);
-	$('#rawDataObj').load(new_url2);
-}
-
 function refreshStream() {
 	document.getElementById('streamImage').src = "http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/?time="+new Date().getTime();
 }
@@ -594,28 +509,36 @@ DragDrop.bind(consoleModal);
 				<div class="row">
 					<div class="col-md-3">
 						<h3>RAM Usage</h3>
-					</div>
-					<div class="col-md-3">
-						<h3>CPU Usage</h3>
-					</div>
-					<div class="col-md-3">
-						<h3>CPU Temperature</h3>
-					</div>
-					<div class="col-md-3">
-						<h3>Charge Remaining</h3>
-					</div>
-				</div>
-			</div>
-			<div class="container">
-				<div class="row">					
-					<div class="col-md-9">
-						<div class="performance">
-							<object id="performanceObj" width="600" height="400">
-								<p>Loading Performance Information...</p>
-							</object>
+						<div id="ramPercentage" class="c100 p0 big orange">
+							<span id="ram">0MB</span>
+							<div class="slice">
+								<div class="bar"></div>
+								<div class="fill"></div>
+							</div>
 						</div>
 					</div>
 					<div class="col-md-3">
+						<h3>CPU Usage</h3>
+						<div id="cpuPercentage" class="c100 p0 big orange">
+							<span id="cpu">0%</span>
+							<div class="slice">
+								<div class="bar"></div>
+								<div class="fill"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<h3>CPU Temperature</h3>
+						<div id="cpuTempPercentage" class="c100 p0 big orange">
+							<span id="cpuTemp">0°C</span>
+							<div class="slice">
+								<div class="bar"></div>
+								<div class="fill"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<h3>Charge Remaining</h3>
 						<div class="row">
 							<div class="batcharge">
 								<div class="col-md-6">									
@@ -629,7 +552,7 @@ DragDrop.bind(consoleModal);
 							</div>
 						</div>
 						<h3>Uptime</h3>
-						<div id="uptime" style="font-weight:bold;"><?php echo $staticUptime; ?></div>
+						<div id="uptime" style="font-weight:bold;"></div>
 						<br><br>						
 					</div>
 				</div>
@@ -645,5 +568,8 @@ DragDrop.bind(consoleModal);
 				</div>
 			</div>
 		</div>
+		<script src="assets/controlscript.js"></script>
+		<script src="assets/logscript.js"></script>
+		<script src="assets/performancescript.js"></script>
 	</body>
 </html>
