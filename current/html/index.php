@@ -31,7 +31,7 @@
 			<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
-						<div class="modal-header">
+						<div class="modal-header dragHeader" id="sshDrag">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 							<img src="assets/image/circle-ssh.png"/>
 							<h4 class="modal-title">SSH Console</h4>
@@ -56,7 +56,7 @@
 			<div class="modal fade top" id="irModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
-						<div class="modal-header">
+						<div class="modal-header dragHeader" id="irDrag">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 							<img src="assets/image/circle-ir.png"/>
 							<h4 class="modal-title">IR Distance Viewer</h4>
@@ -80,7 +80,7 @@
 			<div class="modal fade top" id="streamModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
-						<div class="modal-header">
+						<div class="modal-header dragHeader" id="streamDrag">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 							<img src="assets/image/circle-stream.png"/>
 							<h4 class="modal-title">Video Stream</h4>
@@ -133,9 +133,9 @@
 			<div class="modal fade top" id="rawdataModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
-						<div class="modal-header">
+						<div class="modal-header dragHeader" id="rawdataDrag">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<img src="assets/image/circle-ssh.png"/>
+							<img src="assets/image/circle-rawdata.png"/>
 							<h4 class="modal-title">Raw Data</h4>
 							<br>
 						</div>
@@ -310,10 +310,10 @@
 				 |______\___/ \__, | |_|  |_|\___/ \__,_|\__,_|_|
 							   __/ |                             
 							  |___/-->
-			<div class="modal fade" id="logModal" role="dialog" data-backdrop="false">
+			<div class="modal fade top" id="logModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
+						<div class="modal-header dragHeader" id="logDrag">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 							<img src="assets/image/circle-log.png"/>
 							<h4 class="modal-title">Log</h4>

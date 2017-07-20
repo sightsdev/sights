@@ -235,7 +235,6 @@ margin-right:0px !important;
   position: fixed;
   top: 50%;
   left: 50%;
-  /* bring your own prefixes */
   transform: translate(-50%, -50%);
   text-align: center;
 }
@@ -244,13 +243,17 @@ margin-right:0px !important;
 	text-align: center;
 }
 
+.middle-adjust {
+	margin-left: 40%;
+}
+
+.dragHeader {
+	cursor: move;
+}
+
 /* Let's get this party started */
 ::-webkit-scrollbar {
     width: 16px;
-}
-
-.middle-adjust {
-	margin-left: 40%;
 }
 
 /* Handle */

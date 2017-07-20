@@ -35,12 +35,25 @@ function flipStream() {
 	}
 }
 
-DragDrop.bind(sshModal);
-DragDrop.bind(irModal);
-DragDrop.bind(streamModal);
-DragDrop.bind(rawdataModal);
-DragDrop.bind(logModal);
-DragDrop.bind(aboutModal);
+DragDrop.bind(sshModal, {
+    anchor: sshDrag
+});
+
+DragDrop.bind(irModal, {
+    anchor: irDrag
+});
+
+DragDrop.bind(streamModal, {
+    anchor: streamDrag
+});
+
+DragDrop.bind(rawdataModal, {
+    anchor: rawdataDrag
+});
+
+DragDrop.bind(logModal, {
+    anchor: logDrag
+});
 
 $('.top').click(function() {
    $(this).siblings('.top').css('z-index', 10);
