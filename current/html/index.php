@@ -256,7 +256,7 @@
 				</div>
 			</div>
 			<!--Shut down warning modal-->
-			<div class="modal fade" id="shutdownWarningModal" role="dialog">
+			<div class="modal fade middle-adjust" id="shutdownWarningModal" role="dialog">
 				<div class="modal-dialog modal-sm">
 					<div class="modal-content">
 						<div class="modal-header">

@@ -181,6 +181,9 @@
 
 .modal{
  bottom: initial!important;
+ right: initial!important;
+ margin-left: 25%;
+margin-top: 2%;
 }
 
 .modal-footer {
@@ -190,11 +193,6 @@
 .modal-dialog {
       margin: 0px !important;
   }
-  
-.modal {
-	margin-left: 25%;
-	margin-top: 2%;
-}
 
 /*__  __ _            
  |  \/  (_)           
@@ -249,6 +247,10 @@ margin-right:0px !important;
 /* Let's get this party started */
 ::-webkit-scrollbar {
     width: 16px;
+}
+
+.middle-adjust {
+	margin-left: 40%;
 }
 
 /* Handle */
