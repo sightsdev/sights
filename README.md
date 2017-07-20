@@ -12,7 +12,10 @@ The scripts and programs written by the SFXRescue team for the SART v.2 rescue r
 - [html/**shutdown.php**](current/html/shutdown.php): Shutdown program
 #### CSS:
 #### Python:
-- [python/**movement.py**](current/python/movement.py): This script controls the movement of the robot. It has 3 dependancies: pyax12, asyncio and websockets.
+- [python/**servo_party.py**](current/python/servo_party.py): This script controls the movement of the robot. It has 3 dependancies: pyax12, asyncio and websockets.
+- [python/**sensor_party_server.py**](current/python/servo_party_server.py): This script creates a websocket server to send sensor data collected from the robot to the control panel. It has 3 dependancies: pyserial, asyncio and websockets.
+- [python/**performance_party_data.py**](current/python/performance_party_data.py): This script creates a websocket server to send robot performance data to be displayed on the control panel. It has 3 dependancies: psutil, asyncio and websockets.
+- [python/**servo_party_data.py**](current/python/servo_party_data.py): This script creates a websocket server to send servo performance data to the control panel to be displayed. It has 3 dependancies: pyax12, asyncio and websockets.
 #### Arduino:
 - [arduino/**sensor_party.ino**](current/arduino/sensor_party.ino):
     - Libraries:

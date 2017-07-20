@@ -7,6 +7,8 @@ import websockets, asyncio, psutil
 words = str(psutil.virtual_memory()).split()
 temperatures = str(psutil.sensors_temperatures()).split()
 
+print(temperatures)
+
 #print(words)
 
 def getNumber(line, prop):
