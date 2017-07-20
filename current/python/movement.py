@@ -41,20 +41,20 @@ def leftRightRun(key, s):								#Function for going left and right on the spot
 	fwd = speedSettingToByteArray(False, False, s)		#var speed to bytes reverse: FALSE; arc: FALSE
 	bwd = speedSettingToByteArray(True, False, s)		#var speed to bytes reverse: TRUE; arc: FALSE
 	if (key == 3):									#--- turn left ---
-		runMotor(2, fwd)
-		runMotor(4, fwd)#run motors on right side forward and left side backward
+		runMotorGroup([1,2,3,4], fwd)							#run motors on right side forward and left side backward
 		return None	
 	elif (key == 4):								#--- turn right ---
-		runMotor(1, bwd)
-		runMotor(3, bwd)				#run right side back
+		runMotorGroup([1,2,3,4], bwd)					#run right side back
 	print("Left and Right??? got a weird key: " + str(key)) #error if neither keys 3 or 4 are given
 
 def getSpeed(buf):#  xy x = KEY y = SPEED
-	print( "<2:<{}".format(str(buf)[2:]))
+	#print( "<2:<{}".format(str(buf)[2:]))
+	print("Key: {}".format(str(buf)[2:]))
 	return int(str(buf)[2:])
 
 def getKey(buf):#  xy x = KEY y = SPEED
-	print ("<0<{}".format(str(buf)[0]))
+	#print ("<0<{}".format(str(buf)[0]))
+	print("Speed: {}".format(str(buf)[0]))
 	return int(str(buf)[0])
 
 def scanForRobot():
@@ -79,24 +79,22 @@ def scanForRobot():
 def run(websocket, path):
 	while True:
 		buf = yield from websocket.recv()
-		print("< {}".format(buf))
+		print("buf: {}".format(buf))
 		if len(buf) > 0:
 			if (getKey(buf) == 1 or getKey(buf) == 2):
 				#print ("ITS ALIVE!")
 				bckFwdRun(getKey(buf), getSpeed(buf))
 				print("Forward/Backward")
 			elif (getKey(buf) == 3 or getKey(buf) == 4):
-				print ("33333")
 				leftRightRun(getKey(buf), getSpeed(buf))
 				print("Left/Right")
-			elif(int(buf) == 0):
+			elif(getKey(buf) == 0):
 				runMotorGroup([1,2,3,4], bytes([0,0]))
-				print("Stop")
 		else:
 			runMotorGroup([1,2,3,4], bytes([0,0]))
 	
 			
 
-start_server = websockets.serve(run, scanForRobot(), 5555)
+start_server = websockets.serve(run, "10.0.2.3", 5555)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
