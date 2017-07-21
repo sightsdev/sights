@@ -1,15 +1,8 @@
 import websockets, asyncio, psutil
 
-#print(psutil.sensors_temperatures()) #
-#print(psutil.cpu_percent(interval=None)) #returns float
-#print(str(psutil.virtual_memory()))
-
 words = str(psutil.virtual_memory()).split()
 temperatures = str(psutil.sensors_temperatures()).split()
-
-print(temperatures)
-
-#print(words)
+uptime = float(1)
 
 def getNumber(line, prop):
 	numbers = []
@@ -24,44 +17,55 @@ def getNumber(line, prop):
 			count = count + 1
 		return numbers
 
-def dataArrayToString(prop, words_index):
+def dataArrayToString(prop, words_index, array):
 	number_string = ""
-	number = getNumber(words[words_index], prop)
+	number = getNumber(array[words_index], prop)
 	for num in number:
 		number_string = number_string + num
 	return number_string[:-1]
 
 def getVirtualMemoryData():
 	memory_data = []
-	memory_data.append(dataArrayToString("total=", 0))
-	memory_data.append(dataArrayToString("used=", 3))
+	memory_data.append(dataArrayToString("total=", 0, words))
+	memory_data.append(dataArrayToString("used=", 3, words))
 	return memory_data
 
-print(getVirtualMemoryData())
-print("CPU Percent: {}".format(psutil.cpu_percent(interval=1)))
-
-
-
-		
-
-
-
-
-					
-				
-
-
-#@asyncio.coroutine
-#def sendNUKData(websocket, path):
-#	while True:
-	
-			
-			
-		
-		
-#start_server = websockets.serve(sendSensorData, "10.0.2.5", 5557)
-#asyncio.get_event_loop().run_until_complete(start_server)
-#asyncio.get_event_loop().run_forever()
+def getCPUCoreTemp():
+	core_data = []
+	core_data.append(dataArrayToString("current=", 8, temperatures))
+	core_data.append(dataArrayToString("current=", 13, temperatures))
+	return str((float(core_data[0]) + float(core_data[1])) / 2)
 	
 
+#print(getVirtualMemoryData())
+#print("CPU Temp Average: {}".format(getCPUCoreTemp()))
 
+def getUptime():
+	with open('/proc/uptime', 'r') as f:
+		uptime = float(f.readline().split()[0])
+	return str(uptime)
+
+def putInString():
+	string_array = []
+	string_message = ""
+	for mem in getVirtualMemoryData():
+		string_array.append(str(mem))
+	string_array.append(str(psutil.cpu_percent(interval=1)))
+	string_array.append(getCPUCoreTemp())
+	string_array.append(getUptime())
+	for data in string_array:
+		print (data)
+		string_message = string_message + data + " " 
+	return string_message
+
+#print(putInString())
+
+@asyncio.coroutine
+def sendNUCData(websocket, path):
+	while True:
+		yield from websockets.send(putInString())
+		yield from asyncio.sleep(1)
+		
+start_server = websockets.serve(sendNUCData, "10.0.2.5", 5558)
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
