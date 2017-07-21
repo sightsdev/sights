@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import websockets, asyncio, serial
 
 ser = serial.Serial("COM7")
