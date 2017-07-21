@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import websockets, asyncio, psutil
 
 words = str(psutil.virtual_memory()).split()
@@ -25,12 +27,15 @@ def dataArrayToString(prop, words_index, array):
 	return number_string[:-1]
 
 def getVirtualMemoryData():
+	words = str(psutil.virtual_memory()).split()
 	memory_data = []
 	memory_data.append(dataArrayToString("total=", 0, words))
 	memory_data.append(dataArrayToString("used=", 3, words))
+	print(dataArrayToString("used=", 3, words))
 	return memory_data
 
 def getCPUCoreTemp():
+	temperatures = str(psutil.sensors_temperatures()).split()
 	core_data = []
 	core_data.append(dataArrayToString("current=", 8, temperatures))
 	core_data.append(dataArrayToString("current=", 13, temperatures))
@@ -54,7 +59,7 @@ def putInString():
 	string_array.append(getCPUCoreTemp())
 	string_array.append(getUptime())
 	for data in string_array:
-		print (data)
+		#print (data)
 		string_message = string_message + data + " " 
 	return string_message
 
@@ -63,9 +68,12 @@ def putInString():
 @asyncio.coroutine
 def sendNUCData(websocket, path):
 	while True:
-		yield from websockets.send(putInString())
-		yield from asyncio.sleep(1)
 		
-start_server = websockets.serve(sendNUCData, "10.0.2.5", 5558)
+		
+		uptime = float(1)
+		
+		yield from websocket.send(putInString())
+		
+start_server = websockets.serve(sendNUCData, "10.0.2.3", 5558)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
