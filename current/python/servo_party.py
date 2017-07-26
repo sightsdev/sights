@@ -28,12 +28,12 @@ def bckFwdRun(key, s):								#Motor function for going backwards and forwards
 	fwd = speedSettingToByteArray(False, False, s)	#fwd var gets the speed into bytes; reverse: FALSE; arc: FALSE 
 	bwd = speedSettingToByteArray(True, False, s)	#bwd var gets the speed into bytes; reverse: TRUE; arc: FALSE
 	if (key == 1):								#if key for forward is given -- go forward --
-		runMotorGroup([1,3], fwd)				#run the 1st and 3rd motors foward 
-		runMotorGroup([2,4], bwd)				#run the 2nd and 4th motors backward 
+		runMotorGroup([1,3], bwd)				#run the 1st and 3rd motors foward 
+		runMotorGroup([2,4], fwd)				#run the 2nd and 4th motors backward 
 		return None								#break out of function cos its all done
 	elif (key == 2):							#check if the key is 2 -- go backwards --
-		runMotorGroup([1,3], bwd)				#run the 1st and 3rd motors backward
-		runMotorGroup([2,4], fwd)				#run the 2nd and 4th motors forward
+		runMotorGroup([1,3], fwd)				#run the 1st and 3rd motors backward
+		runMotorGroup([2,4], bwd)				#run the 2nd and 4th motors forward
 		return None								#break out of function
 	print("forward/backwards??? got a weird key: " + str(key)) #if it got here well... error time
 
