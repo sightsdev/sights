@@ -51,15 +51,24 @@ def flipWhenVert(key, s):
 	back = speedSettingToByteArray(True, False, s)
 	forw = speedSettingToByteArray(False, False, s)
 	if (key == 6):
-		runMotor(1, forw)
-		runMotor(2, back)
-		return None
-	elif(key == 5):
 		runMotor(1, back)
 		runMotor(2, forw)
 		return None
+	elif(key == 5):
+		runMotor(3, back)
+		runMotor(4, forw)
+		return None
+	if (key == 7):
+		runMotor(3, forw)
+		runMotor(4, back)
+		return None
+	elif(key == 8):
+		runMotor(1, forw)
+		runMotor(2, back)
+		return None
 		
 def dropTheBKey(key, s):
+	if (key == 9):
 		leftRightRun(3, s)
 		time.sleep(5)
 		leftRightRun(4, s)
@@ -109,9 +118,11 @@ def run(websocket, path):
 			elif (getKey(buf) == 3 or getKey(buf) == 4):
 				leftRightRun(getKey(buf), getSpeed(buf))
 				print("Left/Right")
-			elif (getKey(buf) == 5 or getKey(buf) == 6):
+			elif (getKey(buf) == 5 or getKey(buf) == 6 or getKey(buf) == 7 or getKey(buf) == 8):
 				flipWhenVert(getKey(buf), getSpeed(buf))
 				print("Flipping vertically")
+			elif (getKey(buf) == 9):
+				dropTheBKey(getKey(buf), getSpeed(buf))
 			elif(getKey(buf) == 0):
 				runMotorGroup([1,2,3,4], bytes([0,0]))
 		else:

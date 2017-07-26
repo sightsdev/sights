@@ -110,8 +110,18 @@ function onKeyDown(event) {
 			document.getElementById("controlFeedback").innerHTML = "Rear Wheels Forwards";
 			controlSocket.send("6 " + speed);
 			break;
+		case 74: //J (Front Wheels Reverse)
+			document.getElementById("controlFeedback").innerHTML = "Front Wheels Reverse";
+			controlSocket.send("7 " + speed);
+			break;
+		case 75: //K (Rear Wheels Reverse)
+			document.getElementById("controlFeedback").innerHTML = "Rear Wheels Reverse";
+			controlSocket.send("8 " + speed);
+			break;
 		case 66:
-			document.getElementById().innerHTML = "Executing Order 66"
+			document.getElementById().innerHTML = "Executing Order 66";
+			controlSocket.send("9 " + speed);
+			break;
 	}
 }
 
@@ -120,7 +130,7 @@ function onKeyUp(event) {
 	console.log("(Key Up) Socket Status: " + socketState());
 
 	var key = event.keyCode;
-	if(key == 87 || key == 65 || key == 83 || key == 68 || key == 70 || key == 81 || key == 73) {
+	if(key == 87 || key == 65 || key == 83 || key == 68 || key == 70 || key == 73 || key == 79 || key == 74 || key == 75) {
 		document.getElementById("controlFeedback").innerHTML = "Stationary";
 		controlSocket.send("0 0");
 		lastKey = 0;
