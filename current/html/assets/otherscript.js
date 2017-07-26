@@ -18,35 +18,37 @@ function recordStreamEvent() {
 	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/makemovie");
 }
 
-var flipped = false;
+var streamFlipped = false;
 
 function flipStream() {
-	var flip = document.getElementById("streamImage");
+	var streamFlip = document.getElementById("streamImage");
 	
-	if(flipped == false){
-		flip.style.transform = "rotatex(180deg)";
-		flip.style.transitionDuration = "0.5s"
-		flipped = true;
+	if(streamFlipped == false){
+		streamFlip.style.transform = "rotatex(180deg)";
+		streamFlip.style.transitionDuration = "0.5s"
+		streamFlipped = true;
 	}
 	else{
-		flip.style.transform = "rotatex(0deg)";
-		flip.style.transitionDuration = "0.5s"
-		flipped = false;
+		streamFlip.style.transform = "rotatex(0deg)";
+		streamFlip.style.transitionDuration = "0.5s"
+		streamFlipped = false;
 	}
 }
 
+var trackingFlipped = false;
+
 function flipTrackingStream() {
-	var flip = document.getElementById("trackingStreamImage");
+	var trackingFlip = document.getElementById("trackingStreamImage");
 	
-	if(flipped == false){
-		flip.style.transform = "rotatex(180deg)";
-		flip.style.transitionDuration = "0.5s"
-		flipped = true;
+	if(trackingFlipped == false){
+		trackingFlip.style.transform = "rotatex(180deg)";
+		trackingFlip.style.transitionDuration = "0.5s"
+		trackingFlipped = true;
 	}
 	else{
-		flip.style.transform = "rotatex(0deg)";
-		flip.style.transitionDuration = "0.5s"
-		flipped = false;
+		trackingFlip.style.transform = "rotatex(0deg)";
+		trackingFlip.style.transitionDuration = "0.5s"
+		trackingFlipped = false;
 	}
 }
 
