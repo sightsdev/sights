@@ -35,6 +35,21 @@ function flipStream() {
 	}
 }
 
+function flipTrackingStream() {
+	var flip = document.getElementById("trackingStreamImage");
+	
+	if(flipped == false){
+		flip.style.transform = "rotatex(180deg)";
+		flip.style.transitionDuration = "0.5s"
+		flipped = true;
+	}
+	else{
+		flip.style.transform = "rotatex(0deg)";
+		flip.style.transitionDuration = "0.5s"
+		flipped = false;
+	}
+}
+
 DragDrop.bind(sshModal, {
     anchor: sshDrag
 });
@@ -53,6 +68,10 @@ DragDrop.bind(rawdataModal, {
 
 DragDrop.bind(logModal, {
     anchor: logDrag
+});
+
+DragDrop.bind(trackingStreamModal, {
+    anchor: trackingStreamDrag
 });
 
 $('.top').click(function() {

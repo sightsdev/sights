@@ -101,6 +101,32 @@
 					</div>
 				</div>
 			</div>
+			<!--  _____               _    _               ____  _                            
+				 |_   _| __ __ _  ___| | _(_)_ __   __ _  / ___|| |_ _ __ ___  __ _ _ __ ___  
+				   | || '__/ _` |/ __| |/ / | '_ \ / _` | \___ \| __| '__/ _ \/ _` | '_ ` _ \ 
+				   | || | | (_| | (__|   <| | | | | (_| |  ___) | |_| | |  __/ (_| | | | | | |
+				   |_||_|  \__,_|\___|_|\_\_|_| |_|\__, | |____/ \__|_|  \___|\__,_|_| |_| |_|
+												    |___/-->
+			<div class="modal fade top" id="trackingStreamModal" role="dialog" data-backdrop="false">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header dragHeader" id="trackingStreamDrag">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<img src="assets/image/circle-tracking-stream.png"/>
+							<h4 class="modal-title">Tracking Stream</h4>
+						</div>
+						<div class="modal-body">
+							<div class="stream">
+								<img id="trackingStreamImage" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/"/>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-warning btn-default" onclick="flipTrackingStream();">Flip Footage</button>
+							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- __      ___     _               _____ _  SETTINGS                    __  __           _       _ 
 				 \ \    / (_)   | |             / ____| | SETTINGS                   |  \/  |         | |     | |
 				  \ \  / / _  __| | ___  ___   | (___ | |_ _ __ ___  __ _ _ __ ___   | \  / | ___   __| | __ _| |
@@ -367,7 +393,7 @@
 		<div class="home-options">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<!--SSH Terminal-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sshModal">
@@ -378,7 +404,7 @@
 							<p style="text-align: center">SSH Terminal</p>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<!--Video Stream-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#streamModal">
@@ -389,7 +415,18 @@
 							<p style="text-align: center">Video Stream</p>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
+					<!--Video Stream-->
+						<div class="thumbnail">
+							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#trackingStreamModal">
+								<img src="assets/image/circle-tracking-stream.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-tracking-stream.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
+							</button>
+						</div>
+						<div class="thumbnail">
+							<p style="text-align: center">Tracking Stream</p>
+						</div>
+					</div>
+					<div class="col-md-3">
 					<!--IR Distance-->
 						<div class="thumbnail">
 							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#irModal">
