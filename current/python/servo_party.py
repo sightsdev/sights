@@ -41,10 +41,10 @@ def leftRightRun(key, s):								#Function for going left and right on the spot
 	fwd = speedSettingToByteArray(False, False, s)		#var speed to bytes reverse: FALSE; arc: FALSE
 	bwd = speedSettingToByteArray(True, False, s)		#var speed to bytes reverse: TRUE; arc: FALSE
 	if (key == 3):									#--- turn left ---
-		runMotorGroup([1,2,3,4], fwd)							#run motors on right side forward and left side backward
+		runMotorGroup([1,2,3,4], bwd)							#run motors on right side forward and left side backward
 		return None	
 	elif (key == 4):								#--- turn right ---
-		runMotorGroup([1,2,3,4], bwd)					#run right side back
+		runMotorGroup([1,2,3,4], fwd)					#run right side back
 	print("Left and Right??? got a weird key: " + str(key)) #error if neither keys 3 or 4 are given
 
 def getSpeed(buf):#  xy x = KEY y = SPEED
