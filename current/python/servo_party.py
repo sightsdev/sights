@@ -47,6 +47,27 @@ def leftRightRun(key, s):								#Function for going left and right on the spot
 		runMotorGroup([1,2,3,4], fwd)					#run right side back
 	print("Left and Right??? got a weird key: " + str(key)) #error if neither keys 3 or 4 are given
 
+def flipWhenVert(key, s):
+	back = speedSettingToByteArray(True, False, s)
+	forw = speedSettingToByteArray(False, False, s)
+	if (key == 6):
+		runMotor(1, forw)
+		runMotor(2, back)
+		return None
+	elif(key == 5):
+		runMotor(1, back)
+		runMotor(2, forw)
+		return None
+		
+def dropTheBKey(key, s):
+		leftRightRun(3, s)
+		time.sleep(5)
+		leftRightRun(4, s)
+		time.sleep(5)
+		flipWhenVert(6, s)
+		
+		
+
 def getSpeed(buf):#  xy x = KEY y = SPEED
 	#print( "<2:<{}".format(str(buf)[2:]))
 	print("Key: {}".format(str(buf)[2:]))
@@ -88,6 +109,9 @@ def run(websocket, path):
 			elif (getKey(buf) == 3 or getKey(buf) == 4):
 				leftRightRun(getKey(buf), getSpeed(buf))
 				print("Left/Right")
+			elif (getKey(buf) == 5 or getKey(buf) == 6):
+				flipWhenVert(getKey(buf), getSpeed(buf))
+				print("Flipping vertically")
 			elif(getKey(buf) == 0):
 				runMotorGroup([1,2,3,4], bytes([0,0]))
 		else:
