@@ -68,29 +68,29 @@ function onKeyDown(event) {
 			break;
 		case 87: //W (Forwards)
 			document.getElementById("controlFeedback").innerHTML = "Forward " + speed * 10 + "%";
-			controlSocket.send("1 " + speed);
+			if(flipped == true){
+				controlSocket.send("2 " + speed);		
+			}
+			else {
+				controlSocket.send("1 " + speed);
+			}
 			break;
 		case 65: //A (Left)
 			document.getElementById("controlFeedback").innerHTML = "Spin Left " + speed * 10 + "%";
-			if(flipped == true){
-				controlSocket.send("4 " + speed);		
-			}
-			else {
-				controlSocket.send("3 " + speed);
-			}
+			controlSocket.send("3 " + speed);
 			break;
 		case 83: //S (Reverse)
 			document.getElementById("controlFeedback").innerHTML = "Reverse " + speed * 10 + "%";
-			controlSocket.send("2 " + speed);
+			if(flipped == true){
+				controlSocket.send("1 " + speed);		
+			}
+			else {
+				controlSocket.send("2 " + speed);
+			}
 			break;
 		case 68: //D (Right)
 			document.getElementById("controlFeedback").innerHTML = "Spin Right " + speed * 10 + "%";
-			if(flipped == true){
-				controlSocket.send("3 " + speed);	
-			}
-			else {
-				controlSocket.send("4 " + speed);
-			}
+			controlSocket.send("4 " + speed);
 			break;
 		case 70: //F (Flip Controls)
 			if(flipped == false){
