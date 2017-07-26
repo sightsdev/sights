@@ -2,14 +2,14 @@
 
 import websockets, asyncio, serial
 
-ser = serial.Serial("COM7")
+ser = serial.Serial("/dev/ttyUSB0", 9600)
 
 @asyncio.coroutine
 def sendSensorData(websocket, path):
 	while True:
-	i = 0
-	messages = []
-	message_str = ""
+		i = 0
+		messages = []
+		message_str = ""
 		for i in range(7):
 			messages[i] = str(ser.readine()).decode('utf-8')
 		for message in messages:
@@ -20,7 +20,7 @@ def sendSensorData(websocket, path):
 			
 		
 		
-start_server = websockets.serve(sendSensorData, "10.0.2.5", 5557)
+start_server = websockets.serve(sendSensorData, "10.0.2.3", 5557)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
 	
