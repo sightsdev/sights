@@ -314,8 +314,15 @@
 						</div>
 						<div class="modal-body">
 							<h4>A Web Control Interface for the S.A.R.T Robot</h4>
-							<p>Version 1.2.0</p>
+							<p>Version 1.5.0</p>
 							<p>Developed by Jack Williams</p>
+							<br>
+							<p><b>WebSocket Ports In Use</b></p>
+							<p><b>5555</b> - Servo Control</p>
+							<p><b>5556</b> - Servo Data</p>
+							<p><b>5557</b> - Sensor Data</p>
+							<p><b>5558</b> - Performance Information</p>
+							<p><b>5559</b> - Log</p>
 							<br><br>
 							<p>Current S.A.R.T IP: <?php echo $_SERVER['SERVER_ADDR'] ?></p>
 						</div>
