@@ -1,5 +1,9 @@
+var ip = window.location.hostname;
+
+console.log(ip);
+
 function refreshStream() {
-	document.getElementById('streamImage').src = "http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/?time="+new Date().getTime();
+	document.getElementById('streamImage').src += '';
 }
 
 function refreshSSH() {
@@ -7,30 +11,35 @@ function refreshSSH() {
 }
 
 function snapshotStream() {
-	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/snapshot");
+	$.get("http://10.0.2.3:8080/0/action/snapshot");
 	
 	setTimeout(function()  {
-		window.open("http://<?php echo $_SERVER['SERVER_ADDR'] ?>/downloadsnapshot.php");
+		window.open("/downloadsnapshot.php");
 	}, 2000);
 }
 
 function recordStreamEvent() {
-	$.get("http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8080/0/action/makemovie");
+	$.get("http://10.0.2.3:8080/0/action/makemovie");
 }
 
 var streamFlipped = false;
 
 function flipStream() {
-	var streamFlip = document.getElementById("streamImage");
+	var streamFlipX = document.getElementById("streamImage");
+	var streamFlipY = document.getElementById("flipY")
 	
 	if(streamFlipped == false){
-		streamFlip.style.transform = "rotatex(180deg)";
-		streamFlip.style.transitionDuration = "0.5s"
+		streamFlipX.style.transform = "rotatex(180deg)";
+		streamFlipX.style.transitionDuration = "0.5s"
+		streamFlipY.style.transform = "rotatey(180deg)";
+		streamFlipY.style.transitionDuration = "0.5s"
 		streamFlipped = true;
 	}
 	else{
-		streamFlip.style.transform = "rotatex(0deg)";
-		streamFlip.style.transitionDuration = "0.5s"
+		streamFlipX.style.transform = "rotatex(0deg)";
+		streamFlipX.style.transitionDuration = "0.5s"
+		streamFlipY.style.transform = "rotatex(0deg)";
+		streamFlipY.style.transitionDuration = "0.5s"
 		streamFlipped = false;
 	}
 }
