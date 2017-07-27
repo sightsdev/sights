@@ -86,13 +86,12 @@
 							<h4 class="modal-title">Video Stream</h4>
 						</div>
 						<div class="modal-body">
-							<div class="stream">
+							<div class="stream" id="flipY">
 								<img id="streamImage" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/"/>
 							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-warning btn-default" onclick="refreshStream();">Refresh</button>
-							<button type="button" class="btn btn-warning btn-default" onclick="flipStream();">Flip Footage</button>
 							<button type="button" class="btn btn-warning btn-default" onclick="snapshotStream();">Take Snapshot</button>
 							<button type="button" class="btn btn-warning btn-default" onclick="recordStreamEvent();">Record Event</button>
 							<button type="button" class="btn btn-warning btn-default" data-toggle="modal" data-target="#streamSettingsModal">Settings</button>
@@ -121,7 +120,6 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-warning btn-default" onclick="flipTrackingStream();">Flip Footage</button>
 							<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 						</div>
 					</div>

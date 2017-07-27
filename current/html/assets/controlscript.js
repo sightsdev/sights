@@ -95,28 +95,50 @@ function onKeyDown(event) {
 		case 70: //F (Flip Controls)
 			if(flipped == false){
 				document.getElementById("flipFeedback").innerHTML = "Flipped Controls";
+				flipStream();
 				flipped = true;
 			}
 			else {
 				flipped = false;
+				flipStream();
 				document.getElementById("flipFeedback").innerHTML = "";
 			}
 			break;
 		case 73: //I (Front Wheels Forward)
-			document.getElementById("controlFeedback").innerHTML = "Front Wheels Forward";
-			controlSocket.send("5 " + speed);
+			document.getElementById("controlFeedback").innerHTML = "Front Wheels Forward " + speed * 10 + "%";
+			if(flipped == true){
+				controlSocket.send("7 " + speed);		
+			}
+			else {
+				controlSocket.send("5 " + speed);
+			}
 			break;
 		case 79: //O (Rear Wheels Forward)
-			document.getElementById("controlFeedback").innerHTML = "Rear Wheels Forwards";
-			controlSocket.send("6 " + speed);
+			document.getElementById("controlFeedback").innerHTML = "Rear Wheels Forwards " + speed * 10 + "%";
+			if(flipped == true){
+				controlSocket.send("8 " + speed);		
+			}
+			else {
+				controlSocket.send("6 " + speed);
+			}
 			break;
 		case 74: //J (Front Wheels Reverse)
-			document.getElementById("controlFeedback").innerHTML = "Front Wheels Reverse";
-			controlSocket.send("7 " + speed);
+			document.getElementById("controlFeedback").innerHTML = "Front Wheels Reverse " + speed * 10 + "%";
+			if(flipped == true){
+				controlSocket.send("5 " + speed);		
+			}
+			else {
+				controlSocket.send("7 " + speed);
+			}
 			break;
 		case 75: //K (Rear Wheels Reverse)
-			document.getElementById("controlFeedback").innerHTML = "Rear Wheels Reverse";
-			controlSocket.send("8 " + speed);
+			document.getElementById("controlFeedback").innerHTML = "Rear Wheels Reverse " + speed * 10 + "%";
+			if(flipped == true){
+				controlSocket.send("6 " + speed);		
+			}
+			else {
+				controlSocket.send("8 " + speed);
+			}
 			break;
 		case 66:
 			document.getElementById().innerHTML = "Executing Order 66";
