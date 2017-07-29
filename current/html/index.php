@@ -121,7 +121,8 @@
 									<button class="btn btn-secondary" type="button" onclick="playAudio();">Play</button>
 								</span>
 							</div>
-							<h4>Speech to Text</h4>	
+							<h4>Speech to Text</h4>
+							<button type="button" class="btn btn-secondary" onclick="recordAudio();">Record</button>
 							<div id="micLog" class="tab-pane fade">
 								<div class="micLogScroller" style="overflow-y:scroll; overflow-x:hidden; height:200px;">
 								</div>

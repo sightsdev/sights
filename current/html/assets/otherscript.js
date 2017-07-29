@@ -8,6 +8,10 @@ function readAudio() {
 	$(".micLogScroller").prepend(event.data + "<br>");
 }
 
+function recordAudio() {
+	text2SpeechSocker.send("Start");
+}
+
 function playAudio() {
 	var message = document.getElementById("text2speech").value;
 	text2SpeechSocket.send(message);
