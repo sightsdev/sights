@@ -44,23 +44,6 @@ function flipStream() {
 	}
 }
 
-var trackingFlipped = false;
-
-function flipTrackingStream() {
-	var trackingFlip = document.getElementById("trackingStreamImage");
-	
-	if(trackingFlipped == false){
-		trackingFlip.style.transform = "rotatex(180deg)";
-		trackingFlip.style.transitionDuration = "0.5s"
-		trackingFlipped = true;
-	}
-	else{
-		trackingFlip.style.transform = "rotatex(0deg)";
-		trackingFlip.style.transitionDuration = "0.5s"
-		trackingFlipped = false;
-	}
-}
-
 DragDrop.bind(sshModal, {
     anchor: sshDrag
 });
@@ -81,8 +64,8 @@ DragDrop.bind(logModal, {
     anchor: logDrag
 });
 
-DragDrop.bind(trackingStreamModal, {
-    anchor: trackingStreamDrag
+DragDrop.bind(audioModal, {
+    anchor: audioDrag
 });
 
 $('.top').click(function() {

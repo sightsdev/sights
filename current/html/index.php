@@ -100,23 +100,31 @@
 					</div>
 				</div>
 			</div>
-			<!--  _____               _    _               ____  _                            
-				 |_   _| __ __ _  ___| | _(_)_ __   __ _  / ___|| |_ _ __ ___  __ _ _ __ ___  
-				   | || '__/ _` |/ __| |/ / | '_ \ / _` | \___ \| __| '__/ _ \/ _` | '_ ` _ \ 
-				   | || | | (_| | (__|   <| | | | | (_| |  ___) | |_| | |  __/ (_| | | | | | |
-				   |_||_|  \__,_|\___|_|\_\_|_| |_|\__, | |____/ \__|_|  \___|\__,_|_| |_| |_|
-												    |___/-->
-			<div class="modal fade top" id="trackingStreamModal" role="dialog" data-backdrop="false">
+			<!--     _             _ _       
+					/ \  _   _  __| (_) ___  
+				   / _ \| | | |/ _` | |/ _ \ 
+				  / ___ \ |_| | (_| | | (_) |
+				 /_/   \_\__,_|\__,_|_|\___/-->
+			<div class="modal fade top" id="audioModal" role="dialog" data-backdrop="false">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
-						<div class="modal-header dragHeader" id="trackingStreamDrag">
+						<div class="modal-header dragHeader" id="audioDrag">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<img src="assets/image/circle-tracking-stream.png"/>
-							<h4 class="modal-title">Tracking Stream</h4>
+							<img src="assets/image/circle-audio.png"/>
+							<h4 class="modal-title">Audio</h4>
 						</div>
 						<div class="modal-body">
-							<div class="stream">
-								<img id="trackingStreamImage" src="http://<?php echo $_SERVER['SERVER_ADDR'] ?>:8081/"/>
+							<h4>Text to Speech</h4>						
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Message" id="text2speech">
+								<span class="input-group-btn">
+									<button class="btn btn-secondary" type="button" onclick="runAudio();">Play</button>
+								</span>
+							</div>
+							<h4>Speech to Text</h4>	
+							<div id="micLog" class="tab-pane fade">
+								<div class="micLogScroller" style="overflow-y:scroll; overflow-x:hidden; height:200px;">
+								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -423,12 +431,12 @@
 					<div class="col-md-3">
 					<!--Video Stream-->
 						<div class="thumbnail">
-							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#trackingStreamModal">
-								<img src="assets/image/circle-tracking-stream.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-tracking-stream.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
+							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#audioModal">
+								<img src="assets/image/circle-audio.png" width="128px" onmouseover="this.src='assets/image/circle-rollover.png'" onmouseout="this.src='assets/image/circle-audio.png'" onmousedown="this.src='assets/image/circle-mousedown.png'" onmouseup="this.src='assets/image/circle-rollover.png'" />
 							</button>
 						</div>
 						<div class="thumbnail">
-							<p style="text-align: center">Tracking Stream</p>
+							<p style="text-align: center">Audio</p>
 						</div>
 					</div>
 					<div class="col-md-3">
