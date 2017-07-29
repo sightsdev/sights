@@ -6,10 +6,11 @@ var speech2TextSocket = new WebSocket("ws://" + ip + ":5553");
 function readAudio() {
 	text2SpeechSocket.onmessage = function(event){
 	$(".micLogScroller").prepend(event.data + "<br>");
+	}
 }
 
 function recordAudio() {
-	text2SpeechSocker.send("Start");
+	text2SpeechSocket.send("s");
 }
 
 function playAudio() {
