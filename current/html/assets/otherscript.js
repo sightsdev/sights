@@ -1,6 +1,17 @@
 var ip = window.location.hostname;
 
-console.log(ip);
+var text2SpeechSocket = new WebSocket("ws://" + ip + ":5554");
+var speech2TextSocket = new WebSocket("ws://" + ip + ":5553");
+
+function readAudio() {
+	text2SpeechSocket.onmessage = function(event){
+	$(".micLogScroller").prepend(event.data + "<br>");
+}
+
+function playAudio() {
+	var message = document.getElementById("text2speech").value;
+	text2SpeechSocket.send(message);
+}
 
 function refreshStream() {
 	document.getElementById('streamImage').src += '';

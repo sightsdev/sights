@@ -118,7 +118,7 @@
 							<div class="input-group">
 								<input type="text" class="form-control" placeholder="Message" id="text2speech">
 								<span class="input-group-btn">
-									<button class="btn btn-secondary" type="button" onclick="runAudio();">Play</button>
+									<button class="btn btn-secondary" type="button" onclick="playAudio();">Play</button>
 								</span>
 							</div>
 							<h4>Speech to Text</h4>	
@@ -326,6 +326,8 @@
 							<p>Developed by Jack Williams</p>
 							<br>
 							<p><b>WebSocket Ports In Use</b></p>
+							<p><b>5553</b> - Speech to Text</p>
+							<p><b>5554</b> - Text to Speech</p>
 							<p><b>5555</b> - Servo Control</p>
 							<p><b>5556</b> - Servo Data</p>
 							<p><b>5557</b> - Sensor Data</p>
