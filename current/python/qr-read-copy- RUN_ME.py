@@ -45,15 +45,6 @@ while(1):
 	print(decoded)
 	print(dataArrayToString(decoded, "data="))
 	
-	# 2 at the same time?
-	decoded2 = str(decode(im))
-	font = cv2.FONT_HERSHEY_SIMPLEX
-	cv2.putText(im, dataArrayToString(decoded2, "data="), (50 ,60) ,font , 1, (200,255,155), 2, cv2.LINE_AA)
-	print(decoded2)
-	print(dataArrayToString(decoded2, "data="))
-	
-	 
-	
 	cv2.imshow("Keypoints", im)
 	cv2.imshow("Contrasted (Equalize Histogram)", contrast_image)
 	k = cv2.waitKey(5) & 0xFF
