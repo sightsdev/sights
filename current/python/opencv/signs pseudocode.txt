@@ -1,0 +1,27 @@
+Loop through 12 signs
+	Color filter then match
+	IF < 34
+		Dictionary (sign class > distance) OR add distance as an attribute that you update
+	ELSE
+		Rotate and match again
+		IF < 34
+			Add to the dictionary above
+		ELSE
+			Add to failures dictionary
+			
+	IF < 4 matches
+		Get the best from the failures and guess it, until you have 4 objects
+	ELSE > 4 matches
+		Get rid of the least
+	ELSE
+		All good
+		
+	
+Loop through 12 signs
+	Color filter then match
+	Rotate and match
+	Get the lowest match
+	Dictionary > sign class > distance
+	
+	Get the 4 lowest guesses
+	
