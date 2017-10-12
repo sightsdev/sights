@@ -27,6 +27,6 @@
 	</body>
 </html>
 <?php
-	$out = exec("sudo poweroff");//Sends the command to stop the S.A.R.T robot
+	$out = exec("sleep 3; sudo poweroff");//Sends the command to stop the S.A.R.T robot
 		echo $out;
 ?>

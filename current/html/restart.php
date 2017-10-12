@@ -39,6 +39,6 @@
 	</body>
 </html>
 <?php
-	$out = exec("sudo reboot");//Sends the command to restart the S.A.R.T Robot
+	$out = exec("sleep 3; sudo reboot");//Sends the command to restart the S.A.R.T Robot
 		echo $out;
 ?>
