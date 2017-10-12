@@ -1,4 +1,13 @@
 <?php
+/*###########################################################
+# Created by the Semi Autonomous Rescue Team				#
+#															#
+# Author: Jack Williams										#
+# Contributors: Jack Williams								#
+#															#
+# Licensed under GNU General Public License 3.0				#
+###########################################################*/
+
 function get_ip(){
 	return shell_exec("echo $(hostname -I)");
 }

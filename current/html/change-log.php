@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html>
+	<!--#########################################################
+	# Created by the Semi Autonomous Rescue Team				#
+	#															#
+	# Author: Jack Williams										#
+	# Contributors: Jack Williams								#
+	#															#
+	# Licensed under GNU General Public License 3.0				#
+	##########################################################-->
+	
 	<title>Change Log</title>
 	<head>
 		<link rel="stylesheet" href="assets/bootstrap.css">
@@ -24,6 +33,10 @@
 						<img src="assets/image/circle-log.png" width="100%" vspace="25px"/>
 					</div>
 					<div class="col-md-10">
+						<!-- Future change logs can be added below. Date format shoud be Day, DD Month YYYY, HH:MM
+							 A line break <br> should be added between each day.
+							 Individual logs should take a single line or less. -->
+						
 						<h3>Change Log</h3>
 						<p><code>Wednesday, 19 July 2017, 5:40 PM</code> - Created debugging systems for controlscript.php</p>
 						<br>

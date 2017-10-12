@@ -1,4 +1,13 @@
-var ip = window.location.hostname;
+/*###########################################################
+# Created by the Semi Autonomous Rescue Team				#
+#															#
+# Author: Jack Williams										#
+# Contributors: Jack Williams								#
+#															#
+# Licensed under GNU General Public License 3.0				#
+###########################################################*/
+
+var ip = window.location.hostname;//Get the current IP (Means you don't need a DHCP server to assign addresses)
 
 window.addEventListener("keydown", onKeyDown, false);
 window.addEventListener("keyup", onKeyUp, false);
@@ -6,6 +15,7 @@ window.addEventListener("keyup", onKeyUp, false);
 console.log("Attempting to connect to the websosocket server");
 var controlSocket = new WebSocket("ws://" + ip + ":5555");
 
+//Log to the console the result of the socket connection attempt. Useful for troubleshooting.
 function socketState() {
 	var state = controlSocket.readyState
 	switch (state) {
@@ -19,7 +29,6 @@ function socketState() {
 			return "Closed (The connection is closed or couldn't be opened)";
 	}
 }
-
 console.log("Attempt result: " + socketState());
 
 var speed = 10;
@@ -147,7 +156,6 @@ function onKeyDown(event) {
 	}
 }
 
-//Untested. If it doesn't work add the switch statement back.
 function onKeyUp(event) {
 	console.log("(Key Up) Socket Status: " + socketState());
 

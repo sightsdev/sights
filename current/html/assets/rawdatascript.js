@@ -1,4 +1,13 @@
-var ip = window.location.hostname;
+/*###########################################################
+# Created by the Semi Autonomous Rescue Team				#
+#															#
+# Author: Jack Williams										#
+# Contributors: Jack Williams								#
+#															#
+# Licensed under GNU General Public License 3.0				#
+###########################################################*/
+
+var ip = window.location.hostname; //Need to get the IP of the device rather than using a static string
 
 var sensorSocket = new WebSocket("ws://" + ip + ":5557");
 var servoSocket = new WebSocket("ws://" + ip + ":5556");

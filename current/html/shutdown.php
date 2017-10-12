@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html>
+	<!--#########################################################
+	# Created by the Semi Autonomous Rescue Team				#
+	#															#
+	# Author: Jack Williams										#
+	# Contributors: Jack Williams								#
+	#															#
+	# Licensed under GNU General Public License 3.0				#
+	##########################################################-->
+	
 	<title>Shutting Down</title><!--The title displayed in the browser tab bar-->
 	<head>
 		<!--Link Bootstrap-->
@@ -9,7 +18,7 @@
 		<link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
 	</head>
 	<body>
-		<div class="loader"><!--Create a div that can be referenced in CSS-->
+		<div class="loader"><!--Let the user know what is happening-->
 			<img src="assets/image/loader.gif" /><!--Link to the preloader gif-->
 			<h3>Shutting Down the S.A.R.T</h3>
 			<br>
@@ -18,6 +27,6 @@
 	</body>
 </html>
 <?php
-	$out = exec("sudo poweroff");//Sends the command to stop the Pi
+	$out = exec("sudo poweroff");//Sends the command to stop the S.A.R.T robot
 		echo $out;
 ?>

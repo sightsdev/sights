@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html>
+	<!--#########################################################
+	# Created by the Semi Autonomous Rescue Team				#
+	#															#
+	# Author: Jack Williams										#
+	# Contributors: Jack Williams								#
+	#															#
+	# Licensed under GNU General Public License 3.0				#
+	##########################################################-->
+	
 	<title>Restarting</title>
 	<head>
 		<link rel="stylesheet" href="assets/style.css">
@@ -7,6 +16,7 @@
 		<link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
 	</head>
 	<body>
+		<!--Let the user know what is happening-->
 		<div class="loader">
 			<img id="loadingImage" src="assets/image/loader.gif" />
 			<h3>Restarting the S.A.R.T</h3>
@@ -29,6 +39,6 @@
 	</body>
 </html>
 <?php
-	$out = exec("sudo reboot");//Sends the command to restart the NUC
+	$out = exec("sudo reboot");//Sends the command to restart the S.A.R.T Robot
 		echo $out;
 ?>

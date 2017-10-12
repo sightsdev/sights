@@ -1,5 +1,14 @@
 <?php
-$file = '/tmp/motion/lastsnap.jpg';
+/*###########################################################
+# Created by the Semi Autonomous Rescue Team				#
+#															#
+# Author: Jack Williams										#
+# Contributors: Jack Williams								#
+#															#
+# Licensed under GNU General Public License 3.0				#
+###########################################################*/
+
+$file = '/tmp/motion/lastsnap.jpg';//Location of the file to download
 
 if (file_exists($file)) {
 	header('Content-Description: File Transfer');

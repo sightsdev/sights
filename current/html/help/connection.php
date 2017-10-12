@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html>
+	<!--#########################################################
+	# Created by the Semi Autonomous Rescue Team				#
+	#															#
+	# Author: Jack Williams										#
+	# Contributors: Jack Williams								#
+	#															#
+	# Licensed under GNU General Public License 3.0				#
+	##########################################################-->
+	
 	<title>Help - Connection</title><!--The title displayed in the browser tab bar-->
 	<head>
 		<!--Link Bootstrap-->

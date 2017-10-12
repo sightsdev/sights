@@ -1,3 +1,14 @@
+/*###########################################################
+# Created by the Semi Autonomous Rescue Team				#
+#															#
+# Author: Jack Williams										#
+# Contributors: Jack Williams								#
+#															#
+# Licensed under GNU General Public License 3.0				#
+###########################################################*/
+
+//A collection of random scripts that didn't really deserve their own file. If they are expanded upon they should be moved to their own scriptname.js.
+
 var ip = window.location.hostname;
 
 var text2SpeechSocket = new WebSocket("ws://" + ip + ":5554");
@@ -26,6 +37,7 @@ function refreshSSH() {
 	document.getElementById('sshiframe').src += '';
 }
 
+//Need to get the IP of the device rather than using a static string
 function snapshotStream() {
 	$.get("http://10.0.2.3:8080/0/action/snapshot");
 	
@@ -34,6 +46,7 @@ function snapshotStream() {
 	}, 2000);
 }
 
+//Need to get the IP of the device rather than using a static string
 function recordStreamEvent() {
 	$.get("http://10.0.2.3:8080/0/action/makemovie");
 }
