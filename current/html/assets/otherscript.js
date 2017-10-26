@@ -39,7 +39,7 @@ function refreshSSH() {
 
 //Need to get the IP of the device rather than using a static string
 function snapshotStream() {
-	$.get("http://10.0.2.3:8080/0/action/snapshot");
+	$.get("http://" + ip + ":8080/0/action/snapshot");
 	
 	setTimeout(function()  {
 		window.open("/downloadsnapshot.php");
@@ -48,7 +48,7 @@ function snapshotStream() {
 
 //Need to get the IP of the device rather than using a static string
 function recordStreamEvent() {
-	$.get("http://10.0.2.3:8080/0/action/makemovie");
+	$.get("http://" + ip + ":8080/0/action/makemovie");
 }
 
 var streamFlipped = false;
