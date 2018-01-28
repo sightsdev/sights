@@ -22,7 +22,7 @@ controller = XBoxOne()
 AXIS_THRESHOLD = 8689 / 32767.0
 
 #mkIV = SARTRobot(wheels=True) 
-mkIV = MarkIV(arm=False, wheels=False, paddles=False, port="COM13")
+mkIV = MarkIV (port="/dev/ttyUSB0")
 
 # When script exits or is interrupted stop all servos
 #atexit.register(mkIV.close) #now part of the robot class

@@ -31,8 +31,8 @@ class MarkIV(RobotBase):
             })
     def __Paddles__(self, portHandler, baud):
         return MotorGroup({
-            "left":XL430W250(3, portHandler, baudrate=baud, driveMode="Wheel"),
-            "right":XL430W250(4, portHandler, baudrate=baud,reverse = True, driveMode="Wheel"),
+            "left":XL430W250(1, portHandler, baudrate=baud, driveMode="Wheel"),
+            "right":XL430W250(2, portHandler, baudrate=baud,reverse = True, driveMode="Wheel"),
             })
     
     
