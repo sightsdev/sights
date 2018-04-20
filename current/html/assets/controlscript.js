@@ -31,7 +31,7 @@ function socketState() {
 }
 console.log("Attempt result: " + socketState());
 
-var speed = 10;
+var speed = 3;
 var lastKey = 0;
 var flipped = false;
 
