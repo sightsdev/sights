@@ -30,13 +30,13 @@ def getData():
 	message["highest_temp"] = str(highest_temp)
 	message["uptime"] = str(uptime)
 
-	return json.dump(message)
+	return json.dumps(message)
 
 @asyncio.coroutine
-def sendNUCData(websocket, path):
+def sendPerformanceData(websocket, path):
 	while True:
 		yield from websocket.send(getData())
 		
-start_server = websockets.serve(sendNUCData, "10.0.2.4", 5558)
+start_server = websockets.serve(sendPerformanceData, "10.0.2.4", 5558)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
