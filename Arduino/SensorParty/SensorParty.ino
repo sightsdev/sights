@@ -8,7 +8,7 @@
 Adafruit_MLX90614 mlx[3];
 
 // Distance Sensors
-Adafruit_VL53L0X lox[3];
+Adafruit_VL53L0X lox[4];
 
 // Thermal Camera
 Adafruit_AMG88xx amg;
@@ -49,25 +49,25 @@ void setup() {
 	pinMode(4, OUTPUT);
 	pinMode(5, OUTPUT);
 	pinMode(6, OUTPUT);
-	//pinMode(7, OUTPUT);
+	pinMode(7, OUTPUT);
 	
 	// Reset all sensors by setting all of their XSHUT pins low for delay(10)
 	digitalWrite(4, LOW);
 	digitalWrite(5, LOW);
 	digitalWrite(6, LOW);
-	//digitalWrite(7, LOW);
+	digitalWrite(7, LOW);
 	delay(10);
 	
 	// Then set all XSHUT high to bring out of reset
 	digitalWrite(4, HIGH);
 	digitalWrite(5, HIGH);
 	digitalWrite(6, HIGH);
-	//digitalWrite(7, HIGH);
+	digitalWrite(7, HIGH);
 	
 	// Put all other sensors into shutdown by pulling XSHUT pins low
 	digitalWrite(5, LOW);
 	digitalWrite(6, LOW);
-	//digitalWrite(7, LOW);
+	digitalWrite(7, LOW);
 	
 	// But keep sensor #1 awake by keeping XSHUT pin high
 	// Initialize sensor #1 with lox.begin(new_i2c_address) Pick any number but 0x29 and it must be under 0x7F. Going with 0x30 to 0x3F is probably OK.
@@ -107,9 +107,8 @@ void setup() {
 		Serial.println("LOX 3 Setup Failed");
 	}
 	
-	
 	// Rinse and repeat
-	/*Serial.println("Setting up LOX 4");
+	Serial.println("Setting up LOX 4");
 	digitalWrite(7, HIGH);
 	Serial.println("LOX 4 On");
 	if (lox[3].begin(0x33)) {
@@ -118,29 +117,44 @@ void setup() {
 	}
 	else { 
 		Serial.println("LOX 4 Setup Failed");
-	}*/
+	}
  
 	// Check if Gas Sensor (SGP) is ready
 	Serial.println("Setting up SGP Sensor");
-	if (! sgp.begin()) {
+	if (sgp.begin()) {
+		Serial.println("SGP Sensor found!");
+		SGPAvailable = true;
+	} else {
 		Serial.println("SGP Sensor not found");
 		SGPAvailable = false;
 	}
+
 	// Check if Thermal Camera (AMG) is ready
 	Serial.println("Setting up AMG Sensor");
-	if (! amg.begin()) {
+	if (amg.begin()) {
+		Serial.println("AMG88xx Sensor found!");
+		AMGAvailable = true;
+	} else {
 		Serial.println("AMG88xx Sensor not found");
 		AMGAvailable = false;
 	}
-	AMGAvailable = false;
+
+	//!@%#^&(@!&*#%!@#)
+	//AMGAvailable = false;
+	
 	// Check if MLX Sensors are ready
 	Serial.println("Setting up MLX Sensors");
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 2; i++) {
 		if (! mlx[i].begin()) {
 			Serial.print("MLX Sensor ");
 			Serial.print(i);
 			Serial.print(" not found");
 			MLXAvailable[i] = false;
+		} else {
+			Serial.print("MLX Sensor ");
+			Serial.print(i);
+			Serial.print(" found");
+			MLXAvailable[i] = true;
 		}
 	}
 	Serial.println("End Setup");
@@ -153,29 +167,21 @@ void loop() {
 	
 	// MLX TEMP SENSOR
 	if (currentTime - MLXLastRead > MLXInterval) {
-		if (MLXAvailable[0]) {
-			Serial.print("MLX 1 - Ambient ");
-			Serial.print(mlx[0].readAmbientTempC()); 
-			Serial.print("*C, Object ");
-			Serial.print(mlx[0].readObjectTempC());
-			Serial.println("*C");
+		for (int i = 0; i < 2; i++) {
+			if (MLXAvailable[i]) {
+				Serial.print("MLX"); 
+				Serial.print(i);
+				Serial.print(" - Ambient ");
+				Serial.print(mlx[i].readAmbientTempC()); 
+				Serial.print("*C, Object ");
+				Serial.print(mlx[i].readObjectTempC());
+				Serial.println("*C");
+			} else {
+				Serial.print("MLX"); 
+				Serial.print(i);
+				Serial.println("Not Available");
+			}
 		}
-		if (MLXAvailable[1]) {
-			Serial.print("MLX 2 - Ambient ");
-			Serial.print(mlx[1].readAmbientTempC()); 
-			Serial.print("*C, Object ");
-			Serial.print(mlx[1].readObjectTempC());
-			Serial.println("*C");
-		}
-		if (MLXAvailable[2]) {
-			Serial.print("MLX 3 - Ambient ");
-			Serial.print(mlx[2].readAmbientTempC()); 
-			Serial.print("*C, Object ");
-			Serial.print(mlx[2].readObjectTempC());
-			Serial.println("*C");
-		}
-	} else {
-		//Serial.println("MLX Not available");
 	}
 	
 	// SGP GAS SENSOR
@@ -212,7 +218,7 @@ void loop() {
 			}
 		}
 	} else {
-		//Serial.println("SGP is not available");
+		Serial.println("SGP is not available");
 	}
   
 	// AMG THERMAL CAMERA
@@ -229,23 +235,23 @@ void loop() {
 			Serial.println("]");
 		}
 	} else {
-		//Serial.println("AMG is not available");
+		Serial.println("AMG is not available");
 	}
 	
 	// LOX DISTANCE SENSORS
 	if (currentTime - LOXLastRead > LOXInterval) {
-		//for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			VL53L0X_RangingMeasurementData_t measure;
-			lox[2].rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+			lox[i].rangingTest(&measure, false); // pass in 'true' to get debug data printout!
 			Serial.print("LOX ");
-			//Serial.print(i);	
+			Serial.print(i);
+			Serial.print(": ");	
 			if (measure.RangeStatus != 4) {  // phase failures have incorrect data
-				Serial.print(" distance (mm): "); 
 				Serial.println(measure.RangeMilliMeter);
 			} else {
-				Serial.println(" out of range ");
+				Serial.println("-");
 			}
-		//}
+		}
 	}
 	
 	Serial.println();
