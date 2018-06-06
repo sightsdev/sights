@@ -38,7 +38,7 @@
 						<p>This help documentation should address most issues that you might encounter.</p>
 						<br>
 						<p>If you cannot resolve an issue or you find some other bug, don't hesitate to contact us!</p>
-						<p><a href="mailto:Jack.Williams@sfx.act.edu.au">Jack.Williams@sfx.act.edu.au</a></p>
+						<p><a href="mailto:jack@sfxrescue.com">jack@sfxrescue.com</a></p>
 					</div>
 					<div class="col-md-4">
 						<h3>Help Articles</h3>
