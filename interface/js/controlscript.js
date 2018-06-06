@@ -31,7 +31,7 @@ function socketState() {
 }
 console.log("Attempt result: " + socketState());
 
-var speed = 10;
+var speed = 3;
 var lastKey = 0;
 var flipped = false;
 
@@ -160,7 +160,7 @@ function onKeyUp(event) {
 	console.log("(Key Up) Socket Status: " + socketState());
 
 	var key = event.keyCode;
-	if(key == 87 || key == 65 || key == 83 || key == 68 || key == 70 || key == 73 || key == 79 || key == 74 || key == 75) {
+	if(key == 87 || key == 65 || key == 83 || key == 68 || key == 70 || key == 73 || key == 79 || key == 74 || key == 75 || key == 85) {
 		document.getElementById("controlFeedback").innerHTML = "Stationary";
 		controlSocket.send("0 0");
 		lastKey = 0;
