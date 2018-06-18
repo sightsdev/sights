@@ -67,7 +67,7 @@ function connectHandler(e) {
 }
 
 function addGamepad(gamepad) {
-	document.getElementById("start").style.display = "none";
+	document.getElementById("start").innerHTML = "Controller connected";
 	controllers[gamepad.index] = gamepad;
 	rAF(updateStatus);
 	console.log("Controller connected");

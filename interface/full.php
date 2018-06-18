@@ -55,11 +55,6 @@
 		});
 			
 			</script>
-
-		<script src="js/otherscript.js"></script>
-		<script src="js/controlscript.js"></script>
-		<script src="js/logscript.js"></script>
-		<script src="js/performancescript.js"></script>
 	</head>
 
 	<body>
@@ -428,7 +423,8 @@
 				
 			</div>
 		</div-->
-		<script src="js/sart_sensors.js"></script>
+		<script src="js/sart.sensors.js"></script>
+		<script src="js/sart.performance.js"></script>
 		
 	</body>
 </html>

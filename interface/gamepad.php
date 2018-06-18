@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<script src="gamepad.js" type="text/javascript">
+	<script src="js/sart.gamepad.js" type="text/javascript">
 	</script>
 	<title></title>
 </head>
