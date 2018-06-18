@@ -168,7 +168,31 @@
 			</div>
 			</div>
 			
+			<script>
 
+			function rainbow(n) {
+				return 'hsl(' + n * 15 + ',100%,50%)';
+			}
+
+			var ir_test = [
+			  [20, 22, 23, 24, 25, 24, 23, 22],
+			  [19, 20, 22, 23, 23, 24, 22, 21],
+			  [19, 18, 22, 24, 22, 23, 22, 20],
+			  [18, 17, 17, 18, 20, 23, 22, 21],
+			  [17, 15, 15, 17, 19, 20, 22, 23],
+			  [17, 14, 14, 17, 18, 19, 20, 22],
+			  [18, 15, 15, 18, 20, 22, 23, 24],
+			  [20, 19, 19, 20, 22, 23, 24, 25]
+			];
+
+			for (i = 0; i < 8; i++) {
+				for (j = 0; j < 8; j++) {
+					var offset = i * 8 + j;
+					var pixel = ir_test[i][j];
+					document.getElementById("p" + (offset + 1)).style = "background:" + rainbow(pixel);
+				}
+			}
+			</script>
 
 			<script>
 			var tempChartCanvas = document.getElementById("tempChart").getContext('2d');
