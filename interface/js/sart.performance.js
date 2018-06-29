@@ -6,7 +6,7 @@
 
 var ip = window.location.hostname;
 
-var performanceSocket = new WebSocket("ws://" + ip + ":5558");
+var performanceSocket = new WebSocket("ws://" + ip + ":5556");
 
 performanceSocket.onmessage = function(event){
 
@@ -20,8 +20,8 @@ performanceSocket.onmessage = function(event){
 	var highest_temp = obj.highest_temp;
 	var uptime = obj.uptime;
 	
-	// This stuff here does a lot of fancy maths to make sure that any device can be used and statistics should report correctly. 
-	// If there is a problem with a specific piece of hardware, please contact the Jack Williams with the problem and the specifications of the hardware you are using.
+	// The information passed depends on the hardware you are using. 
+	// While almost every device will have their memory and cpu data available through psutils, exceptions can occur and modifications might need to be made
 	var memory_total = Math.round(obj.memory_total/1048576);
 	var memory_used = Math.round(obj.memory_used/1048576);
 	var cpu_percent = Math.round(obj.cpu_percent);
@@ -36,13 +36,13 @@ performanceSocket.onmessage = function(event){
 		document.getElementById("ram").innerHTML = (memory_used/1024).toFixed(2) + " GB";
 	}
 
-	document.getElementById("ramPercentage").className = "c100 big orange p" + Math.round((memory_used/memory_total)*100);
+	document.getElementById("ramPercentage").className = "c100 med orange p" + Math.round((memory_used/memory_total)*100);
 
 	document.getElementById("cpu").innerHTML = cpu_percent + "%";
-	document.getElementById("cpuPercentage").className = "c100 big orange p" + cpu_percent;
+	document.getElementById("cpuPercentage").className = "c100 med orange p" + cpu_percent;
 
 	document.getElementById("cpuTemp").innerHTML = highest_temp + "&degC";
-	document.getElementById("cpuTempPercentage").className = "c100 big orange p" + highest_temp;
+	document.getElementById("cpuTempPercentage").className = "c100 med orange p" + highest_temp;
 
-	document.getElementById("uptime").innerHTML = new Date(1000 * uptime).toISOString().substr(11, 8) + "";
+	//document.getElementById("uptime").innerHTML = new Date(1000 * uptime).toISOString().substr(11, 8) + "";
 }

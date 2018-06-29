@@ -199,8 +199,8 @@
 				</div>
 			</div>
 			<br/>
-			<div class="row">
-				<div class="col">
+			<div class="row justify-content-md-center">
+				<div class="col-md-auto">
 					<div class="card">
 						<div class="card-header">
 							CO<sub>2</sub> Level<br/>
@@ -217,7 +217,7 @@
 					</div>
 				</div>
 				
-				<div class="col">
+				<div class="col-md-auto">
 					<div class="card">
 						<div class="card-header">
 							TVOC Level
@@ -234,7 +234,7 @@
 					</div>
 				</div>
 				
-				<div class="col">
+				<div class="col-md-auto">
 					<div class="card">
 						<div class="card-header">
 							Thermal Camera
@@ -325,11 +325,10 @@
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 		<br/>
-		<div class="jumbotron">
+		<!--div class="jumbotron">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-3">
@@ -364,24 +363,17 @@
 					</div>
 					<div class="col-md-3">
 						<h3>Charge Remaining</h3>
-						<div class="row">
-							<div class="batcharge">
-								<div class="col-md-6">									
-									<h4>Battery</h4>
-									
-								</div>
-								<div class="col-md-6">
-									<h4>Stats</h4>
-								</div>
+						<div id="cpuTempPercentage" class="c100 p0 big orange">
+							<span id="cpuTemp">0%</span>
+							<div class="slice">
+								<div class="bar"></div>
+								<div class="fill"></div>
 							</div>
-						</div>
-						<h3>Uptime</h3>
-						<div id="uptime" style="font-weight:bold;"></div>
-						<br><br>						
+						</div>						
 					</div>
 				</div>
 			</div>
-		</div>
+		</div-->
 
 			<script>
 

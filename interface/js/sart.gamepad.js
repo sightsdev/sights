@@ -21,14 +21,14 @@ var BUTTONS = {
 	FACE_1: 1,
 	FACE_2: 2,
 	FACE_3: 3,
-	LEFT_SHOULDER: 4,
-	RIGHT_SHOULDER: 5,
-	LEFT_SHOULDER_BOTTOM: 6,
-	RIGHT_SHOULDER_BOTTOM: 7,
+	LEFT_BUMPER: 4,
+	RIGHT_BUMPER: 5,
+	LEFT_TRIGGER: 6,
+	RIGHT_TRIGGER: 7,
 	SELECT: 8,
 	START: 9,
-	LEFT_ANALOGUE_STICK: 10,
-	RIGHT_ANALOGUE_STICK: 11,
+	LEFT_STICK: 10,
+	RIGHT_STICK: 11,
 	PAD_UP: 12,
 	PAD_DOWN: 13,
 	PAD_LEFT: 14,
@@ -39,8 +39,16 @@ var BUTTONS = {
 var message = {
 	left_axis_x : 0,
 	left_axis_y : 0,
-	focused_camera : 'front'
-	//TODO: Add other relevant data
+	last_dpad: 'none',
+	button_LS : false,
+	button_A : false,
+	button_B : false,
+	button_X : false,
+	button_Y : false,
+	left_trigger : 0,
+	right_trigger : 0,
+	left_bumper : false,
+	right_bumper : false
 }
 
 console.log("Attempting to connect to the websocket server");
@@ -83,38 +91,52 @@ function removeGamepad(gamepad) {
 	delete controllers[gamepad.index];
 }
 
+function getButton(controller, id) {
+	var val = controller.buttons[BUTTONS[id]];
+	var pressed = val == 1.0;
+	if (typeof val == "object") {
+		pressed = val.pressed;
+		val = val.value;
+	}
+	if (pressed) {
+		return true;
+	} else return false;
+}
+
+function getTrigger(controller, id) {
+	var button = controller.buttons[BUTTONS[id]];
+	if (typeof button == "object") {
+		return button.value.toFixed(1);
+	}
+}
+
 function updateStatus() {
 	scanGamepads();
 	
 	for (j in controllers) {
 		var controller = controllers[j];
 		
-		for (var i = 0; i < controller.buttons.length; i++) {
-			var val = controller.buttons[i];
-			var pressed = val == 1.0;
-			if (typeof val == "object") {
-				pressed = val.pressed;
-				val = val.value;
-			}
-			if (pressed) {
-				if (i == BUTTONS["PAD_UP"])
-					message.focused_camera = "front";
-				else if (i == BUTTONS["PAD_LEFT"])
-					message.focused_camera = "left";
-				else if (i == BUTTONS["PAD_DOWN"])
-					message.focused_camera = "down";
-				else if (i == BUTTONS["PAD_RIGHT"])
-					message.focused_camera = "right";
-			}
-		}
+		message.button_A = getButton(controller, "FACE_0");
+		message.button_B = getButton(controller, "FACE_1");
+		message.button_X = getButton(controller, "FACE_2");
+		message.button_Y = getButton(controller, "FACE_3");
+		
+		message.button_LS = getButton(controller, "LEFT_STICK");
+		
+		message.left_bumper = getButton(controller, "LEFT_BUMPER");
+		message.right_bumper = getButton(controller, "RIGHT_BUMPER");
+		
+		message.left_trigger = getTrigger(controller, "LEFT_TRIGGER");
+		message.right_trigger = getTrigger(controller, "RIGHT_TRIGGER");
 
 		for (var i = 0; i < controller.axes.length; i++) {
-			if (i == 0) message.left_axis_x = controller.axes[i].toFixed(4);
-			if (i == 1) message.left_axis_y = controller.axes[i].toFixed(4);
+			if (i == 0) message.left_axis_x = controller.axes[i].toFixed(1);
+			if (i == 1) message.left_axis_y = controller.axes[i].toFixed(1);
 		}
 	}
 	//console.log(JSON.stringify(message));
-	controlSocket.send(JSON.stringify(message));
+	if (controlSocket.readyState == 1) 
+		controlSocket.send(JSON.stringify(message));
 	
 	rAF(updateStatus);
 }
