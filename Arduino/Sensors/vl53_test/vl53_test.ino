@@ -5,9 +5,9 @@ Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 void setup() {
   Serial.begin(9600);
   // wait until serial port opens for native USB devices
-  while (! Serial) {
-    delay(10);
-    Serial.print(".");
+  while (! Serial.available()) {
+    delay(500);
+    Serial.print("...");
   }
 
   pinMode(4, OUTPUT);
@@ -28,6 +28,7 @@ void setup() {
   digitalWrite(7, HIGH);
   
   // Put all other sensors into shutdown by pulling XSHUT pins low
+  digitalWrite(4, LOW);
   digitalWrite(5, LOW);
   digitalWrite(6, LOW);
   digitalWrite(7, LOW);

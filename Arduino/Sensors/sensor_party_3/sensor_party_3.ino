@@ -39,6 +39,10 @@ void setup()
   Serial.begin(9600);
   Wire.begin();
 
+  while (!Serial.available()) {
+	Serial.println(".");
+	delay(500);  
+}
   // Setup digital pins wired to LOX SHUTDOWN PIN
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
@@ -100,6 +104,7 @@ void setup()
   vl61[1].startInterleavedContinuous(100);
   VL61Available[1] = true;
 
+  Serial.println("Setting up front/back distance");
   digitalWrite(7, HIGH);
 
   vl53[0].init();
@@ -107,6 +112,7 @@ void setup()
   vl53[0].setTimeout(500);
   vl53[0].startContinuous();
 
+  Serial.println("Setting up second front/back distance");
   digitalWrite(4, HIGH);
 
   vl53[1].init();

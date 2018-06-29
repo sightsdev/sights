@@ -13,7 +13,10 @@ void setup()
 {
   Serial.begin(9600);
   Wire.begin();
-
+  while (!Serial.available()) {
+	Serial.println("Ready");
+delay(500);
+}
   // Setup digital pins wired to LOX SHUTDOWN PIN
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
@@ -44,6 +47,7 @@ void setup()
   digitalWrite(7, HIGH);
 
   vl53[0].init();
+  Serial.println("inited");
   vl53[0].setAddress(0x32);
   vl53[0].setTimeout(500);
   vl53[0].startContinuous();

@@ -9,8 +9,8 @@ void setup() {
   Serial.begin(115200);
 
   // wait for serial port to open on native usb devices
-  while (!Serial) {
-    delay(1);
+  while (!Serial.available()) {
+    delay(500);
   }
 
   // Setup digital pins wired to LOX SHUTDOWN PIN

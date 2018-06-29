@@ -9,18 +9,19 @@ import json
 import math
 
 sc = Connection(port="/dev/ttyACM0", baudrate=1000000)
+start_time = time.time()
 
 AXIS_THRESHOLD = 8689 / 32767.0
 
-servo_left_front_id = 3
+servo_left_front_id = 1
 servo_right_front_id = 2
-servo_left_back_id = 1
-servo_right_back_id = 4
+servo_left_back_id = 4
+servo_right_back_id = 3
 
 last_left = 0
 last_right = 0
 
-speed_factor = 1000
+speed_factor = 512
 axis_control = "none"
 
 def setup_servo(dynamixel_id):
@@ -97,6 +98,8 @@ def steering(x, y):
 		right *= -1
 	elif right < 1024:
 		right += 1024
+		
+	#print("L:", left, "R:", right)
 	
 	# Only send message if it's different to the last one
 	if (left != last_left and right != last_right):
@@ -110,51 +113,53 @@ def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 	global last_left
 	global last_right
 
-	if (left_bumper):
+	if (left_bumper): 
 		# Left bumper (left side backwards) take priority over trigger (forwards)
-		left = speed_factor
-	else:
-		if (left_trigger < AXIS_THRESHOLD):
-			left = 0
-		else:
-			# Multiply by speed_factor to get our final speed to be sent to the servos
-			left = left_trigger *= speed_factor
+		left = -512
+	else: # Bumper not pressed, so we will use the trigger
+		# Multiply by speed_factor to get our final speed to be sent to the servos
+		left = left_trigger * speed_factor
 		
 
-	if (right_bumper):
+	if (right_bumper): 
 		# Right bumper (right side backwards)
-		right = speed_factor
-	else:
-		# Bumper not pressed, so we will use the trigger
-		if (right < AXIS_THRESHOLD):
-			right = 0
-		else:
-			# Multiply by speed_factor to get our final speed to be sent to the servos
-			right = right_trigger *= speed_factor
+		right = -512
+	else: 
+		# Multiply by speed_factor to get our final speed to be sent to the servos
+		right = right_trigger * speed_factor
 		
 
 	# Make sure we don't have any decimals
 	left = round(left)
 	right = round(right)
 
-	# Different motors need to spin in different directions. We account for that here.	
+	# The servos use 0 - 1023 as clockwise and 1024 - 2048 as counter clockwise, we account for that here
 	if (left < 0):
 		left *= -1
 		left += 1024
 	if (right < 0):
 		right *= -1
-	elif right < 1024:
+	else:
 		right += 1024
+		
+	#print("L:", left, "R:", right)
+	
+	if (left != last_left):
+		sc.set_speed(servo_left_front_id, left)
+		sc.set_speed(servo_left_back_id, left)
+	if (right != last_right):
+		sc.set_speed(servo_right_front_id, right)
+		sc.set_speed(servo_right_back_id, right)
 	
 	# Only send message if it's different to the last one
-	if (left != last_left and right != last_right):
-		move(left, right)
+	#if (left != last_left or right != last_right):
+	#	move(left, right)
 	
 	# Store this message for comparison next time
 	last_left = left
 	last_right = right
 
-def parse_json(buf):
+def parseJSON(buf):
 	# Convert string data to object
 	msg = json.loads(buf)
 
@@ -169,42 +174,45 @@ def parse_json(buf):
 	obj["button_X"] = bool(msg["button_X"])
 	obj["button_Y"] = bool(msg["button_Y"])
 	obj["right_trigger"] = float(msg["right_trigger"])
-	obj["right_bumper"] = bool(msg["right_bumper"]
+	obj["right_bumper"] = bool(msg["right_bumper"])
 	obj["left_trigger"] = float(msg["left_trigger"])
 	obj["left_bumper"] = bool(msg["left_bumper"])
 
 	return obj
 
-@asyncio.coroutine
-def run(websocket, path):
+def controlHandler (msg):
+	# Set whether it should be normal, front only or back only
+	global axis_control
+	axis_control = msg["last_dpad"]
+	# Play warthog noise thing, coutesy of Graham
+	#if (msg["button_LS"] and not audio.playing):
+	#	audio.play("warthog.wav")
+	# Handle face buttons
+	global speed_factor
+	if (msg["button_A"]):
+		speed_factor = 1000
+	elif (msg["button_B"]):
+		speed_factor = 500
+	# Handle various methods of controlling movement
+	x = msg["left_axis_x"] * -1
+	y = msg["left_axis_y"] * -1
+	if (x < -AXIS_THRESHOLD or x > AXIS_THRESHOLD or y < -AXIS_THRESHOLD or y > AXIS_THRESHOLD):
+		steering(msg["left_axis_x"], msg["left_axis_y"])
+	else:
+		tank_control(msg["left_trigger"], msg["right_trigger"], msg["left_bumper"], msg["right_bumper"])
+	
+async def recieveControlData(websocket, path):
 	while True:
-		buf = yield from websocket.recv()
-		#print(buf)
+		# Recieve JSON formatted string from websockets
+		print(buf)
+		buf = await websocket.recv()
 		if len(buf) > 0:
-			# Convert string data to object
-			msg = parse_json(buf)
-
-			# Set whether it should be normal, front only or back only
-			global axis_control
-			axis_control = msg["last_dpad"]
-			# Play warthog noise thing, coutesy of Graham
-			if (msg["button_LS"] and not audio.playing):
-				audio.play("warthog.wav")
-			# Handle face buttons
-			global speed_factor
-			if (msg["button_A"]):
-				speed_factor = 1000
-			elif (msg["button_B"]):
-				speed_factor = 500
-			# Handle various methods of controlling movement
-			# TODO: Fix logic, needs to be > -AXIS and < AXIS for each
-			if (msg["left_axis_x"] > AXIS_THRESHOLD or msg["left_axis_y"] > AXIS_THRESHOLD):
-				steering(msg["left_axis_x"], msg["left_axis_y"])
-			else:
-				tank_control(msg["left_trigger"], msg["right_trigger"], msg["left_bumper"], msg["right_bumper"])
+			# Convert string data to object and then handle controls
+			await controlHandler(parseJSON(buf))
 			
 def main():
-	start_server = websockets.serve(run, "10.0.2.4", 5555)
+	print("Starting control data reciever")
+	start_server = websockets.serve(recieveControlData, "10.0.2.4", 5555)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()
 

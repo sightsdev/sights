@@ -68,7 +68,11 @@ void setup()
 {
   Serial.begin(9600);
   Wire.begin();
-
+ 
+  while(!Serial.available()) {
+	Serial.println("Waiting for input");
+	delay(500);
+  }
   // Setup digital pins wired to LOX SHUTDOWN PIN
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
@@ -92,8 +96,24 @@ void setup()
   digitalWrite(4, LOW);
   digitalWrite(5, LOW);
   digitalWrite(6, LOW);
-  digitalWrite(7, LOW);
-  
+  //digitalWrite(7, LOW);
+
+  Serial.println("Setting up VL53L0X");
+  //digitalWrite(7, HIGH);
+
+  vl53[0].init();
+  vl53[0].setAddress(0x34);
+  vl53[0].setTimeout(500);
+  vl53[0].startContinuous();
+
+  Serial.println("Setting up second VL53L0X");
+  digitalWrite(4, HIGH);
+
+  vl53[1].init();
+  vl53[1].setAddress(0x35);
+  vl53[1].setTimeout(500);
+  vl53[1].startContinuous();
+
   digitalWrite(6, HIGH);
 
   Serial.println("Setting up left distance (VL6180X)");
@@ -130,31 +150,17 @@ void setup()
   vl61[1].startInterleavedContinuous(100);
   VL61Available[1] = true;
 
-  digitalWrite(7, HIGH);
-
-  vl53[0].init();
-  vl53[0].setAddress(0x34);
-  vl53[0].setTimeout(500);
-  vl53[0].startContinuous();
-
-  digitalWrite(4, HIGH);
-
-  vl53[1].init();
-  vl53[1].setAddress(0x35);
-  vl53[1].setTimeout(500);
-  vl53[1].startContinuous();
-
   // AMG Setup
-  Serial.print("AMG Sensor: ");
+  /*Serial.print("AMG Sensor: ");
   if (amg.begin()) {
     Serial.println("found!");
     AMGAvailable = true;
   } else {
     Serial.println("not found");
     AMGAvailable = false;
-  }
+  }*/
 
-  // SGP Setup
+  /*// SGP Setup
   Serial.print("SGP Sensor: ");
   if (sgp.begin()) {
     Serial.println("found!");
@@ -162,7 +168,7 @@ void setup()
   } else {
     Serial.println("not found");
     SGPAvailable = false;
-  }
+  }*/
 }
 
 void loop()
@@ -179,15 +185,15 @@ void loop()
   Serial.print(vl53[0].readRangeContinuousMillimeters());
   if (vl53[0].timeoutOccurred()) { Serial.print(" TIMEOUT"); }
 
-  Serial.print("\t4: ");
-  Serial.print(vl53[1].readRangeContinuousMillimeters());
-  if (vl53[1].timeoutOccurred()) { Serial.print(" TIMEOUT"); }
+  //Serial.print("\t4: ");
+  //Serial.print(vl53[1].readRangeContinuousMillimeters());
+  //if (vl53[1].timeoutOccurred()) { Serial.print(" TIMEOUT"); }
       
   Serial.println();
 
   delay(50);
 
-  amg.readPixels(amg_pixels);
+  /*amg.readPixels(amg_pixels);
   Serial.print("[");
   for(int i=1; i<=AMG88xx_PIXEL_ARRAY_SIZE; i++){
     Serial.print(amg_pixels[i-1]);
@@ -214,6 +220,6 @@ void loop()
   delay(50);
 
   getTemp(0x5A);
-
+*/
   delay(100);
 }

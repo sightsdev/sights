@@ -3,7 +3,6 @@
 import websockets, asyncio, psutil, json
 
 def getData():
-	
 	# Get memory data
 	memory_total = psutil.virtual_memory().total
 	memory_used = psutil.virtual_memory().used
@@ -32,11 +31,15 @@ def getData():
 
 	return json.dumps(message)
 
-@asyncio.coroutine
-def sendPerformanceData(websocket, path):
+async def sendPerformanceData(websocket, path):
 	while True:
-		yield from websocket.send(getData())
+		await websocket.send(getData())
 		
-start_server = websockets.serve(sendPerformanceData, "10.0.2.4", 5558)
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+def main():
+	print("Starting performance data server")
+	start_server = websockets.serve(sendPerformanceData, "10.0.2.4", 5556)
+	asyncio.get_event_loop().run_until_complete(start_server)
+	asyncio.get_event_loop().run_forever()
+
+if __name__ == '__main__':
+	main()

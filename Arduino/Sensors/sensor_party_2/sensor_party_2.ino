@@ -130,19 +130,19 @@ void loop()
   Serial.print(vl61[0].readRangeContinuousMillimeters());
   if (vl61[0].timeoutOccurred()) { Serial.print(" TIMEOUT"); }
 
-  Serial.print("\t2: ");
+  /*Serial.print("\t2: ");
   Serial.print(vl61[1].readRangeContinuousMillimeters());
   if (vl61[1].timeoutOccurred()) { Serial.print(" TIMEOUT"); }
-
+*/
   Serial.print("\t3: ");
 
   VL53L0X_RangingMeasurementData_t measure;
   lox[0].rangingTest(&measure, false); // pass in 'true' to get debug data printout!
-  /*if (measure.RangeStatus != 4 && measure.RangeMilliMeter < 1200) {  // phase failures have incorrect data
+  if (measure.RangeStatus != 4 && measure.RangeMilliMeter < 1200) {  // phase failures have incorrect data
     Serial.print(measure.RangeMilliMeter);
   } else {
     Serial.print("-");
-  }*/
+  }
       
   Serial.println();
 }
