@@ -3,8 +3,13 @@
 Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
+
   // wait until serial port opens for native USB devices
+<<<<<<< HEAD
+  while (! Serial) {
+    delay(1);
+=======
   while (! Serial.available()) {
     delay(500);
     Serial.print("...");
@@ -43,6 +48,7 @@ void setup() {
   }
   else { 
     Serial.println("LOX 1 Setup Failed");
+>>>>>>> master
   }
   
   Serial.println("Adafruit VL53L0X test");
@@ -58,11 +64,11 @@ void setup() {
 void loop() {
   VL53L0X_RangingMeasurementData_t measure;
     
-  //Serial.print("Reading a measurement... ");
+  Serial.print("Reading a measurement... ");
   lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
 
   if (measure.RangeStatus != 4) {  // phase failures have incorrect data
-    Serial.print("Dist. "); Serial.println(measure.RangeMilliMeter);
+    Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
   } else {
     Serial.println(" out of range ");
   }

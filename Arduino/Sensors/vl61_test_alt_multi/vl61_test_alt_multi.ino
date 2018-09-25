@@ -67,7 +67,7 @@ delay(500);
   digitalWrite(7, LOW);
 
   
-  digitalWrite(6, HIGH);
+  digitalWrite(7, HIGH);
 
   Serial.println("Setting up left distance (VL6180X)");
   vl61[0].init();

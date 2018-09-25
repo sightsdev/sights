@@ -69,9 +69,9 @@ void loop() {
   
   uint8_t range = vl61.readRange();
   uint8_t status = vl61.readRangeStatus();
-  if (status == VL6180X_ERROR_NONE) {
+  //if (status == VL6180X_ERROR_NONE) {
     Serial.print("vl61: "); Serial.println(range);
-  }
+  //}
   
   delay(150);
 }
