@@ -375,7 +375,7 @@
 			</div>
 		</div-->
 
-			<script>
+			<!--script>
 
 			function rainbow(n) {
 				return 'hsl(' + n * 15 + ',100%,50%)';
@@ -399,7 +399,7 @@
 					document.getElementById("p" + (offset + 1)).style = "background:" + rainbow(pixel);
 				}
 			}
-			</script>
+			</script-->
 
 		
 		
@@ -416,7 +416,7 @@
 			</div>
 		</div-->
 		<script src="js/sart.sensors.js"></script>
-		<script src="js/sart.performance.js"></script>
+		<!--script src="js/sart.performance.js"></script-->
 		
 	</body>
 </html>

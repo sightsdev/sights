@@ -24,6 +24,7 @@
 		<script src="js/Chart.bundle.js"></script>
 		
 		<script src="js/sart.gamepad.js"></script>
+		<!--script src="js/sart.socket.js"></script-->
 
 		<script>
 		$(document).ready(function(){
@@ -55,8 +56,29 @@
 			<span class="inline" id="start">Press a button on your controller to start</span>
 		</nav>
 		<div class="container-fluid">
+			<br/>
+			<div class="row justify-content-md-center no-gutters">
+				<div class="col-md-auto ">
+					<div class="card" style="border: 0px">
+						<img width="" id="camera_left" class="img-fluid" src="http://10.0.2.4:8083"/>
+					</div>
+				</div>
+				
+				<div class="col-md-auto">
+					<div class="card" style="border: 0px">
+						<img width="" id="camera_front" class="img-fluid" src="http://10.0.2.4:8081"/>
+					</div>
+				</div>
+				
+				<div class="col-md-auto">
+					<div class="card" style="border: 0px">
+						<img width="" id="camera_right" class="img-fluid" src="http://10.0.2.4:8082"/>
+					</div>
+				</div>
+			</div>
 			<div class="row justify-content-md-center">
 				<div class="col-md-auto">
+					<br/>
 					<div class="row">
 						<div class="card">
 							<div class="card-body">
@@ -91,11 +113,12 @@
 					</div>
 				</div>
 				<div class="col-md-auto">
-					<div class="card">
-						<img width="576" src="http://10.0.2.4:8081"/>
+					<div class="card" style="border: 0px">
+						<img id="camera_back" src="http://10.0.2.4:8084"/>
 					</div>
 				</div>
 				<div class="col-md-auto">
+					<br/>
 					<div class="row">
 						<div class="card">
 							<div class="card-body">
@@ -130,28 +153,7 @@
 					</div>
 				</div>
 			</div>
-			<br/>
-			<div class="row justify-content-md-center no-gutters">
-				<div class="col-md-auto ">
-					<div class="card">
-						<img width="" class="img-fluid" src="http://10.0.2.4:8082"/>
-					</div>
-				</div>
-				
-				<div class="col-md-auto">
-					<div class="card">
-						<img width="" class="img-fluid" src="http://10.0.2.4:8084"/>
-					</div>
-				</div>
-				
-				<div class="col-md-auto">
-					<div class="card">
-						<img width="" class="img-fluid" src="http://10.0.2.4:8083"/>
-					</div>
-				</div>
-			</div>
 		</div>
-				<script src="js/sart.performance.js"></script>
-
+		<script src="js/sart.performance.js"></script>
 	</body>
 </html>

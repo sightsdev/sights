@@ -1,5 +1,10 @@
+var ip = window.location.hostname;
+var sensorSocket = new WebSocket("ws://" + ip + ":5557");
+
 var tempChartCanvas = document.getElementById("tempChart").getContext('2d');
 var distChartCanvas = document.getElementById("distChart").getContext('2d');
+
+console.log("Starting sensor reciever");
 
 var camColors = [0x480F,
 0x400F,0x400F,0x400F,0x4010,0x3810,0x3810,0x3810,0x3810,0x3010,0x3010,
@@ -29,6 +34,7 @@ var camColors = [0x480F,
 0xF1E0,0xF1C0,0xF1A0,0xF180,0xF160,0xF140,0xF100,0xF0E0,0xF0C0,0xF0A0,
 0xF080,0xF060,0xF040,0xF020,0xF800];
 
+// TEST POPULATE THERMAL DISPLAY
 var ir_test = [
   [20, 22, 23, 24, 25, 24, 23, 22],
   [19, 20, 22, 23, 23, 24, 22, 21],
@@ -39,7 +45,6 @@ var ir_test = [
   [18, 15, 15, 18, 20, 22, 23, 24],
   [20, 19, 19, 20, 22, 23, 24, 25]
 ];
-
 for (i = 0; i < 8; i++) {
 	for (j = 0; j < 8; j++) {
 		var offset = i * 8 + j;
@@ -51,7 +56,7 @@ for (i = 0; i < 8; i++) {
 var distChartData = {
 	labels: ['Front', 'Right', 'Back', 'Left'],
 	datasets: [{
-		data: [500, 244, 100, 800],
+		data: [0,0,0,0],
 		backgroundColor: [
 		"rgba(0, 255, 0, 0.8)",
 		"rgba(0, 255, 200, 0.8)",
@@ -73,7 +78,7 @@ var distChartOptions = {
 	},
 	scale: {
 		ticks: {
-			max: 1200,
+			max: 1000,
 			min: 0,
 			stepSize: 100
 		}
@@ -121,3 +126,21 @@ var tempChart = new Chart(tempChartCanvas, {
 		}]
 	}
 });
+
+
+sensorSocket.onmessage = function(event) {
+	var str = event.data;
+	var obj = JSON.parse(str);
+
+	// update distance chart
+	//distChartData.datasets[0].data = obj["dist"];
+	var new_data = [];
+	new_data[0] = obj["dist"][0];
+	new_data[1] = obj["dist"][2];
+	new_data[2] = obj["dist"][3];
+	new_data[3] = obj["dist"][1];
+	distChartData.datasets[0].data = new_data;
+
+	distChart.update()
+}
+

@@ -11,7 +11,7 @@ var performanceSocket = new WebSocket("ws://" + ip + ":5556");
 performanceSocket.onmessage = function(event){
 
 	var str = event.data;
-
+	
 	var obj = JSON.parse(str);
 
 	var memory_total = obj.memory_total;
@@ -43,6 +43,5 @@ performanceSocket.onmessage = function(event){
 
 	document.getElementById("cpuTemp").innerHTML = highest_temp + "&degC";
 	document.getElementById("cpuTempPercentage").className = "c100 med orange p" + highest_temp;
-
 	//document.getElementById("uptime").innerHTML = new Date(1000 * uptime).toISOString().substr(11, 8) + "";
 }
