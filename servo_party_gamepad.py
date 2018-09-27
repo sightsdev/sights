@@ -15,8 +15,8 @@ AXIS_THRESHOLD = 8689 / 32767.0
 
 servo_left_front_id = 1
 servo_right_front_id = 2
-servo_left_back_id = 4
-servo_right_back_id = 3
+servo_left_back_id = 3
+servo_right_back_id = 4
 
 last_left = 0
 last_right = 0
@@ -204,11 +204,10 @@ def controlHandler (msg):
 async def recieveControlData(websocket, path):
 	while True:
 		# Recieve JSON formatted string from websockets
-		print(buf)
 		buf = await websocket.recv()
 		if len(buf) > 0:
 			# Convert string data to object and then handle controls
-			await controlHandler(parseJSON(buf))
+			controlHandler(parseJSON(buf))
 			
 def main():
 	print("Starting control data reciever")
