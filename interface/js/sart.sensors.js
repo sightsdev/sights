@@ -1,5 +1,4 @@
 var ip = window.location.hostname;
-var sensorSocket = new WebSocket("ws://" + ip + ":5557");
 
 var tempChartCanvas = document.getElementById("tempChart").getContext('2d');
 var distChartCanvas = document.getElementById("distChart").getContext('2d');
@@ -35,6 +34,9 @@ var camColors = [0x480F,
 0xF080,0xF060,0xF040,0xF020,0xF800];
 
 // TEST POPULATE THERMAL DISPLAY
+function rainbow(n) {
+	return 'hsl(' + n * 15 + ',100%,50%)';
+}
 var ir_test = [
   [20, 22, 23, 24, 25, 24, 23, 22],
   [19, 20, 22, 23, 23, 24, 22, 21],
@@ -48,11 +50,12 @@ var ir_test = [
 for (i = 0; i < 8; i++) {
 	for (j = 0; j < 8; j++) {
 		var offset = i * 8 + j;
-		pixel = ir_test[offset];
-		color = camColors[pixel];
+		var pixel = ir_test[i][j];
+		document.getElementById("p" + (offset + 1)).style = "background:" + rainbow(pixel);
 	}
 }
 
+// CHARTS
 var distChartData = {
 	labels: ['Front', 'Right', 'Back', 'Left'],
 	datasets: [{
@@ -126,7 +129,7 @@ var tempChart = new Chart(tempChartCanvas, {
 		}]
 	}
 });
-
+var sensorSocket = new WebSocket("ws://" + ip + ":5557");
 
 sensorSocket.onmessage = function(event) {
 	var str = event.data;
