@@ -163,8 +163,8 @@
 						<div class="col">
 							<div class="card">
 								<div class="card-body">
-									<div id="cputemp_graph" class="c100 p5 med orange">
-										<span id="cputemp_level">5°C</span>
+									<div id="cpu_temp_graph" class="c100 p5 med orange">
+										<span id="cpu_temp_level">5°C</span>
 										<div class="slice">
 											<div class="bar"></div>
 											<div class="fill"></div>
