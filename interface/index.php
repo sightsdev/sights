@@ -11,13 +11,11 @@
 	<title>S.A.R.T. Interface</title><!--The title displayed in the browser tab bar-->
 	<head>
 		<!--Link CSS and scripts-->
-		<link rel="shortcut icon" href="css/favicon.ico" type="image/x-icon" />
-		
-		<link rel="stylesheet" href="css/bootstrap.css">
-		<!--link rel="stylesheet" href="css/style.css"-->
-		<link rel="stylesheet" href="css/circle.css">
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href="css/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/circle.css">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
@@ -377,6 +375,5 @@
 			</div>
 		</div>
 		<script src="js/sart.sensors.js"></script>
-		<script src="js/sart.performance.js"></script>
 	</body>
 </html>
