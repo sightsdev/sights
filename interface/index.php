@@ -26,9 +26,6 @@
 		<script>
 		$(document).ready(function(){
 			$("#btm_view_sensors" ).toggle(false);
-			$(".modal-dialog").draggable({
-				handle: ".modal-header"
-			});
 			$("#sensorToggle" ).click(function() {
 			  $("#btm_view_camera" ).toggle();
 			  $("#btm_view_sensors" ).toggle();
