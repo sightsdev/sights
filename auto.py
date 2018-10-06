@@ -19,6 +19,9 @@ class Distance(IntEnum):
     LEFT = 1
     RIGHT = 2
     BACK = 3
+
+last_left = 0
+last_right = 0
     
 def move_servos(left, right):
     # Left side
@@ -58,15 +61,21 @@ def getData():
 	if (buf[0] == "D"):
 		# Strip leading "D:" and split by comma
 		msg["dist"] = buf[2:-3].split(",")
-    return msg
+	return msg
 
 def main():
 	while True:
-        msg = getData()
-        if (msg[Distance.FRONT] < msg[Distance.BACK]):
-            move(300, 300)
-        else if (msg[Distance.FRONT] > msg[Distance.BACK]):
-            move(-300, -300)
+		msg = getData()
+		front = int(msg["dist"][Distance.FRONT])
+		back = int(msg["dist"][Distance.BACK])
+		print("Front:", front, "Back:", back)
+		
+		if (abs(front - back) <= 50):
+			move(0, 0)
+		elif (front < back):
+			move(-300, -300)
+		elif (front > back):
+			move(300, 300)
 
 if __name__ == '__main__':
 	main()
