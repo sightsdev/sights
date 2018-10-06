@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from pyax12.connection import Connection
+from enum import IntEnum
 import time
 import websockets
 import asyncio
@@ -13,10 +14,11 @@ start_time = time.time()
 
 AXIS_THRESHOLD = 8689 / 32767.0
 
-servo_left_front_id = 1
-servo_right_front_id = 2
-servo_left_back_id = 3
-servo_right_back_id = 4
+class Servo(IntEnum):
+    LEFT_FRONT = 1
+    RIGHT_FRONT = 2
+    LEFT_BACK = 3
+    RIGHT_BACK = 4
 
 last_left = 0
 last_right = 0

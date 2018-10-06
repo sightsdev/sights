@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import websockets, asyncio, psutil, json
-import serial, json
+import websockets, asyncio, psutil, json, serial
 
 ser = serial.Serial("/dev/ttyACM1", 115200)
 msg = {}
