@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from pyax12.connection import Connection
 from enum import IntEnum
 import time
@@ -8,55 +7,16 @@ import asyncio
 import subprocess, os
 import json
 import math
+from servo_party import ServoParty
 
-sc = Connection(port="/dev/ttyACM0", baudrate=1000000)
+# Servos
+servo_party = ServoParty();
+
 start_time = time.time()
 
 AXIS_THRESHOLD = 8689 / 32767.0
-
-class Servo(IntEnum):
-    LEFT_FRONT = 1
-    RIGHT_FRONT = 2
-    LEFT_BACK = 3
-    RIGHT_BACK = 4
-
-last_left = 0
-last_right = 0
-
-speed_factor = 512
-axis_control = "none"
-
-def setup_servo(dynamixel_id):
-	# Set the "wheel mode"
-	sc.set_cw_angle_limit(dynamixel_id, 0, degrees=False)
-	sc.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
-	
-def move(left, right):
-	if (axis_control == "none"):
-		# Left side
-		sc.set_speed(servo_left_front_id, left)
-		sc.set_speed(servo_left_back_id, left)
-		# Right side
-		sc.set_speed(servo_right_front_id, right)
-		sc.set_speed(servo_right_back_id, right)
-	elif (axis_control == "front"):
-		# Left side
-		sc.set_speed(servo_left_front_id, left)
-		sc.set_speed(servo_left_back_id, 0)
-		# Right side
-		sc.set_speed(servo_right_front_id, right)
-		sc.set_speed(servo_right_back_id, 0)
-	elif (axis_control == "back"):
-		# Left side
-		sc.set_speed(servo_left_front_id, 0)
-		sc.set_speed(servo_left_back_id, left)
-		# Right side
-		sc.set_speed(servo_right_front_id, 0)
-		sc.set_speed(servo_right_back_id, right)
 	
 def steering(x, y):
-	global last_left
-	global last_right
 	y *= -1
 	x *= -1
 
@@ -100,20 +60,16 @@ def steering(x, y):
 		right *= -1
 	elif right < 1024:
 		right += 1024
-		
-	#print("L:", left, "R:", right)
 	
 	# Only send message if it's different to the last one
-	if (left != last_left and right != last_right):
-		move(left, right)
+	if (left != servo_party.last_left and right != servo_party.last_right):
+		servo_party.move_raw(left, right)
 	
 	# Store this message for comparison next time
-	last_left = left
-	last_right = right
+	servo_party.last_left = left
+	servo_party.last_right = right
 
 def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
-	global last_left
-	global last_right
 
 	if (left_bumper): 
 		# Left bumper (left side backwards) take priority over trigger (forwards)
@@ -121,7 +77,6 @@ def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 	else: # Bumper not pressed, so we will use the trigger
 		# Multiply by speed_factor to get our final speed to be sent to the servos
 		left = left_trigger * speed_factor
-		
 
 	if (right_bumper): 
 		# Right bumper (right side backwards)
@@ -129,7 +84,6 @@ def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 	else: 
 		# Multiply by speed_factor to get our final speed to be sent to the servos
 		right = right_trigger * speed_factor
-		
 
 	# Make sure we don't have any decimals
 	left = round(left)
@@ -144,22 +98,15 @@ def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 	else:
 		right += 1024
 		
-	#print("L:", left, "R:", right)
-	
-	if (left != last_left):
-		sc.set_speed(servo_left_front_id, left)
-		sc.set_speed(servo_left_back_id, left)
-	if (right != last_right):
-		sc.set_speed(servo_right_front_id, right)
-		sc.set_speed(servo_right_back_id, right)
-	
 	# Only send message if it's different to the last one
-	#if (left != last_left or right != last_right):
-	#	move(left, right)
+	if (left != last_left):
+		servo_party.move_raw_left(left)
+	if (right != last_right):
+		servo_party.move_raw_right(right))
 	
 	# Store this message for comparison next time
-	last_left = left
-	last_right = right
+	servo_party.last_left = left
+	servo_party.last_right = right
 
 def parseJSON(buf):
 	# Convert string data to object
@@ -183,18 +130,14 @@ def parseJSON(buf):
 	return obj
 
 def controlHandler (msg):
-	# Set whether it should be normal, front only or back only
-	global axis_control
-	axis_control = msg["last_dpad"]
 	# Play warthog noise thing, coutesy of Graham
 	#if (msg["button_LS"] and not audio.playing):
 	#	audio.play("warthog.wav")
 	# Handle face buttons
-	global speed_factor
 	if (msg["button_A"]):
-		speed_factor = 1000
+		servo_party.speed_factor = 1000
 	elif (msg["button_B"]):
-		speed_factor = 500
+		servo_party.speed_factor = 500
 	# Handle various methods of controlling movement
 	x = msg["left_axis_x"] * -1
 	y = msg["left_axis_y"] * -1
