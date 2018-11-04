@@ -26,6 +26,9 @@
 		<script>
 		$(document).ready(function(){
 			$("#btm_view_sensors" ).toggle(false);
+			$(".modal-dialog").draggable({
+				handle: ".modal-header"
+			});
 			$("#sensorToggle" ).click(function() {
 			  $("#btm_view_camera" ).toggle();
 			  $("#btm_view_sensors" ).toggle();
@@ -160,8 +163,8 @@
 						<div class="col">
 							<div class="card">
 								<div class="card-body">
-									<div id="cpu_temp_graph" class="c100 p5 med orange">
-										<span id="cpu_temp_level">5°C</span>
+									<div id="cputemp_graph" class="c100 p0 med orange">
+										<span id="cputemp_level">0°C</span>
 										<div class="slice">
 											<div class="bar"></div>
 											<div class="fill"></div>
@@ -176,8 +179,8 @@
 						<div class="col">
 							<div class="card">
 								<div class="card-body">
-									<div id="charge_graph" class="c100 p75 med orange">
-										<span id="charge_level">75%</span>
+									<div id="charge_graph" class="c100 p0 med orange">
+										<span id="charge_level">0%</span>
 										<div class="slice">
 											<div class="bar"></div>
 											<div class="fill"></div>
@@ -202,8 +205,8 @@
 						<div class="col">
 							<div class="card">
 								<div class="card-body">
-									<div id="co2_graph" class="c100 p55 med orange">
-										<span id="co2_level">55 ppm</span>
+									<div id="co2_graph" class="c100 p0 med orange">
+										<span id="co2_level">0 ppm</span>
 										<div class="slice">
 											<div class="bar"></div>
 											<div class="fill"></div>
@@ -218,8 +221,8 @@
 						<div class="col">
 							<div class="card">
 								<div class="card-body">
-									<div id="tvoc_graph" class="c100 p69 med orange">
-										<span id="tvoc_level">69 ppb</span>
+									<div id="tvoc_graph" class="c100 p0 med orange">
+										<span id="tvoc_level">0 ppb</span>
 										<div class="slice">
 											<div class="bar"></div>
 											<div class="fill"></div>
