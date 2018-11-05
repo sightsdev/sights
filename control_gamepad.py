@@ -7,6 +7,7 @@ import asyncio
 import subprocess, os
 import json
 import math
+import atexit
 from servo_party import ServoParty
 
 # Servos
@@ -15,6 +16,8 @@ servo_party = ServoParty();
 start_time = time.time()
 
 AXIS_THRESHOLD = 8689 / 32767.0
+
+atexit.register(servo_party.stop)
 	
 def steering(x, y):
 	y *= -1
@@ -45,8 +48,8 @@ def steering(x, y):
 	right = max(-1, min(right, 1))
 
 	# Multiply by speed_factor to get our final speed to be sent to the servos
-	left *= speed_factor
-	right *= speed_factor
+	left *= servo_party.speed_factor
+	right *= servo_party.speed_factor
 
 	# Make sure we don't have any decimals
 	left = round(left)
@@ -76,14 +79,14 @@ def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 		left = -512
 	else: # Bumper not pressed, so we will use the trigger
 		# Multiply by speed_factor to get our final speed to be sent to the servos
-		left = left_trigger * speed_factor
+		left = left_trigger * servo_party.speed_factor
 
 	if (right_bumper): 
 		# Right bumper (right side backwards)
 		right = -512
 	else: 
 		# Multiply by speed_factor to get our final speed to be sent to the servos
-		right = right_trigger * speed_factor
+		right = right_trigger * servo_party.speed_factor
 
 	# Make sure we don't have any decimals
 	left = round(left)
@@ -99,10 +102,10 @@ def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 		right += 1024
 		
 	# Only send message if it's different to the last one
-	if (left != last_left):
+	if (left != servo_party.last_left):
 		servo_party.move_raw_left(left)
-	if (right != last_right):
-		servo_party.move_raw_right(right))
+	if (right != servo_party.last_right):
+		servo_party.move_raw_right(right)
 	
 	# Store this message for comparison next time
 	servo_party.last_left = left

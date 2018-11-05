@@ -16,7 +16,14 @@ class ServoParty:
         self.speed_factor = 512
         self.last_left = 0
         self.last_right = 0
-        
+
+    def stop(self):
+        self.sc_dynamixel.set_speed(1, 0)
+        self.sc_dynamixel.set_speed(2, 0)
+        self.sc_dynamixel.set_speed(3, 0)
+        self.sc_dynamixel.set_speed(4, 0)
+        self.sc_dynamixel.close()
+	
     def setup_servo(self, dynamixel_id):
         # Set the "wheel mode"
         self.sc_dynamixel.set_cw_angle_limit(dynamixel_id, 0, degrees=False)

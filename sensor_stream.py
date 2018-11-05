@@ -8,10 +8,10 @@ def getData():
     # Get data from system
     
     # Get memory data
-	memory_total = psutil.virtual_memory().total
-	memory_used = psutil.virtual_memory().used
+	#memory_total = psutil.virtual_memory().total
+	#memory_used = psutil.virtual_memory().used
 	# Get CPU usage
-	cpu_percent = psutil.cpu_percent(interval=1)
+	#cpu_percent = psutil.cpu_percent(interval=1)
 	# Get CPU temp
 	highest_temp = 0.0
 	highest_core = ''
@@ -20,14 +20,14 @@ def getData():
 			highest_temp = i.current
 			highest_core = i.label
 	# Get uptime
-	with open('/proc/uptime', 'r') as f:
-		uptime = f.readline().split()[0]
+	#with open('/proc/uptime', 'r') as f:
+	#	uptime = f.readline().split()[0]
 	
-	msg["memory_total"] = str(memory_total)
-	msg["memory_used"] = str(memory_used)
-	msg["cpu_percent"] = str(cpu_percent)
+	#msg["memory_total"] = str(memory_total)
+	#msg["memory_used"] = str(memory_used)
+	#msg["cpu_percent"] = str(cpu_percent)
 	msg["highest_temp"] = str(highest_temp)
-	msg["uptime"] = str(uptime)
+	#msg["uptime"] = str(uptime)
 	
     # Get data from Arduino
 	buf = ser.readline().decode("UTF-8")
@@ -35,6 +35,7 @@ def getData():
 	if (buf[0] == "D"):
 		# Strip leading "D:" and split by comma
 		msg["dist"] = buf[2:-3].split(",")
+	print (json.dumps(msg))
 	return json.dumps(msg)
 
 async def sendSensorData(websocket, path):

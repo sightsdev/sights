@@ -3,6 +3,7 @@ from pyax12.connection import Connection
 from enum import IntEnum
 from serial import Serial
 from servo_party import ServoParty
+import atexit
 
 # Servos
 servo_party = ServoParty();
@@ -11,6 +12,8 @@ sc_arduino = Serial(port="/dev/ttyACM1", baudrate=115200)
 
 speed = 300
 
+atexit.register(servo_party.stop)
+
 class Distance(IntEnum):
     FRONT = 0
     LEFT = 1
@@ -18,7 +21,7 @@ class Distance(IntEnum):
     BACK = 3
 
 def getData():
-	buf = ser.readline().decode("UTF-8")
+	buf = sc_arduino.readline().decode("UTF-8")
 	# If string begins with "D:", it's distance
 	msg = {}
 	if (buf[0] == "D"):
