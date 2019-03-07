@@ -37,23 +37,6 @@ var camColors = [0x480F,
 function rainbow(n) {
 	return 'hsl(' + n * 15 + ',100%,50%)';
 }
-var ir_test = [
-  [20, 22, 23, 24, 25, 24, 23, 22],
-  [19, 20, 22, 23, 23, 24, 22, 21],
-  [19, 18, 22, 24, 22, 23, 22, 20],
-  [18, 17, 17, 18, 20, 23, 22, 21],
-  [17, 15, 15, 17, 19, 20, 22, 23],
-  [17, 14, 14, 17, 18, 19, 20, 22],
-  [18, 15, 15, 18, 20, 22, 23, 24],
-  [20, 19, 19, 20, 22, 23, 24, 25]
-];
-for (i = 0; i < 8; i++) {
-	for (j = 0; j < 8; j++) {
-		var offset = i * 8 + j;
-		var pixel = ir_test[i][j];
-		document.getElementById("p" + (offset + 1)).style = "background:" + rainbow(pixel);
-	}
-}
 
 // CHARTS
 var distChartData = {
@@ -94,41 +77,75 @@ var distChart = new Chart(distChartCanvas, {
 	options: distChartOptions
 });
 
-
+var tempChartData =  {
+	labels: [0, 1],
+	datasets: [{
+		label: 'Sensor Front',
+		data: [0, 0],
+		borderColor: [
+			'rgba(128, 0, 0, 1)'
+		]
+	},
+	{
+		label: 'Sensor Left',
+		data: [0, 0],
+		borderColor: [
+			'rgba(0, 128, 0, 1)'
+		]
+	},
+	{
+		label: 'Sensor Right',
+		data: [0, 0],
+		borderColor: [
+			'rgba(0, 0, 128, 1)'
+		]
+	},
+	{
+		label: 'Sensor Back',
+		data: [0, 0],
+		borderColor: [
+			'rgba(128, 128, 0, 1)'
+		]
+	}]
+}
 
 var tempChart = new Chart(tempChartCanvas, {
 	type: 'line',
-	data: {
-		datasets: [{
-			label: 'Sensor Front',
-			data: [0, 0, 1, 3, 5, 7],
-			borderColor: [
-				'rgba(128, 0, 0, 1)'
-			]
+	data: tempChartData,
+	options: {
+		responsive: true,
+		title: {
+			display: false,
+			text: 'Chart.js Line Chart'
 		},
-		{
-			label: 'Sensor Left',
-			data: [0, 0, 2, 4, 6, 8],
-			borderColor: [
-				'rgba(0, 128, 0, 1)'
-			]
+		tooltips: {
+			mode: 'index',
+			intersect: false,
 		},
-		{
-			label: 'Sensor Right',
-			data: [0, 2, 6, 9, 11, 12],
-			borderColor: [
-				'rgba(0, 0, 128, 1)'
-			]
+		hover: {
+			mode: 'nearest',
+			intersect: true
 		},
-		{
-			label: 'Sensor Back',
-			data: [0, 0, 0, 0, 1, 4],
-			borderColor: [
-				'rgba(128, 128, 0, 1)'
-			]
-		}]
+		scales: {
+			xAxes: [{
+				display: true,
+				scaleLabel: {
+					display: true,
+					labelString: 'Time'
+				}
+			}],
+			yAxes: [{
+				display: true,
+				scaleLabel: {
+					display: true,
+					labelString: 'Temp'
+				}
+			}]
+		}
 	}
 });
+
+
 var sensorSocket = new WebSocket("ws://" + ip + ":5556");
 
 sensorSocket.onmessage = function(event) {

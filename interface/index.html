@@ -22,6 +22,7 @@
 		<script src="js/Chart.bundle.js"></script>
 		<!-- S.A.R.T. Scripts -->
 		<script src="js/sart.gamepad.js"></script>
+		<script src="js/sart.demo.js"></script>
 
 		<script>
 		$(document).ready(function(){
@@ -30,10 +31,16 @@
 				handle: ".modal-header"
 			});
 			$("#sensorToggle" ).click(function() {
+			  // Swap between camera and sensors view
 			  $("#btm_view_camera" ).toggle();
 			  $("#btm_view_sensors" ).toggle();
 			});
+			$('.streamImage').error(function(){
+				// If the camera stream doesn't load, default to fallback image
+				if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';  
+			});
 		});
+
 		</script>
 		<style>
 		@media (min-width: 768px) {
@@ -123,7 +130,7 @@
 				</ul>
 				<ul class="nav navbar-nav abs-center-x">
 					<li class="nav-item">
-						<a class="nav-link" href="#">
+						<a class="nav-link" onclick="location.reload();" href="#">
 							<span style="color: #FF5A00">S.A.R.T.</span> Control Interface
 						</a>
 					</li>
@@ -147,6 +154,7 @@
 							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 								<a class="dropdown-item" href="#">Shutdown</a>
 								<a class="dropdown-item" href="#">Reboot</a>
+								<a class="dropdown-item" href="#" onclick="DemoMode()">Demo Mode</a>
 							</div>
 						</div>
 					</div>
@@ -196,8 +204,7 @@
 				</div>
 				<div class="col-md-auto">
 					<div class="card" style="border: 0px">
-						<!--img id="camera_back" width="480" src="images/test.png"/-->
-						<img id="camera_back" width="480" src="http://10.0.2.4:8084"  onerror="if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';"/>
+						<img id="camera_front" width="480" class="streamImage" src="http://10.0.2.4:8084"/>
 					</div>
 				</div>
 				<div class="col-md-auto">
@@ -354,22 +361,19 @@
 			<div class="row justify-content-md-center no-gutters" style="" id="btm_view_camera">
 				<div class="col-md-auto ">
 					<div class="card" style="border: 0px">
-						<img width="420" id="camera_left" class="img-fluid" src="http://10.0.2.4:8083" onerror="if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';"/>
-						<!--img id="camera_left" width="420" src="images/test.png"/-->
+						<img width="420" id="camera_left" class="img-fluid streamImage" src="http://10.0.2.4:8083" />
 					</div>
 				</div>
 				
 				<div class="col-md-auto">
 					<div class="card" style="border: 0px">
-						<img width="420" id="camera_front" class="img-fluid" src="http://10.0.2.4:8081" onerror="if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';"/>
-						<!--img id="camera_front" width="420" src="images/test.png"/-->
+						<img width="420" id="camera_back" class="img-fluid streamImage" src="http://10.0.2.4:8081" />
 					</div>
 				</div>
 				
 				<div class="col-md-auto">
 					<div class="card" style="border: 0px">
-						<img width="420" id="camera_right" class="img-fluid" src="http://10.0.2.4:8082"  onerror="if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';"/>
-						<!--img id="camera_right" width="420" src="images/test.png"/-->
+						<img width="420" id="camera_right" class="img-fluid streamImage" src="http://10.0.2.4:8082" />
 					</div>
 				</div>
 			</div>
