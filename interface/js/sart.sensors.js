@@ -78,31 +78,31 @@ var distChart = new Chart(distChartCanvas, {
 });
 
 var tempChartData =  {
-	labels: [0, 1],
+	labels: [-13, -12, -11, 10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
 	datasets: [{
 		label: 'Sensor Front',
-		data: [0, 0],
+		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(128, 0, 0, 1)'
 		]
 	},
 	{
 		label: 'Sensor Left',
-		data: [0, 0],
+		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(0, 128, 0, 1)'
 		]
 	},
 	{
 		label: 'Sensor Right',
-		data: [0, 0],
+		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(0, 0, 128, 1)'
 		]
 	},
 	{
 		label: 'Sensor Back',
-		data: [0, 0],
+		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(128, 128, 0, 1)'
 		]
