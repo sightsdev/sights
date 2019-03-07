@@ -26,7 +26,7 @@ def getData():
 	# If string begins with "D:", it's distance
 	if (buf[0] == "D"):
 		# Strip leading "D:" and split by comma, removing newline characters. Add to message
-		msg["dist"] = buf[2:-3].split(",")
+		msg["distance"] = buf[2:-3].split(",")
 	# Temperature
 	if (buf[0] == "T"):
 		# Strip and add to message

@@ -16,6 +16,7 @@ K_p = 2
 K_i = 1
 K_d = 0
 
+# Base speed of robot, before PID adjustments
 speed = 400
 
 # When script exits or is interrupted stop all servos
