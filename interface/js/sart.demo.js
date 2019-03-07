@@ -6,10 +6,10 @@ function DemoMode() {
 	document.getElementById("charge_level").innerHTML = "97%";
 	document.getElementById("charge_graph").className = "c100 med orange p97";
 
-	document.getElementById("co2_level").innerHTML = "250 ppm";
+	document.getElementById("co2_level").innerHTML = "250<span style='font-size: 10px'> ppm</span>";
 	document.getElementById("co2_graph").className = "c100 med orange p25";
 
-	document.getElementById("tvoc_level").innerHTML = "75 ppb";
+	document.getElementById("tvoc_level").innerHTML = "75<span style='font-size: 10px'> ppb</span>";
 	document.getElementById("tvoc_graph").className = "c100 med orange p14";
 		
 	distChartData.datasets[0].data = [768, 128, 256, 312];

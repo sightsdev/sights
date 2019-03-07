@@ -180,6 +180,21 @@ sensorSocket.onmessage = function(event) {
 			}
 		}
 	}
+	
+	if ("co2" in obj) {
+		var co2 = obj["co2"];
+		// Update graphs
+		document.getElementById("co2_level").innerHTML = co2 + "<span style='font-size: 10px'> ppm</span>";
+		document.getElementById("co2_graph").className = "c100 med orange p" + Math.round(co2 / 100);
+	}
+	
+	if ("tvoc" in obj) {
+		var tvoc = obj["tvoc"];
+		// Update graphs
+		document.getElementById("tvoc_level").innerHTML = tvoc + "<span style='font-size: 10px'> ppb</span>";
+		document.getElementById("tvoc_graph").className = "c100 med orange p" + Math.round(tvoc / 100);
+	}
+	
     // Get performance data
 	// The information passed depends on the hardware you are using. 
 	// While almost every device will have their memory and cpu data available through psutils, exceptions can occur and modifications might need to be made
