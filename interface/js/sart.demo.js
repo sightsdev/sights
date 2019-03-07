@@ -27,7 +27,7 @@ function DemoMode() {
 
 	var elements = document.getElementsByClassName('streamImage');
 
-	for (var i = 0; i < elements.length; i++)
+	for (i = 0; i < elements.length; i++)
 		elements[i].src = 'images/demo_' + elements[i].id + '.jpg'; 
 		
 	var example_thermal_camera_data = [

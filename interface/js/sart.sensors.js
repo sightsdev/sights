@@ -163,7 +163,7 @@ sensorSocket.onmessage = function(event) {
 		// Change chart dataset to use new data
 		distChartData.datasets[0].data = dist_data;
     	// Reload chart with new data
-		distChart.update()
+		distChart.update();
 	}
 	
 	if ("thermal_camera" in obj) {
@@ -193,6 +193,19 @@ sensorSocket.onmessage = function(event) {
 		// Update graphs
 		document.getElementById("tvoc_level").innerHTML = tvoc + "<span style='font-size: 10px'> ppb</span>";
 		document.getElementById("tvoc_graph").className = "c100 med orange p" + Math.round(tvoc / 100);
+	}
+	
+	if ("temp" in obj) {
+		var temp_data = obj["temp"];
+		
+		for (i = 0; i < 4; i++) {
+			// Remove oldest element
+			tempChartData.datasets[i].data.shift()
+			// Push new element
+			tempChartData.datasets[i].data.push(temp_data[i]);
+		}
+		tempChart.update();
+		
 	}
 	
     // Get performance data
