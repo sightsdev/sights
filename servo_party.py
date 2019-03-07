@@ -18,10 +18,12 @@ class ServoParty:
         self.last_right = 0
 
     def stop(self):
+		# Set all servos to 0
         self.sc_dynamixel.set_speed(1, 0)
         self.sc_dynamixel.set_speed(2, 0)
         self.sc_dynamixel.set_speed(3, 0)
         self.sc_dynamixel.set_speed(4, 0)
+		# Close the connection
         self.sc_dynamixel.close()
 	
     def setup_servo(self, dynamixel_id):

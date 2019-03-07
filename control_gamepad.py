@@ -15,14 +15,17 @@ servo_party = ServoParty();
 
 start_time = time.time()
 
+# Controller stick threshold
 AXIS_THRESHOLD = 8689 / 32767.0
 
+# When script exits or is interrupted stop all servos
 atexit.register(servo_party.stop)
 	
 def steering(x, y):
 	y *= -1
 	x *= -1
 
+	# Stick deadzone
 	if (x > -AXIS_THRESHOLD and x < AXIS_THRESHOLD):
 			x = 0
 	if (y > -AXIS_THRESHOLD and y < AXIS_THRESHOLD):
