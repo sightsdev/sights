@@ -33,7 +33,7 @@ var camColors = [0x480F,
 0xF1E0,0xF1C0,0xF1A0,0xF180,0xF160,0xF140,0xF100,0xF0E0,0xF0C0,0xF0A0,
 0xF080,0xF060,0xF040,0xF020,0xF800];
 
-// TEST POPULATE THERMAL DISPLAY
+// Rainbow
 function rainbow(n) {
 	return 'hsl(' + n * 15 + ',100%,50%)';
 }
@@ -150,8 +150,9 @@ var sensorSocket = new WebSocket("ws://" + ip + ":5556");
 
 sensorSocket.onmessage = function(event) {
 	var str = event.data;
-        var obj = JSON.parse(str);
+    var obj = JSON.parse(str);
 
+	// Get distance data and create radial graph
 	if ("dist" in obj) {
 		// Update distance chart
 		var dist_data = [];
@@ -166,6 +167,7 @@ sensorSocket.onmessage = function(event) {
 		distChart.update();
 	}
 	
+	// Get thermal camera and create pixel grid
 	if ("thermal_camera" in obj) {
 		var thermal_camera_data = obj["thermal_camera"];
 		
@@ -181,23 +183,25 @@ sensorSocket.onmessage = function(event) {
 		}
 	}
 	
+	// Get CO2 levels
 	if ("co2" in obj) {
 		var co2 = obj["co2"];
-		// Update graphs
+		// Update graph
 		document.getElementById("co2_level").innerHTML = co2 + "<span style='font-size: 10px'> ppm</span>";
 		document.getElementById("co2_graph").className = "c100 med orange p" + Math.round(co2 / 100);
 	}
 	
+	// Get TVOC levels
 	if ("tvoc" in obj) {
 		var tvoc = obj["tvoc"];
-		// Update graphs
+		// Update graph
 		document.getElementById("tvoc_level").innerHTML = tvoc + "<span style='font-size: 10px'> ppb</span>";
 		document.getElementById("tvoc_graph").className = "c100 med orange p" + Math.round(tvoc / 100);
 	}
 	
+	// Get temperature data for line graph
 	if ("temp" in obj) {
 		var temp_data = obj["temp"];
-		
 		for (i = 0; i < 4; i++) {
 			// Remove oldest element
 			tempChartData.datasets[i].data.shift()
@@ -205,13 +209,23 @@ sensorSocket.onmessage = function(event) {
 			tempChartData.datasets[i].data.push(temp_data[i]);
 		}
 		tempChart.update();
-		
 	}
 	
-    // Get performance data
-	// The information passed depends on the hardware you are using. 
+	// Get charge level
+	if ("charge" in obj) {
+		var charge_data = obj["charge"];
+		// Update graph
+		document.getElementById("charge_level").innerHTML = charge_data + "%";
+		document.getElementById("charge_graph").className = "c100 med orange p" + charge_data;
+	}
+	
+    // Get performance data. The information passed depends on the hardware you are using. 
 	// While almost every device will have their memory and cpu data available through psutils, exceptions can occur and modifications might need to be made
 	
+	// Highest CPU core temperature
+	var highest_temp = Math.round(obj.highest_temp);
+	document.getElementById("cputemp_level").innerHTML = highest_temp + "&degC";
+	document.getElementById("cputemp_graph").className = "c100 med orange p" + highest_temp;
 	/*
 	var memory_total = Math.round(obj.memory_total/1048576);
 	var memory_used = Math.round(obj.memory_used/1048576);
@@ -229,10 +243,6 @@ sensorSocket.onmessage = function(event) {
 	var uptime = Math.round(obj.uptime);
 	document.getElementById("uptime").innerHTML = new Date(1000 * uptime).toISOString().substr(11, 8) + "";
 	*/
-	
-	var highest_temp = Math.round(obj.highest_temp);
-	document.getElementById("cputemp_level").innerHTML = highest_temp + "&degC";
-	document.getElementById("cputemp_graph").className = "c100 med orange p" + highest_temp;
 
 }
 
