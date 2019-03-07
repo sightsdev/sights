@@ -3,7 +3,7 @@ var ip = window.location.hostname;
 var tempChartCanvas = document.getElementById("tempChart").getContext('2d');
 var distChartCanvas = document.getElementById("distChart").getContext('2d');
 
-console.log("Starting sensor reciever");
+console.log("Starting sensor receiver");
 
 var camColors = [0x480F,
 0x400F,0x400F,0x400F,0x4010,0x3810,0x3810,0x3810,0x3810,0x3010,0x3010,
@@ -153,42 +153,58 @@ sensorSocket.onmessage = function(event) {
         var obj = JSON.parse(str);
 
 	if ("dist" in obj) {
-		// update distance chart
-		var new_data = [];
-    		// unfortunately the graph has directions clockwise (front, right, back, left) in the array. We have them front, left, right, back
-		new_data[0] = obj["dist"][0];
-		new_data[1] = obj["dist"][2];
-		new_data[2] = obj["dist"][3];
-		new_data[3] = obj["dist"][1];
-		// change chart dataset to use new data
-		distChartData.datasets[0].data = new_data;
-    		// reload chart with new data
+		// Update distance chart
+		var dist_data = [];
+    	// Unfortunately the graph has directions clockwise (front, right, back, left) in the array. We have them front, left, right, back
+		dist_data[0] = obj["dist"][0];
+		dist_data[1] = obj["dist"][2];
+		dist_data[2] = obj["dist"][3];
+		dist_data[3] = obj["dist"][1];
+		// Change chart dataset to use new data
+		distChartData.datasets[0].data = dist_data;
+    	// Reload chart with new data
 		distChart.update()
 	}
-    	// get performance data
+	
+	if ("thermal_camera" in obj) {
+		var thermal_camera_data = obj["thermal_camera"];
+		
+		// Iterate through pixels
+		for (i = 0; i < 8; i++) {
+			for (j = 0; j < 8; j++) {
+				var offset = i * 8 + j;
+				// Get pixel color from color table
+				var pixel = Math.round(thermal_camera_data[offset]);
+				// Apply colour to the appropriate HTML element 
+				document.getElementById("p" + (offset + 1)).style = "background:" + rainbow(pixel);
+			}
+		}
+	}
+    // Get performance data
 	// The information passed depends on the hardware you are using. 
 	// While almost every device will have their memory and cpu data available through psutils, exceptions can occur and modifications might need to be made
-	//var memory_total = Math.round(obj.memory_total/1048576);
-	//var memory_used = Math.round(obj.memory_used/1048576);
-	//var cpu_percent = Math.round(obj.cpu_percent);
-	var highest_temp = Math.round(obj.highest_temp);
-	//var uptime = Math.round(obj.uptime);
-
+	
+	/*
+	var memory_total = Math.round(obj.memory_total/1048576);
+	var memory_used = Math.round(obj.memory_used/1048576);
 	// Fancy stuff to display in megabytes if the used RAM is less than a gigabyte.
-	/*if (memory_used < 1024) {
+	if (memory_used < 1024)
 		document.getElementById("ram").innerHTML = memory_used + " MB";
-	}
-	else {
+	else
 		document.getElementById("ram").innerHTML = (memory_used/1024).toFixed(2) + " GB";
-	}
-
 	document.getElementById("ramPercentage").className = "c100 med orange p" + Math.round((memory_used/memory_total)*100);
 
+	var cpu_percent = Math.round(obj.cpu_percent);
 	document.getElementById("cpu").innerHTML = cpu_percent + "%";
 	document.getElementById("cpuPercentage").className = "c100 med orange p" + cpu_percent;
+	
+	var uptime = Math.round(obj.uptime);
+	document.getElementById("uptime").innerHTML = new Date(1000 * uptime).toISOString().substr(11, 8) + "";
 	*/
+	
+	var highest_temp = Math.round(obj.highest_temp);
 	document.getElementById("cputemp_level").innerHTML = highest_temp + "&degC";
 	document.getElementById("cputemp_graph").className = "c100 med orange p" + highest_temp;
-	//document.getElementById("uptime").innerHTML = new Date(1000 * uptime).toISOString().substr(11, 8) + "";
+
 }
 
