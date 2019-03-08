@@ -80,28 +80,28 @@ var distChart = new Chart(distChartCanvas, {
 var tempChartData =  {
 	labels: [-13, -12, -11, 10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
 	datasets: [{
-		label: 'Sensor Front',
+		label: 'Front',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(128, 0, 0, 1)'
 		]
 	},
 	{
-		label: 'Sensor Left',
+		label: 'Left',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(0, 128, 0, 1)'
 		]
 	},
 	{
-		label: 'Sensor Right',
+		label: 'Right',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(0, 0, 128, 1)'
 		]
 	},
 	{
-		label: 'Sensor Back',
+		label: 'Back',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(128, 128, 0, 1)'
@@ -116,7 +116,7 @@ var tempChart = new Chart(tempChartCanvas, {
 		responsive: true,
 		title: {
 			display: false,
-			text: 'Chart.js Line Chart'
+			text: 'Temperature'
 		},
 		tooltips: {
 			mode: 'index',
@@ -138,7 +138,7 @@ var tempChart = new Chart(tempChartCanvas, {
 				display: true,
 				scaleLabel: {
 					display: true,
-					labelString: 'Temp'
+					labelString: 'Temperature (°C)'
 				}
 			}]
 		}
