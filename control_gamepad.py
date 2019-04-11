@@ -136,9 +136,6 @@ def parseJSON(buf):
 	return obj
 
 def controlHandler (msg):
-	# Play warthog noise thing, coutesy of Graham
-	#if (msg["button_LS"] and not audio.playing):
-	#	audio.play("warthog.wav")
 	# Handle face buttons
 	if (msg["button_A"]):
 		servo_party.speed_factor = 1000
