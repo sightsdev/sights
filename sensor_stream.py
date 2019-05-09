@@ -1,40 +1,43 @@
 #!/usr/bin/env python3
+
+##
+# TODO: Add thermal camera code
+#
+
 import websockets, asyncio, psutil, json, serial
 
 ser = serial.Serial("/dev/ttyACM1", 115200)
 msg = {}
 
+
 def getData():
-    # Get data from system
-    
-    # Get memory data
-	memory_total = psutil.virtual_memory().total
-	memory_used = psutil.virtual_memory().used
-	# Get CPU usage
-	cpu_percent = psutil.cpu_percent(interval=1)
-	# Get CPU temp
+	# Get highest CPU temp from system
 	highest_temp = 0.0
 	highest_core = ''
 	for i in psutil.sensors_temperatures()['coretemp']:
 		if (i.current > highest_temp):
 			highest_temp = i.current
 			highest_core = i.label
-	# Get uptime
-	with open('/proc/uptime', 'r') as f:
-		uptime = f.readline().split()[0]
-	
-	msg["memory_total"] = str(memory_total)
-	msg["memory_used"] = str(memory_used)
-	msg["cpu_percent"] = str(cpu_percent)
-	msg["highest_temp"] = str(highest_temp)
-	msg["uptime"] = str(uptime)
+	# Add to message
+	msg["cpu_temp"] = str(highest_temp)
 	
     # Get data from Arduino
 	buf = ser.readline().decode("UTF-8")
 	# If string begins with "D:", it's distance
 	if (buf[0] == "D"):
-		# Strip leading "D:" and split by comma
-		msg["dist"] = buf[2:-3].split(",")
+		# Strip leading "D:" and split by comma, removing newline characters. Add to message
+		msg["distance"] = buf[2:-3].split(",")
+	# Temperature
+	if (buf[0] == "T"):
+		# Strip and add to message
+		msg["temp"] = buf[2:-3].split(",")
+	# Gas (TVOC / CO2)
+	if (buf[0] == "G"):
+		# Strip and add to message
+		data = buf[2:-3].split(",")
+		msg["co2"] = data[0]
+		msg["tvoc"] = data[1]
+	# Return message to be sent to control panel
 	return json.dumps(msg)
 
 async def sendSensorData(websocket, path):

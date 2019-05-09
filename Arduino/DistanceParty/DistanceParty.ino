@@ -64,10 +64,10 @@ void loop() {
     lox[i].rangingTest(&measure, false); // pass in 'true' to get debug data printout!
     int value = measure.RangeMilliMeter;
 
-    if (measure.RangeStatus != 4 && value < 1500) {  // phase failures have incorrect data, and max range is around 1200 (1500 to be safe)
+    if (measure.RangeStatus != 4 && value < 1250) {  // phase failures have incorrect data, and max range is around 1250
 	Serial.print(value);
     } else {
-	Serial.print("0");
+	Serial.print("1250");
     }
     Serial.print(",");
   }
