@@ -80,28 +80,28 @@ var distChart = new Chart(distChartCanvas, {
 var tempChartData =  {
 	labels: [-13, -12, -11, 10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
 	datasets: [{
-		label: 'Sensor Front',
+		label: 'Front',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(128, 0, 0, 1)'
 		]
 	},
 	{
-		label: 'Sensor Left',
+		label: 'Left',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(0, 128, 0, 1)'
 		]
 	},
 	{
-		label: 'Sensor Right',
+		label: 'Right',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(0, 0, 128, 1)'
 		]
 	},
 	{
-		label: 'Sensor Back',
+		label: 'Back',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(128, 128, 0, 1)'
@@ -116,7 +116,7 @@ var tempChart = new Chart(tempChartCanvas, {
 		responsive: true,
 		title: {
 			display: false,
-			text: 'Chart.js Line Chart'
+			text: 'Temperature'
 		},
 		tooltips: {
 			mode: 'index',
@@ -138,7 +138,7 @@ var tempChart = new Chart(tempChartCanvas, {
 				display: true,
 				scaleLabel: {
 					display: true,
-					labelString: 'Temp'
+					labelString: 'Temperature (°C)'
 				}
 			}]
 		}
@@ -153,7 +153,7 @@ sensorSocket.onmessage = function(event) {
     var obj = JSON.parse(str);
 
 	// Get distance data and create radial graph
-	if ("dist" in obj) {
+	if ("distance" in obj) {
 		// Update distance chart
 		var dist_data = [];
     	// Unfortunately the graph has directions clockwise (front, right, back, left) in the array. We have them front, left, right, back
@@ -219,30 +219,11 @@ sensorSocket.onmessage = function(event) {
 		document.getElementById("charge_graph").className = "c100 med orange p" + charge_data;
 	}
 	
-    // Get performance data. The information passed depends on the hardware you are using. 
-	// While almost every device will have their memory and cpu data available through psutils, exceptions can occur and modifications might need to be made
-	
 	// Highest CPU core temperature
-	var highest_temp = Math.round(obj.highest_temp);
-	document.getElementById("cputemp_level").innerHTML = highest_temp + "&degC";
-	document.getElementById("cputemp_graph").className = "c100 med orange p" + highest_temp;
-	/*
-	var memory_total = Math.round(obj.memory_total/1048576);
-	var memory_used = Math.round(obj.memory_used/1048576);
-	// Fancy stuff to display in megabytes if the used RAM is less than a gigabyte.
-	if (memory_used < 1024)
-		document.getElementById("ram").innerHTML = memory_used + " MB";
-	else
-		document.getElementById("ram").innerHTML = (memory_used/1024).toFixed(2) + " GB";
-	document.getElementById("ramPercentage").className = "c100 med orange p" + Math.round((memory_used/memory_total)*100);
+	var cpu_temp = Math.round(obj.cpu_temp);
+	document.getElementById("cputemp_level").innerHTML = cpu_temp + "&degC";
+	document.getElementById("cputemp_graph").className = "c100 med orange p" + cpu_temp;
 
-	var cpu_percent = Math.round(obj.cpu_percent);
-	document.getElementById("cpu").innerHTML = cpu_percent + "%";
-	document.getElementById("cpuPercentage").className = "c100 med orange p" + cpu_percent;
-	
-	var uptime = Math.round(obj.uptime);
-	document.getElementById("uptime").innerHTML = new Date(1000 * uptime).toISOString().substr(11, 8) + "";
-	*/
 
 }
 
