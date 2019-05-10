@@ -1,0 +1,41 @@
+@charset "utf-8";
+/*###########################################################
+# Created by the Semi Autonomous Rescue Team				#
+#															#
+# Author: Connor Kneebone									#
+# Contributors: Connor Kneebone								#
+#															#
+# Licensed under GNU General Public License 3.0				#
+###########################################################*/
+  
+@media (min-width: 768px) {
+	.abs-center-x {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}
+
+table {
+  width: 100%;
+}
+
+td {
+  width: 12.5%;
+  position: relative;
+}
+
+td:after {
+  content: '';
+  display: block;
+  margin-top: 100%;
+}
+
+td .content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: gold;
+}

@@ -7,7 +7,7 @@
 	
 */
 
-var ip = "10.0.2.4";//window.location.hostname;
+var ip = window.location.hostname;
 
 var haveEvents = "GamepadEvent" in window;
 var haveWebkitEvents = "WebKitGamepadEvent" in window;
