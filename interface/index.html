@@ -26,6 +26,11 @@
 
 		<script>
 		var ip = window.location.hostname;
+		
+		function portString (port) {
+			return "http://" + ip + ":" + port;
+		}
+		
 		$(document).ready(function(){
 			// Set to four camera view by default
 			$("#btm_view_sensors").toggle(false);
@@ -43,11 +48,11 @@
 				// If the camera stream doesn't load, default to fallback image
 				if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';  
 			});
-			$("#camera_front").attr("src","http://" + ip + ":8084");
-			$("#camera_left").attr("src","http://" + ip + ":8083");
-			$("#camera_right").attr("src","http://" + ip + ":8082");
-			$("#camera_back").attr("src","http://" + ip + ":8081");
-			$("#ssh_iframe").attr("src","http://" + ip + ":4200");
+			$("#camera_front").attr("src", portString(8084));
+			$("#camera_left").attr("src", portString(8083));
+			$("#camera_right").attr("src", portString(8082));
+			$("#camera_back").attr("src", portString(8081));
+			$("#ssh_iframe").attr("src", portString(4200));
 		});
 
 		</script>

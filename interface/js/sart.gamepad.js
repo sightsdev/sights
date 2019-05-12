@@ -7,8 +7,6 @@
 	
 */
 
-var ip = window.location.hostname;
-
 var haveEvents = "GamepadEvent" in window;
 var haveWebkitEvents = "WebKitGamepadEvent" in window;
 var controllers = {};
@@ -19,10 +17,10 @@ var rAF =
 var select_pressed = false;
 	
 var BUTTONS = {
-	FACE_0: 0,
-	FACE_1: 1,
-	FACE_2: 2,
-	FACE_3: 3,
+	FACE_A: 0,
+	FACE_B: 1,
+	FACE_X: 2,
+	FACE_Y: 3,
 	LEFT_BUMPER: 4,
 	RIGHT_BUMPER: 5,
 	LEFT_TRIGGER: 6,
@@ -38,24 +36,37 @@ var BUTTONS = {
 	CENTER_BUTTON: 16
 };
 
+// Sample message format
 var message = {
-	left_axis_x : 0,
-	left_axis_y : 0,
-	last_dpad: 'none',
-	button_LS : false,
 	button_A : false,
 	button_B : false,
 	button_X : false,
 	button_Y : false,
-	left_trigger : 0,
-	right_trigger : 0,
 	left_bumper : false,
 	right_bumper : false,
+	left_trigger : 0,
+	right_trigger : 0,
+	left_axis_x : 0,
+	left_axis_y : 0,
+	right_axis_x : 0,
+	right_axis_y : 0,
+	button_select : false,
+	button_start : false,
+	left_stick : false,
+	right_stick : false,
+	pad_up: false,
+	pad_down: false,
+	pad_left: false,
+	pad_right: false,
+	center: false,
 	flipped : false
 }
 
+var last_message = "";
+
 console.log("Attempting to connect to the websocket server");
 var controlSocket = new WebSocket("ws://" + ip + ":5555");
+
 
 //Log to the console the result of the socket connection attempt. Useful for troubleshooting.
 function socketState() {
@@ -78,7 +89,7 @@ function connectHandler(e) {
 }
 
 function addGamepad(gamepad) {
-	document.getElementById("start").innerHTML = "Controller connected";
+	$("#start").html("Controller connected");
 	controllers[gamepad.index] = gamepad;
 	rAF(updateStatus);
 	console.log("Controller connected");
@@ -89,6 +100,7 @@ function disconnectHandler(e) {
 }
 
 function removeGamepad(gamepad) {
+				
 	var d = document.getElementById("controller" + gamepad.index);
 	document.body.removeChild(d);
 	delete controllers[gamepad.index];
@@ -128,31 +140,37 @@ function updateStatus() {
 
 			// Handle flipping
 			if (message.flipped) {
-				document.getElementById("camera_front").style = "transform: scale(-1, -1);";
-				document.getElementById("camera_left").style = "transform: scale(-1, -1);";
-				document.getElementById("camera_right").style = "transform: scale(-1, -1);";
-				document.getElementById("camera_back").style = "transform: scale(-1, -1);";
+				$("#camera_front").attr("style", "transform: scale(-1, -1);");
+				$("#camera_left").attr("style", "transform: scale(-1, -1);");
+				$("#camera_right").attr("style", "transform: scale(-1, -1);");
+				$("#camera_back").attr("style", "transform: scale(-1, -1);");
 				// Swap left and right
-				document.getElementById("camera_left").src = "http://" + ip + ":8082";
-				document.getElementById("camera_right").src = "http://" + ip + ":8083";
+				$("#camera_left").attr("src", portString(8082));
+				$("#camera_right").attr("src", portString(8083));
 				
 			} else {
-				document.getElementById("camera_front").style = "";
-				document.getElementById("camera_left").style = "";
-				document.getElementById("camera_right").style = "";
-				document.getElementById("camera_back").style = "";
+				$("#camera_front").attr("style", "");
+				$("#camera_left").attr("style", "");
+				$("#camera_right").attr("style", "");
+				$("#camera_back").attr("style", "");
 				// Swap left and right
-				document.getElementById("camera_left").src = "http://" + ip + ":8083";
-				document.getElementById("camera_right").src = "http://" + ip + ":8082";
+				$("#camera_left").attr("src", portString(8083));
+				$("#camera_right").attr("src", portString(8082));
 			}
 		}
 		
-		message.button_A = getButton(controller, "FACE_0");
-		message.button_B = getButton(controller, "FACE_1");
-		message.button_X = getButton(controller, "FACE_2");
-		message.button_Y = getButton(controller, "FACE_3");
+		message.button_A = getButton(controller, "FACE_A");
+		message.button_B = getButton(controller, "FACE_B");
+		message.button_X = getButton(controller, "FACE_X");
+		message.button_Y = getButton(controller, "FACE_Y");
 		
-		message.button_LS = getButton(controller, "LEFT_STICK");
+		message.pad_up = getButton(controller, "PAD_UP");
+		message.pad_down = getButton(controller, "PAD_DOWN");
+		message.pad_left = getButton(controller, "PAD_LEFT");
+		message.pad_right = getButton(controller, "PAD_RIGHT");
+		
+		message.left_stick = getButton(controller, "LEFT_STICK");
+		message.right_stick = getButton(controller, "RIGHT_STICK");
 		
 		message.left_bumper = getButton(controller, "LEFT_BUMPER");
 		message.right_bumper = getButton(controller, "RIGHT_BUMPER");
@@ -165,9 +183,16 @@ function updateStatus() {
 			if (i == 1) message.left_axis_y = controller.axes[i].toFixed(1);
 		}
 	}
-	//console.log(JSON.stringify(message));
-	if (controlSocket.readyState == 1) 
-		controlSocket.send(JSON.stringify(message));
+	
+	json_message = JSON.stringify(message);
+	
+	// Compare with last message
+	if (json_message !== last_message) {
+		last_message = json_message;
+		//console.log(json_message);
+		if (controlSocket.readyState == 1) 
+			controlSocket.send(json_message);
+	}
 	
 	rAF(updateStatus);
 }
