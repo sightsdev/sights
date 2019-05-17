@@ -8,11 +8,17 @@ import subprocess, os
 import json
 import math
 import atexit
+import configparser
 from servo_party import ServoParty
+
+# Load config file
+config = configparser.ConfigParser()
+config.read('robot.cfg')
 
 # Servos
 servo_party = ServoParty();
 
+# Initial start time
 start_time = time.time()
 
 # Controller stick threshold
@@ -20,7 +26,7 @@ AXIS_THRESHOLD = 8689 / 32767.0
 
 # When script exits or is interrupted stop all servos
 atexit.register(servo_party.stop)
-	
+
 def steering(x, y):
 	y *= -1
 	x *= -1
@@ -159,7 +165,7 @@ async def recieveControlData(websocket, path):
 			
 def main():
 	print("Starting control data reciever")
-	start_server = websockets.serve(recieveControlData, "10.0.2.4", 5555)
+	start_server = websockets.serve(recieveControlData, config['network']['ip'], 5555)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()
 

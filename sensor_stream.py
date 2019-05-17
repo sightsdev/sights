@@ -4,10 +4,14 @@
 # TODO: Add thermal camera code
 #
 
-import websockets, asyncio, psutil, json, serial
+import websockets, asyncio, psutil, json, serial, configparser
 
-ser = serial.Serial("/dev/ttyACM1", 115200)
+config = configparser.ConfigParser()
+config.read('robot.cfg')
+
+ser = serial.Serial(config['arduino']['port'], 115200)
 msg = {}
+
 
 
 def getData():
@@ -28,11 +32,11 @@ def getData():
 		# Strip leading "D:" and split by comma, removing newline characters. Add to message
 		msg["distance"] = buf[2:-3].split(",")
 	# Temperature
-	if (buf[0] == "T"):
+	elif (buf[0] == "T"):
 		# Strip and add to message
 		msg["temp"] = buf[2:-3].split(",")
 	# Gas (TVOC / CO2)
-	if (buf[0] == "G"):
+	elif (buf[0] == "G"):
 		# Strip and add to message
 		data = buf[2:-3].split(",")
 		msg["co2"] = data[0]
@@ -46,7 +50,7 @@ async def sendSensorData(websocket, path):
 
 def main():
 	print("Starting sensor data server")
-	start_server = websockets.serve(sendSensorData, "10.0.2.4", 5556)
+	start_server = websockets.serve(sendSensorData, config['network']['ip'], 5556)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()
 
