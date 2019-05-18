@@ -64,7 +64,7 @@ var distChartOptions = {
 	},
 	scale: {
 		ticks: {
-			max: 1000,
+			max: 1200,
 			min: 0,
 			stepSize: 100
 		}
@@ -157,10 +157,10 @@ sensorSocket.onmessage = function(event) {
 		// Update distance chart
 		var dist_data = [];
     	// Unfortunately the graph has directions clockwise (front, right, back, left) in the array. We have them front, left, right, back
-		dist_data[0] = obj["dist"][0];
-		dist_data[1] = obj["dist"][2];
-		dist_data[2] = obj["dist"][3];
-		dist_data[3] = obj["dist"][1];
+		dist_data[0] = obj["distance"][0];
+		dist_data[1] = obj["distance"][2];
+		dist_data[2] = obj["distance"][3];
+		dist_data[3] = obj["distance"][1];
 		// Change chart dataset to use new data
 		distChartData.datasets[0].data = dist_data;
     	// Reload chart with new data
