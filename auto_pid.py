@@ -26,11 +26,13 @@ speed = 400
 # When script exits or is interrupted stop all servos
 atexit.register(servo_party.stop)
 
+
 class Distance(IntEnum):
     FRONT = 0
     LEFT = 1
     RIGHT = 2
     BACK = 3
+
 
 def getData():
     buf = sc_arduino.readline().decode("UTF-8")
@@ -65,11 +67,11 @@ def main():
                 right = int(msg["distance"][Distance.RIGHT])
 
             if (not reverse and front < 100):
-                servo_party.move(0,0)
+                servo_party.move(0, 0)
                 reverse = True
                 print("Reverse is true")
             elif (reverse and front < 100):
-                servo_party.move(0,0)
+                servo_party.move(0, 0)
                 reverse = False
                 print("Reverse is false")
             else:
