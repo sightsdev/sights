@@ -2,18 +2,25 @@
 #include "Adafruit_VL53L0X.h"
 #include "Adafruit_SGP30.h"
 #include "Adafruit_AMG88xx.h"
+#include "Adafruit_MLX90614.h"
 #define LOX_COUNT 4
+#define MLX_COUNT 3
 
 // Adafruit VL53L0X Distance Sensor
 Adafruit_VL53L0X lox[LOX_COUNT] = Adafruit_VL53L0X();
 int lox_index;
+
+// Adafruit (or similar) MLX90614 Temperature Sensor
+Adafruit_MLX90614 mlx[MLX_COUNT];
+
 // Adafruit SGP30 eC02 / TVOC Sensor
 Adafruit_SGP30 sgp;
-bool sgp_available;
+bool sgp_available = false;
+
 // Adafruit AMG8833
 Adafruit_AMG88xx amg;
 float amg_pixels[AMG88xx_PIXEL_ARRAY_SIZE];
-bool amg_available;
+bool amg_available = false;
 
 bool setup_lox(int pin, int addr) {
   // Initialize sensor with lox.begin(new_i2c_address) Pick any number but 0x29 and it must be under 0x7F. Going with 0x30 to 0x3F is probably OK.
@@ -22,8 +29,7 @@ bool setup_lox(int pin, int addr) {
   if (lox[lox_index].begin(addr)) {
     lox_index++;
     return true;
-  }
-  else { 
+  } else { 
     return false;
   }
 }
@@ -60,10 +66,17 @@ void setup() {
   digitalWrite(6, LOW);
   digitalWrite(7, LOW);
 
+  // VL53l0X
   setup_lox(4, 0x30);
   setup_lox(5, 0x31);
   setup_lox(6, 0x32);
   setup_lox(7, 0x33);
+
+  // MLX90614
+  for (int i = 0; i < MLX_COUNT; i++) { 
+    mlx[i] = Adafruit_MLX90614(0x5A + i);
+    mlx[i].begin();
+  }
   
   // SGP30
   if (sgp.begin()){
@@ -71,12 +84,21 @@ void setup() {
   }
   // AMG8833
   if (amg.begin()){
-    amg_available = true;
+    //amg_available = true;
   }
 }
 
 
 void loop() {
+  // MLX90614
+  if (MLX_COUNT > 0) {
+    Serial.print("T:");
+    for (int i = 0; i < MLX_COUNT; i++) {
+      Serial.print(mlx[i].readObjectTempC());
+      Serial.print(",");
+    }
+    Serial.println();
+  }
 	// VL53l0X
 	if (LOX_COUNT > 0) {
 		Serial.print("D:");
@@ -112,10 +134,10 @@ void loop() {
 	}
 	// AMG8833
 	if (amg_available) {
-		amg.readPixels(pixels);
+		amg.readPixels(amg_pixels);
 		Serial.print("C:[");
 		for(int i=1; i<=AMG88xx_PIXEL_ARRAY_SIZE; i++){
-		  Serial.print(pixels[i-1]);
+		  Serial.print(amg_pixels[i-1]);
 		  Serial.print(", ");
 		  //if( i%8 == 0 ) Serial.println();
 		}
