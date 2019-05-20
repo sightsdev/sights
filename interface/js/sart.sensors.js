@@ -62,6 +62,9 @@ var distChartOptions = {
 	animation: {
 		animateRotate: false
 	},
+	tooltips: {
+		enabled: false,
+	},
 	scale: {
 		ticks: {
 			max: 1200,
@@ -78,49 +81,45 @@ var distChart = new Chart(distChartCanvas, {
 });
 
 var tempChartData =  {
-	labels: [-13, -12, -11, 10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
-	datasets: [{
-		label: 'Front',
-		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		borderColor: [
-			'rgba(128, 0, 0, 1)'
-		]
-	},
+	labels: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
+	datasets: [
 	{
 		label: 'Left',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
-			'rgba(0, 128, 0, 1)'
+			'rgba(66, 133, 244, 1)'
 		]
 	},
 	{
 		label: 'Right',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
-			'rgba(0, 0, 128, 1)'
+			'rgba(52, 168, 83, 1)'
 		]
 	},
 	{
 		label: 'Back',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
-			'rgba(128, 128, 0, 1)'
+			'rgba(234, 67, 53, 1)'
 		]
 	}]
 }
 
 var tempChart = new Chart(tempChartCanvas, {
-	type: 'line',
+	type: 'line',	
 	data: tempChartData,
 	options: {
+		animation: {
+			duration: 800
+		},
 		responsive: true,
 		title: {
 			display: false,
 			text: 'Temperature'
 		},
 		tooltips: {
-			mode: 'index',
-			intersect: false,
+			enabled: false
 		},
 		hover: {
 			mode: 'nearest',
@@ -202,7 +201,7 @@ sensorSocket.onmessage = function(event) {
 	// Get temperature data for line graph
 	if ("temp" in obj) {
 		var temp_data = obj["temp"];
-		for (i = 0; i < 4; i++) {
+		for (i = 0; i < 3; i++) {
 			// Remove oldest element
 			tempChartData.datasets[i].data.shift()
 			// Push new element
