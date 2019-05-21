@@ -37,7 +37,7 @@ var BUTTONS = {
 };
 
 // Sample message format
-var message = {
+var controller_message = {
 	button_A : false,
 	button_B : false,
 	button_X : false,
@@ -62,7 +62,7 @@ var message = {
 	flipped : false
 }
 
-var last_message = "";
+var last_message = JSON.stringify(controller_message);
 
 console.log("Attempting to connect to the websocket server");
 var controlSocket = new WebSocket("ws://" + ip + ":5555");
@@ -136,10 +136,10 @@ function updateStatus() {
 			select_pressed = true;
 		} else if (select_pressed == true) {
 			select_pressed = false;
-			message.flipped = !message.flipped;
+			controller_message.flipped = !controller_message.flipped;
 
 			// Handle flipping
-			if (message.flipped) {
+			if (controller_message.flipped) {
 				$("#camera_front").attr("style", "transform: scale(-1, -1);");
 				$("#camera_left").attr("style", "transform: scale(-1, -1);");
 				$("#camera_right").attr("style", "transform: scale(-1, -1);");
@@ -160,31 +160,31 @@ function updateStatus() {
 		}
 		
 		message.button_A = getButton(controller, "FACE_A");
-		message.button_B = getButton(controller, "FACE_B");
-		message.button_X = getButton(controller, "FACE_X");
-		message.button_Y = getButton(controller, "FACE_Y");
+		controller_message.button_B = getButton(controller, "FACE_B");
+		controller_message.button_X = getButton(controller, "FACE_X");
+		controller_message.button_Y = getButton(controller, "FACE_Y");
 		
-		message.pad_up = getButton(controller, "PAD_UP");
-		message.pad_down = getButton(controller, "PAD_DOWN");
-		message.pad_left = getButton(controller, "PAD_LEFT");
-		message.pad_right = getButton(controller, "PAD_RIGHT");
+		controller_message.pad_up = getButton(controller, "PAD_UP");
+		controller_message.pad_down = getButton(controller, "PAD_DOWN");
+		controller_message.pad_left = getButton(controller, "PAD_LEFT");
+		controller_message.pad_right = getButton(controller, "PAD_RIGHT");
 		
-		message.left_stick = getButton(controller, "LEFT_STICK");
-		message.right_stick = getButton(controller, "RIGHT_STICK");
+		controller_message.left_stick = getButton(controller, "LEFT_STICK");
+		controller_message.right_stick = getButton(controller, "RIGHT_STICK");
 		
-		message.left_bumper = getButton(controller, "LEFT_BUMPER");
-		message.right_bumper = getButton(controller, "RIGHT_BUMPER");
+		controller_message.left_bumper = getButton(controller, "LEFT_BUMPER");
+		controller_message.right_bumper = getButton(controller, "RIGHT_BUMPER");
 		
-		message.left_trigger = getTrigger(controller, "LEFT_TRIGGER");
-		message.right_trigger = getTrigger(controller, "RIGHT_TRIGGER");
+		controller_message.left_trigger = getTrigger(controller, "LEFT_TRIGGER");
+		controller_message.right_trigger = getTrigger(controller, "RIGHT_TRIGGER");
 
 		for (var i = 0; i < controller.axes.length; i++) {
-			if (i == 0) message.left_axis_x = controller.axes[i].toFixed(1);
-			if (i == 1) message.left_axis_y = controller.axes[i].toFixed(1);
+			if (i == 0) controller_message.left_axis_x = controller.axes[i].toFixed(1);
+			if (i == 1) controller_message.left_axis_y = controller.axes[i].toFixed(1);
 		}
 	}
 	
-	json_message = JSON.stringify(message);
+	json_controller_message = JSON.stringify(controller_message);
 	
 	// Compare with last message
 	if (json_message !== last_message) {

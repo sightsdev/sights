@@ -21,6 +21,11 @@
 		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/Chart.bundle.js"></script>
+		
+		<link rel="stylesheet" href="css/monokai.css">
+		<script src="js/highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		
 		<!-- S.A.R.T. Scripts -->
 		<script src="js/sart.demo.js"></script>
 
@@ -44,6 +49,20 @@
 			  $("#btm_view_camera" ).toggle();
 			  $("#btm_view_sensors" ).toggle();
 			});
+			
+			$("#log_clear").click(function() {
+			  // Clear log dump box
+			  $("#dump_box").html("");
+			});
+			$("#sensor_dump_button").click(function() {
+			  // Convert sensor data object to JSON (with formatting) and then into syntax highlighted HTML
+			  $("#dump_box").html(hljs.highlight("JSON", JSON.stringify(last_sensor_data, null, "\t")).value);
+			});
+			$("#controller_dump_button").click(function() {
+			  // Convert controller data object to JSON (with formatting) and then into syntax highlighted HTML
+			  $("#dump_box").html(hljs.highlight("JSON", JSON.stringify(controller_message, null, "\t")).value);
+			});
+			
 			$('.streamImage').error(function(){
 				// If the camera stream doesn't load, default to fallback image
 				if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';  
@@ -88,12 +107,14 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<p>Why is there nothing in 'Logs'? A good question. To tell the truth, we have nothing to log.</p>
+						<button type="button" class="btn btn-default" id="controller_dump_button">Dump Controller Data</button>
+						<button type="button" class="btn btn-default" id="sensor_dump_button">Dump Sensor Data</button>
+						<button type="button" class="btn btn-warning btn-default float-right" id="log_clear">Clear</button>
+						<p><pre><code id="dump_box" class="JSON"></code></pre></p>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();">Clear</button>
+					<!--div class="modal-footer">
 						<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
-					</div>
+					</div-->
 				</div>
 			</div>
 		</div>
@@ -115,7 +136,7 @@
 				</ul>
 				<ul class="nav navbar-nav abs-center-x">
 					<li class="nav-item">
-						<a class="nav-link" onclick="location.reload();" href="#">
+						<a class="nav-link" onclick="location.reload();" href="#" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
 							<span style="color: #FF5A00">S.A.R.T.</span> Control Interface
 						</a>
 					</li>

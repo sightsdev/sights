@@ -3,6 +3,16 @@ var ip = window.location.hostname;
 var tempChartCanvas = document.getElementById("tempChart").getContext('2d');
 var distChartCanvas = document.getElementById("distChart").getContext('2d');
 
+var last_sensor_data = {
+	distance : [],
+	thermal_camera: [],
+	co2: 0,
+	tvoc: 0,
+	temp : [],
+	charge: 0,
+	cpu_temp: 0,
+};
+
 console.log("Starting sensor receiver");
 
 var camColors = [0x480F,
@@ -148,8 +158,7 @@ var tempChart = new Chart(tempChartCanvas, {
 var sensorSocket = new WebSocket("ws://" + ip + ":5556");
 
 sensorSocket.onmessage = function(event) {
-	var str = event.data;
-    var obj = JSON.parse(str);
+    var obj = JSON.parse(event.data);
 
 	// Get distance data and create radial graph
 	if ("distance" in obj) {
@@ -219,10 +228,12 @@ sensorSocket.onmessage = function(event) {
 	}
 	
 	// Highest CPU core temperature
-	var cpu_temp = Math.round(obj.cpu_temp);
-	document.getElementById("cputemp_level").innerHTML = cpu_temp + "&degC";
-	document.getElementById("cputemp_graph").className = "c100 med orange p" + cpu_temp;
+	if ("cpu_temp" in obj) {
+		var cpu_temp = Math.round(obj["cpu_temp"]);
+		document.getElementById("cputemp_level").innerHTML = cpu_temp + "&degC";
+		document.getElementById("cputemp_graph").className = "c100 med orange p" + cpu_temp;
+	}
 
-
+	last_sensor_data = obj;
 }
 
