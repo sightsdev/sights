@@ -17,82 +17,22 @@
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/circle.css">
 		<link rel="stylesheet" href="css/sart.style.css">
+		<!-- Syntax highlighting -->
+		<link rel="stylesheet" href="css/monokai.css">
+		<script src="js/highlight.pack.js"></script>
+		<!-- jQuery -->
 		<script src="js/jquery.min.js"></script>
+		<!-- UI scripts -->
 		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/popper.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/Chart.bundle.js"></script>
-		
-		<link rel="stylesheet" href="css/monokai.css">
-		<script src="js/highlight.pack.js"></script>
-		<script>hljs.initHighlightingOnLoad();</script>
-		
 		<!-- S.A.R.T. Scripts -->
+		<script src="js/sart.interface.js"></script>
 		<script src="js/sart.demo.js"></script>
-
-		<script>
-		var ip = window.location.hostname;
+		<script src="js/sart.sensors.js"></script>
+		<script src="js/sart.gamepad.js"></script>
 		
-		function portString (port) {
-			return "http://" + ip + ":" + port;
-		}
-		
-		$(function () {
-		  $('[data-toggle="tooltip"]').tooltip()
-		})
-		
-		$(document).ready(function(){
-			// Allow both a tooltip and a modal window on a button
-			$('[rel="tooltip"]').tooltip({trigger: "hover"});
-			
-			// Set to four camera view by default
-			$("#btm_view_sensors").toggle(false);
-			
-			// Allow modals to be draggable
-			$(".modal-dialog").draggable({
-				handle: ".modal-header"
-			});
-			$("#sensorToggle").click(function() {
-			  // Swap between camera and sensors view
-			  $("#btm_view_camera" ).toggle();
-			  $("#btm_view_sensors" ).toggle();
-			});
-			
-			$("#log_clear").click(function() {
-			  // Clear log dump box
-			  $("#dump_box").html("");
-			});
-			$("#sensor_dump_button").click(function() {
-			  // Convert sensor data object to JSON (with formatting) and then into syntax highlighted HTML
-			  $("#dump_box").html(hljs.highlight("JSON", JSON.stringify(last_sensor_data, null, "\t")).value);
-			  
-			});
-			$("#controller_dump_button").click(function() {
-			  // Convert controller data object to JSON (with formatting) and then into syntax highlighted HTML
-			  $("#dump_box").html(hljs.highlight("JSON", JSON.stringify(controller_message, null, "\t")).value);
-			});
-			
-			$("#select_log_button").click(function() {
-				var range = document.createRange();
-				var selection = window.getSelection();
-				range.selectNodeContents(document.getElementById('dump_box'));
-
-				selection.removeAllRanges();
-				selection.addRange(range);
-			});
-			
-			$('.streamImage').error(function(){
-				// If the camera stream doesn't load, default to fallback image
-				if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';  
-			});
-			$("#camera_front").attr("src", portString(8084));
-			$("#camera_left").attr("src", portString(8083));
-			$("#camera_right").attr("src", portString(8082));
-			$("#camera_back").attr("src", portString(8081));
-			$("#ssh_iframe").attr("src", portString(4200));
-		});
-
-		</script>
 	</head>
 	<body>
 		<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="true">
@@ -131,13 +71,9 @@
 						<p><pre><code id="dump_box" class="JSON" contenteditable="true"></code></pre></p>
 						<button type="button" class="btn btn-default" id="select_log_button">Select All</button>
 					</div>
-					<!--div class="modal-footer">
-						<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
-					</div-->
 				</div>
 			</div>
 		</div>
-		
 		<!--   _                 _           _                   
 			  | |               | |         | |                  
 			  | |_   _ _ __ ___ | |__   ___ | |_ _ __ ___  _ __  
@@ -399,7 +335,5 @@
 				</div>
 			</div>
 		</div>
-		<script src="js/sart.sensors.js"></script>
-		<script src="js/sart.gamepad.js"></script>
 	</body>
 </html>

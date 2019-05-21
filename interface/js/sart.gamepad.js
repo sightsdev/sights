@@ -15,6 +15,8 @@ var rAF =
 	window.requestAnimationFrame;
 
 var select_pressed = false;
+
+var controlSocket;
 	
 var BUTTONS = {
 	FACE_A: 0,
@@ -64,10 +66,6 @@ var controller_message = {
 
 var last_message = JSON.stringify(controller_message);
 
-console.log("Attempting to connect to the websocket server");
-var controlSocket = new WebSocket("ws://" + ip + ":5555");
-
-
 //Log to the console the result of the socket connection attempt. Useful for troubleshooting.
 function socketState() {
 	var state = controlSocket.readyState
@@ -82,7 +80,6 @@ function socketState() {
 			return "Closed (The connection is closed or couldn't be opened)";
 	}
 }
-console.log("Attempt result: " + socketState());
 
 function connectHandler(e) {
 	addGamepad(e.gamepad);
@@ -214,12 +211,24 @@ function scanGamepads() {
 	}
 }
 
-if (haveEvents) {
-	window.addEventListener("gamepadconnected", connectHandler);
-	window.addEventListener("gamepaddisconnected", disconnectHandler);
-} else if (haveWebkitEvents) {
-	window.addEventListener("webkitgamepadconnected", connectHandler);
-	window.addEventListener("webkitgamepaddisconnected", disconnectHandler);
-} else {
-	setInterval(scanGamepads, 500);
-}
+$(document).ready(function(){
+	console.log("Attempting to connect to the websocket server");
+	
+	try {
+		controlSocket = new WebSocket("ws://" + ip + ":5555");
+		console.log("Attempt result: " + socketState());
+	} catch (err) {
+		console.log(err);
+	}
+	
+
+	if (haveEvents) {
+		window.addEventListener("gamepadconnected", connectHandler);
+		window.addEventListener("gamepaddisconnected", disconnectHandler);
+	} else if (haveWebkitEvents) {
+		window.addEventListener("webkitgamepadconnected", connectHandler);
+		window.addEventListener("webkitgamepaddisconnected", disconnectHandler);
+	} else {
+		setInterval(scanGamepads, 500);
+	}
+});
