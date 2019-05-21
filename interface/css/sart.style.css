@@ -39,3 +39,11 @@ td .content {
   right: 0;
   background: gold;
 }
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}

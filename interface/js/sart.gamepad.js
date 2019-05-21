@@ -86,7 +86,15 @@ function connectHandler(e) {
 }
 
 function addGamepad(gamepad) {
-	$("#start").html("Controller connected");
+	$("#controller_status").html("<i class='fa fa-fw fa-gamepad'></i>");
+	$("#controller_status").attr("class", "btn btn-success");
+
+	bootoast.toast({
+		"message": "Controller connected",
+		"type": "success",
+		"position": "left-bottom"
+	});
+	
 	controllers[gamepad.index] = gamepad;
 	rAF(updateStatus);
 	console.log("Controller connected");
@@ -97,7 +105,13 @@ function disconnectHandler(e) {
 }
 
 function removeGamepad(gamepad) {
-				
+	$("#controller_status").html("<i class='fa fa-fw fa-gamepad'></i> Press a button to connect");
+	$("#controller_status").attr("class", "btn btn-danger");
+	bootoast.toast({
+		"message": "Controller disconnected",
+		"type": "danger",
+		"position": "left-bottom"
+	});	
 	var d = document.getElementById("controller" + gamepad.index);
 	document.body.removeChild(d);
 	delete controllers[gamepad.index];

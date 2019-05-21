@@ -177,6 +177,28 @@ $(document).ready(function(){
 	
 	try {
 		sensorSocket = new WebSocket("ws://" + ip + ":5556");
+		
+		sensorSocket.onopen = function(event) {
+			$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
+			$("#robot_status").attr("class", "btn btn-success");
+			
+			bootoast.toast({
+				"message": "Connected to robot",
+				"type": "success",
+				"position": "left-bottom"
+			});
+		};
+		sensorSocket.onclose = function(event) {
+			$("#robot_status").html("<i class='fa fa-fw fa-link'></i> Disconnected from robot");
+			$("#robot_status").attr("class", "btn btn-danger");
+			
+			bootoast.toast({
+				"message": "Disconnected from robot",
+				"type": "danger",
+				"position": "left-bottom"
+			});
+		};
+		// Setup update event
 		sensorSocket.onmessage = function(event) {
 			var obj = JSON.parse(event.data);
 

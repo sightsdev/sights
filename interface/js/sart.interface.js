@@ -16,6 +16,7 @@ function portString (port) {
 }
 
 $(document).ready(function(){
+	
 	// Allow both a tooltip and a modal window on a button
 	$('[rel="tooltip"]').tooltip({trigger: "hover"});
 	// Enable tooltips
@@ -29,10 +30,15 @@ $(document).ready(function(){
 		handle: ".modal-header"
 	});
 	
+	$("#nav_title").click(function() {
+		// Reload page
+		location.reload();
+	});
+	
 	$("#sensorToggle").click(function() {
-	  // Swap between camera and sensors view
-	  $("#btm_view_camera" ).toggle();
-	  $("#btm_view_sensors" ).toggle();
+		// Swap between camera and sensors view
+		$("#btm_view_camera" ).toggle();
+		$("#btm_view_sensors" ).toggle();
 	});
 	
 	$("#log_clear").click(function() {
