@@ -65,10 +65,20 @@
 			$("#sensor_dump_button").click(function() {
 			  // Convert sensor data object to JSON (with formatting) and then into syntax highlighted HTML
 			  $("#dump_box").html(hljs.highlight("JSON", JSON.stringify(last_sensor_data, null, "\t")).value);
+			  
 			});
 			$("#controller_dump_button").click(function() {
 			  // Convert controller data object to JSON (with formatting) and then into syntax highlighted HTML
 			  $("#dump_box").html(hljs.highlight("JSON", JSON.stringify(controller_message, null, "\t")).value);
+			});
+			
+			$("#select_log_button").click(function() {
+				var range = document.createRange();
+				var selection = window.getSelection();
+				range.selectNodeContents(document.getElementById('dump_box'));
+
+				selection.removeAllRanges();
+				selection.addRange(range);
 			});
 			
 			$('.streamImage').error(function(){
@@ -118,7 +128,8 @@
 						<button type="button" class="btn btn-default" id="controller_dump_button">Dump Controller Data</button>
 						<button type="button" class="btn btn-default" id="sensor_dump_button">Dump Sensor Data</button>
 						<button type="button" class="btn btn-warning btn-default float-right" id="log_clear">Clear</button>
-						<p><pre><code id="dump_box" class="JSON"></code></pre></p>
+						<p><pre><code id="dump_box" class="JSON" contenteditable="true"></code></pre></p>
+						<button type="button" class="btn btn-default" id="select_log_button">Select All</button>
 					</div>
 					<!--div class="modal-footer">
 						<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
