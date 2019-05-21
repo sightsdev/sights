@@ -19,6 +19,7 @@
 		<link rel="stylesheet" href="css/sart.style.css">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
+		<script src="js/popper.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/Chart.bundle.js"></script>
 		
@@ -36,7 +37,14 @@
 			return "http://" + ip + ":" + port;
 		}
 		
+		$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		})
+		
 		$(document).ready(function(){
+			// Allow both a tooltip and a modal window on a button
+			$('[rel="tooltip"]').tooltip({trigger: "hover"});
+			
 			// Set to four camera view by default
 			$("#btm_view_sensors").toggle(false);
 			
@@ -136,19 +144,19 @@
 				</ul>
 				<ul class="nav navbar-nav abs-center-x">
 					<li class="nav-item">
-						<a class="nav-link" onclick="location.reload();" href="#" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+						<a class="nav-link" onclick="location.reload();" href="#" data-toggle="tooltip" data-placement="bottom" title="Reload page">
 							<span style="color: #FF5A00">S.A.R.T.</span> Control Interface
 						</a>
 					</li>
 				</ul>
 				<div class="inline">
-					<button type="button" class="btn btn-outline-dark" id="sensorToggle">
+					<button type="button" class="btn btn-outline-dark" id="sensorToggle" data-toggle="tooltip" data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
 						Toggle Sensors
 					</button>
-					<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#sshModal" >
+					<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#sshModal" rel="tooltip" data-placement="bottom" title="Open SSH window">
 						SSH
 					</button>
-					<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#logModal" >
+					<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#logModal" rel="tooltip" data-placement="bottom" title="Open log window">
 						Logs
 					</button>
 					<div class="btn-group dropleft" role="group">
@@ -156,9 +164,9 @@
 							Power
 						</button>
 						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-							<a class="dropdown-item" href="shutdown.php">Shutdown</a>
-							<a class="dropdown-item" href="restart.php">Reboot</a>
-							<a class="dropdown-item" href="#" onclick="DemoMode()">Demo Mode</a>
+							<a class="dropdown-item" href="shutdown.php" rel="tooltip" data-placement="left" title="Safely power off the robot">Shutdown</a>
+							<a class="dropdown-item" href="restart.php" rel="tooltip" data-placement="left" title="Safely reboot the robot">Reboot</a>
+							<a class="dropdown-item" href="#" onclick="DemoMode()" rel="tooltip" data-placement="left" title="Load demo mode">Demo Mode</a>
 						</div>
 					</div>
 				</div>
