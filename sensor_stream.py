@@ -6,6 +6,7 @@ import psutil
 import json
 import serial
 import configparser
+from datetime import timedelta
 
 config = configparser.ConfigParser()
 config.read('robot.cfg')
@@ -24,6 +25,11 @@ def getData():
 				 highest_temp = i.current
 	# Add to message
 	msg["cpu_temp"] = str(highest_temp)
+
+	# System uptime
+	with open('/proc/uptime', 'r') as f:
+		uptime_seconds = float(f.readline().split()[0])
+		msg["uptime"] = str(timedelta(seconds = uptime_seconds))
 
 	# Get data from Arduino
 	buf = ser.readline().decode("UTF-8")
