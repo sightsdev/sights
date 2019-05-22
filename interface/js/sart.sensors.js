@@ -172,8 +172,6 @@ $(document).ready(function(){
 	
 	$("#tempChart").attr("style", "display: block; height: 187px; width: 374px;");
 	$("#distChart").attr("style", "display: block; height: 187px; width: 374px;");
-
-	console.log("Starting sensor receiver");
 	
 	try {
 		sensorSocket = new WebSocket("ws://" + ip + ":5556");
@@ -189,7 +187,7 @@ $(document).ready(function(){
 			});
 		};
 		sensorSocket.onclose = function(event) {
-			$("#robot_status").html("<i class='fa fa-fw fa-link'></i> Disconnected from robot");
+			$("#robot_status").html("<i class='fa fa-fw fa-unlink'></i> Disconnected from robot");
 			$("#robot_status").attr("class", "btn btn-danger");
 			
 			bootoast.toast({
@@ -274,6 +272,11 @@ $(document).ready(function(){
 				var cpu_temp = Math.round(obj["cpu_temp"]);
 				document.getElementById("cputemp_level").innerHTML = cpu_temp + "&degC";
 				document.getElementById("cputemp_graph").className = "c100 med orange p" + cpu_temp;
+			}
+			
+			// System uptime
+			if ("uptime" in obj) {
+				document.getElementById("uptime").innerHTML = "Uptime: " + obj["uptime"];
 			}
 
 			last_sensor_data = obj;
