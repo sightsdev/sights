@@ -44,6 +44,7 @@
 
 	</head>
 	<body>
+		<!-- SSH MODAL -->
 		<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -57,13 +58,13 @@
 						<iframe id="ssh_iframe" src="" width="100%" height="400px"></iframe>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();"><i class="fa fa-redo"></i> Refresh</button>
+						<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();"><i class="fa fa-fw fa-redo"></i> Refresh</button>
 						<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
+		<!-- LOG MODAL -->
 		<div class="modal fade top" id="logModal" role="dialog" data-backdrop="true">
 			<div class="modal-dialog modal-lg" >
 				<div class="modal-content">
@@ -74,25 +75,25 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<button type="button" class="btn btn-default" id="controller_dump_button">
-							<i class="fa fa-file-export"></i> Dump Controller Data
+						<button type="button" class="btn btn-light" id="controller_dump_button">
+							<i class="fa fa-fw fa-file-export"></i> Dump Controller Data
 						</button>
-						<button type="button" class="btn btn-default" id="sensor_dump_button">
-							<i class="fa fa-file-export"></i> Dump Sensor Data
+						<button type="button" class="btn btn-light" id="sensor_dump_button">
+							<i class="fa fa-fw fa-file-export"></i> Dump Sensor Data
 						</button>
-						<button type="button" class="btn btn-danger btn-default float-right" id="log_clear">
-							<i class="fa fa-trash-alt"></i> Clear
+						<button type="button" class="btn btn-danger float-right" id="log_clear">
+							<i class="fa fa-fw fa-trash-alt"></i> Clear
 						</button>
 						<p><pre><code id="dump_box" class="JSON" contenteditable="true"></code></pre></p>
-						<button type="button" class="btn btn-default" id="select_log_button">
-							<i class="fa fa-check-square"></i> Select All
+						<button type="button" class="btn btn-light" id="select_log_button">
+							<i class="fa fa-fw fa-check-square"></i> Select All
 						</button>
 						<div class="float-right" id="uptime">Uptime: 0.0s</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
+		<!-- NAVIGATION BAR -->
 		<nav class="navbar navbar-toggleable-sm navbar-fixed-top navbar-light bg-light main-nav">
 			<div class="container-fluid">
 				<ul class="nav navbar-nav">
@@ -104,7 +105,7 @@
 						</span>
 						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Robot connection status">
 							<button type="button" id="robot_status" class="btn btn-danger" style="pointer-events: none">
-								<i class="fa fa-fw fa-link"></i> Disconnected from robot
+								<i class="fa fa-fw fa-unlink"></i> Disconnected from robot
 							</button>
 						</span>
 					</li>
@@ -131,9 +132,9 @@
 							Power
 						</button>
 						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-							<a class="dropdown-item" href="shutdown.php" rel="tooltip" data-placement="left" title="Safely power off the robot"><i class="fa fa-power-off fa-fw"></i> Shutdown</a>
-							<a class="dropdown-item" href="restart.php" rel="tooltip" data-placement="left" title="Safely reboot the robot"><i class="fa fa-undo fa-fw"></i> Reboot</a>
-							<a class="dropdown-item" href="#" onclick="DemoMode()" rel="tooltip" data-placement="left" title="Load demo mode"><i class="fa fa-object-group fa-fw"></i> Demo Mode</a>
+							<a class="dropdown-item" href="shutdown.php" rel="tooltip" data-placement="left" title="Safely power off the robot"><i class="fa fa-fw fa-power-off"></i> Shutdown</a>
+							<a class="dropdown-item" href="restart.php" rel="tooltip" data-placement="left" title="Safely reboot the robot"><i class="fa fa-fw fa-undo"></i> Reboot</a>
+							<a class="dropdown-item" href="#" onclick="DemoMode()" rel="tooltip" data-placement="left" title="Load demo mode"><i class="fa fa-fw fa-object-group"></i> Demo Mode</a>
 						</div>
 					</div>
 				</div>
