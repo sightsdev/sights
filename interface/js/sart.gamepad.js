@@ -170,7 +170,7 @@ function updateStatus() {
 			}
 		}
 		
-		message.button_A = getButton(controller, "FACE_A");
+		controller_message.button_A = getButton(controller, "FACE_A");
 		controller_message.button_B = getButton(controller, "FACE_B");
 		controller_message.button_X = getButton(controller, "FACE_X");
 		controller_message.button_Y = getButton(controller, "FACE_Y");
