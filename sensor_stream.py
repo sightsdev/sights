@@ -17,7 +17,7 @@ try:
   ser = serial.Serial(config['arduino']['port'], 115200)
 except serial.serialutil.SerialException:
   print("Error: Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
-  print("Continuing without Arduino connection")
+  print("Continuing without Arduino connection\n")
   arduino_connected = False
 
 msg = {}
@@ -70,8 +70,13 @@ def getData():
 
 
 async def sendSensorData(websocket, path):
+	print ("Client connected")
 	while True:
-		await websocket.send(getData())
+		try: 
+			await websocket.send(getData())
+		except websockets.exceptions.ConnectionClosed:
+			print ("Client disconnected")
+			break
 
 
 def main():
