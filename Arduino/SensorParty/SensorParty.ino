@@ -92,9 +92,9 @@ void setup() {
   }
   
   // SGP30
-  if (sgp.begin()){
+  /*if (sgp.begin()){
     sgp_available = true;
-  }
+  }*/
   // AMG8833
   if (amg.begin()){
     amg_available = true;
@@ -135,7 +135,7 @@ void loop() {
   			Serial.print(",");
   		}
   		Serial.println();
-  		delay(100);
+  		delay(20);
     }
     lox_counter = 0;
   } else lox_counter++;
