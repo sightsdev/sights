@@ -92,9 +92,9 @@ void setup() {
   }
   
   // SGP30
-  /*if (sgp.begin()){
+  if (sgp.begin()){
     sgp_available = true;
-  }*/
+  }
   // AMG8833
   if (amg.begin()){
     amg_available = true;
@@ -146,14 +146,12 @@ void loop() {
   		Serial.print("G:");
   		if (!sgp.IAQmeasure()) {
   			Serial.println("0,0");
-  			return;
-  		}
-  		Serial.print(sgp.eCO2);
-  		Serial.print(",");
-  		Serial.print(sgp.TVOC);
-  		
+  		} else {
+  			Serial.print(sgp.eCO2);
+  			Serial.print(",");
+  			Serial.print(sgp.TVOC);
+		}
   		Serial.println();
-  		delay(100);
   	}
    sgp_counter = 0;
   } else sgp_counter++;
