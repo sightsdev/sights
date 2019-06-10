@@ -39,7 +39,8 @@ var BUTTONS = {
 };
 
 // Sample message format
-var controller_message = {
+var controller_message = {}
+/*
 	button_A : false,
 	button_B : false,
 	button_X : false,
@@ -63,6 +64,7 @@ var controller_message = {
 	center: false,
 	flipped : false
 }
+*/
 
 var last_message = JSON.stringify(controller_message);
 
@@ -193,16 +195,16 @@ function updateStatus() {
 			if (i == 0) controller_message.left_axis_x = controller.axes[i].toFixed(1);
 			if (i == 1) controller_message.left_axis_y = controller.axes[i].toFixed(1);
 		}
-	}
+		
+		json_message = JSON.stringify(controller_message);
 	
-	json_controller_message = JSON.stringify(controller_message);
-	
-	// Compare with last message
-	if (json_message !== last_message) {
-		last_message = json_message;
-		//console.log(json_message);
-		if (controlSocket.readyState == 1) 
-			controlSocket.send(json_message);
+		// Compare with last message
+		if (json_message !== last_message) {
+			last_message = json_message;
+			//console.log(json_message);
+			if (controlSocket.readyState == 1) 
+				controlSocket.send(json_message);
+		}
 	}
 	
 	rAF(updateStatus);
