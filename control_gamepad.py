@@ -128,8 +128,6 @@ def parseJSON(buf):
 	obj = {}
 	obj["left_axis_x"] = float(msg["left_axis_x"])
 	obj["left_axis_y"] = float(msg["left_axis_y"])
-	obj["last_dpad"] = str(msg["last_dpad"])
-	obj["button_LS"] = bool(msg["button_LS"])
 	obj["button_A"] = bool(msg["button_A"])
 	obj["button_B"] = bool(msg["button_B"])
 	obj["button_X"] = bool(msg["button_X"])
@@ -160,6 +158,8 @@ async def recieveControlData(websocket, path):
 		# Recieve JSON formatted string from websockets
 		buf = await websocket.recv()
 		if len(buf) > 0:
+			if config['debug'].getboolean('debug_printout'):
+				print (buf)
 			# Convert string data to object and then handle controls
 			controlHandler(parseJSON(buf))
 			
