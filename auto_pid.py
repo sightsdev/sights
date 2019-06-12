@@ -39,6 +39,7 @@ def getData():
 
 
 def main():
+    # Set up variables
     integral = 0
     last_error = 0
     current_time = time.time()
