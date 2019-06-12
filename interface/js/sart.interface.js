@@ -69,10 +69,10 @@ $(document).ready(function(){
 		if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';  
 	});
 	// Set source of camera streams
-	$("#camera_front").attr("src", portString(8084));
+	$("#camera_front").attr("src", portString(8081));
 	$("#camera_left").attr("src", portString(8083));
 	$("#camera_right").attr("src", portString(8082));
-	$("#camera_back").attr("src", portString(8081));
+	$("#camera_back").attr("src", portString(8084));
 	// Set source of SSH window
 	$("#ssh_iframe").attr("src", portString(4200));
 });
