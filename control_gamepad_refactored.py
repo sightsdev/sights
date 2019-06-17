@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from pyax12.connection import Connection
+#from pyax12.connection import Connection
 from enum import IntEnum
 import time
 import websockets
@@ -11,11 +11,47 @@ import atexit
 from servo_party import ServoParty
 from Controller import XBoxOne
 from Robot import Robot
+from Motors import MX12W, MotorGroup, XL430W250
 
 class SARTRobot(Robot):
-    def __init__():
-        
-        super.__init()
+    def __Arm__(self, portHandler):
+        return MotorGroup({
+            "shoulder":MotorGroup({
+                    "left":XL430W250(5, portHandler, baudrate="1000000"),
+                    "right":XL430W250(6, portHandler, baudrate="1000000", reverse=True),
+                    }), 
+            "elbow":MotorGroup({
+                    "left":XL430W250(7, portHandler, baudrate="1000000"),
+                    "right":XL430W250(8, portHandler, baudrate="1000000", reverse=True),
+                    }), 
+            "Hand":MotoGroup({
+                    "left":XL430W250(9, portHandler, baudrate="1000000"),
+                    "right":XL430W250(10, portHandler, baudrate="1000000", reverse=True),
+                    }),
+            })
+    
+    def __Wheels__(self, portHandler):
+        return MotorGroup({
+            "left":MotorGroup({
+                    "front":MX12W(1, portHandler, baudrate="1000000"),
+                    "back":MX12W(2, portHandler, baudrate="1000000", reverse=True),
+                    }),
+            "right":MotorGroup({
+                    "front":MX12W(3, portHandler, baudrate="1000000"),
+                    "back":MX12W(4, portHandler, baudrate="1000000", reverse=True),
+                    })
+            })
+    
+    def __init__(self, portHandler, arm=False, wheels=False):
+        self.motors = MotorGroup(dict())
+        if arm:
+            self.motors["arm"] = self.__Arm__(portHandler)
+            self.Arm = self.motors["arm"]
+        if wheels:
+            self.motors["wheels"] = self.__Wheels__(portHandler)
+            self.Wheels = self.motors["wheels"]
+            
+    
 
 # Servos
 servo_party = ServoParty();

@@ -1,5 +1,8 @@
 import dynamixel_sdk as DXLSDK
 from Dxl_Register import Dxl_Register as Register
+from enum import Enum
+from typing import Dict
+
 
 class MotorBase(object):
     baud2reg = {
@@ -31,8 +34,8 @@ class MotorBase(object):
     #EEPROM
     ID_REG = None
     BAUDRATE = None
-    MAX_POS = None
-    MIN_POS = None
+    MAX_POSITION = None
+    MIN_POSITION = None
     
     #RAM
     TORQUE_ENABLE = None
@@ -42,7 +45,35 @@ class MotorBase(object):
     PRESENT_POSITION = None
     PRESENT_TEMP = None
     
-class Motor1(MotorBase):
+    def commResult(self, result, error):
+        if result != DXLSDK.COMM_SUCCESS:
+           return 0
+        elif error != 0:
+            return -1
+        else:
+            return 1
+    
+class MX12W(MotorBase):
+    
+    class ProfileConfigurations(Enum):
+        WheelMode = 1
+        JointMode = 2
+        
+    def __posNormal__(self, pos):
+        return pos
+    
+    def __posReversed__(self, pos):
+        if pos is not None:
+            pos = self.MAX_POSITION.max-pos
+        return pos
+    
+    def __wheelNormal__(self, speed):
+        return speed
+    
+    def __wheelReversed__(self, speed):
+        return speed^(1<<10) if speed is not None else None
+    
+    pos_speed_mode = None
     
     def __init__(self, ID, portHandler, reverse=False, baudrate="57600"):
         self.port              = portHandler
@@ -53,32 +84,50 @@ class Motor1(MotorBase):
         #EEPROM
         self.ID_REG            = Register(self.packetHandler, 3, 1, 252)  #ID 254 is broadcast               
         self.BAUDRATE          = Register(self.packetHandler, 4, 1, 7)
-        self.MAX_POS           = Register(self.packetHandler, 8, 2, 1023)
-        self.MIN_POS           = Register(self.packetHandler, 6, 2, 1023)
+        self.MAX_POSITION      = Register(self.packetHandler, 8, 2, 4095)
+        self.MIN_POSITION      = Register(self.packetHandler, 6, 2, 4095)
         
         #RAM
         self.TORQUE_ENABLE     = Register(self.packetHandler, 24, 1, 1)
         self.LED               = Register(self.packetHandler, 25, 1, 1)
-        self.GOAL_POSITION     = Register(self.packetHandler, 30, 2, 1023)
-        self.MOVING_SPEED      = Register(self.packetHandler, 32, 2, 2047)
+        self.GOAL_POSITION     = Register(self.packetHandler, 30, 2, 4095)
+        self.GOAL_VELOCITY     = Register(self.packetHandler, 32, 2, 2047)
         self.PRESENT_LOAD      = Register(self.packetHandler, 40, 2, 1023, writeable=False)
         self.PRESENT_POSITION  = Register(self.packetHandler, 36, 2, 4095, writeable=False)
         self.PRESENT_TEMP      = Register(self.packetHandler, 43, 1, 99, writeable=False)
         
         
         if reverse is not "init":
-            minPos                 = self.read(self.MIN_POS)
-            maxPos                 = self.read(self.MAX_POS)
+            minPos                 = self.read(self.MIN_POSITION)
+            maxPos                 = self.read(self.MAX_POSITION)
             self.minPos            = minPos if minPos is not None else 0
-            self.maxPos            = maxPos if maxPos is not None else 1264095
+            self.maxPos            = maxPos if maxPos is not None else 1023
+            if (minPos!=0) or (maxPos!=0):
+                self.drive_mode = self.ProfileConfigurations.JointMode
+            else:
+                self.drive_mode = self.ProfileConfigurations.WheelMode
         
         print((self.setDriveMode(Reversed=reverse)))
         
+    #profileconfiguration in this motor is     
+    def setDriveMode(self, ProfileConfiguration=None, Reversed=None):
+        if ProfileConfiguration is not None:
+            self.drive_mode = ProfileConfiguration
+            if ProfileConfiguration is self.ProfileConfigurations.WheelMode:
+                self.write(self.MIN_POSITION, 0)
+                self.write(self.MAX_POSITION, 0)
+            else:
+                self.write(self.MIN_POSITION, self.MIN_POSITION.min)
+                self.write(self.MAX_POSITION, self.MAX_POSITION.max)
         
-    def setDriveMode(self, WheelMode=False, Reversed=False):
-        if WheelMode:
-            self.write(self.MIN_POS, 0)
-            self.write(self.MAX_POS, 0)
+        if Reversed is not None:
+            self.reversed = Reversed
+        
+        if self.drive_mode is self.ProfileConfigurations.JointMode:
+            self.pos_speed_mode = self.__posReversed__ if self.reversed else self.__posNormal__
+        else:
+            self.pos_speed_mode = self.__wheelReversed__ if self.reversed else self.__wheelNormal__
+            
             
         
             
@@ -106,13 +155,6 @@ class Motor1(MotorBase):
         dxl_comm_result, dxl_error = register.write(int(data), self.ID, self.port)
         return self.commResult(dxl_comm_result, dxl_error)
     
-    def commResult(self, result, error):
-        if result != DXLSDK.COMM_SUCCESS:
-           return 0
-        elif error != 0:
-            return -1
-        else:
-            return 1
     
     def read(self, register):
         if self.port.getBaudRate() != self.BAUDRATE:
@@ -124,39 +166,54 @@ class Motor1(MotorBase):
             return None
         
     def currentPos(self, convert2Deg=True):
-        pos = self.read(self.PRESENT_POSITION)
+        pos = self.pos_speed_mode(self.read(self.PRESENT_POSITION))
         if pos is None:
             return -99999
         elif convert2Deg:
-            return Pos2Deg(pos)
+            return self.Pos2Deg(pos)
         else:
             return pos
         
     def getGoalPos(self, convert2Deg=True):
-        pos = self.read(self.GOAL_POSITION)
+        if self.drive_mode == self.ProfileConfigurations.WheelMode:
+            return -90909
+        pos = self.pos_speed_mode(self.read(self.GOAL_POSITION))
         if pos is None:
             return -99999
         elif convert2Deg:
-            return Pos2Deg(pos)
+            return self.Pos2Deg(pos)
         else:
             return pos
     
+    def setGoalSpeed(self, goal, Normal=True):
+        if self.drive_mode is self.ProfileConfigurations.WheelMode:
+            if Normal:
+                goal=int(self.GOAL_VELOCITY.max/200*goal)
+            goal = self.pos_speed_mode(goal)
+            print("ID: {}, SPEED: {}".format(self.ID, goal))
+            return self.write(self.GOAL_VELOCITY, goal)
+        return -1
+    
     def setGoalPos(self, goal, Deg=True):
-        if Deg:
-            goal=Deg2Pos(goal)
-        if goal <= self.maxPos and goal >= self.minPos:
-            return self.write(self.GOAL_POSITION, goal)
+        if self.drive_mode is not self.ProfileConfigurations.WheelMode:
+            goal = self.pos_speed_mode(goal)
+            if Deg:
+                goal=self.Deg2Pos(goal)
+            if goal <= self.maxPos and goal >= self.minPos:
+                return self.write(self.GOAL_POSITION, goal)
         return -1
     
     def setPosBounds(self, minPos, maxPos, Deg=True):
+        minPos = self.pos_speed_mode(minPos)
+        maxPos = self.pos_speed_mode(maxPos)
         if Deg:
-            minPos = Deg2Pos(minPos)
-            maxPos = Deg2Pos(maxPos)
+            minPos = self.Deg2Pos(minPos)
+            maxPos = self.Deg2Pos(maxPos)
         count = 0
-        if self.write(self.MIN_POS, minPos)==1:
+        if self.write(self.MIN_POSITION, minPos)==1:
             self.minPos = minPos
             count+=1
-        if self.write(self.MAX_POS, maxPos)==1:
+        if self.write(self.MAX_POSITION, maxPos)==1:
             self.maxPos = maxPos
             count+=1
         return count==2
@@ -164,9 +221,15 @@ class Motor1(MotorBase):
     def reboot(self):
         dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
         return self.commResult(dxl_comm_result, dxl_error)
+    
+    def Deg2Pos(deg):
+        return (deg/0.088+2048)
+
+    def Pos2Deg(pos):
+        return ((pos-2048)*0.088)
         
 
-class Motor2(MotorBase):
+class XL430W250(MotorBase):
     
     def __init__(self, ID, portHandler, reverse=False, baudrate="57600"):
         self.port              = portHandler
@@ -179,22 +242,24 @@ class Motor2(MotorBase):
         self.BAUDRATE          = Register(self.packetHandler, 8, 1, 7)
         self.DRIVE_MODE         = Register(self.packetHandler, 10, 1, 256)
         self.OPERATING_MODE    = Register(self.packetHandler, 11, 1, 16)
-        self.MAX_POS           = Register(self.packetHandler, 48, 4, 4095)
-        self.MIN_POS           = Register(self.packetHandler, 52, 4, 4095)
+        self.MAX_POSITION           = Register(self.packetHandler, 48, 4, 4095)
+        self.MIN_POSITION           = Register(self.packetHandler, 52, 4, 4095)
+        self.MAX_VELOCITY
         
         #RAM
         self.TORQUE_ENABLE     = Register(self.packetHandler, 64, 1, 1)
         self.LED               = Register(self.packetHandler, 65, 1, 1)
         self.ERROR             = Register(self.packetHandler, 70, 1, 255, writeable=False)
         self.GOAL_POSITION     = Register(self.packetHandler, 116, 4, 4095)
+        self.GOAL_VELOCITY     = Register(self.packetHandler, 104, 4, 1023, minVal = -1023)
         self.PRESENT_LOAD      = Register(self.packetHandler, 126, 2, 1000, minVal=-1000, writeable=False)
         self.PRESENT_POSITION  = Register(self.packetHandler, 132, 4, 4095, writeable=False)
         self.PRESENT_TEMP      = Register(self.packetHandler, 146, 1, 256, writeable=False)
         
         
         if reverse is not "init":
-            minPos                 = self.read(self.MIN_POS)
-            maxPos                 = self.read(self.MAX_POS)
+            minPos                 = self.read(self.MIN_POSITION)
+            maxPos                 = self.read(self.MAX_POSITION)
             self.minPos            = minPos if minPos is not None else 0
             self.maxPos            = maxPos if maxPos is not None else 4095
         
@@ -268,14 +333,6 @@ class Motor2(MotorBase):
         dxl_comm_result, dxl_error = register.write(int(data), self.ID, self.port)
         return self.commResult(dxl_comm_result, dxl_error)
     
-    def commResult(self, result, error):
-        if result != DXLSDK.COMM_SUCCESS:
-           return 0
-        elif error != 0:
-            return -1
-        else:
-            return 1
-    
     def read(self, register):
         if self.port.getBaudRate() != self.BAUDRATE:
             self.port.setBaudRate(self.BAUDRATE)
@@ -290,7 +347,7 @@ class Motor2(MotorBase):
         if pos is None:
             return -99999
         elif convert2Deg:
-            return Pos2Deg(pos)
+            return self.Pos2Deg(pos)
         else:
             return pos
         
@@ -299,26 +356,31 @@ class Motor2(MotorBase):
         if pos is None:
             return -99999
         elif convert2Deg:
-            return Pos2Deg(pos)
+            return self.Pos2Deg(pos)
         else:
             return pos
     
     def setGoalPos(self, goal, Deg=True):
         if Deg:
-            goal=Deg2Pos(goal)
+            goal=self.Deg2Pos(goal)
         if goal <= self.maxPos and goal >= self.minPos:
             return self.write(self.GOAL_POSITION, goal)
         return -1
     
+    def setGoalSpeed(self, goal, Normal=True):
+        if Normal:
+            goal=self.GOAL_VELOCITY.max/100*goal
+        return self.write(self.GOAL_VELOCITY, goal)
+    
     def setPosBounds(self, minPos, maxPos, Deg=True):
         if Deg:
-            minPos = Deg2Pos(minPos)
-            maxPos = Deg2Pos(maxPos)
+            minPos = self.Deg2Pos(minPos)
+            maxPos = self.Deg2Pos(maxPos)
         count = 0
-        if self.write(self.MIN_POS, minPos)==1:
+        if self.write(self.MIN_POSITION, minPos)==1:
             self.minPos = minPos
             count+=1
-        if self.write(self.MAX_POS, maxPos)==1:
+        if self.write(self.MAX_POSITION, maxPos)==1:
             self.maxPos = maxPos
             count+=1
         return count==2
@@ -326,54 +388,59 @@ class Motor2(MotorBase):
     def reboot(self):
         dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
         return self.commResult(dxl_comm_result, dxl_error)
+    
+    def Deg2Pos(deg):
+        return (deg/0.088+2048)
+
+    def Pos2Deg(pos):
+        return ((pos-2048)*0.088)
 
 
 
 class MotorGroup(MotorBase):
-    def __init__(self, motors, motorType):
-        self.motors = list(motors)
+    def __init__(self, motors:Dict(str, MotorBase)):
+        self.motors = motors
     
+    def __getitem__(self, key):
+        self.motors[key]
     
     def setDriveMode(self, ProfileConfiguration=None, Reversed=None):
-        for m in self.motors:
+        for m in self.motors.values():
             m.setDriveMode(ProfileConfiguration=ProfileConfiguration, Reversed=Reversed)
         
     def hasError(self):
-        return any(list([motor.hasError() for motor in self.motors]))
+        return any(list([motor.hasError() for motor in self.motors.values()]))
     
     def printErrors(self):
-        for m in self.motors:
+        for m in self.motors.values():
             m.printErrors()
         
     def enable(self):
-        return self.write(self.TORQUE_ENABLE, 1)
+        return list([motor.enable() for motor in self.motors.values()])
     
     def disable(self):
-        return self.write(self.TORQUE_ENABLE, 0)
+        return list([motor.disable() for motor in self.motors.values()])
+    
     def isenabled(self):
-        return self.read(self.TORQUE_ENABLE)
+        return list([motor.read(motor.TORQUE_ENABLED) for motor in self.motors.values()])
     
     def write(self, register, data):
-        return list([motor.write(register, data) for motor in self.motors])
+        return list([motor.write(register, data) for motor in self.motors.values()])
     
     def read(self, register):
-        return list([motor.read(register) for motor in self.motors])
+        return list([motor.read(register) for motor in self.motors.values()])
     
     def currentPos(self, convert2Deg=True):
-        return list([motor.currentPos(convert2Deg=convert2Deg) for motor in self.motors])
+        return list([motor.currentPos(convert2Deg=convert2Deg) for motor in self.motors.values()])
         
     def getGoalPos(self, convert2Deg=True):
-        return list([motor.getGoalPos(convert2Deg=convert2Deg) for motor in self.motors])
+        return list([motor.getGoalPos(convert2Deg=convert2Deg) for motor in self.motors.values()])
     
     def setGoalPos(self, goal, Deg=True):
-        return list([motor.setGoalPos(goal, Deg=Deg) for motor in self.motors])
+        return list([motor.setGoalPos(goal, Deg=Deg) for motor in self.motors.values()])
     
     def setPosBounds(self, minPos, maxPos, Deg=True):
-        return list([motor.setPosBounds(minPos, maxPos, Deg=Deg) for motor in self.motors])
-
-
-def Deg2Pos(deg):
-    return (deg/0.088+2048)
-
-def Pos2Deg(pos):
-    return ((pos-2048)*0.088)
+        return list([motor.setPosBounds(minPos, maxPos, Deg=Deg) for motor in self.motors.values()])
+    
+    def setGoalSpeed(self, goal, Normal=True):
+        return list([motor.setGoalSpeed(goal, Normal) for motor in self.motors.values()])
