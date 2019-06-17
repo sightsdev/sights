@@ -27,6 +27,8 @@ class MotorBase(object):
         7:4500000
     }
     
+    resolution = 1
+    
     port = None
     packetHandler  = None
     
@@ -53,11 +55,25 @@ class MotorBase(object):
         else:
             return 1
     
-class MX12W(MotorBase):
+    def Deg2Pos(self, deg):
+        return deg/self.resolution+self.PRESENT_POSITION.maxVal
+
+    def Pos2Deg(self, pos):
+        return (pos-self.PRESENT_POSITION.maxVal)*self.resolution
     
     class ProfileConfigurations(Enum):
         WheelMode = 1
-        JointMode = 2
+        JointMode = 3
+        
+        @classmethod
+        def parse(cls, label):
+            if label.lower() in ("joint","jointmode"):
+                return cls.JointMode
+            if label.lower() in ("wheel","wheelmode"):
+                return cls.WheelMode
+            raise NotImplementedError
+    
+class MX12W(MotorBase):
         
     def __posNormal__(self, pos):
         return pos
@@ -74,8 +90,8 @@ class MX12W(MotorBase):
         return speed^(1<<10) if speed is not None else None
     
     pos_speed_mode = None
-    
-    def __init__(self, ID, portHandler, reverse=False, baudrate="57600"):
+    resolution = 0.088
+    def __init__(self, ID, portHandler, reverse=False, baudrate="57600", driveMode="Joint", minimum=None, maximum=None):
         self.port              = portHandler
         self.packetHandler     = DXLSDK.PacketHandler(1.0)
         self.ID                = ID
@@ -97,28 +113,19 @@ class MX12W(MotorBase):
         self.PRESENT_TEMP      = Register(self.packetHandler, 43, 1, 99, writeable=False)
         
         
-        if reverse is not "init":
-            minPos                 = self.read(self.MIN_POSITION)
-            maxPos                 = self.read(self.MAX_POSITION)
-            self.minPos            = minPos if minPos is not None else 0
-            self.maxPos            = maxPos if maxPos is not None else 1023
-            if (minPos!=0) or (maxPos!=0):
-                self.drive_mode = self.ProfileConfigurations.JointMode
-            else:
-                self.drive_mode = self.ProfileConfigurations.WheelMode
+               
+        print((self.setDriveMode(self.ProfileConfigurations.parse(driveMode), reverse, minimum, maximum)))
         
-        print((self.setDriveMode(Reversed=reverse)))
         
-    #profileconfiguration in this motor is     
-    def setDriveMode(self, ProfileConfiguration=None, Reversed=None):
+    def setDriveMode(self, ProfileConfiguration=None, Reversed=None, Min = None, Max = None):
         if ProfileConfiguration is not None:
             self.drive_mode = ProfileConfiguration
             if ProfileConfiguration is self.ProfileConfigurations.WheelMode:
                 self.write(self.MIN_POSITION, 0)
                 self.write(self.MAX_POSITION, 0)
             else:
-                self.write(self.MIN_POSITION, self.MIN_POSITION.min)
-                self.write(self.MAX_POSITION, self.MAX_POSITION.max)
+                self.write(self.MIN_POSITION, self.MIN_POSITION.min if Min is None else Min)
+                self.write(self.MAX_POSITION, self.MAX_POSITION.max if Max is None else Max)
         
         if Reversed is not None:
             self.reversed = Reversed
@@ -221,16 +228,10 @@ class MX12W(MotorBase):
     def reboot(self):
         dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
         return self.commResult(dxl_comm_result, dxl_error)
-    
-    def Deg2Pos(deg):
-        return (deg/0.088+2048)
-
-    def Pos2Deg(pos):
-        return ((pos-2048)*0.088)
         
 
 class XL430W250(MotorBase):
-    
+    resolution = 0.088
     def __init__(self, ID, portHandler, reverse=False, baudrate="57600"):
         self.port              = portHandler
         self.packetHandler     = DXLSDK.PacketHandler(2.0)
@@ -266,29 +267,18 @@ class XL430W250(MotorBase):
         print((self.setDriveMode(Reversed=reverse)))
         
         
-    def setDriveMode(self, ProfileConfiguration=None, Reversed=None):
-        if Reversed is "init":
-            return "MG init"
-        data = 0
-        if   (ProfileConfiguration is None or Reversed is None): 
-            if ((Reversed is None) and (ProfileConfiguration is None)):
-                return 0b1101011
-            else:
-                data =self.read(self.DRIVE_MODE)
-                print(("ID: %d OG: %s \t" % (self.ID, bin(data))))
-                
+    def setDriveMode(self, ProfileConfiguration=None, Reversed=None, Min = None, Max = None):
+        if Reversed is not None:
+            self.reversed = Reversed
+            self.write(self.DRIVE_MODE, (self.read(self.DRIVE_MODE)&(~1))|reversed)
             
-        if ProfileConfiguration is "toggle":
-            data = data^(1<<2)
-        elif ProfileConfiguration is not None:
-            data = data & ~(1<<2) | ProfileConfiguration<<2
-            
-        if Reversed is "toggle":
-            data = data^1
-        elif Reversed is not None:
-            data = data & ~(1) | Reversed
-        print(("sent\t%s" % bin(data)))
-        return bin(data) if self.write(self.DRIVE_MODE, data)==1 else bin(255)
+        if ProfileConfiguration is not None:
+            self.drive_mode = ProfileConfiguration
+            if ProfileConfiguration is self.ProfileConfigurations.JointMode:
+                self.write(self.MIN_POSITION, self.MIN_POSITION.min if Min is None else Min)
+                self.write(self.MAX_POSITION, self.MAX_POSITION.max if Max is None else Max)
+            self.write(self.OPERATING_MODE, self.drive_mode.value)
+        
         
             
     def status(self):
@@ -388,17 +378,11 @@ class XL430W250(MotorBase):
     def reboot(self):
         dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
         return self.commResult(dxl_comm_result, dxl_error)
-    
-    def Deg2Pos(deg):
-        return (deg/0.088+2048)
-
-    def Pos2Deg(pos):
-        return ((pos-2048)*0.088)
 
 
 
 class MotorGroup(MotorBase):
-    def __init__(self, motors:Dict(str, MotorBase)):
+    def __init__(self, motors:Dict[str, MotorBase]):
         self.motors = motors
     
     def __getitem__(self, key):
