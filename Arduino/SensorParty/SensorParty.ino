@@ -52,7 +52,7 @@ void setup() {
   // wait until serial port opens for native USB devices
   while (!Serial) {
     delay(10);
-    Serial.print(".");
+    Serial.print("Waiting");
   }
 
   // Setup digital pins wired to LOX SHUTDOWN PIN
@@ -92,9 +92,9 @@ void setup() {
   }
   
   // SGP30
-  if (sgp.begin()){
-    sgp_available = true;
-  }
+  //if (sgp.begin()){
+    //sgp_available = true;
+  //}
   // AMG8833
   if (amg.begin()){
     amg_available = true;
