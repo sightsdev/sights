@@ -61,6 +61,10 @@ class MotorBase(object):
     def Pos2Deg(self, pos):
         return (pos-self.PRESENT_POSITION.maxVal)*self.resolution
     
+    def reboot(self):
+        dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
+        return self.commResult(dxl_comm_result, dxl_error)
+    
     class ProfileConfigurations(Enum):
         WheelMode = 1
         JointMode = 3
@@ -72,8 +76,8 @@ class MotorBase(object):
             if label.lower() in ("wheel","wheelmode"):
                 return cls.WheelMode
             raise NotImplementedError
-    
-class MX12W(MotorBase):
+
+class AX12A(MotorBase):
         
     def __posNormal__(self, pos):
         return pos
@@ -90,7 +94,7 @@ class MX12W(MotorBase):
         return speed^(1<<10) if speed is not None else None
     
     pos_speed_mode = None
-    resolution = 0.088
+    resolution = 0.29
     def __init__(self, ID, portHandler, reverse=False, baudrate="57600", driveMode="Joint", minimum=None, maximum=None):
         self.port              = portHandler
         self.packetHandler     = DXLSDK.PacketHandler(1.0)
@@ -100,8 +104,8 @@ class MX12W(MotorBase):
         #EEPROM
         self.ID_REG            = Register(self.packetHandler, 3, 1, 252)  #ID 254 is broadcast               
         self.BAUDRATE          = Register(self.packetHandler, 4, 1, 7)
-        self.MAX_POSITION      = Register(self.packetHandler, 8, 2, 4095)
-        self.MIN_POSITION      = Register(self.packetHandler, 6, 2, 4095)
+        self.MAX_POSITION      = Register(self.packetHandler, 8, 2, 1023) #
+        self.MIN_POSITION      = Register(self.packetHandler, 6, 2, 1023) #
         
         #RAM
         self.TORQUE_ENABLE     = Register(self.packetHandler, 24, 1, 1)
@@ -225,9 +229,30 @@ class MX12W(MotorBase):
             count+=1
         return count==2
     
-    def reboot(self):
-        dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
-        return self.commResult(dxl_comm_result, dxl_error)
+class MX12W(AX12A):
+    resolution = 0.088
+    def __init__(self, ID, portHandler, reverse=False, baudrate="57600", driveMode="Joint", minimum=None, maximum=None):
+        self.port              = portHandler
+        self.packetHandler     = DXLSDK.PacketHandler(1.0)
+        self.ID                = ID
+        
+        # Control table address
+        #EEPROM
+        self.ID_REG            = Register(self.packetHandler, 3, 1, 252)  #ID 254 is broadcast               
+        self.BAUDRATE          = Register(self.packetHandler, 4, 1, 7)
+        self.MAX_POSITION      = Register(self.packetHandler, 8, 2, 4095)
+        self.MIN_POSITION      = Register(self.packetHandler, 6, 2, 4095)
+        
+        #RAM
+        self.TORQUE_ENABLE     = Register(self.packetHandler, 24, 1, 1)
+        self.LED               = Register(self.packetHandler, 25, 1, 1)
+        self.GOAL_POSITION     = Register(self.packetHandler, 30, 2, 4095)
+        self.GOAL_VELOCITY     = Register(self.packetHandler, 32, 2, 2047)
+        self.PRESENT_LOAD      = Register(self.packetHandler, 40, 2, 1023, writeable=False)
+        self.PRESENT_POSITION  = Register(self.packetHandler, 36, 2, 4095, writeable=False)
+        self.PRESENT_TEMP      = Register(self.packetHandler, 43, 1, 99, writeable=False)
+        
+        print((self.setDriveMode(self.ProfileConfigurations.parse(driveMode), reverse, minimum, maximum)))
         
 
 class XL430W250(MotorBase):
@@ -374,10 +399,7 @@ class XL430W250(MotorBase):
             self.maxPos = maxPos
             count+=1
         return count==2
-    
-    def reboot(self):
-        dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
-        return self.commResult(dxl_comm_result, dxl_error)
+
 
 
 
