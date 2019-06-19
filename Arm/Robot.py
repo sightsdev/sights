@@ -6,7 +6,6 @@ Created on Tue May 21 21:37:46 2019
 @author: sart
 """
 from dynamixel_sdk import PortHandler
-from Motors import *
 from Motors import MotorGroup
 
     
@@ -14,10 +13,9 @@ from Motors import MotorGroup
         
 
 class Robot():
-    def __init__(self, motors, controller, port = "/dev/ttyUSB0", baudRate = 57600):
+    def __init__(self, motors, port = "/dev/ttyUSB0", baudRate = 57600):
         self.portHandler = PortHandler(port)
         self.motors = MotorGroup(motors)
-        self.controller = controller
     
     
     def start(self, baudRate = None):
@@ -36,7 +34,13 @@ class Robot():
             #enable connected motors
             self.motors.enable()
         return True
-
+    
+    def waitUntilConnected(self):
+        print("connecting to motors")
+        ready = False
+        while ready is False:
+            ready = self.start()
+    
     def close(self):
         self.motors.disable()
         self.portHandler.closePort()

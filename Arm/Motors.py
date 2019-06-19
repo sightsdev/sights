@@ -195,7 +195,7 @@ class MX12W(MotorBase):
     def setGoalSpeed(self, goal, Normal=True):
         if self.drive_mode is self.ProfileConfigurations.WheelMode:
             if Normal:
-                goal=int(self.GOAL_VELOCITY.max/200*goal)
+                goal=int(int(self.GOAL_VELOCITY.max/2)*goal)
             goal = self.pos_speed_mode(goal)
             print("ID: {}, SPEED: {}".format(self.ID, goal))
             return self.write(self.GOAL_VELOCITY, goal)
@@ -359,7 +359,7 @@ class XL430W250(MotorBase):
     
     def setGoalSpeed(self, goal, Normal=True):
         if Normal:
-            goal=self.GOAL_VELOCITY.max/100*goal
+            goal=self.GOAL_VELOCITY.max*goal
         return self.write(self.GOAL_VELOCITY, goal)
     
     def setPosBounds(self, minPos, maxPos, Deg=True):
@@ -387,6 +387,9 @@ class MotorGroup(MotorBase):
     
     def __getitem__(self, key):
         self.motors[key]
+    
+    def addMotor(self, key, value:MotorBase) -> bool:
+        return self.motors.setdefault(key, value) == value
     
     def setDriveMode(self, ProfileConfiguration=None, Reversed=None):
         for m in self.motors.values():
