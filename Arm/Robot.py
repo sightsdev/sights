@@ -7,7 +7,7 @@ Created on Tue May 21 21:37:46 2019
 """
 from dynamixel_sdk import PortHandler
 from Motors import MotorGroup
-
+import atexit
     
     
         
@@ -15,12 +15,33 @@ from Motors import MotorGroup
 class Robot():
     def __init__(self, motors, port = "/dev/ttyUSB0", baudRate = 57600):
         self.portHandler = PortHandler(port)
-        self.start(baudRate)
+        self.connect(baudRate)
         self.motors = MotorGroup(motors)
-        self.enable()
+        atexit.register(self.close)
+        
+    def countConnected(self):
+        flat = self.flatten(self.motors.isenabled())
+        total = len(flat)
+        connected = total-flat.count(None)
+        return(connected, total)
+            
+    def flatten(self, l, ltypes=(list, tuple)):
+        ltype = type(l)
+        l = list(l)
+        i = 0
+        while i < len(l):
+            while isinstance(l[i], ltypes):
+                if not l[i]:
+                    l.pop(i)
+                    i -= 1
+                    break
+                else:
+                    l[i:i + 1] = l[i]
+            i += 1
+        return ltype(l)
+            
     
-    
-    def start(self, baudRate = None):
+    def connect(self, baudRate = None):
         if not self.portHandler.is_open:
             if self.portHandler.openPort():
                 print("Succeeded to open the port")
@@ -33,8 +54,6 @@ class Robot():
             else:
                 print("Failed to change the baudrate")
                 return False
-            #enable connected motors
-#            self.motors.enable()
         return True
  
     def enable(self):
@@ -48,7 +67,7 @@ class Robot():
         print("connecting to motors")
         ready = False
         while ready is False:
-            ready = self.start()
+            ready = self.connect()
     
     def close(self):
         self.disable()

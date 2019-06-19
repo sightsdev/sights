@@ -91,6 +91,9 @@ class XBoxOne(Controller):
         self.joy_left       = Joystick("left", 8689/32767.0)
         self.joy_right      = Joystick("right", 8689/32767.0)
         
+        self.btn_l3         = Button("left_stick")
+        self.btn_r3         = Button("right_stick")
+        
         self.dpad           = DPad("last_dpad")
         
         self.btn_x          = Button("button_X")

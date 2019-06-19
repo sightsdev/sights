@@ -102,10 +102,11 @@ class AX12A(MotorBase):
         
         # Control table address
         #EEPROM
-        self.ID_REG            = Register(self.packetHandler, 3, 1, 252)  #ID 254 is broadcast               
-        self.BAUDRATE          = Register(self.packetHandler, 4, 1, 7)
-        self.MAX_POSITION      = Register(self.packetHandler, 8, 2, 1023) #
-        self.MIN_POSITION      = Register(self.packetHandler, 6, 2, 1023) #
+        self.ID_REG            = Register(self.packetHandler, 3,  1, 252)  #ID 254 is broadcast               
+        self.BAUDRATE          = Register(self.packetHandler, 4,  1, 7)
+        self.MAX_POSITION      = Register(self.packetHandler, 8,  2, 1023) #
+        self.MIN_POSITION      = Register(self.packetHandler, 6,  2, 1023) #
+        self.ERROR             = Register(self.packetHandler, 17, 1, 127)
         
         #RAM
         self.TORQUE_ENABLE     = Register(self.packetHandler, 24, 1, 1)
@@ -140,10 +141,33 @@ class AX12A(MotorBase):
             self.pos_speed_mode = self.__wheelReversed__ if self.reversed else self.__wheelNormal__
             
             
-        
+    def printErrors(self):
+        errors = self.read(self.ERROR) 
+        if errors == 0:
+            return
+        print(("Error on Dynamixel ID: %d \n" % self.ID))
+        if errors is None:
+            print("\tUnable to Read Errors")
+        if(errors == 0b00100100):
+            print("\tDefault Error (Overheat & Overload)")
+            return
+        if(errors & 1):
+            print("\tInput Voltage Error\n")
+        if(errors>>1 & 1):
+            print("\tAngle Limit Error\n")
+        if(errors>>2 & 1):
+            print("\tOverHeating Error\n")
+        if(errors>>3 & 1):
+            print("\tRange Error\n")
+        if(errors>>4 & 1):
+            print("\tChecksum Error\n")
+        if(errors>>5 & 1):
+            print("\tOverload Error\n")
+        if(errors>>6 & 1):
+            print("\tInstruction Error\n")
             
     def status(self):
-        return "ID: %, reversed: %" % (self.read(self.ID), self.read(self.DRIVE_MODE)&1)
+        return "ID: {}, reversed: {}".format(self.ID, self.reversed)
             
     def hasError(self):
         return self.read(self.ERROR) != 0
@@ -229,6 +253,8 @@ class AX12A(MotorBase):
             count+=1
         return count==2
     
+    
+    
 class MX12W(AX12A):
     resolution = 0.088
     def __init__(self, ID, portHandler, reverse=False, baudrate="57600", driveMode="Joint", minimum=None, maximum=None):
@@ -313,7 +339,7 @@ class XL430W250(MotorBase):
         return self.read(self.ERROR) != 0
     
     def printErrors(self):
-        errors = self.read(self.ERROR)
+        errors = self.read(self.ERROR) 
         if errors == 0:
             return
         print(("Error on Dynamixel ID: %d \n" % self.ID))
@@ -403,15 +429,23 @@ class XL430W250(MotorBase):
 
 
 
-class MotorGroup(MotorBase):
+class MotorGroup():
     def __init__(self, motors:Dict[str, MotorBase]):
         self.motors = motors
     
     def __getitem__(self, key):
-        self.motors[key]
+        return self.motors[key]
     
-    def addMotor(self, key, value:MotorBase) -> bool:
-        return self.motors.setdefault(key, value) == value
+    def __setitem__(self, key, value):
+        self.addMotor(key, value)
+    
+    def addMotor(self, key, value):
+        if key in self.motors.keys():
+            res = False
+        else:
+            self.motors[key] = value
+            res = True
+        print("{} {} set to {}: {}".format(key, "was" if res else "wasn't", value, self.motors[key]))
     
     def setDriveMode(self, ProfileConfiguration=None, Reversed=None):
         for m in self.motors.values():
@@ -431,7 +465,7 @@ class MotorGroup(MotorBase):
         return list([motor.disable() for motor in self.motors.values()])
     
     def isenabled(self):
-        return list([motor.read(motor.TORQUE_ENABLED) for motor in self.motors.values()])
+        return list([motor.isenabled() for motor in self.motors.values()])
     
     def write(self, register, data):
         return list([motor.write(register, data) for motor in self.motors.values()])
