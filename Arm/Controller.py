@@ -88,8 +88,8 @@ class Controller():
 class XBoxOne(Controller):
     def __init__(self):
         
-        self.joy_left       = Joystick("left")
-        self.joy_right      = Joystick("right")
+        self.joy_left       = Joystick("left", 8689/32767.0)
+        self.joy_right      = Joystick("right", 8689/32767.0)
         
         self.dpad           = DPad("last_dpad")
         

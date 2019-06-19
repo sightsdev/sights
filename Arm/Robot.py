@@ -15,6 +15,7 @@ from Motors import MotorGroup
 class Robot():
     def __init__(self, motors, port = "/dev/ttyUSB0", baudRate = 57600):
         self.portHandler = PortHandler(port)
+        self.start(baudRate)
         self.motors = MotorGroup(motors)
     
     
@@ -32,9 +33,16 @@ class Robot():
                 print("Failed to change the baudrate")
                 return False
             #enable connected motors
-            self.motors.enable()
+#            self.motors.enable()
         return True
-    
+ 
+    def enable(self):
+        self.motors.enable()
+
+    def disable(self):
+        self.motors.disable()
+
+   
     def waitUntilConnected(self):
         print("connecting to motors")
         ready = False
@@ -42,6 +50,6 @@ class Robot():
             ready = self.start()
     
     def close(self):
-        self.motors.disable()
+        self.disable()
         self.portHandler.closePort()
         print("All closed")
