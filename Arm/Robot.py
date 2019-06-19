@@ -17,6 +17,7 @@ class Robot():
         self.portHandler = PortHandler(port)
         self.start(baudRate)
         self.motors = MotorGroup(motors)
+        self.enable()
     
     
     def start(self, baudRate = None):
