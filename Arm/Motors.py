@@ -2,7 +2,7 @@ import dynamixel_sdk as DXLSDK
 from Dxl_Register import Dxl_Register as Register
 from enum import Enum
 from typing import Dict
-
+import math
 
 class MotorBase(object):
     baud2reg = {
@@ -223,7 +223,7 @@ class AX12A(MotorBase):
     def setGoalSpeed(self, goal, Normal=True):
         if self.drive_mode is self.ProfileConfigurations.WheelMode:
             if Normal:
-                goal=int(int(self.GOAL_VELOCITY.max/2)*goal)
+                goal=int(int(self.GOAL_VELOCITY.max/2)*math.fabs(goal))|((math.copysign(1,goal)<0)<<10)
             goal = self.pos_speed_mode(goal)
             print("ID: {}, SPEED: {}".format(self.ID, goal))
             return self.write(self.GOAL_VELOCITY, goal)

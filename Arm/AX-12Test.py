@@ -38,10 +38,10 @@ class SARTRobot(Robot):
             self.motors["wheels"] = MotorGroup({
             "left":MotorGroup({
                     "front":AX12A(1, self.portHandler, baudrate=1000000, driveMode="Wheel"),
-                    "back":AX12A(3, self.portHandler, baudrate=1000000, reverse=True, driveMode="Wheel"),
+                    "back":AX12A(3, self.portHandler, baudrate=1000000, driveMode="Wheel"),
                     }),
             "right":MotorGroup({
-                    "front":AX12A(2, self.portHandler, baudrate=1000000, driveMode="Wheel"),
+                    "front":AX12A(2, self.portHandler, baudrate=1000000, reverse=True, driveMode="Wheel"),
                     "back":AX12A(4, self.portHandler, baudrate=1000000, reverse=True, driveMode="Wheel"),
                     })
             })
@@ -54,7 +54,8 @@ class SARTRobot(Robot):
             self.Wheels["right"].setGoalSpeed(right, normalised)
             
     
-mkIV = SARTRobot(wheels=True, port="COM6") #for windows
+mkIV = SARTRobot(wheels=True, port="/dev/ttyACM1")
+#mkIV = SARTRobot(wheels=True, port="COM6") #for windows
 # When script exits or is interrupted stop all servos
 #port = PortHandler("COM6")
 #port.openPort()

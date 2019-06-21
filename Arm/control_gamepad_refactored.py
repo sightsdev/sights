@@ -34,10 +34,10 @@ class SARTRobot(Robot):
         return MotorGroup({
             "left":MotorGroup({
                     "front":AX12A(1, portHandler, baudrate=baud, driveMode="Wheel"),
-                    "back":AX12A(3, portHandler, baudrate=baud, reverse=True, driveMode="Wheel"),
+                    "back":AX12A(3, portHandler, baudrate=baud, driveMode="Wheel"),
                     }),
             "right":MotorGroup({
-                    "front":AX12A(2, portHandler, baudrate=baud, driveMode="Wheel"),
+                    "front":AX12A(2, portHandler, baudrate=baud,reverse = True, driveMode="Wheel"),
                     "back":AX12A(4, portHandler, baudrate=baud, reverse=True, driveMode="Wheel"),
                     })
             })
@@ -70,10 +70,10 @@ controller = XBoxOne()
 AXIS_THRESHOLD = 8689 / 32767.0
 
 #mkIV = SARTRobot(wheels=True) 
-mkIV = SARTRobot(wheels=True, port="/dev/ttyACM0") #actually for markIII
+mkIV = SARTRobot(wheels=True, port="/dev/ttyACM1") #actually for markIII
 
 # When script exits or is interrupted stop all servos
-atexit.register(mkIV.close)
+#atexit.register(mkIV.close) #now part of the robot object
 
 
 class Modes(IntEnum):
@@ -136,9 +136,9 @@ def steering(x, y):
 	if (left != last_left and right != last_right):
 		mkIV.tank(left, right)
 	
-	# Store this message for comparison next time
-	last_left = left
-	last_right = right
+		# Store this message for comparison next time
+		last_left = left
+		last_right = right
 
 def tank_control():
     global last_left
@@ -219,18 +219,20 @@ async def recieveControlData(websocket, path):
 		# Recieve JSON formatted string from websockets
         buf = await websocket.recv()
         if len(buf) > 0:
-			# Convert string data to object and then handle controls
+            print("reciving data")
+            # Convert string data to object and then handle controls
             controller.updateInputs(json.loads(buf))
             controlHandler()
 			
 def main():
 	print("connecting to motors")
-	print("connected: {}".format(mkIV.enable()))
+	conn = mkIV.countConnected()
+	print("connected: {} out of {}".format(conn[0],conn[1]))
 	print("Starting control data reciever")
 	start_server = websockets.serve(recieveControlData, "10.0.2.4", 5555)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()
-	mkIV.motors.setGoalSpeed(0.5, True)
+	mkIV.motors.setGoalSpeed(0, False)
 
 if __name__ == '__main__':
     main()

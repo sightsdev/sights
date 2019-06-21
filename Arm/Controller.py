@@ -103,7 +103,7 @@ class XBoxOne(Controller):
         self.btn_XBOX       = Button("button_XBOX")
         self.btn_view       = Button("button_View")
         self.btn_menu       = Button("button_Menu")
-        self.bumper_left    = Button("left_bumber")
+        self.bumper_left    = Button("left_bumper")
         self.bumper_right   = Button("right_bumper")
         
         self.trigger_left   = Trigger("left_trigger")
