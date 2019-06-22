@@ -1,7 +1,11 @@
 # SARTRobot Mark III
 The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark III rescue robot.
 
-Configuration files for camera-streaming software _Motion_ can be found in the **_Motion_** directory. Arduino code for sensor data can be found in **_Arduino_**
+Robot configuration such as servo COM port and IP address is done in _robot.cfg_
+
+Arduino code for sensor data can be found in **_Arduino_**
+
+Configuration files for camera-streaming software _Motion_ can be found in the **_Motion_** directory. 
 
 ## Scripts
 

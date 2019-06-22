@@ -8,11 +8,17 @@ import subprocess, os
 import json
 import math
 import atexit
+import configparser
 from servo_party import ServoParty
+
+# Load config file
+config = configparser.ConfigParser()
+config.read('robot.cfg')
 
 # Servos
 servo_party = ServoParty();
 
+# Initial start time
 start_time = time.time()
 
 # Controller stick threshold
@@ -20,7 +26,7 @@ AXIS_THRESHOLD = 8689 / 32767.0
 
 # When script exits or is interrupted stop all servos
 atexit.register(servo_party.stop)
-	
+
 def steering(x, y):
 	y *= -1
 	x *= -1
@@ -122,8 +128,6 @@ def parseJSON(buf):
 	obj = {}
 	obj["left_axis_x"] = float(msg["left_axis_x"])
 	obj["left_axis_y"] = float(msg["left_axis_y"])
-	obj["last_dpad"] = str(msg["last_dpad"])
-	obj["button_LS"] = bool(msg["button_LS"])
 	obj["button_A"] = bool(msg["button_A"])
 	obj["button_B"] = bool(msg["button_B"])
 	obj["button_X"] = bool(msg["button_X"])
@@ -154,12 +158,14 @@ async def recieveControlData(websocket, path):
 		# Recieve JSON formatted string from websockets
 		buf = await websocket.recv()
 		if len(buf) > 0:
+			if config['debug'].getboolean('debug_printout'):
+				print (buf)
 			# Convert string data to object and then handle controls
 			controlHandler(parseJSON(buf))
 			
 def main():
 	print("Starting control data reciever")
-	start_server = websockets.serve(recieveControlData, "10.0.2.4", 5555)
+	start_server = websockets.serve(recieveControlData, config['network']['ip'], 5555)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()
 

@@ -5,11 +5,15 @@ from enum import IntEnum
 from servo_party import ServoParty
 import time
 import atexit
+import configparser
+
+config = configparser.ConfigParser()
+config.read('robot.cfg')
 
 # Servos
 servo_party = ServoParty()
 # Arduino
-sc_arduino = Serial(port="/dev/ttyACM1", baudrate=115200)
+sc_arduino = Serial(port=config['arduino']['port'], baudrate=115200)
 
 # PID constants
 K_p = 2
@@ -22,11 +26,13 @@ speed = 400
 # When script exits or is interrupted stop all servos
 atexit.register(servo_party.stop)
 
+
 class Distance(IntEnum):
     FRONT = 0
     LEFT = 1
     RIGHT = 2
     BACK = 3
+
 
 def getData():
     buf = sc_arduino.readline().decode("UTF-8")
@@ -34,7 +40,7 @@ def getData():
     msg = {}
     if (buf[0] == "D"):
         # Strip leading "D:" and split by comma
-        msg["dist"] = buf[2:-3].split(",")
+        msg["distance"] = buf[2:-3].split(",")
     return msg
 
 
@@ -51,22 +57,22 @@ def main():
         if not msg == {}:
             # Get the four distances
             if reverse:
-                back = int(msg["dist"][Distance.FRONT])
-                front = int(msg["dist"][Distance.BACK])
-                right = int(msg["dist"][Distance.LEFT])
-                left = int(msg["dist"][Distance.RIGHT])
+                back = int(msg["distance"][Distance.FRONT])
+                front = int(msg["distance"][Distance.BACK])
+                right = int(msg["distance"][Distance.LEFT])
+                left = int(msg["distance"][Distance.RIGHT])
             else:
-                front = int(msg["dist"][Distance.FRONT])
-                back = int(msg["dist"][Distance.BACK])
-                left = int(msg["dist"][Distance.LEFT])
-                right = int(msg["dist"][Distance.RIGHT])
+                front = int(msg["distance"][Distance.FRONT])
+                back = int(msg["distance"][Distance.BACK])
+                left = int(msg["distance"][Distance.LEFT])
+                right = int(msg["distance"][Distance.RIGHT])
 
             if (not reverse and front < 100):
-                servo_party.move(0,0)
+                servo_party.move(0, 0)
                 reverse = True
                 print("Reverse is true")
             elif (reverse and front < 100):
-                servo_party.move(0,0)
+                servo_party.move(0, 0)
                 reverse = False
                 print("Reverse is false")
             else:

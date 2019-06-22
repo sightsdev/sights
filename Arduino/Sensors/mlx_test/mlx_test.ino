@@ -1,7 +1,7 @@
 #include <Wire.h>
 
 #define LED_pin 13
-#define slaveAddress 0x5A
+#define slaveAddress 0x5B
 
 void setup(){
   // An LED will blink to indicate when we have successfully read the temperature
