@@ -7,57 +7,9 @@ import asyncio
 import subprocess, os
 import json
 import math
-import atexit
 #from servo_party import ServoParty
 from Controller import XBoxOne
-from Robot import Robot
-from Motors import MX12W, MotorGroup, XL430W250, AX12A
-
-class SARTRobot(Robot):
-    def __Arm__(self, portHandler, baud):
-        return MotorGroup({
-            "shoulder":MotorGroup({
-                    "left":XL430W250(5, portHandler, baudrate=baud),
-                    "right":XL430W250(6, portHandler, baudrate=baud, reverse=True),
-                    }), 
-            "elbow":MotorGroup({
-                    "left":XL430W250(7, portHandler, baudrate=baud),
-                    "right":XL430W250(8, portHandler, baudrate=baud, reverse=True),
-                    }), 
-            "Hand":MotorGroup({
-                    "left":XL430W250(9, portHandler, baudrate=baud),
-                    "right":XL430W250(10, portHandler, baudrate=baud, reverse=True),
-                    }),
-            })
-    
-    def __Wheels__(self, portHandler, baud):
-        return MotorGroup({
-            "left":MotorGroup({
-                    "front":AX12A(1, portHandler, baudrate=baud, driveMode="Wheel"),
-                    "back":AX12A(3, portHandler, baudrate=baud, driveMode="Wheel"),
-                    }),
-            "right":MotorGroup({
-                    "front":AX12A(2, portHandler, baudrate=baud,reverse = True, driveMode="Wheel"),
-                    "back":AX12A(4, portHandler, baudrate=baud, reverse=True, driveMode="Wheel"),
-                    })
-            })
-    
-    def __init__(self, port="/dev/ttyUSB0",  baudrate=1000000, arm=False, wheels=False):
-        super().__init__(dict(), port, baudrate)
-        if arm:
-            self.motors.addMotor("arm", self.__Arm__(self.portHandler, baudrate))
-            self.Arm = self.motors["arm"]
-        if wheels:
-            self.motors.addMotor("wheels", self.__Wheels__(self.portHandler, baudrate))
-            self.Wheels = self.motors["wheels"]
-        print("enabled {}".format( self.enable()))
-    
-    def tank(self, left, right, normalised = True):
-        if self.Wheels is not None:
-            self.Wheels["left"].setGoalSpeed(left, normalised)
-            self.Wheels["right"].setGoalSpeed(right, normalised)
-            
-    
+from SARTRobots import MarkIV    
 
 # Servos
 #servo_party = ServoParty();
@@ -70,7 +22,7 @@ controller = XBoxOne()
 AXIS_THRESHOLD = 8689 / 32767.0
 
 #mkIV = SARTRobot(wheels=True) 
-mkIV = SARTRobot(wheels=True, port="/dev/ttyACM1") #actually for markIII
+mkIV = MarkIV(arm=True, port="COM8") #actually for markIII
 
 # When script exits or is interrupted stop all servos
 #atexit.register(mkIV.close) #now part of the robot object
@@ -80,6 +32,13 @@ class Modes(IntEnum):
     DRIVE   = 0
     ARM     = 1
     
+def toggleMode(mode):
+    if mode is Modes.DRIVE:
+        mode = Modes.ARM
+    else:
+        mode = Modes.DRIVE
+    print("Mode is now {}".format(mode.name))
+    return mode
 	
 MODE = Modes.DRIVE
 speed_factor = 1
@@ -190,36 +149,81 @@ def tank_control():
     last_right = right
 
 def armControl():
-    pass
+    speed = 20
+    left_x, left_y = controller.joy_left.getValid()
+    right_x, right_y = controller.joy_right.getValid()
+    
+    if(left_y != 0):
+        current = mkIV.Arm["shoulder"]["right"].currentPos(False)
+        if current is not None:
+            print("shoulder current: {} change {}".format(current, left_y))
+            mkIV.Arm["shoulder"].setGoalPos(current+left_y*speed, False)
+    
+    if(right_y != 0):
+        current = mkIV.Arm["elbow"]["right"].currentPos(False)
+        if current is not None:
+            print("elbow current: {} change {}".format(current, right_y))
+            mkIV.Arm["elbow"].setGoalPos(current+right_y*speed, False)
+    
+# =============================================================================
+#     if(left_x != 0):
+#         current = mkIV.Arm["hand"]["wrist"].currentPos(False)
+#         if current is not None:
+#             print("shoulder current: {} change {}".format(current, left_y))
+#             mkIV.Arm["hand"]["wrist"].setGoalPos(current+left_x*speed, False)
+# =============================================================================
+    
+    if(right_x != 0):
+        current = mkIV.Arm["hand"].currentPos(False)
+        if current is not None:
+            print("hand current: {} change {}".format(current, right_x))
+            mkIV.Arm["hand"].setGoalPos(current+right_x*speed, False)
+        
 
-def controlHandler ():
+def controlHandler():
     global MODE
     global speed_factor
-    if (controller.btn_menu.pressed):
-        MODE = (MODE+1)%2
+    if (controller.btn_x.singlePress() or controller.btn_y.singlePress()):
+        if MODE is Modes.DRIVE:
+            MODE = Modes.ARM
+        else:
+            MODE = Modes.DRIVE
+        print("Mode is now: {}".format(MODE.name))
+    
+    if (controller.dpad.up.singlePress()):
+        conn = mkIV.countConnected()
+        print("were connected: {} out of {}".format(conn[0],conn[1]))
+        mkIV.enable()
+        conn = mkIV.countConnected()
+        print("now connected: {} out of {}".format(conn[0],conn[1]))
+        
+        
     
     if(MODE is Modes.DRIVE):
     	# Handle face buttons
-    	if (controller.btn_a.pressed):
+    	if (controller.btn_a.singlePress()):
     		speed_factor = 1
-    	elif (controller.btn_b.pressed):
+    	elif (controller.btn_b.singlePress()):
     		speed_factor = 0.5
     	# Handle various methods of controlling movement
     	x = controller.joy_left.axis_x * -1
     	y = controller.joy_left.axis_y * -1
-    	if (x < -AXIS_THRESHOLD or x > AXIS_THRESHOLD or y < -AXIS_THRESHOLD or y > AXIS_THRESHOLD):
-    		steering(x, y)
-    	else:
-    		tank_control()
-    elif(MODE is Modes.ARM):
-        armControl()
+    	if mkIV.Wheels is not None:
+        	if (x < -AXIS_THRESHOLD or x > AXIS_THRESHOLD or y < -AXIS_THRESHOLD or y > AXIS_THRESHOLD):
+        		steering(x, y)
+        	else:
+        		tank_control()
+    elif(MODE is Modes.ARM and mkIV.Arm is not None):
+        if controller.joy_left.valid() or controller.joy_right.valid():
+            armControl()
 	
 async def recieveControlData(websocket, path):
     while True:
 		# Recieve JSON formatted string from websockets
         buf = await websocket.recv()
         if len(buf) > 0:
-            print("reciving data")
+#            print(buf)
+#            print("reciving data")
             # Convert string data to object and then handle controls
             controller.updateInputs(json.loads(buf))
             controlHandler()
@@ -229,10 +233,11 @@ def main():
 	conn = mkIV.countConnected()
 	print("connected: {} out of {}".format(conn[0],conn[1]))
 	print("Starting control data reciever")
-	start_server = websockets.serve(recieveControlData, "10.0.2.4", 5555)
+	mkIV.Arm.setGoalPos(0, True)
+	start_server = websockets.serve(recieveControlData, "localhost", 5555)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()
-	mkIV.motors.setGoalSpeed(0, False)
+	
 
 if __name__ == '__main__':
     main()

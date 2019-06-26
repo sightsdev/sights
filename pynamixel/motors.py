@@ -34,10 +34,12 @@ class MotorBase(object):
             return 1
     
     def Deg2Pos(self, deg):
-        return deg/self.resolution+self.PRESENT_POSITION.maxVal
+#        return (deg + 180)/360*self.PRESENT_POSITION.max
+        return (deg+180)/self.resolution
 
     def Pos2Deg(self, pos):
-        return (pos-self.PRESENT_POSITION.maxVal)*self.resolution
+#        return (pos/self.PRESENT_POSITION*360)-180
+        return pos*self.resolution-180
     
     def reboot(self):
         dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
@@ -157,9 +159,6 @@ class AX12A(MotorBase):
             
     def hasError(self):
         return self.read(self.ERROR) != 0
-    
-    def printErrors(self):
-       pass
         
     def enable(self):
         return self.write(self.TORQUE_ENABLE, 1) == 1
@@ -276,7 +275,7 @@ class MX12W(AX12A):
 
 class XL430W250(MotorBase):
     resolution = 0.088
-    def __init__(self, ID, portHandler, reverse=False, baudrate="57600"):
+    def __init__(self, ID, portHandler, reverse=False, baudrate="57600", driveMode="Joint", minimum=None, maximum=None):
         self.port              = portHandler
         self.packetHandler     = dynamixel_sdk.PacketHandler(2.0)
         self.ID                = ID
@@ -289,7 +288,7 @@ class XL430W250(MotorBase):
         self.OPERATING_MODE    = Register(self.packetHandler, 11, 1, 16)
         self.MAX_POSITION           = Register(self.packetHandler, 48, 4, 4095)
         self.MIN_POSITION           = Register(self.packetHandler, 52, 4, 4095)
-        self.MAX_VELOCITY
+#        self.MAX_VELOCITY
         
         #RAM
         self.TORQUE_ENABLE     = Register(self.packetHandler, 64, 1, 1)
@@ -308,13 +307,14 @@ class XL430W250(MotorBase):
             self.minPos            = minPos if minPos is not None else 0
             self.maxPos            = maxPos if maxPos is not None else 4095
         
-        print((self.setDriveMode(Reversed=reverse)))
+        print((self.setDriveMode(self.ProfileConfigurations.parse(driveMode), reverse, minimum, maximum)))
+#        print((self.setDriveMode(Reversed=reverse, )))
         
         
     def setDriveMode(self, ProfileConfiguration=None, Reversed=None, Min = None, Max = None):
         if Reversed is not None:
             self.reversed = Reversed
-            self.write(self.DRIVE_MODE, (self.read(self.DRIVE_MODE)&(~1))|reversed)
+            self.write(self.DRIVE_MODE, (self.read(self.DRIVE_MODE)&(~1)|Reversed))
             
         if ProfileConfiguration is not None:
             self.drive_mode = ProfileConfiguration
@@ -379,7 +379,7 @@ class XL430W250(MotorBase):
     def currentPos(self, convert2Deg=True):
         pos = self.read(self.PRESENT_POSITION)
         if pos is None:
-            return -99999
+            return None
         elif convert2Deg:
             return self.Pos2Deg(pos)
         else:
@@ -398,6 +398,7 @@ class XL430W250(MotorBase):
         if Deg:
             goal=self.Deg2Pos(goal)
         if goal <= self.maxPos and goal >= self.minPos:
+            print("goalPos {}".format(goal))
             return self.write(self.GOAL_POSITION, goal)
         return -1
     
@@ -480,3 +481,10 @@ class MotorGroup():
     
     def setGoalSpeed(self, goal, Normal=True):
         return list([motor.setGoalSpeed(goal, Normal) for motor in self.motors.values()])
+    
+    def rebootDisconnected(self):
+        for m in self.motors.values():
+            if isinstance(m, MotorGroup):
+                m.rebootDisconnected()
+            elif m.hasError():
+                m.reboot()

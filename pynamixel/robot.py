@@ -22,6 +22,9 @@ class RobotBase():
         total = len(flat)
         connected = total-flat.count(None)
         return(connected, total)
+    
+    def rebootDisconnected(self):
+        self.motors.rebootDisconnected()
             
     def flatten(self, l, ltypes=(list, tuple)):
         ltype = type(l)
