@@ -194,6 +194,8 @@ function updateStatus() {
 		for (var i = 0; i < controller.axes.length; i++) {
 			if (i == 0) controller_message.left_axis_x = controller.axes[i].toFixed(1);
 			if (i == 1) controller_message.left_axis_y = controller.axes[i].toFixed(1);
+			if (i == 2) controller_message.right_axis_x = controller.axes[i].toFixed(1);
+			if (i == 3) controller_message.right_axis_y = controller.axes[i].toFixed(1);
 		}
 		
 		json_message = JSON.stringify(controller_message);
