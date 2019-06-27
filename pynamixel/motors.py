@@ -42,7 +42,7 @@ class MotorBase(object):
         return pos*self.resolution-180
     
     def reboot(self):
-        dxl_comm_result, dxl_error = self.packetHandler.reboot(self.portHandler, self.ID)
+        dxl_comm_result, dxl_error = self.packetHandler.reboot(self.port, self.ID)
         return self.commResult(dxl_comm_result, dxl_error)
     
     class ProfileConfigurations(Enum):
