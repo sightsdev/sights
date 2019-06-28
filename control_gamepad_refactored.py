@@ -139,33 +139,30 @@ def armControl():
     speed = 100
     left_x, left_y = controller.joy_left.getValid()
     right_x, right_y = controller.joy_right.getValid()
-    
+    recall = False
     if(left_y != 0):
         current = mkIV.Arm["shoulder"]["right"].currentPos(False)
         if current is not None:
+            recall = True
             print("shoulder current: {} change {}".format(current, left_y))
             mkIV.Arm["shoulder"].setGoalPos(current+left_y*speed, False)
     
     if(right_y != 0):
         current = mkIV.Arm["elbow"]["right"].currentPos(False)
         if current is not None:
+            recall = True
             print("elbow current: {} change {}".format(current, right_y))
             mkIV.Arm["elbow"].setGoalPos(current+right_y*speed, False)
-    
-# =============================================================================
-#     if(left_x != 0):
-#         current = mkIV.Arm["hand"]["wrist"].currentPos(False)
-#         if current is not None:
-#             print("shoulder current: {} change {}".format(current, left_y))
-#             mkIV.Arm["hand"]["wrist"].setGoalPos(current+left_x*speed, False)
-# =============================================================================
     
     if(right_x != 0):
         current = mkIV.Arm["hand"].currentPos(False)
         if current is not None:
+            recall = True
             print("hand current: {} change {}".format(current, right_x))
             mkIV.Arm["hand"].setGoalPos(current+right_x*speed, False)
-        
+    
+    if recall:
+        controlHandler()
 
 def controlHandler():
     global MODE
@@ -236,8 +233,10 @@ async def recieveControlData(websocket, path):
             print("reciving data")
             # Convert string data to object and then handle controls
             controller.updateInputs(json.loads(buf))
-            controlHandler()
-			
+            #controlHandler()
+
+
+
 def main():
 	print("connecting to motors")
 	conn = mkIV.countConnected()
