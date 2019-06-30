@@ -9,7 +9,8 @@ import json
 import math
 #from servo_party import ServoParty
 from Controller import XBoxOne
-from SARTRobots import MarkIV    
+from SARTRobots import MarkIV, MotorGroup, XL430W250
+import threading
 
 # Servos
 #servo_party = ServoParty();
@@ -21,8 +22,23 @@ controller = XBoxOne()
 # Controller stick threshold
 AXIS_THRESHOLD = 8689 / 32767.0
 
+class MarkIVWheely(MarkIV):
+    def __Arm__(self, portHandler, baud):
+        return MotorGroup({
+            "shoulder":MotorGroup({
+                    "left":XL430W250(5, portHandler, baudrate=baud, reverse=True, driveMode="Wheel"),
+                    "right":XL430W250(6, portHandler, baudrate=baud, driveMode="Wheel"),
+                    }), 
+            "elbow":MotorGroup({
+                    "left":XL430W250(7, portHandler, baudrate=baud, reverse=True, driveMode="Wheel"),
+                    "right":XL430W250(8, portHandler, baudrate=baud, driveMode="Wheel"),
+                    }),
+            "hand":XL430W250(9, portHandler, baudrate=baud, reverse=True, driveMode="Wheel"),
+            })
+    
+
 #mkIV = SARTRobot(wheels=True) 
-mkIV = MarkIV(arm=True, port="COM8") #actually for markIII
+mkIV = MarkIVWheely(arm=True, port="COM8") #actually for markIII
 
 # When script exits or is interrupted stop all servos
 #atexit.register(mkIV.close) #now part of the robot object
@@ -44,7 +60,27 @@ MODE = Modes.DRIVE
 speed_factor = 1
 last_left = 0
 last_right  = 0
+
+
+
+def angleCheck(motors, goal=None, maxi = 85, mini=-85, motor=None):
+    if motor is None:
+        motor = motors
+    else:
+        motor = motors[motor]
+    cp = motor.getCurrentPosition()
+    if cp is not None and ((cp > maxi) or (cp < mini)):
+        motors.setGoalSpeed(0)
+    elif goal is not None:
+        motors.setGoalSpeed(goal)
+
+def keepInBounds():
+    while 1:
+        angleCheck(mkIV.Arm["shoulder"], motor="right")
+        angleCheck(mkIV.Arm["elbow"], motor="right")
+        angleCheck(mkIV.Arm["hand"], maxi=45, mini= -45)
     
+
 def steering(x, y):
 	global last_left
 	global last_right
@@ -150,21 +186,23 @@ def tank_control():
 
 def armControl():
     print("armControl")
-    speed = 20
+    speed = 0.5
     left_x, left_y = controller.joy_left.getValid()
     right_x, right_y = controller.joy_right.getValid()
     
     if(left_y != 0):
-        current = mkIV.Arm["shoulder"]["right"].currentPos(False)
-        if current is not None:
-            print("shoulder current: {} change {}".format(current, left_y))
-            mkIV.Arm["shoulder"].setGoalPos(current+left_y*speed, False)
+#        current = mkIV.Arm["shoulder"]["right"].currentPos(False)
+#        if current is not None:
+#            print("shoulder current: {} change {}".format(current, left_y))
+#            mkIV.Arm["shoulder"].setGoalPos(current+left_y*speed, False)
+        angleCheck(mkIV.Arm["shoulder"], goal=left_y*speed, motor="right")
     
     if(right_y != 0):
-        current = mkIV.Arm["elbow"]["right"].currentPos(False)
-        if current is not None:
-            print("elbow current: {} change {}".format(current, right_y))
-            mkIV.Arm["elbow"].setGoalPos(current+right_y*speed, False)
+#        current = mkIV.Arm["elbow"]["right"].currentPos(False)
+#        if current is not None:
+#            print("elbow current: {} change {}".format(current, right_y))
+#            mkIV.Arm["elbow"].setGoalPos(current+right_y*speed, False)
+        angleCheck(mkIV.Arm["elbow"], goal=right_y*speed, motor="right")
     
 # =============================================================================
 #     if(left_x != 0):
@@ -175,10 +213,11 @@ def armControl():
 # =============================================================================
     
     if(right_x != 0):
-        current = mkIV.Arm["hand"].currentPos(False)
-        if current is not None:
-            print("hand current: {} change {}".format(current, right_x))
-            mkIV.Arm["hand"].setGoalPos(current+right_x*speed, False)
+#        current = mkIV.Arm["hand"].currentPos(False)
+#        if current is not None:
+#            print("hand current: {} change {}".format(current, right_x))
+#            mkIV.Arm["hand"].setGoalPos(current+right_x*speed, False)
+        angleCheck(mkIV.Arm["hand"], goal=right_x*speed, maxi=45, mini= -45)
         
 
 def controlHandler():
@@ -235,6 +274,8 @@ def main():
 	print("connected: {} out of {}".format(conn[0],conn[1]))
 	print("Starting control data reciever")
 	mkIV.Arm.setGoalPos(0, True)
+	inBounds = threading.Thread(target=keepInBounds)
+	inBounds.start()
 	start_server = websockets.serve(recieveControlData, "localhost", 5555)
 	asyncio.get_event_loop().run_until_complete(start_server)
 	asyncio.get_event_loop().run_forever()
