@@ -22,10 +22,10 @@ controller = XBoxOne()
 AXIS_THRESHOLD = 8689 / 32767.0
 
 #mkIV = SARTRobot(wheels=True) 
-mkIV = MarkIV(arm=True, port="COM8") #actually for markIII
+mkIV = MarkIV(arm=True, port="COM11")
 
 # When script exits or is interrupted stop all servos
-#atexit.register(mkIV.close) #now part of the robot object
+#atexit.register(mkIV.close) #now part of the robot class
 
 
 class Modes(IntEnum):
@@ -125,20 +125,7 @@ def tank_control():
 		# Multiply by speed_factor to get our final speed to be sent to the servos
         right = right_trigger.axis * speed_factor
 
-#	# Make sure we don't have any decimals
-#    left = round(left)
-#    right = round(right)
 
-#	# The servos use 0 - 1023 as clockwise and 1024 - 2048 as counter clockwise, we account for that here
-#    if (left < 0):
-#        left *= -1
-#        left += 1024
-#    if (right < 0):
-#        right *= -1
-#    else:
-#        right += 1024
-		
-	# Only send message if it's different to the last one
     if (left != last_left):
         mkIV.Wheels["left"].setGoalSpeed(left, True)
     if (right != last_right):
@@ -149,37 +136,33 @@ def tank_control():
     last_right = right
 
 def armControl():
-    print("armControl")
-    speed = 20
+    speed = 100
     left_x, left_y = controller.joy_left.getValid()
     right_x, right_y = controller.joy_right.getValid()
-    
+    recall = False
     if(left_y != 0):
         current = mkIV.Arm["shoulder"]["right"].currentPos(False)
         if current is not None:
+            recall = True
             print("shoulder current: {} change {}".format(current, left_y))
             mkIV.Arm["shoulder"].setGoalPos(current+left_y*speed, False)
     
     if(right_y != 0):
         current = mkIV.Arm["elbow"]["right"].currentPos(False)
         if current is not None:
+            recall = True
             print("elbow current: {} change {}".format(current, right_y))
             mkIV.Arm["elbow"].setGoalPos(current+right_y*speed, False)
-    
-# =============================================================================
-#     if(left_x != 0):
-#         current = mkIV.Arm["hand"]["wrist"].currentPos(False)
-#         if current is not None:
-#             print("shoulder current: {} change {}".format(current, left_y))
-#             mkIV.Arm["hand"]["wrist"].setGoalPos(current+left_x*speed, False)
-# =============================================================================
     
     if(right_x != 0):
         current = mkIV.Arm["hand"].currentPos(False)
         if current is not None:
+            recall = True
             print("hand current: {} change {}".format(current, right_x))
             mkIV.Arm["hand"].setGoalPos(current+right_x*speed, False)
-        
+    
+    if recall:
+        controlHandler()
 
 def controlHandler():
     global MODE
@@ -191,13 +174,36 @@ def controlHandler():
             MODE = Modes.DRIVE
         print("Mode is now: {}".format(MODE.name))
     
-    if (controller.dpad.up.singlePress()):
+#    if (controller.dpad.down.singlePress()):
+#        conn = mkIV.countConnected()
+#        print("were connected: {} out of {}".format(conn[0],conn[1]))
+#        mkIV.enable()
+#        conn = mkIV.countConnected()
+#        print("now connected: {} out of {}".format(conn[0],conn[1]))
+    
+    if controller.dpad.down.singlePress():
+        mkIV.motors.rebootDisconnected()
         conn = mkIV.countConnected()
         print("were connected: {} out of {}".format(conn[0],conn[1]))
         mkIV.enable()
         conn = mkIV.countConnected()
         print("now connected: {} out of {}".format(conn[0],conn[1]))
-        
+		
+    if controller.dpad.right.singlePress():
+        mkIV.Arm["shoulder"].setGoalPos(-90)
+        mkIV.Arm["elbow"].setGoalPos(90)
+        mkIV.Arm["hand"].setGoalPos(-40)
+	
+    if controller.dpad.up.singlePress():
+        mkIV.Arm["shoulder"].setGoalPos(0)
+        mkIV.Arm["elbow"].setGoalPos(0)
+        mkIV.Arm["hand"].setGoalPos(-40)
+	
+    if controller.dpad.left.singlePress():
+        mkIV.Arm["shoulder"].setGoalPos(90)
+        mkIV.Arm["elbow"].setGoalPos(-90)
+        mkIV.Arm["hand"].setGoalPos(-40)
+	
         
     
     if(MODE is Modes.DRIVE):
@@ -224,11 +230,13 @@ async def recieveControlData(websocket, path):
         buf = await websocket.recv()
         if len(buf) > 0:
 #            print(buf)
-#            print("reciving data")
+            print("reciving data")
             # Convert string data to object and then handle controls
             controller.updateInputs(json.loads(buf))
-            controlHandler()
-			
+            #controlHandler()
+
+
+
 def main():
 	print("connecting to motors")
 	conn = mkIV.countConnected()
