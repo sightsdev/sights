@@ -26,17 +26,17 @@ class MarkIV(RobotBase):
     
     def __Wheels__(self, portHandler, baud):
         return MotorGroup({
-            "left":MotorGroup({
-                    "front":AX12A(1, portHandler, baudrate=baud, driveMode="Wheel"),
-                    "back":AX12A(3, portHandler, baudrate=baud, driveMode="Wheel"),
-                    }),
-            "right":MotorGroup({
-                    "front":AX12A(2, portHandler, baudrate=baud,reverse = True, driveMode="Wheel"),
-                    "back":AX12A(4, portHandler, baudrate=baud, reverse=True, driveMode="Wheel"),
-                    })
+            "left":AX12A(3, portHandler, baudrate=baud, driveMode="Wheel"),
+            "right":AX12A(4, portHandler, baudrate=baud,reverse = True, driveMode="Wheel"),
+            })
+    def __Paddles__(self, portHandler, baud):
+        return MotorGroup({
+            "left":XL430W250(3, portHandler, baudrate=baud, driveMode="Wheel"),
+            "right":XL430W250(4, portHandler, baudrate=baud,reverse = True, driveMode="Wheel"),
             })
     
-    def __init__(self, port="/dev/ttyUSB0",  baudrate=1000000, arm=False, wheels=False):
+    
+    def __init__(self, port="/dev/ttyUSB0",  baudrate=1000000, arm=True, wheels=True, paddles = True):
         super().__init__(dict(), port, baudrate)
         if arm:
             self.motors.addMotor("arm", self.__Arm__(self.portHandler, baudrate))
@@ -44,6 +44,9 @@ class MarkIV(RobotBase):
         if wheels:
             self.motors.addMotor("wheels", self.__Wheels__(self.portHandler, baudrate))
             self.Wheels = self.motors["wheels"]
+        if paddles:
+            self.motors.addMotor("paddles", self.__Paddles__(self.portHandler, baudrate))
+            self.Paddles = self.motors["paddles"]
         print("enabled {}".format( self.enable()))
     
     def tank(self, left, right, normalised = True):
