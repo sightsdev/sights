@@ -47,7 +47,7 @@ class Joystick():
     	return (x, y)
     
     def valid(self):
-        return (self.axis_x > self.threshold) or (self.axis_y > self.threshold)
+        return (not (self.axis_x < self.threshold and self.axis_x > -self.threshold)) or (not (self.axis_y < self.threshold and self.axis_y > -self.threshold))
         
 class Trigger():
     def __init__(self, msg_key):

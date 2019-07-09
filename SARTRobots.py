@@ -11,6 +11,7 @@ from pynamixel.motors import XL430W250, MotorGroup, AX12A
 class MarkIV(RobotBase):
     Arm = None
     Wheels = None
+    Paddles = None
     def __Arm__(self, portHandler, baud):
         return MotorGroup({
             "shoulder":MotorGroup({

@@ -22,7 +22,7 @@ controller = XBoxOne()
 AXIS_THRESHOLD = 8689 / 32767.0
 
 #mkIV = SARTRobot(wheels=True) 
-mkIV = MarkIV (port="/dev/ttyUSB0")
+mkIV = MarkIV (paddles = False, port="/dev/serial/by-id/usb-FTDI_USB__-__Serial_Converter_FT2KO70S-if00-port0")
 
 # When script exits or is interrupted stop all servos
 #atexit.register(mkIV.close) #now part of the robot class
@@ -41,13 +41,15 @@ def toggleMode(mode):
     return mode
     
 MODE = Modes.DRIVE
-speed_factor = 1
+speed_factor = 0.6
 last_left = 0
 last_right  = 0
+last_left_paddle = 0
+last_right_paddle = 0
 
 def changeSpeedFactor(positive):
     global speed_factor
-    speed_factor = min([1, max([0.1, speed_factor-0.1*(-1**positive)])])
+    speed_factor = min([1, max([0.1, speed_factor-0.1*((-1)**positive)])])
     
     
 def steering(x, y):
@@ -108,15 +110,16 @@ def tank_control():
     global last_left
     global last_right
     global speed_factor
-    
+    if mkIV.Paddles is not None:
+        mkIV.Paddles.setGoalSpeed(0)
     left_bumper = controller.bumper_left
     right_bumper = controller.bumper_right
     left_trigger = controller.trigger_left
     right_trigger = controller.trigger_right
     
     
-    left = left_trigger.axis * speed_factor * (-1**left_bumper.pressed)
-    right = right_trigger.axis * speed_factor * (-1**right_bumper.pressed)
+    left = left_trigger.axis * speed_factor * ((-1)**left_bumper.pressed)
+    right = right_trigger.axis * speed_factor * ((-1)**right_bumper.pressed)
 
 
     if (left != last_left):
@@ -129,46 +132,50 @@ def tank_control():
     last_right = right
     
 def paddle_control():
-    global last_left
-    global last_right
+    global last_left_paddle
+    global last_right_paddle
     global speed_factor
     
-    left_bumper = controller.bumper_left
-    right_bumper = controller.bumper_right
-    left_trigger = controller.trigger_left
-    right_trigger = controller.trigger_right
-    
-    
-    left = left_trigger.axis * speed_factor * (-1**left_bumper.pressed)
-    right = right_trigger.axis * speed_factor * (-1**right_bumper.pressed)
+    if mkIV.Paddles is not None:
+        mkIV.Wheels.setGoalSpeed(0)
+        left_bumper = controller.bumper_left
+        right_bumper = controller.bumper_right
+        left_trigger = controller.trigger_left
+        right_trigger = controller.trigger_right
+        
+        
+        left = left_trigger.axis * speed_factor * ((-1)**left_bumper.pressed)
+        right = right_trigger.axis * speed_factor * ((-1)**right_bumper.pressed)
 
 
-    if (left != last_left):
-        mkIV.Paddles["left"].setGoalSpeed(left, True)
-    if (right != last_right):
-        mkIV.Paddles["right"].setGoalSpeed(right, True)
-    
-    # Store this message for comparison next time
-    last_left = left
-    last_right = right
-
+        if (left != last_left_paddle):
+            mkIV.Paddles["left"].setGoalSpeed(left, True)
+            last_left_paddle = left
+        if (right != last_right_paddle):
+            mkIV.Paddles["right"].setGoalSpeed(right, True)
+            last_right_paddle = right
+    else:
+        tank_control()
 def armControl():
     speed = 100
     left_x, left_y = controller.joy_left.getValid()
     right_x, right_y = controller.joy_right.getValid()
+    print("left_y: {}".format(left_y))
+    print("right_y: {}".format(right_y))
+    print("right_x: {}".format(right_x))
     
     if(left_y != 0):
         current = mkIV.Arm["shoulder"]["right"].currentPos(False)
         if current is not None:
             print("shoulder current: {} change {}".format(current, left_y))
-            mkIV.Arm["shoulder"].setGoalPos(current+left_y*speed, False)
+            mkIV.Arm["shoulder"].setGoalPos(current-left_y*speed*(2**(current<mkIV.Arm["shoulder"]["right"].PRESENT_POSITION.max/2)), False)
     
     if(right_y != 0):
         current = mkIV.Arm["elbow"]["right"].currentPos(False)
         if current is not None:
             recall = True
             print("elbow current: {} change {}".format(current, right_y))
-            mkIV.Arm["elbow"].setGoalPos(current+right_y*speed, False)
+            mkIV.Arm["elbow"].setGoalPos(current-right_y*speed*(2**(current>mkIV.Arm["elbow"]["right"].PRESENT_POSITION.max/2)), False)
     
     if(right_x != 0):
         current = mkIV.Arm["hand"].currentPos(False)
@@ -195,14 +202,22 @@ def controlHandler():
         conn = mkIV.countConnected()
         print("now connected: {} out of {}".format(conn[0],conn[1]))
         
-    
+    if controller.dpad.up.singlePress():
+        mkIV.Arm["shoulder"].setGoalPos(0)
+        mkIV.Arm["elbow"].setGoalPos(0)
+        
+    if controller.dpad.down.singlePress():
+         mkIV.Arm["shoulder"].setGoalPos(-90)
+         mkIV.Arm["elbow"].setGoalPos(90)
     
     if(MODE is Modes.DRIVE):
         # Handle DPADS buttons
-        if controller.dpad.up.pressed:
+        if controller.dpad.right.singlePress():
             changeSpeedFactor(True)
-        if controller.dpad.down.pressed:
+            print("speed factor: {}".format(speed_factor))
+        if controller.dpad.left.singlePress():
             changeSpeedFactor(False)
+            print("speed factor: {}".format(speed_factor))
             
             
         # Handle various methods of controlling movement
@@ -214,7 +229,7 @@ def controlHandler():
             elif controller.btn_b.pressed:
                 paddle_control()
             else:
-                tank_control
+                tank_control()
             
     elif(MODE is Modes.ARM and mkIV.Arm is not None):
         if controller.joy_left.valid() or controller.joy_right.valid():
@@ -225,7 +240,7 @@ def controlHandler():
             paddle_control()
 
 # =============================================================================
-#     if controller.dpad.down.singlePress():
+#	     if controller.dpad.down.singlePress():
 #         mkIV.motors.rebootDisconnected()
 #         conn = mkIV.countConnected()
 #         print("were connected: {} out of {}".format(conn[0],conn[1]))
@@ -256,29 +271,31 @@ async def receiveControlData(websocket, path):
         buf = await websocket.recv()
         if len(buf) > 0:
 #            print(buf)
-            print("receiving data----------------------------------------------")
+#            print("receiving data----------------------------------------------")
             # Convert string data to object and then handle controls
             controller.updateInputs(json.loads(buf))
+            controlHandler()
             await asyncio.sleep(0)
 #            asyncio.ensure_future(controlLoop())
 
 
 async def controlLoop():
     while True:
-        print("controlLoop")
+#        print("controlLoop")
         controlHandler()
         await asyncio.sleep(0)
         
 
 def main():
-    print("connecting to motors")
-    conn = mkIV.countConnected()
-    print("connected: {} out of {}".format(conn[0],conn[1]))
-    print("Starting control data reciever")
-    start_server = websockets.serve(receiveControlData, "localhost", 5555)
-    asyncio.get_event_loop().create_task(controlLoop())
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
+    if mkIV is not None:
+        print("connecting to motors")
+        conn = mkIV.countConnected()
+        print("connected: {} out of {}".format(conn[0],conn[1]))
+        print("Starting control data reciever")
+        start_server = websockets.serve(receiveControlData, "10.0.0.4", 5555)
+        asyncio.get_event_loop().create_task(controlLoop())
+        asyncio.get_event_loop().run_until_complete(start_server)
+        asyncio.get_event_loop().run_forever()
 
 if __name__ == '__main__':
     main()

@@ -12,7 +12,7 @@ class Servo(IntEnum):
 
 class ServoParty:
     def __init__(self):
-        self.sc_dynamixel = Connection(port="/dev/ttyACM0", baudrate=1000000)
+        self.sc_dynamixel = Connection(port="/dev/ttyUSB0", baudrate=1000000)
         self.speed_factor = 512
         self.last_left = 0
         self.last_right = 0
@@ -33,20 +33,20 @@ class ServoParty:
         
     def move_raw(self, left, right):
         # Left side
-        self.sc_dynamixel.set_speed(Servo.LEFT_FRONT, left)
+        #self.sc_dynamixel.set_speed(Servo.LEFT_FRONT, left)
         self.sc_dynamixel.set_speed(Servo.LEFT_BACK, left)
         # Right side
-        self.sc_dynamixel.set_speed(Servo.RIGHT_FRONT, right)
+        #self.sc_dynamixel.set_speed(Servo.RIGHT_FRONT, right)
         self.sc_dynamixel.set_speed(Servo.RIGHT_BACK, right)
     
     def move_raw_left(self, left):
         # Left side
-        self.sc_dynamixel.set_speed(Servo.LEFT_FRONT, left)
+        #self.sc_dynamixel.set_speed(Servo.LEFT_FRONT, left)
         self.sc_dynamixel.set_speed(Servo.LEFT_BACK, left)
         
     def move_raw_right(self, right):
         # Right side
-        self.sc_dynamixel.set_speed(Servo.RIGHT_FRONT, right)
+        # self.sc_dynamixel.set_speed(Servo.RIGHT_FRONT, right)
         self.sc_dynamixel.set_speed(Servo.RIGHT_BACK, right)
 
     def move(self, left, right):

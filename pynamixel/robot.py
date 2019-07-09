@@ -71,6 +71,7 @@ class RobotBase():
             ready = self.connect()
     
     def close(self):
-        self.disable()
+        while self.countConnected()[0] != 0:
+            self.disable()
         self.portHandler.closePort()
         print("All closed")

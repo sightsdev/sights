@@ -3,6 +3,7 @@ import math
 from .dxl_register import Register
 from enum import Enum
 from typing import Dict
+import time
 
 class MotorBase(object):    
     resolution = 1
@@ -106,7 +107,7 @@ class AX12A(MotorBase):
         self.PRESENT_TEMP      = Register(self.packetHandler, 43, 1, 99, writeable=False)
         
         
-               
+        self.reboot()
         print((self.setDriveMode(self.ProfileConfigurations.parse(driveMode), reverse, minimum, maximum)))
         
         
@@ -263,6 +264,7 @@ class MX12W(AX12A):
         self.PRESENT_POSITION  = Register(self.packetHandler, 36, 2, 4095, writeable=False)
         self.PRESENT_TEMP      = Register(self.packetHandler, 43, 1, 99, writeable=False)
         
+        self.reboot()
         print((self.setDriveMode(self.ProfileConfigurations.parse(driveMode), reverse, minimum, maximum)))
         
 ########################################################################
@@ -300,6 +302,8 @@ class XL430W250(MotorBase):
         self.PRESENT_POSITION  = Register(self.packetHandler, 132, 4, 4095, writeable=False)
         self.PRESENT_TEMP      = Register(self.packetHandler, 146, 1, 256, writeable=False)
         
+        self.reboot()
+        time.sleep(0.3)
         
         if reverse is not "init":
             minPos                 = self.read(self.MIN_POSITION)
