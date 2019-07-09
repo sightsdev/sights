@@ -8,161 +8,136 @@
 	# Licensed under GNU General Public License 3.0				#
 	##########################################################-->
 
-	<title>S.A.R.T. Interface</title><!--The title displayed in the browser tab bar-->
+	<title>S.A.R.T. Interface</title>
 	<head>
 		<!--Link CSS and scripts-->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="css/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="css/bootstrap.css">
+		
+		<!-- Interface CSS --> 
+		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/circle.css">
+		<link rel="stylesheet" href="css/bootoast.min.css">
+		<link rel="stylesheet" href="css/sart.style.css">
+		<!-- Syntax highlighting -->
+		<link rel="stylesheet" href="css/monokai.css">
+
+		<!-- jQuery -->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
+		<!-- UI scripts -->
+		<script src="js/popper.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootoast.min.js"></script>
 		<script src="js/Chart.bundle.js"></script>
+		<!-- Syntax highlighting -->
+		<script src="js/highlight.pack.js"></script>
+		<!-- Font Awesome -->
+		<script defer src="js/fontawesome/fontawesome.js"></script>
+		<script defer src="js/fontawesome/solid.js"></script>
 		<!-- S.A.R.T. Scripts -->
-		<script src="js/sart.gamepad.js"></script>
+		<script src="js/sart.interface.js"></script>
 		<script src="js/sart.demo.js"></script>
+		<script src="js/sart.sensors.js"></script>
+		<script src="js/sart.gamepad.js"></script>
 
-		<script>
-		$(document).ready(function(){
-			// Set to four camera view by default
-			$("#btm_view_sensors" ).toggle(false);
-			
-			// Allow modals to be draggable
-			$(".modal-dialog").draggable({
-				handle: ".modal-header"
-			});
-			$("#sensorToggle" ).click(function() {
-			  // Swap between camera and sensors view
-			  $("#btm_view_camera" ).toggle();
-			  $("#btm_view_sensors" ).toggle();
-			});
-			$('.streamImage').error(function(){
-				// If the camera stream doesn't load, default to fallback image
-				if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';  
-			});
-		});
-
-		</script>
-		<style>
-		@media (min-width: 768px) {
-			.abs-center-x {
-				position: absolute;
-				left: 50%;
-				transform: translateX(-50%);
-			}
-		}
-		table {
-		  width: 100%;
-		}
-		td {
-		  width: 12.5%;
-		  position: relative;
-		}
-		td:after {
-		  content: '';
-		  display: block;
-		  margin-top: 100%;
-		}
-		td .content {
-		  position: absolute;
-		  top: 0;
-		  bottom: 0;
-		  left: 0;
-		  right: 0;
-		  background: gold;
-		}
-		</style>
 	</head>
 	<body>
+		<!-- SSH MODAL -->
 		<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header dragHeader" id="sshDrag">
-						<h4 class="modal-title">SSH</h4>
+						<h4 class="modal-title"><i class="fas fa-fw fa-terminal"></i> SSH</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<iframe id="sshiframe" src="http://10.0.2.4:4200" width="100%" height="400px"></iframe>
+						<iframe id="ssh_iframe" src="" width="100%" height="400px"></iframe>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();">Refresh</button>
+						<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();"><i class="fa fa-fw fa-redo"></i> Refresh</button>
 						<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
+		<!-- LOG MODAL -->
 		<div class="modal fade top" id="logModal" role="dialog" data-backdrop="true">
 			<div class="modal-dialog modal-lg" >
 				<div class="modal-content">
 					<div class="modal-header dragHeader" id="logDrag">
-						<h4 class="modal-title">Logs</h4>
+						<h4 class="modal-title"><i class="fas fa-fw fa-clipboard-list"></i> Logs</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<p>Why is there nothing in 'Logs'? A good question. To tell the truth, we have nothing to log.</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();">Clear</button>
-						<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
+						<button type="button" class="btn btn-light" id="controller_dump_button">
+							<i class="fa fa-fw fa-file-export"></i> Dump Controller Data
+						</button>
+						<button type="button" class="btn btn-light" id="sensor_dump_button">
+							<i class="fa fa-fw fa-file-export"></i> Dump Sensor Data
+						</button>
+						<button type="button" class="btn btn-danger float-right" id="log_clear">
+							<i class="fa fa-fw fa-trash-alt"></i> Clear
+						</button>
+						<p><pre><code id="dump_box" class="JSON" contenteditable="true"></code></pre></p>
+						<button type="button" class="btn btn-light" id="select_log_button">
+							<i class="fa fa-fw fa-check-square"></i> Select All
+						</button>
+						<div class="float-right" id="uptime">Uptime: 0.0s</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
-		<!--   _                 _           _                   
-			  | |               | |         | |                  
-			  | |_   _ _ __ ___ | |__   ___ | |_ _ __ ___  _ __  
-		  _   | | | | | '_ ` _ \| '_ \ / _ \| __| '__/ _ \| '_ \ 
-		 | |__| | |_| | | | | | | |_) | (_) | |_| | | (_) | | | |
-		  \____/ \__,_|_| |_| |_|_.__/ \___/ \__|_|  \___/|_| |_|-->
+		<!-- NAVIGATION BAR -->
 		<nav class="navbar navbar-toggleable-sm navbar-fixed-top navbar-light bg-light main-nav">
 			<div class="container-fluid">
 				<ul class="nav navbar-nav">
 					<li class="nav-item">
-						<a class="nav-link"  href="#" id="start">
-							Press a button on your controller to start
-						</a>
+						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Controller connection status">
+							<button type="button" id="controller_status" class="btn btn-danger" style="pointer-events: none">
+								<i class="fa fa-fw fa-gamepad"></i> Press a button to connect
+							</button>
+						</span>
+						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Robot connection status">
+							<button type="button" id="robot_status" class="btn btn-danger" style="pointer-events: none">
+								<i class="fa fa-fw fa-unlink"></i> Disconnected from robot
+							</button>
+						</span>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav abs-center-x">
 					<li class="nav-item">
-						<a class="nav-link" onclick="location.reload();" href="#">
+						<button type="button" class="btn btn-light" id="nav_title" data-toggle="tooltip" data-placement="bottom" title="Reload page">
 							<span style="color: #FF5A00">S.A.R.T.</span> Control Interface
-						</a>
+						</button>
 					</li>
 				</ul>
-				<!--ul class="nav navbar-nav ml-auto">
-					<li class="nav-item"-->	
-					<div class="inline">
-						<button type="button" class="btn btn-outline-dark" id="sensorToggle">
-							Toggle Sensors
+				<div class="inline">
+					<button type="button" class="btn btn-outline-dark" id="sensorToggle" data-toggle="tooltip" data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
+						<i class="fa fa-fw fa-chart-area"></i> Toggle Sensors
+					</button>
+					<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#sshModal" rel="tooltip" data-placement="bottom" title="Open SSH window">
+						<i class="fa fa-fw fa-terminal"></i> SSH
+					</button>
+					<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#logModal" rel="tooltip" data-placement="bottom" title="Open log window">
+						<i class="fa fa-fw fa-clipboard-list"></i> Logs
+					</button>
+					<div class="btn-group dropleft" role="group">
+						<button id="powerButtonDropdown" type="button" class="btn btn-outline-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Power
 						</button>
-						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#sshModal" >
-							SSH
-						</button>
-						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#logModal" >
-							Logs
-						</button>
-						<div class="btn-group dropleft" role="group">
-							<button id="powerButtonDropdown" type="button" class="btn btn-outline-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Power
-							</button>
-							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-								<a class="dropdown-item" href="shutdown.php">Shutdown</a>
-								<a class="dropdown-item" href="restart.php">Reboot</a>
-								<a class="dropdown-item" href="#" onclick="DemoMode()">Demo Mode</a>
-							</div>
+						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+							<a class="dropdown-item" href="shutdown.php" rel="tooltip" data-placement="left" title="Safely power off the robot"><i class="fa fa-fw fa-power-off"></i> Shutdown</a>
+							<a class="dropdown-item" href="restart.php" rel="tooltip" data-placement="left" title="Safely reboot the robot"><i class="fa fa-fw fa-undo"></i> Reboot</a>
+							<a class="dropdown-item" href="#" onclick="DemoMode()" rel="tooltip" data-placement="left" title="Load demo mode"><i class="fa fa-fw fa-object-group"></i> Demo Mode</a>
 						</div>
 					</div>
-					<!--/li>
-				</ul-->
+				</div>
 			</div>
 		</nav>
 		<div class="container-fluid">
@@ -207,7 +182,7 @@
 				</div>
 				<div class="col-md-auto">
 					<div class="card" style="border: 0px">
-						<img id="camera_front" width="480" class="streamImage" src="http://10.0.2.4:8084"/>
+						<img id="camera_front" width="480" class="streamImage" src=""/>
 					</div>
 				</div>
 				<div class="col-md-auto">
@@ -252,7 +227,7 @@
 				<div class="col-md-auto">
 					<div class="card">
 						<div class="card-header">
-							Distance
+							<i class="fas fa-fw fa-ruler-horizontal"></i> Distance
 						</div>
 						<div class="card-body">
 							<canvas id="distChart" width="400" height="200"></canvas>
@@ -262,7 +237,7 @@
 				<div class="col-md-auto">
 					<div class="card">
 						<div class="card-header">
-							Thermal Camera
+							<i class="fas fa-fw fa-camera"></i> Thermal Camera
 						</div>
 						<div class="">
 							<table>
@@ -353,7 +328,7 @@
 				<div class="col-md-auto">
 					<div class="card">
 						<div class="card-header">
-							Temperature
+							<i class="fas fa-fw fa-thermometer-half"></i> Temperature
 						</div>
 						<div class="card-body">
 							<canvas id="tempChart" width="400" height="200"></canvas>
@@ -364,23 +339,23 @@
 			<div class="row justify-content-md-center no-gutters" style="" id="btm_view_camera">
 				<div class="col-md-auto ">
 					<div class="card" style="border: 0px">
-						<img width="420" id="camera_left" class="img-fluid streamImage" src="http://10.0.2.4:8083" />
+						<img width="420" id="camera_left" class="img-fluid streamImage" src="" />
 					</div>
 				</div>
 				
 				<div class="col-md-auto">
 					<div class="card" style="border: 0px">
-						<img width="420" id="camera_back" class="img-fluid streamImage" src="http://10.0.2.4:8081" />
+						<img width="420" id="camera_back" class="img-fluid streamImage" src="" />
 					</div>
 				</div>
 				
 				<div class="col-md-auto">
 					<div class="card" style="border: 0px">
-						<img width="420" id="camera_right" class="img-fluid streamImage" src="http://10.0.2.4:8082" />
+						<img width="420" id="camera_right" class="img-fluid streamImage" src="" />
 					</div>
 				</div>
 			</div>
 		</div>
-		<script src="js/sart.sensors.js"></script>
+
 	</body>
 </html>

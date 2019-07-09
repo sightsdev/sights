@@ -7,8 +7,6 @@
 	
 */
 
-var ip = "10.0.2.4";//window.location.hostname;
-
 var haveEvents = "GamepadEvent" in window;
 var haveWebkitEvents = "WebKitGamepadEvent" in window;
 var controllers = {};
@@ -17,12 +15,14 @@ var rAF =
 	window.requestAnimationFrame;
 
 var select_pressed = false;
+
+var controlSocket;
 	
 var BUTTONS = {
-	FACE_0: 0,
-	FACE_1: 1,
-	FACE_2: 2,
-	FACE_3: 3,
+	FACE_A: 0,
+	FACE_B: 1,
+	FACE_X: 2,
+	FACE_Y: 3,
 	LEFT_BUMPER: 4,
 	RIGHT_BUMPER: 5,
 	LEFT_TRIGGER: 6,
@@ -38,24 +38,35 @@ var BUTTONS = {
 	CENTER_BUTTON: 16
 };
 
-var message = {
-	left_axis_x : 0,
-	left_axis_y : 0,
-	last_dpad: 'none',
-	button_LS : false,
+// Sample message format
+var controller_message = {}
+/*
 	button_A : false,
 	button_B : false,
 	button_X : false,
 	button_Y : false,
-	left_trigger : 0,
-	right_trigger : 0,
 	left_bumper : false,
 	right_bumper : false,
+	left_trigger : 0,
+	right_trigger : 0,
+	left_axis_x : 0,
+	left_axis_y : 0,
+	right_axis_x : 0,
+	right_axis_y : 0,
+	button_select : false,
+	button_start : false,
+	left_stick : false,
+	right_stick : false,
+	pad_up: false,
+	pad_down: false,
+	pad_left: false,
+	pad_right: false,
+	center: false,
 	flipped : false
 }
+*/
 
-console.log("Attempting to connect to the websocket server");
-var controlSocket = new WebSocket("ws://" + ip + ":5555");
+var last_message = JSON.stringify(controller_message);
 
 //Log to the console the result of the socket connection attempt. Useful for troubleshooting.
 function socketState() {
@@ -71,14 +82,21 @@ function socketState() {
 			return "Closed (The connection is closed or couldn't be opened)";
 	}
 }
-console.log("Attempt result: " + socketState());
 
 function connectHandler(e) {
 	addGamepad(e.gamepad);
 }
 
 function addGamepad(gamepad) {
-	document.getElementById("start").innerHTML = "Controller connected";
+	$("#controller_status").html("<i class='fa fa-fw fa-gamepad'></i>");
+	$("#controller_status").attr("class", "btn btn-success");
+
+	bootoast.toast({
+		"message": "Controller connected",
+		"type": "success",
+		"position": "left-bottom"
+	});
+	
 	controllers[gamepad.index] = gamepad;
 	rAF(updateStatus);
 	console.log("Controller connected");
@@ -89,6 +107,13 @@ function disconnectHandler(e) {
 }
 
 function removeGamepad(gamepad) {
+	$("#controller_status").html("<i class='fa fa-fw fa-gamepad'></i> Press a button to connect");
+	$("#controller_status").attr("class", "btn btn-danger");
+	bootoast.toast({
+		"message": "Controller disconnected",
+		"type": "danger",
+		"position": "left-bottom"
+	});	
 	var d = document.getElementById("controller" + gamepad.index);
 	document.body.removeChild(d);
 	delete controllers[gamepad.index];
@@ -124,50 +149,65 @@ function updateStatus() {
 			select_pressed = true;
 		} else if (select_pressed == true) {
 			select_pressed = false;
-			message.flipped = !message.flipped;
+			controller_message.flipped = !controller_message.flipped;
 
 			// Handle flipping
-			if (message.flipped) {
-				document.getElementById("camera_front").style = "transform: scale(-1, -1);";
-				document.getElementById("camera_left").style = "transform: scale(-1, -1);";
-				document.getElementById("camera_right").style = "transform: scale(-1, -1);";
-				document.getElementById("camera_back").style = "transform: scale(-1, -1);";
+			if (controller_message.flipped) {
+				$("#camera_front").attr("style", "transform: scale(-1, -1);");
+				$("#camera_left").attr("style", "transform: scale(-1, -1);");
+				$("#camera_right").attr("style", "transform: scale(-1, -1);");
+				$("#camera_back").attr("style", "transform: scale(-1, -1);");
 				// Swap left and right
-				document.getElementById("camera_left").src = "http://" + ip + ":8082";
-				document.getElementById("camera_right").src = "http://" + ip + ":8083";
+				$("#camera_left").attr("src", portString(8082));
+				$("#camera_right").attr("src", portString(8083));
 				
 			} else {
-				document.getElementById("camera_front").style = "";
-				document.getElementById("camera_left").style = "";
-				document.getElementById("camera_right").style = "";
-				document.getElementById("camera_back").style = "";
+				$("#camera_front").attr("style", "");
+				$("#camera_left").attr("style", "");
+				$("#camera_right").attr("style", "");
+				$("#camera_back").attr("style", "");
 				// Swap left and right
-				document.getElementById("camera_left").src = "http://" + ip + ":8083";
-				document.getElementById("camera_right").src = "http://" + ip + ":8082";
+				$("#camera_left").attr("src", portString(8083));
+				$("#camera_right").attr("src", portString(8082));
 			}
 		}
 		
-		message.button_A = getButton(controller, "FACE_0");
-		message.button_B = getButton(controller, "FACE_1");
-		message.button_X = getButton(controller, "FACE_2");
-		message.button_Y = getButton(controller, "FACE_3");
+		controller_message.button_A = getButton(controller, "FACE_A");
+		controller_message.button_B = getButton(controller, "FACE_B");
+		controller_message.button_X = getButton(controller, "FACE_X");
+		controller_message.button_Y = getButton(controller, "FACE_Y");
 		
-		message.button_LS = getButton(controller, "LEFT_STICK");
+		controller_message.pad_up = getButton(controller, "PAD_UP");
+		controller_message.pad_down = getButton(controller, "PAD_DOWN");
+		controller_message.pad_left = getButton(controller, "PAD_LEFT");
+		controller_message.pad_right = getButton(controller, "PAD_RIGHT");
 		
-		message.left_bumper = getButton(controller, "LEFT_BUMPER");
-		message.right_bumper = getButton(controller, "RIGHT_BUMPER");
+		controller_message.left_stick = getButton(controller, "LEFT_STICK");
+		controller_message.right_stick = getButton(controller, "RIGHT_STICK");
 		
-		message.left_trigger = getTrigger(controller, "LEFT_TRIGGER");
-		message.right_trigger = getTrigger(controller, "RIGHT_TRIGGER");
+		controller_message.left_bumper = getButton(controller, "LEFT_BUMPER");
+		controller_message.right_bumper = getButton(controller, "RIGHT_BUMPER");
+		
+		controller_message.left_trigger = getTrigger(controller, "LEFT_TRIGGER");
+		controller_message.right_trigger = getTrigger(controller, "RIGHT_TRIGGER");
 
 		for (var i = 0; i < controller.axes.length; i++) {
-			if (i == 0) message.left_axis_x = controller.axes[i].toFixed(1);
-			if (i == 1) message.left_axis_y = controller.axes[i].toFixed(1);
+			if (i == 0) controller_message.left_axis_x = controller.axes[i].toFixed(1);
+			if (i == 1) controller_message.left_axis_y = controller.axes[i].toFixed(1);
+			if (i == 2) controller_message.right_axis_x = controller.axes[i].toFixed(1);
+			if (i == 3) controller_message.right_axis_y = controller.axes[i].toFixed(1);
+		}
+		
+		json_message = JSON.stringify(controller_message);
+	
+		// Compare with last message
+		if (json_message !== last_message) {
+			last_message = json_message;
+			//console.log(json_message);
+			if (controlSocket.readyState == 1) 
+				controlSocket.send(json_message);
 		}
 	}
-	//console.log(JSON.stringify(message));
-	if (controlSocket.readyState == 1) 
-		controlSocket.send(JSON.stringify(message));
 	
 	rAF(updateStatus);
 }
@@ -189,12 +229,24 @@ function scanGamepads() {
 	}
 }
 
-if (haveEvents) {
-	window.addEventListener("gamepadconnected", connectHandler);
-	window.addEventListener("gamepaddisconnected", disconnectHandler);
-} else if (haveWebkitEvents) {
-	window.addEventListener("webkitgamepadconnected", connectHandler);
-	window.addEventListener("webkitgamepaddisconnected", disconnectHandler);
-} else {
-	setInterval(scanGamepads, 500);
-}
+$(document).ready(function(){
+	console.log("Attempting to connect to the websocket server");
+	
+	try {
+		controlSocket = new WebSocket("ws://" + ip + ":5555");
+		console.log("Attempt result: " + socketState());
+	} catch (err) {
+		console.log(err);
+	}
+	
+
+	if (haveEvents) {
+		window.addEventListener("gamepadconnected", connectHandler);
+		window.addEventListener("gamepaddisconnected", disconnectHandler);
+	} else if (haveWebkitEvents) {
+		window.addEventListener("webkitgamepadconnected", connectHandler);
+		window.addEventListener("webkitgamepaddisconnected", disconnectHandler);
+	} else {
+		setInterval(scanGamepads, 500);
+	}
+});

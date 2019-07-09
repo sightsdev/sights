@@ -19,11 +19,6 @@ function DemoMode() {
 	tempChartData.datasets[0].data = [12,12,12,14,12,12,12,12,13,14,15,14,13,12,12];
 	tempChartData.datasets[1].data = [45,48,45,40,40,40,40,39,38,38,38,39,40,39,40];
 	tempChartData.datasets[2].data = [45,54,32,32,33,34,35,34,34,34,33,32,32,31,33];
-	tempChartData.datasets[3].data = [18,19,23,19,19,19,18,14,15,16,17,16,18,19,20];
-	/*tempChartData.labels = [];
-	for (var i = 0; i < tempChartData.datasets[0].data.length; i++) {
-		tempChartData.labels.push(i);
-	}*/
 	tempChart.update();
 
 	// Camera streams, load dummy images

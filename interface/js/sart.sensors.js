@@ -1,9 +1,20 @@
-var ip = window.location.hostname;
+/*
+	Created by the Semi-Autonomous Rescue Team
+	Licensed under GNU General Public License 3.0
+	
+*/
 
-var tempChartCanvas = document.getElementById("tempChart").getContext('2d');
-var distChartCanvas = document.getElementById("distChart").getContext('2d');
+var sensorSocket;
 
-console.log("Starting sensor receiver");
+var last_sensor_data = {
+	distance : [],
+	thermal_camera: [],
+	co2: 0,
+	tvoc: 0,
+	temp : [],
+	charge: 0,
+	cpu_temp: 0,
+};
 
 var camColors = [0x480F,
 0x400F,0x400F,0x400F,0x4010,0x3810,0x3810,0x3810,0x3810,0x3010,0x3010,
@@ -33,12 +44,12 @@ var camColors = [0x480F,
 0xF1E0,0xF1C0,0xF1A0,0xF180,0xF160,0xF140,0xF100,0xF0E0,0xF0C0,0xF0A0,
 0xF080,0xF060,0xF040,0xF020,0xF800];
 
-// Rainbow
-function rainbow(n) {
-	return 'hsl(' + n * 15 + ',100%,50%)';
-}
+var tempChartCanvas;
+var distChartCanvas;
 
-// CHARTS
+var distChart;
+var tempChart;
+
 var distChartData = {
 	labels: ['Front', 'Right', 'Back', 'Left'],
 	datasets: [{
@@ -62,168 +73,216 @@ var distChartOptions = {
 	animation: {
 		animateRotate: false
 	},
+	tooltips: {
+		enabled: false,
+	},
 	scale: {
 		ticks: {
-			max: 1000,
+			max: 1200,
 			min: 0,
 			stepSize: 100
 		}
 	}
 };
 
-var distChart = new Chart(distChartCanvas, {
-	type: 'polarArea',
-	data: distChartData,
-	options: distChartOptions
-});
-
 var tempChartData =  {
-	labels: [-13, -12, -11, 10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
-	datasets: [{
-		label: 'Front',
-		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		borderColor: [
-			'rgba(128, 0, 0, 1)'
-		]
-	},
+	labels: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
+	datasets: [
 	{
 		label: 'Left',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
-			'rgba(0, 128, 0, 1)'
+			'rgba(66, 133, 244, 1)'
 		]
 	},
 	{
 		label: 'Right',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
-			'rgba(0, 0, 128, 1)'
+			'rgba(52, 168, 83, 1)'
 		]
 	},
 	{
 		label: 'Back',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
-			'rgba(128, 128, 0, 1)'
+			'rgba(234, 67, 53, 1)'
 		]
 	}]
 }
 
-var tempChart = new Chart(tempChartCanvas, {
-	type: 'line',
-	data: tempChartData,
-	options: {
-		responsive: true,
-		title: {
-			display: false,
-			text: 'Temperature'
-		},
-		tooltips: {
-			mode: 'index',
-			intersect: false,
-		},
-		hover: {
-			mode: 'nearest',
-			intersect: true
-		},
-		scales: {
-			xAxes: [{
-				display: true,
-				scaleLabel: {
-					display: true,
-					labelString: 'Time'
-				}
-			}],
-			yAxes: [{
-				display: true,
-				scaleLabel: {
-					display: true,
-					labelString: 'Temperature (°C)'
-				}
-			}]
-		}
-	}
-});
-
-
-var sensorSocket = new WebSocket("ws://" + ip + ":5556");
-
-sensorSocket.onmessage = function(event) {
-	var str = event.data;
-    var obj = JSON.parse(str);
-
-	// Get distance data and create radial graph
-	if ("distance" in obj) {
-		// Update distance chart
-		var dist_data = [];
-    	// Unfortunately the graph has directions clockwise (front, right, back, left) in the array. We have them front, left, right, back
-		dist_data[0] = obj["dist"][0];
-		dist_data[1] = obj["dist"][2];
-		dist_data[2] = obj["dist"][3];
-		dist_data[3] = obj["dist"][1];
-		// Change chart dataset to use new data
-		distChartData.datasets[0].data = dist_data;
-    	// Reload chart with new data
-		distChart.update();
-	}
-	
-	// Get thermal camera and create pixel grid
-	if ("thermal_camera" in obj) {
-		var thermal_camera_data = obj["thermal_camera"];
-		
-		// Iterate through pixels
-		for (i = 0; i < 8; i++) {
-			for (j = 0; j < 8; j++) {
-				var offset = i * 8 + j;
-				// Get pixel color from color table
-				var pixel = Math.round(thermal_camera_data[offset]);
-				// Apply colour to the appropriate HTML element 
-				document.getElementById("p" + (offset + 1)).style = "background:" + rainbow(pixel);
-			}
-		}
-	}
-	
-	// Get CO2 levels
-	if ("co2" in obj) {
-		var co2 = obj["co2"];
-		// Update graph
-		document.getElementById("co2_level").innerHTML = co2 + "<span style='font-size: 10px'> ppm</span>";
-		document.getElementById("co2_graph").className = "c100 med orange p" + Math.round(co2 / 100);
-	}
-	
-	// Get TVOC levels
-	if ("tvoc" in obj) {
-		var tvoc = obj["tvoc"];
-		// Update graph
-		document.getElementById("tvoc_level").innerHTML = tvoc + "<span style='font-size: 10px'> ppb</span>";
-		document.getElementById("tvoc_graph").className = "c100 med orange p" + Math.round(tvoc / 100);
-	}
-	
-	// Get temperature data for line graph
-	if ("temp" in obj) {
-		var temp_data = obj["temp"];
-		for (i = 0; i < 4; i++) {
-			// Remove oldest element
-			tempChartData.datasets[i].data.shift()
-			// Push new element
-			tempChartData.datasets[i].data.push(temp_data[i]);
-		}
-		tempChart.update();
-	}
-	
-	// Get charge level
-	if ("charge" in obj) {
-		var charge_data = obj["charge"];
-		// Update graph
-		document.getElementById("charge_level").innerHTML = charge_data + "%";
-		document.getElementById("charge_graph").className = "c100 med orange p" + charge_data;
-	}
-	
-	// Highest CPU core temperature
-	var cpu_temp = Math.round(obj.cpu_temp);
-	document.getElementById("cputemp_level").innerHTML = cpu_temp + "&degC";
-	document.getElementById("cputemp_graph").className = "c100 med orange p" + cpu_temp;
-
-
+// Rainbow
+function rainbow(n) {
+	return 'hsl(' + n * 15 + ',100%,50%)';
 }
 
+$(document).ready(function(){
+
+	try { 
+	   tempChartCanvas = $("#tempChart").get(0).getContext('2d');
+	   distChartCanvas = $("#distChart").get(0).getContext('2d');
+	} catch(err) { 
+		console.log(err);
+	}
+		
+	// CHARTS
+	distChart = new Chart(distChartCanvas, {
+		type: 'polarArea',
+		data: distChartData,
+		options: distChartOptions
+	});
+
+	tempChart = new Chart(tempChartCanvas, {
+		type: 'line',	
+		data: tempChartData,
+		options: {
+			animation: {
+				duration: 800
+			},
+			responsive: true,
+			title: {
+				display: false,
+				text: 'Temperature'
+			},
+			tooltips: {
+				enabled: false
+			},
+			hover: {
+				mode: 'nearest',
+				intersect: true
+			},
+			scales: {
+				xAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Time'
+					}
+				}],
+				yAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Temperature (°C)'
+					}
+				}]
+			}
+		}
+	});
+	
+	$("#tempChart").attr("style", "display: block; height: 187px; width: 374px;");
+	$("#distChart").attr("style", "display: block; height: 187px; width: 374px;");
+	
+	try {
+		sensorSocket = new WebSocket("ws://" + ip + ":5556");
+		
+		sensorSocket.onopen = function(event) {
+			$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
+			$("#robot_status").attr("class", "btn btn-success");
+			
+			bootoast.toast({
+				"message": "Connected to robot",
+				"type": "success",
+				"position": "left-bottom"
+			});
+		};
+		sensorSocket.onclose = function(event) {
+			$("#robot_status").html("<i class='fa fa-fw fa-unlink'></i> Disconnected from robot");
+			$("#robot_status").attr("class", "btn btn-danger");
+			
+			bootoast.toast({
+				"message": "Disconnected from robot",
+				"type": "danger",
+				"position": "left-bottom"
+			});
+		};
+		// Setup update event
+		sensorSocket.onmessage = function(event) {
+			var obj = JSON.parse(event.data);
+
+			// Get distance data and create radial graph
+			if ("distance" in obj) {
+				// Update distance chart
+				var dist_data = [];
+				// Unfortunately the graph has directions clockwise (front, right, back, left) in the array. We have them front, left, right, back
+				dist_data[0] = obj["distance"][0];
+				dist_data[1] = obj["distance"][2];
+				dist_data[2] = obj["distance"][3];
+				dist_data[3] = obj["distance"][1];
+				// Change chart dataset to use new data
+				distChartData.datasets[0].data = dist_data;
+				// Reload chart with new data
+				distChart.update();
+			}
+			
+			// Get thermal camera and create pixel grid
+			if ("thermal_camera" in obj) {
+				var thermal_camera_data = obj["thermal_camera"];
+				
+				// Iterate through pixels
+				for (i = 0; i < 8; i++) {
+					for (j = 0; j < 8; j++) {
+						var offset = i * 8 + j;
+						// Get pixel color from color table
+						var pixel = Math.round(thermal_camera_data[offset]);
+						// Apply colour to the appropriate HTML element 
+						document.getElementById("p" + (offset + 1)).style = "background:" + rainbow(pixel);
+					}
+				}
+			}
+			
+			// Get CO2 levels
+			if ("co2" in obj) {
+				var co2 = obj["co2"];
+				// Update graph
+				document.getElementById("co2_level").innerHTML = co2 + "<span style='font-size: 10px'> ppm</span>";
+				document.getElementById("co2_graph").className = "c100 med orange p" + Math.round(co2 / 100);
+			}
+			
+			// Get TVOC levels
+			if ("tvoc" in obj) {
+				var tvoc = obj["tvoc"];
+				// Update graph
+				document.getElementById("tvoc_level").innerHTML = tvoc + "<span style='font-size: 10px'> ppb</span>";
+				document.getElementById("tvoc_graph").className = "c100 med orange p" + Math.round(tvoc / 100);
+			}
+			
+			// Get temperature data for line graph
+			if ("temp" in obj) {
+				var temp_data = obj["temp"];
+				for (i = 0; i < 3; i++) {
+					// Remove oldest element
+					tempChartData.datasets[i].data.shift()
+					// Push new element
+					tempChartData.datasets[i].data.push(temp_data[i]);
+				}
+				tempChart.update();
+			}
+			
+			// Get charge level
+			if ("charge" in obj) {
+				var charge_data = obj["charge"];
+				// Update graph
+				document.getElementById("charge_level").innerHTML = charge_data + "%";
+				document.getElementById("charge_graph").className = "c100 med orange p" + charge_data;
+			}
+			
+			// Highest CPU core temperature
+			if ("cpu_temp" in obj) {
+				var cpu_temp = Math.round(obj["cpu_temp"]);
+				document.getElementById("cputemp_level").innerHTML = cpu_temp + "&degC";
+				document.getElementById("cputemp_graph").className = "c100 med orange p" + cpu_temp;
+			}
+			
+			// System uptime
+			if ("uptime" in obj) {
+				document.getElementById("uptime").innerHTML = "Uptime: " + obj["uptime"];
+			}
+
+			last_sensor_data = obj;
+		}
+	} catch (err) {
+		console.log(err);
+	}
+
+});
