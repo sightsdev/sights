@@ -6,33 +6,21 @@ import psutil
 import json
 import serial
 import configparser
+from smbus2 import SMBusWrapper
+from RPI_SGP30 import sgp30
+from MLX90614.mlx90614 import MLX90614
 from datetime import timedelta
 
 config = configparser.ConfigParser()
 config.read('robot.cfg')
 
-arduino_connected = True
-
-try:
-  ser = serial.Serial(config['arduino']['port'], 115200)
-except serial.serialutil.SerialException:
-  print("Error: Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
-  print("Continuing without Arduino connection\n")
-  arduino_connected = False
-
 msg = {}
 
-def getData():
-	# Get highest CPU temp from system
-	highest_temp = 0.0
-	temp_data = psutil.sensors_temperatures()
-	if len(temp_data) != 0:
-		for i in temp_data['coretemp']:
-			 if (i.current > highest_temp):
-				 highest_temp = i.current
-	# Add to message
-	msg["cpu_temp"] = str(highest_temp)
-
+def getData(sgp, temp):
+	msg["co2"] = sgp.read_measurements()[0][0]
+	msg["tvoc"] = sgp.read_measurements()[0][1]
+	msg["temp"] = [round(temp.get_obj_temp(), 1)]
+	msg["cpu_temp"] = str(psutil.sensors_temperatures()['thermal-fan-est'][0].current)
 	# Get RAM in use and total RAM
 	memory = psutil.virtual_memory()
 	# Add to message, use bit shift operator to represent in MB
@@ -43,40 +31,22 @@ def getData():
 	with open('/proc/uptime', 'r') as f:
 		uptime_seconds = round (float(f.readline().split()[0]))
 		msg["uptime"] = str(timedelta(seconds = uptime_seconds))
-
-	# Get data from Arduino
-	if arduino_connected:
-		buf = ser.readline().decode("UTF-8")
-		# If string begins with "D:", it's distance
-		if (buf[0] == "D"):
-			# Strip leading "D:" and split by comma, removing newline characters. Add to message
-			msg["distance"] = buf[2:-3].split(",")
-		# Temperature
-		elif (buf[0] == "T"):
-			# Strip and add to message
-			msg["temp"] = buf[2:-3].split(",")
-		# Gas (TVOC / CO2)
-		elif (buf[0] == "G"):
-			# Strip and add to message
-			data = buf[2:-3].split(",")
-			msg["co2"] = data[0]
-			msg["tvoc"] = data[1]
-		# Thermal Camera
-		elif (buf[0] == "C"):
-			# Strip and add to message
-			msg["thermal_camera"] = buf[2:-3].split(",")
 	# Return message to be sent to control panel
 	return json.dumps(msg)
 
 
 async def sendSensorData(websocket, path):
 	print ("Client connected")
-	while True:
-		try: 
-			await websocket.send(getData())
-		except websockets.exceptions.ConnectionClosed:
-			print ("Client disconnected")
-			break
+	with SMBusWrapper(1) as bus:
+		sgp = sgp30.SGP30(bus)
+		sgp.init_sgp()
+		temp = MLX90614(0x5A)
+		while True:
+			try: 
+				await websocket.send(getData(sgp, temp))
+			except websockets.exceptions.ConnectionClosed:
+				print ("Client disconnected")
+				break
 
 
 def main():
