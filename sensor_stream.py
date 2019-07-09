@@ -8,7 +8,7 @@ import serial
 import configparser
 from smbus2 import SMBusWrapper
 from PySGP30 import SGP30
-from MLX90614.mlx90614 import MLX90614
+from PyMLX90614 import MLX90614
 from datetime import timedelta
 
 config = configparser.ConfigParser()
