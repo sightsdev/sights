@@ -40,7 +40,7 @@
 		<script src="js/sart.interface.js"></script>
 		<script src="js/sart.demo.js"></script>
 		<script src="js/sart.sensors.js"></script>
-		<script src="js/sart.gamepad.js"></script>
+		<script src="js/sart.gamepad.js"></script>	
 
 	</head>
 	<body>
@@ -182,7 +182,7 @@
 				</div>
 				<div class="col-md-auto">
 					<div class="card" style="border: 0px">
-						<img id="camera_front" width="480" class="streamImage" src=""/>
+						<img id="camera_front" width="480" class="streamImage rotated" src=""/>
 					</div>
 				</div>
 				<div class="col-md-auto">
@@ -227,101 +227,10 @@
 				<div class="col-md-auto">
 					<div class="card">
 						<div class="card-header">
-							<i class="fas fa-fw fa-ruler-horizontal"></i> Distance
-						</div>
-						<div class="card-body">
-							<canvas id="distChart" width="400" height="200"></canvas>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-auto">
-					<div class="card">
-						<div class="card-header">
 							<i class="fas fa-fw fa-camera"></i> Thermal Camera
 						</div>
-						<div class="">
-							<table>
-								<tr>
-									<td><div class="content" id="p1"></div></td>
-									<td><div class="content" id="p2"></div></td>
-									<td><div class="content" id="p3"></div></td>
-									<td><div class="content" id="p4"></div></td>
-									<td><div class="content" id="p5"></div></td>
-									<td><div class="content" id="p6"></div></td>
-									<td><div class="content" id="p7"></div></td>
-									<td><div class="content" id="p8"></div></td>
-								</tr>
-								<tr>
-									<td><div class="content" id="p9"></div></td>
-									<td><div class="content" id="p10"></div></td>
-									<td><div class="content" id="p11"></div></td>
-									<td><div class="content" id="p12"></div></td>
-									<td><div class="content" id="p13"></div></td>
-									<td><div class="content" id="p14"></div></td>
-									<td><div class="content" id="p15"></div></td>
-									<td><div class="content" id="p16"></div></td>
-								</tr>
-								<tr>
-									<td><div class="content" id="p17"></div></td>
-									<td><div class="content" id="p18"></div></td>
-									<td><div class="content" id="p19"></div></td>
-									<td><div class="content" id="p20"></div></td>
-									<td><div class="content" id="p21"></div></td>
-									<td><div class="content" id="p22"></div></td>
-									<td><div class="content" id="p23"></div></td>
-									<td><div class="content" id="p24"></div></td>
-								</tr>
-								<tr>
-									<td><div class="content" id="p25"></div></td>
-									<td><div class="content" id="p26"></div></td>
-									<td><div class="content" id="p27"></div></td>
-									<td><div class="content" id="p28"></div></td>
-									<td><div class="content" id="p29"></div></td>
-									<td><div class="content" id="p30"></div></td>
-									<td><div class="content" id="p31"></div></td>
-									<td><div class="content" id="p32"></div></td>
-								</tr>
-								<tr>
-									<td><div class="content" id="p33"></div></td>
-									<td><div class="content" id="p34"></div></td>
-									<td><div class="content" id="p35"></div></td>
-									<td><div class="content" id="p36"></div></td>
-									<td><div class="content" id="p37"></div></td>
-									<td><div class="content" id="p38"></div></td>
-									<td><div class="content" id="p39"></div></td>
-									<td><div class="content" id="p40"></div></td>
-								</tr>
-								<tr>
-									<td><div class="content" id="p41"></div></td>
-									<td><div class="content" id="p42"></div></td>
-									<td><div class="content" id="p43"></div></td>
-									<td><div class="content" id="p44"></div></td>
-									<td><div class="content" id="p45"></div></td>
-									<td><div class="content" id="p46"></div></td>
-									<td><div class="content" id="p47"></div></td>
-									<td><div class="content" id="p48"></div></td>
-								</tr>
-								<tr>
-									<td><div class="content" id="p49"></div></td>
-									<td><div class="content" id="p50"></div></td>
-									<td><div class="content" id="p51"></div></td>
-									<td><div class="content" id="p52"></div></td>
-									<td><div class="content" id="p53"></div></td>
-									<td><div class="content" id="p54"></div></td>
-									<td><div class="content" id="p55"></div></td>
-									<td><div class="content" id="p56"></div></td>
-								</tr>
-								<tr>
-									<td><div class="content" id="p57"></div></td>
-									<td><div class="content" id="p58"></div></td>
-									<td><div class="content" id="p59"></div></td>
-									<td><div class="content" id="p60"></div></td>
-									<td><div class="content" id="p61"></div></td>
-									<td><div class="content" id="p62"></div></td>
-									<td><div class="content" id="p63"></div></td>
-									<td><div class="content" id="p64"></div></td>
-								</tr>
-							</table>
+						<div id="thermal_camera">
+							
 						</div>
 					</div>
 				</div>
@@ -337,23 +246,13 @@
 				</div>
 			</div>
 			<div class="row justify-content-md-center no-gutters" style="" id="btm_view_camera">
-				<div class="col-md-auto ">
-					<div class="card" style="border: 0px">
-						<img width="420" id="camera_left" class="img-fluid streamImage" src="" />
-					</div>
-				</div>
-				
+			
 				<div class="col-md-auto">
 					<div class="card" style="border: 0px">
 						<img width="420" id="camera_back" class="img-fluid streamImage" src="" />
 					</div>
 				</div>
-				
-				<div class="col-md-auto">
-					<div class="card" style="border: 0px">
-						<img width="420" id="camera_right" class="img-fluid streamImage" src="" />
-					</div>
-				</div>
+
 			</div>
 		</div>
 

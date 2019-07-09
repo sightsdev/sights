@@ -21,7 +21,7 @@ table {
 }
 
 td {
-  width: 12.5%;
+  width: 3.125%;
   position: relative;
 }
 
@@ -46,4 +46,12 @@ td .content {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+.rotated {
+  -webkit-transform:rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
 }

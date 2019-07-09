@@ -16,6 +16,12 @@ function portString (port) {
 }
 
 $(document).ready(function(){
+
+	// Flip cameras
+	//#("#camera_front").attr("style", "transform: scale(-1, -1);");
+	//#("#camera_left").attr("style", "transform: scale(-1, -1);");
+	//#("#camera_right").attr("style", "transform: scale(-1, -1);");
+	//#("#camera_back").attr("style", "transform: scale(-1, -1);");
 	
 	// Allow both a tooltip and a modal window on a button
 	$('[rel="tooltip"]').tooltip({trigger: "hover"});
@@ -70,9 +76,19 @@ $(document).ready(function(){
 	});
 	// Set source of camera streams
 	$("#camera_front").attr("src", portString(8081));
-	$("#camera_left").attr("src", portString(8083));
-	$("#camera_right").attr("src", portString(8082));
-	$("#camera_back").attr("src", portString(8084));
+	$("#camera_back").attr("src", portString(8082));
 	// Set source of SSH window
 	$("#ssh_iframe").attr("src", portString(4200));
+	
+	x = 0;
+	var table = $('<table>');
+	for(i = 0; i < 24; i++){
+		var row = $('<tr>');
+		for (j = 0; j < 32; j++) {
+			row.append("<td><div class='content' id=p" + x + "></div></td>");
+			x++;
+		}
+		table.append(row);
+	}
+	$('#thermal_camera').append(table);
 });

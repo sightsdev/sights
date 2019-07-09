@@ -45,65 +45,14 @@ var camColors = [0x480F,
 0xF080,0xF060,0xF040,0xF020,0xF800];
 
 var tempChartCanvas;
-var distChartCanvas;
-
-var distChart;
 var tempChart;
 
-var distChartData = {
-	labels: ['Front', 'Right', 'Back', 'Left'],
-	datasets: [{
-		data: [0,0,0,0],
-		backgroundColor: [
-		"rgba(0, 255, 0, 0.8)",
-		"rgba(0, 255, 200, 0.8)",
-		"rgba(0, 255, 200, 0.8)",
-		"rgba(0, 255, 200, 0.8)"
-		],
-		borderColor: "rgba(0, 0, 0, 0.5)"
-	}]
-};
-
-var distChartOptions = {
-	startAngle: 5 * Math.PI / 4,
-	legend: {
-		position: 'left',
-		display: false
-	},
-	animation: {
-		animateRotate: false
-	},
-	tooltips: {
-		enabled: false,
-	},
-	scale: {
-		ticks: {
-			max: 1200,
-			min: 0,
-			stepSize: 100
-		}
-	}
-};
 
 var tempChartData =  {
 	labels: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
 	datasets: [
 	{
-		label: 'Left',
-		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		borderColor: [
-			'rgba(66, 133, 244, 1)'
-		]
-	},
-	{
-		label: 'Right',
-		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		borderColor: [
-			'rgba(52, 168, 83, 1)'
-		]
-	},
-	{
-		label: 'Back',
+		label: '',
 		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		borderColor: [
 			'rgba(234, 67, 53, 1)'
@@ -111,33 +60,30 @@ var tempChartData =  {
 	}]
 }
 
+
 // Rainbow
 function rainbow(n) {
 	return 'hsl(' + n * 15 + ',100%,50%)';
 }
 
 $(document).ready(function(){
-
 	try { 
 	   tempChartCanvas = $("#tempChart").get(0).getContext('2d');
-	   distChartCanvas = $("#distChart").get(0).getContext('2d');
 	} catch(err) { 
 		console.log(err);
 	}
-		
-	// CHARTS
-	distChart = new Chart(distChartCanvas, {
-		type: 'polarArea',
-		data: distChartData,
-		options: distChartOptions
-	});
 
 	tempChart = new Chart(tempChartCanvas, {
 		type: 'line',	
 		data: tempChartData,
 		options: {
+			elements: {
+				line: {
+					tension: 0 // disables bezier curves
+				}
+			},
 			animation: {
-				duration: 800
+				duration: 50
 			},
 			responsive: true,
 			title: {
@@ -151,6 +97,9 @@ $(document).ready(function(){
 				mode: 'nearest',
 				intersect: true
 			},
+			legend: {
+				display: false,
+			},
 			scales: {
 				xAxes: [{
 					display: true,
@@ -160,6 +109,10 @@ $(document).ready(function(){
 					}
 				}],
 				yAxes: [{
+					ticks: {
+						min: 20,
+						max: 40
+					},
 					display: true,
 					scaleLabel: {
 						display: true,
@@ -171,7 +124,6 @@ $(document).ready(function(){
 	});
 	
 	$("#tempChart").attr("style", "display: block; height: 187px; width: 374px;");
-	$("#distChart").attr("style", "display: block; height: 187px; width: 374px;");
 	
 	try {
 		sensorSocket = new WebSocket("ws://" + ip + ":5556");
@@ -200,33 +152,19 @@ $(document).ready(function(){
 		sensorSocket.onmessage = function(event) {
 			var obj = JSON.parse(event.data);
 
-			// Get distance data and create radial graph
-			if ("distance" in obj) {
-				// Update distance chart
-				var dist_data = [];
-				// Unfortunately the graph has directions clockwise (front, right, back, left) in the array. We have them front, left, right, back
-				dist_data[0] = obj["distance"][0];
-				dist_data[1] = obj["distance"][2];
-				dist_data[2] = obj["distance"][3];
-				dist_data[3] = obj["distance"][1];
-				// Change chart dataset to use new data
-				distChartData.datasets[0].data = dist_data;
-				// Reload chart with new data
-				distChart.update();
-			}
 			
 			// Get thermal camera and create pixel grid
 			if ("thermal_camera" in obj) {
 				var thermal_camera_data = obj["thermal_camera"];
 				
 				// Iterate through pixels
-				for (i = 0; i < 8; i++) {
-					for (j = 0; j < 8; j++) {
-						var offset = i * 8 + j;
+				for (i = 0; i < 24; i++) {
+					for (j = 0; j < 32; j++) {
+						var offset = i * 32 + j;
 						// Get pixel color from color table
 						var pixel = Math.round(thermal_camera_data[offset]);
 						// Apply colour to the appropriate HTML element 
-						document.getElementById("p" + (offset + 1)).style = "background:" + rainbow(pixel);
+						document.getElementById("p" + offset).style = "background:" + rainbow(pixel);
 					}
 				}
 			}
@@ -250,14 +188,15 @@ $(document).ready(function(){
 			// Get temperature data for line graph
 			if ("temp" in obj) {
 				var temp_data = obj["temp"];
-				for (i = 0; i < 3; i++) {
-					// Remove oldest element
-					tempChartData.datasets[i].data.shift()
-					// Push new element
-					tempChartData.datasets[i].data.push(temp_data[i]);
-				}
+				
+				// Remove oldest element
+				tempChartData.datasets[0].data.shift()
+				// Push new element
+				tempChartData.datasets[0].data.push(temp_data[0]);
+			
 				tempChart.update();
 			}
+			
 			
 			// Get charge level
 			if ("charge" in obj) {
