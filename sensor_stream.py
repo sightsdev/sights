@@ -7,7 +7,7 @@ import json
 import serial
 import configparser
 from smbus2 import SMBusWrapper
-from RPI_SGP30 import sgp30
+from PySGP30 import SGP30
 from MLX90614.mlx90614 import MLX90614
 from datetime import timedelta
 
@@ -38,7 +38,7 @@ def getData(sgp, temp):
 async def sendSensorData(websocket, path):
 	print ("Client connected")
 	with SMBusWrapper(1) as bus:
-		sgp = sgp30.SGP30(bus)
+		sgp = SGP30(bus)
 		sgp.init_sgp()
 		temp = MLX90614(0x5A)
 		while True:
