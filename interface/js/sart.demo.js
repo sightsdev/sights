@@ -41,7 +41,7 @@ function DemoMode() {
 		"position": "left-bottom"
 	});
 	
-	$('#gamepadSelect').append('<option value="0" id="gamepad">Xbox 360 Controller</option>');
+	$('#gamepadSelect').html('<option value="0" id="gamepad">Xbox 360 Controller</option>');
 	
 	$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
 	$("#robot_status").attr("class", "btn btn-success");
