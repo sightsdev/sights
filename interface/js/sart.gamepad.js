@@ -191,6 +191,7 @@ function updateStatus() {
 		controller_message.left_trigger = getTrigger(controller, "LEFT_TRIGGER");
 		controller_message.right_trigger = getTrigger(controller, "RIGHT_TRIGGER");
 
+		// Controller left and right stick axes
 		for (var i = 0; i < controller.axes.length; i++) {
 			if (i == 0) controller_message.left_axis_x = controller.axes[i].toFixed(1);
 			if (i == 1) controller_message.left_axis_y = controller.axes[i].toFixed(1);
@@ -199,12 +200,12 @@ function updateStatus() {
 		}
 		
 		json_message = JSON.stringify(controller_message);
-	
+		
 		// Compare with last message
 		if (json_message !== last_message) {
 			last_message = json_message;
 			//console.log(json_message);
-			if (controlSocket.readyState == 1) 
+			if (controlSocket != undefined && controlSocket.readyState == 1) 
 				controlSocket.send(json_message);
 		}
 	}
