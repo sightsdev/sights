@@ -63,7 +63,10 @@ $(document).ready(function(){
 	
 	// If the camera stream doesn't load, default to fallback image
 	$('.streamImage').error(function(){
-		if (this.src != 'images/no-feed-small.png') this.src = 'images/no-feed-small.png';  
+		if (this.src != 'images/no-feed-small.png') {
+			this.src = 'images/no-feed-small.png';  
+			$('.streamImage').removeClass("rotated");
+		}
 	});
 	
 	// Set source of camera streams

@@ -36,6 +36,8 @@ function logControl (control, value) {
 }
 
 $(document).ready(function() {
+	$("#controller-status-connected").hide();
+	
 	console.log("Attempting to connect to the websocket server");
 	
 	try {
@@ -50,15 +52,16 @@ $(document).ready(function() {
 	var currentGamepad = 0;
 	
 	$('#gamepadSelect').on('change', function (e) {
-		var device = gamepad.gamepads[this.value];
-		$('#gamepad-monitor-pre').html(JSON.stringify(device.state, null, "\t"));
+		//var device = gamepad.gamepads[this.value];
+		currentGamepad = this.value;
+		//$('#gamepad-monitor-pre').html(JSON.stringify(device.state, null, "\t"));
 	});
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
 		console.log('Controller connected:', device.id);
 		
-		$("#controller_status").html("<i class='fa fa-fw fa-gamepad'></i>");
-		$("#controller_status").attr("class", "btn btn-success");
+		$("#controller-status-connected").show();
+		$("#controller-status-disconnected").hide();
 		
 		bootoast.toast({
 			"message": "Controller connected",
@@ -66,15 +69,18 @@ $(document).ready(function() {
 			"position": "left-bottom"
 		});
 		
-		$('#gamepadSelect').append('<option value="' + device.index + '">' + device.id +'</option>');
+		$('#gamepadSelect').append('<option value="' + device.index + '" id="gamepad-' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") +'</option>');
 		$('#gamepadSelect').trigger('change');
 	});
 
 	gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
 		console.log('Controller disconnected', device.id);
+		
+		$('#gamepad-' + device.index).remove();
+		
 		if (gamepad.count() == 0) {
-			$("#controller_status").html("<i class='fa fa-fw fa-gamepad'></i> Press a button to connect");
-			$("#controller_status").attr("class", "btn btn-danger");
+			$("#controller-status-connected").hide();
+			$("#controller-status-disconnected").show();
 		}
 		bootoast.toast({
 			"message": "Controller disconnected",
@@ -84,32 +90,37 @@ $(document).ready(function() {
 	});
 
 	gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
-		var c_event = {
-			control: e.control, 
-			state: "DOWN"
-		};
-		safeSend(c_event);
-		logControl(e.control, "DOWN");
+		if (e.gamepad.index == currentGamepad) {
+			var c_event = {
+				control: e.control, 
+				state: "DOWN"
+			};
+			safeSend(c_event);
+			logControl(e.control, "DOWN");
+		}
 	});
 
 	gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
-		var c_event = {
-			control: e.control, 
-			state: "UP"
-		};
-		safeSend(c_event);
-		logControl(e.control, "UP");
+		if (e.gamepad.index == currentGamepad) {
+			var c_event = {
+				control: e.control, 
+				state: "UP"
+			};
+			safeSend(c_event);
+			logControl(e.control, "UP");
+		}
 	});
 
 	gamepad.bind(Gamepad.Event.AXIS_CHANGED, function(e) {
-		if (e.value.toFixed(2) > 0.3 || e.value.toFixed(2) < -0.3) {
-			var c_event = {
-				control: e.axis, 
-				state: e.value.toFixed(2)
-			};
-			safeSend(c_event);
-			logControl(e.axis, "changed to " + e.value);
-		}
+		if (e.gamepad.index == currentGamepad)
+			if (e.value.toFixed(2) > 0.3 || e.value.toFixed(2) < -0.3) {
+				var c_event = {
+					control: e.axis, 
+					state: e.value.toFixed(2)
+				};
+				safeSend(c_event);
+				logControl(e.axis, "changed to " + e.value);
+			}
 	});
 	
 	gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
