@@ -31,4 +31,24 @@ function DemoMode() {
 			document.getElementById("p" + offset).style = "background:" + rainbow(pixel);
 		}
 	}
+	
+	$("#controller-status-connected").show();
+	$("#controller-status-disconnected").hide();
+	
+	bootoast.toast({
+		"message": "Controller connected",
+		"type": "success",
+		"position": "left-bottom"
+	});
+	
+	$('#gamepadSelect').append('<option value="0" id="gamepad">Xbox 360 Controller</option>');
+	
+	$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
+	$("#robot_status").attr("class", "btn btn-success");
+	
+	bootoast.toast({
+		"message": "Connected to robot",
+		"type": "success",
+		"position": "left-bottom"
+	});
 }
