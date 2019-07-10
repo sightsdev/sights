@@ -26,6 +26,8 @@
 		<!-- jQuery -->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
+		<!-- Gamepad -->
+		<script src="js/gamepad.js"></script>
 		<!-- UI scripts -->
 		<script src="js/popper.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
@@ -75,19 +77,35 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<button type="button" class="btn btn-light" id="controller_dump_button">
-							<i class="fa fa-fw fa-file-export"></i> Dump Controller Data
-						</button>
-						<button type="button" class="btn btn-light" id="sensor_dump_button">
-							<i class="fa fa-fw fa-file-export"></i> Dump Sensor Data
-						</button>
-						<button type="button" class="btn btn-danger float-right" id="log_clear">
-							<i class="fa fa-fw fa-trash-alt"></i> Clear
-						</button>
-						<p><pre><code id="dump_box" class="JSON" contenteditable="true"></code></pre></p>
-						<button type="button" class="btn btn-light" id="select_log_button">
-							<i class="fa fa-fw fa-check-square"></i> Select All
-						</button>
+						<ul class="nav nav-tabs" id="logTab" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="gamepad-monitor-tab" data-toggle="tab" href="#gamepad-monitor" role="tab" aria-controls="gamepad-monitor" aria-selected="true">Controller Monitor</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="gamepad-log-tab" data-toggle="tab" href="#gamepad-log" role="tab" aria-controls="gamepad-log" aria-selected="false">Controller Log</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="sensor-monitor-tab" data-toggle="tab" href="#sensor-monitor" role="tab" aria-controls="sensor-monitor" aria-selected="false">Sensor Monitor</a>
+							</li>
+						</ul>
+						<div class="tab-content" id="logTabContent">
+							<div class="tab-pane fade show active" id="gamepad-monitor" role="tabpanel" aria-labelledby="gamepad-monitor-tab">
+								<p><pre><code id="gamepad-monitor-pre" class="JSON" contenteditable="true"></code></pre></p>
+							</div>
+							<div class="tab-pane fade" id="gamepad-log" role="tabpanel" aria-labelledby="gamepad-log-tab">	
+								<br/><button type="button" class="btn btn-light" id="gamepad-log-select-button">
+									<i class="fa fa-fw fa-check-square"></i> Select All
+								</button>
+								<button type="button" class="btn btn-danger" id="gamepad-log-clear-button">
+									<i class="fa fa-fw fa-trash-alt"></i> Clear
+								</button>
+								<p><pre><code id="gamepad-log-pre" class="JSON" contenteditable="true"></code></pre></p>
+							</div>
+							<div class="tab-pane fade" id="sensor-monitor" role="tabpanel" aria-labelledby="sensor-monitor-tab">
+								<p><pre><code id="sensor-monitor-pre" class="JSON" contenteditable="true"></code></pre></p>
+							</div>
+						</div>
+
 						<div class="float-right" id="uptime">Uptime: 0.0s</div>
 					</div>
 				</div>
