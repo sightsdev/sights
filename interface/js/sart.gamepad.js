@@ -143,35 +143,7 @@ function updateStatus() {
 	
 	for (j in controllers) {
 		var controller = controllers[j];
-		
-		// Basic implementation of a button as a toggle
-		if (getButton(controller, "SELECT")) {
-			select_pressed = true;
-		} else if (select_pressed == true) {
-			select_pressed = false;
-			controller_message.flipped = !controller_message.flipped;
-
-			// Handle flipping
-			if (controller_message.flipped) {
-				$("#camera_front").attr("style", "transform: scale(-1, -1);");
-				$("#camera_left").attr("style", "transform: scale(-1, -1);");
-				$("#camera_right").attr("style", "transform: scale(-1, -1);");
-				$("#camera_back").attr("style", "transform: scale(-1, -1);");
-				// Swap left and right
-				$("#camera_left").attr("src", portString(8082));
-				$("#camera_right").attr("src", portString(8083));
-				
-			} else {
-				$("#camera_front").attr("style", "");
-				$("#camera_left").attr("style", "");
-				$("#camera_right").attr("style", "");
-				$("#camera_back").attr("style", "");
-				// Swap left and right
-				$("#camera_left").attr("src", portString(8083));
-				$("#camera_right").attr("src", portString(8082));
-			}
-		}
-		
+			
 		controller_message.button_A = getButton(controller, "FACE_A");
 		controller_message.button_B = getButton(controller, "FACE_B");
 		controller_message.button_X = getButton(controller, "FACE_X");
