@@ -18,6 +18,11 @@ config.read('robot.cfg')
 # Servos
 servo_party = ServoParty();
 
+# Controller state object
+state = {}
+state["LEFT_STICK_X"] = 0.0;
+state["LEFT_STICK_Y"] = 0.0;
+
 # Initial start time
 start_time = time.time()
 
@@ -30,12 +35,6 @@ atexit.register(servo_party.stop)
 def steering(x, y):
 	y *= -1
 	x *= -1
-
-	# Stick deadzone
-	if (x > -AXIS_THRESHOLD and x < AXIS_THRESHOLD):
-			x = 0
-	if (y > -AXIS_THRESHOLD and y < AXIS_THRESHOLD):
-			y = 0
 
 	# convert to polar
 	r = math.hypot(y, x)
@@ -75,6 +74,7 @@ def steering(x, y):
 	
 	# Only send message if it's different to the last one
 	if (left != servo_party.last_left and right != servo_party.last_right):
+		#print(left, ",", right)
 		servo_party.move_raw(left, right)
 	
 	# Store this message for comparison next time
@@ -120,38 +120,22 @@ def tank_control(left_trigger, right_trigger, left_bumper, right_bumper):
 	servo_party.last_left = left
 	servo_party.last_right = right
 
-def parseJSON(buf):
-	# Convert string data to object
+def controlHandler (buf):
 	msg = json.loads(buf)
 
-	# TODO: store as class object rather than dict
-	obj = {}
-	obj["left_axis_x"] = float(msg["left_axis_x"])
-	obj["left_axis_y"] = float(msg["left_axis_y"])
-	obj["button_A"] = bool(msg["button_A"])
-	obj["button_B"] = bool(msg["button_B"])
-	obj["button_X"] = bool(msg["button_X"])
-	obj["button_Y"] = bool(msg["button_Y"])
-	obj["right_trigger"] = float(msg["right_trigger"])
-	obj["right_bumper"] = bool(msg["right_bumper"])
-	obj["left_trigger"] = float(msg["left_trigger"])
-	obj["left_bumper"] = bool(msg["left_bumper"])
+	control = msg["control"]
+	typ = msg["type"]
+	# If axis, store as float
+	if (typ == "axis"):
+		value = float(msg["state"])
+	else: # type == "button"
+		value = msg["state"]
 
-	return obj
+	# Update state with new value of axis
+	state[control] = value
 
-def controlHandler (msg):
-	# Handle face buttons
-	if (msg["button_A"]):
-		servo_party.speed_factor = 1000
-	elif (msg["button_B"]):
-		servo_party.speed_factor = 500
-	# Handle various methods of controlling movement
-	x = msg["left_axis_x"] * -1
-	y = msg["left_axis_y"] * -1
-	if (x < -AXIS_THRESHOLD or x > AXIS_THRESHOLD or y < -AXIS_THRESHOLD or y > AXIS_THRESHOLD):
-		steering(msg["left_axis_x"], msg["left_axis_y"])
-	else:
-		tank_control(msg["left_trigger"], msg["right_trigger"], msg["left_bumper"], msg["right_bumper"])
+	steering(state["LEFT_STICK_X"], state["LEFT_STICK_Y"])
+	#tank_control(msg["LEFT_BOTTOM_SHOULDER"], msg["RIGHT_BOTTOM_SHOULDER"], msg["LEFT_TOP_SHOULDER"], msg["RIGHT_TOP_SHOULDER"])
 	
 async def recieveControlData(websocket, path):
 	while True:
@@ -161,7 +145,7 @@ async def recieveControlData(websocket, path):
 			if config['debug'].getboolean('debug_printout'):
 				print (buf)
 			# Convert string data to object and then handle controls
-			controlHandler(parseJSON(buf))
+			controlHandler(buf)
 			
 def main():
 	print("Starting control data reciever")
