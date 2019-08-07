@@ -2,8 +2,6 @@
 	Created by the Semi-Autonomous Rescue Team
 	Licensed under GNU General Public License 3.0
 	
-	Mainly based off https://github.com/luser/gamepadtest created in 2013 by Ted Mielczarek (released as CC0)
-	
 */
 
 // WebSocket used for controller data
@@ -92,6 +90,7 @@ $(document).ready(function() {
 	gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
 		if (e.gamepad.index == currentGamepad) {
 			var c_event = {
+				type: "button",
 				control: e.control, 
 				state: "DOWN"
 			};
@@ -103,6 +102,7 @@ $(document).ready(function() {
 	gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
 		if (e.gamepad.index == currentGamepad) {
 			var c_event = {
+				type: "button",
 				control: e.control, 
 				state: "UP"
 			};
@@ -115,6 +115,7 @@ $(document).ready(function() {
 		if (e.gamepad.index == currentGamepad)
 			if (e.value.toFixed(2) > 0.3 || e.value.toFixed(2) < -0.3) {
 				var c_event = {
+					type: "axis",
 					control: e.axis, 
 					state: e.value.toFixed(2)
 				};
