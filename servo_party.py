@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 from pyax12.connection import Connection
 from enum import IntEnum
-import configparser
-
-config = configparser.ConfigParser()
-config.read('robot.cfg')
-
 
 class Servo(IntEnum):
     LEFT_FRONT = 1
@@ -13,12 +8,34 @@ class Servo(IntEnum):
     LEFT_BACK = 3
     RIGHT_BACK = 4
 
+class DummyConnection:
+    def __init__(self, port="/dev/null", baudrate=1000000):
+        self.port = port
+        self.baudrate = baudrate
+        print("Opened dummy servo connection")
+
+    def set_speed (self, id, speed):
+        #print(id, "set to", speed)
+        pass
+
+    def close (self):
+        print("Closed dummy servo connection")
+        pass
+    
+    def set_cw_angle_limit (self, dynamixel_id, angle_limit, degrees=False):
+        pass
+    
+    def set_ccw_angle_limit (self, dynamixel_id, angle_limit, degrees=False):
+        pass
+
 
 class ServoParty:
-    def __init__(self):
-        self.sc_dynamixel = Connection(
-            port=config['servo']['port'], baudrate=1000000)
-        self.speed_factor = 512
+    def __init__(self, port="/dev/null", baudrate=1000000, speed_factor=512, dummy=False):
+        if (dummy):
+            self.sc_dynamixel = DummyConnection()
+        else:   
+            self.sc_dynamixel = Connection(port=port, baudrate=baudrate)
+        self.speed_factor = speed_factor
         self.last_left = 0
         self.last_right = 0
 
