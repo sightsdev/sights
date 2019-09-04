@@ -8,18 +8,19 @@ class Servo(IntEnum):
     LEFT_BACK = 3
     RIGHT_BACK = 4
 
+# Replicates the pyax12 Connection class
 class DummyConnection:
     def __init__(self, port="/dev/null", baudrate=1000000):
         self.port = port
         self.baudrate = baudrate
-        print("Opened dummy servo connection")
+        print("DEBUG: Opened dummy servo connection")
 
     def set_speed (self, id, speed):
         #print(id, "set to", speed)
         pass
 
     def close (self):
-        print("Closed dummy servo connection")
+        print("DEBUG: Closed dummy servo connection")
         pass
     
     def set_cw_angle_limit (self, dynamixel_id, angle_limit, degrees=False):
@@ -32,44 +33,44 @@ class DummyConnection:
 class ServoParty:
     def __init__(self, port="/dev/null", baudrate=1000000, speed_factor=512, dummy=False):
         if (dummy):
-            self.sc_dynamixel = DummyConnection()
+            self.sc = DummyConnection()
         else:   
-            self.sc_dynamixel = Connection(port=port, baudrate=baudrate)
+            self.sc = Connection(port=port, baudrate=baudrate)
         self.speed_factor = speed_factor
         self.last_left = 0
         self.last_right = 0
 
     def stop(self):
         # Set all servos to 0
-        self.sc_dynamixel.set_speed(1, 0)
-        self.sc_dynamixel.set_speed(2, 0)
-        self.sc_dynamixel.set_speed(3, 0)
-        self.sc_dynamixel.set_speed(4, 0)
+        self.sc.set_speed(1, 0)
+        self.sc.set_speed(2, 0)
+        self.sc.set_speed(3, 0)
+        self.sc.set_speed(4, 0)
         # Close the connection
-        self.sc_dynamixel.close()
+        self.sc.close()
 
     def setup_servo(self, dynamixel_id):
         # Set the "wheel mode"
-        self.sc_dynamixel.set_cw_angle_limit(dynamixel_id, 0, degrees=False)
-        self.sc_dynamixel.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
+        self.sc.set_cw_angle_limit(dynamixel_id, 0, degrees=False)
+        self.sc.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
 
     def move_raw(self, left, right):
         # Left side
-        self.sc_dynamixel.set_speed(Servo.LEFT_FRONT, left)
-        self.sc_dynamixel.set_speed(Servo.LEFT_BACK, left)
+        self.sc.set_speed(Servo.LEFT_FRONT, left)
+        self.sc.set_speed(Servo.LEFT_BACK, left)
         # Right side
-        self.sc_dynamixel.set_speed(Servo.RIGHT_FRONT, right)
-        self.sc_dynamixel.set_speed(Servo.RIGHT_BACK, right)
+        self.sc.set_speed(Servo.RIGHT_FRONT, right)
+        self.sc.set_speed(Servo.RIGHT_BACK, right)
 
     def move_raw_left(self, left):
         # Left side
-        self.sc_dynamixel.set_speed(Servo.LEFT_FRONT, left)
-        self.sc_dynamixel.set_speed(Servo.LEFT_BACK, left)
+        self.sc.set_speed(Servo.LEFT_FRONT, left)
+        self.sc.set_speed(Servo.LEFT_BACK, left)
 
     def move_raw_right(self, right):
         # Right side
-        self.sc_dynamixel.set_speed(Servo.RIGHT_FRONT, right)
-        self.sc_dynamixel.set_speed(Servo.RIGHT_BACK, right)
+        self.sc.set_speed(Servo.RIGHT_FRONT, right)
+        self.sc.set_speed(Servo.RIGHT_BACK, right)
 
     def move(self, left, right):
 
