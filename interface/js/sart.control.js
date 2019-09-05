@@ -190,15 +190,16 @@ $(document).ready(function() {
 				return;
 			}
 			var val = e.value.toFixed(2);
-			if (val > 0.3 || val < -0.3) {
-				var c_event = {
-					type: "axis",
-					control: e.axis, 
-					value: val
-				};
-				safeSend(c_event);
-				logControl(e.axis, "changed to " + val);
+			var c_event = {
+				type: "axis",
+				control: e.axis, 
+				value: val
+			};
+			if (val > -0.3 && val < 0.3) {
+				c_event.value = 0;
 			}
+			safeSend(c_event);
+			logControl(e.axis, "changed to " + c_event.value);
 		}
 	});
 
