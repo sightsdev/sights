@@ -148,7 +148,9 @@ $(document).ready(function(){
 		// Setup update event
 		sensorSocket.onmessage = function(event) {
 			var obj = JSON.parse(event.data);
-
+			
+			// Update sensor monitor (in log modal)
+			$("#sensor-monitor-pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 			
 			// Get thermal camera and create pixel grid
 			if ("thermal_camera" in obj) {
