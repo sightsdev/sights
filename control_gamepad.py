@@ -29,59 +29,53 @@ state = {
     "RIGHT_TOP_SHOULDER" : False
 }
 
-def steering():
-    x = state["LEFT_STICK_X"] * -1
-    y = state["LEFT_STICK_Y"] * -1
-
-    # convert to polar
-    r = math.hypot(y, x)
-    t = math.atan2(x, y)
-
-    # rotate by 45 degrees
-    t += math.pi / 4
-
-    # back to cartesian
-    left = r * math.cos(t)
-    right = r * math.sin(t)
-
-    # rescale the new coords
-    left = left * math.sqrt(2)
-    right = right * math.sqrt(2)
-
-    # clamp to -1/+1
-    left = max(-1, min(left, 1))
-    right = max(-1, min(right, 1))
-
-    # Multiply by speed_factor to get our final speed to be sent to the servos
-    left *= servo_party.speed_factor
-    right *= servo_party.speed_factor
-
-    # Send command to servos
-    servo_party.move(left, right)
-
-
-def tank_control():
-    left = state["LEFT_BOTTOM_SHOULDER"]  # * servo_party.speed_factor
-    right = state["RIGHT_BOTTOM_SHOULDER"]  # * servo_party.speed_factor
-
-    # Reverse modifiers
-    if (state["LEFT_TOP_SHOULDER"]):
-        left *= -1
-    if (state["RIGHT_TOP_SHOULDER"]):
-        right *= -1
-
-    #print(left, right)
-
-    # Send command to servo handler
-    # The independent flag allows the two triggers to operate independently
-    servo_party.move(left, right, independent=True)
-
 directionalLookup = {
     "FORWARD": (512, 512),
     "BACKWARDS": (-512, -512),
     "LEFT": (-512, 512),
     "RIGHT": (512, -512)
-}   
+}
+
+def gamepadMovementHandler():
+    if (state["LEFT_BOTTOM_SHOULDER"] != 0 or state["RIGHT_BOTTOM_SHOULDER"] != 0):
+        left = state["LEFT_BOTTOM_SHOULDER"] * servo_party.speed_factor
+        right = state["RIGHT_BOTTOM_SHOULDER"] * servo_party.speed_factor
+
+        # If modifier pressed, than invert value
+        left *= (-1) ** state["LEFT_TOP_SHOULDER"]
+        right *= (-1) ** state["RIGHT_TOP_SHOULDER"]
+
+        # Send command to servo handler, independent flag allows the two sides to operate independently
+        servo_party.move(left, right, independent=True)
+    else:
+        x = state["LEFT_STICK_X"] * -1
+        y = state["LEFT_STICK_Y"] * -1
+
+        # convert to polar
+        r = math.hypot(y, x)
+        t = math.atan2(x, y)
+
+        # rotate by 45 degrees
+        t += math.pi / 4
+
+        # back to cartesian
+        left = r * math.cos(t)
+        right = r * math.sin(t)
+
+        # rescale the new coords
+        left = left * math.sqrt(2)
+        right = right * math.sqrt(2)
+
+        # clamp to -1/+1
+        left = max(-1, min(left, 1))
+        right = max(-1, min(right, 1))
+
+        # Multiply by speed_factor to get our final speed to be sent to the servos
+        left *= servo_party.speed_factor
+        right *= servo_party.speed_factor
+
+        # Send command to servos
+        servo_party.move(left, right)
 
 def directionalMovement (control, value):
     if value == "UP":
@@ -102,6 +96,8 @@ def controlHandler(buf):
         value = float(msg["value"])
         # Update state with new value of axis
         state[control] = value
+
+        gamepadMovementHandler()
     elif (typ == "system"):
         # Handle power commands
         if (control == "shutdown"):
@@ -119,10 +115,6 @@ def controlHandler(buf):
         # Store in state, because it might be useful
         state[control] = True if value == "DOWN" else False
         # Then handle any button events
-        
-
-    # steering()
-    #tank_control()
 
 
 async def recieveControlData(websocket, path):
