@@ -1,25 +1,26 @@
 // Populate SARTInterface with dummy data to demonstrate what a functional setup looks like
 function DemoMode() {
 	// CPU temp graph
-	document.getElementById("cputemp_level").innerHTML = "45&degC";
-	document.getElementById("cputemp_graph").className = "c100 med orange p45";
+	$("#cputemp_level").html("45&degC");
+	$("#cputemp_graph").attr('class', "c100 med orange p45");
 	// Charge level
-	document.getElementById("charge_level").innerHTML = "97%";
-	document.getElementById("charge_graph").className = "c100 med orange p97";
+	$("#charge_level").html("97%");
+	$("#charge_graph").attr('class', "c100 med orange p97");
 	// CO2 level
-	document.getElementById("co2_level").innerHTML = "250<span style='font-size: 10px'> ppm</span>";
-	document.getElementById("co2_graph").className = "c100 med orange p25";
+	$("#co2_level").html("250<span style='font-size: 10px'> ppm</span>");
+	$("#co2_graph").attr('class', "c100 med orange p25");
 	// TVOC level
-	document.getElementById("tvoc_level").innerHTML = "75<span style='font-size: 10px'> ppb</span>";
-	document.getElementById("tvoc_graph").className = "c100 med orange p14";
+	$("#tvoc_level").html("75<span style='font-size: 10px'> ppb</span>");
+	$("#tvoc_graph").attr('class', "c100 med orange p14");
 	// Temperature history graph
 	tempChartData.datasets[0].data = [22,22,22,24,22,24,28,29,27,24,25,24,23,22,22];
 	tempChart.update();
 
 	// Camera streams, load dummy images
-	var elements = document.getElementsByClassName('streamImage');
-	for (i = 0; i < elements.length; i++)
-		elements[i].src = 'images/demo_' + elements[i].id + '.jpg'; 
+	$('.streamImage').each(function (index, value){ 
+		value.src = 'images/demo_' + value.id + '.jpg';
+		value.className = "streamImage";
+	});
 	
 	// Create example pixel grid for thermal camera
 	for (i = 0; i < 24; i++) {
@@ -28,7 +29,7 @@ function DemoMode() {
 			var pixel = 20 + i;
 			// Also cool:
 			//var pixel = 24 + i * j;
-			document.getElementById("p" + offset).style = "background:" + rainbow(pixel);
+			$("#p" + offset).css("background", rainbow(pixel));
 		}
 	}
 	
@@ -37,6 +38,7 @@ function DemoMode() {
 	
 	bootoast.toast({
 		"message": "Controller connected",
+		"icon": "gamepad",
 		"type": "success",
 		"position": "left-bottom"
 	});
@@ -48,6 +50,7 @@ function DemoMode() {
 	
 	bootoast.toast({
 		"message": "Connected to robot",
+		"icon": "link",
 		"type": "success",
 		"position": "left-bottom"
 	});
