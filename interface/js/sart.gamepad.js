@@ -67,6 +67,12 @@ $(document).ready(function() {
 		};
 		safeSend(c_event);
 		logControl("system", "shutdown");
+		bootoast.toast({
+			"message": "Shutting down",
+			"type": "warning",
+			"icon" : "power-off",
+			"position": "left-bottom"
+		});
 	});
 	$("#rebootButton").click(function() {
 		var c_event = {
@@ -75,6 +81,12 @@ $(document).ready(function() {
 		};
 		safeSend(c_event);
 		logControl("system", "reboot");
+		bootoast.toast({
+			"message": "Rebooting",
+			"type": "warning",
+			"icon" : "undo",
+			"position": "left-bottom"
+		});
 	});
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
