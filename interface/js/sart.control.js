@@ -38,6 +38,30 @@ function logControl (control, value) {
 	$('#gamepad-log-pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + control + " " + value + "</li>" );
 }
 
+function createKeyBind(keys, ctrl) {
+	// Create keyboard bindings using KeyboardJS
+	keyboardJS.bind(keys, function(e) {
+		// Key down event
+		e.preventRepeat();
+		var c_event = {
+			type: "keyboard",
+			control: ctrl,
+			value: "DOWN"
+		};
+		safeSend(c_event);
+		logControl(c_event.control, c_event.value);
+	}, function(e) {
+		// Key up event
+		var c_event = {
+			type: "keyboard",
+			control: ctrl,
+			value: "UP"
+		};
+		safeSend(c_event);
+		logControl(c_event.control, c_event.value);
+	});
+}
+
 $(document).ready(function() {
 	$("#controller-status-connected").hide();
 	
@@ -58,6 +82,12 @@ $(document).ready(function() {
 		currentGamepad = this.value;
 		//$('#gamepad-monitor-pre').html(JSON.stringify(device.state, null, "\t"));
 	});
+
+	// Create keyboard bindings
+	createKeyBind('w', "FORWARD");
+	createKeyBind('a', "LEFT");
+	createKeyBind('s', "BACKWARDS");
+	createKeyBind('d', "RIGHT");
 
 	// Handle shutdown and reboot buttons
 	$("#shutdownButton").click(function() {
