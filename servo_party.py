@@ -46,6 +46,10 @@ class ServoParty:
         self.sc.set_speed(2, 0)
         self.sc.set_speed(3, 0)
         self.sc.set_speed(4, 0)
+    
+    def close(self):
+        # Set all servos to 0
+        self.stop();
         # Close the connection
         self.sc.close()
 
@@ -72,7 +76,10 @@ class ServoParty:
         self.sc.set_speed(Servo.RIGHT_FRONT, right)
         self.sc.set_speed(Servo.RIGHT_BACK, right)
 
-    def move(self, left, right):
+    def move(self, left, right, independent=False):
+        # Make sure we don't have any decimals
+        left = round(left)
+        right = round(right)
 
         # Different motors need to spin in different directions. We account for that here.
         if (left < 0):
@@ -84,8 +91,16 @@ class ServoParty:
             right += 1024
 
         # Only send message if it's different to the last one
-        if (left != self.last_left and right != self.last_right):
-            self.move_raw(left, right)
+        if (independent):
+            # Allow left and right to be independent
+            if (left != self.last_left):
+                self.move_raw_left(left)
+            if (right != self.last_right):
+                self.move_raw_right(right)
+        else:
+            # Not independent, both left and right must be different
+            if (left != self.last_left and right != self.last_right):
+                self.move_raw(left, right)
 
         # Store this message for comparison next time
         self.last_left = left

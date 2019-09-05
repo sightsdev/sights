@@ -17,17 +17,17 @@ servo_party = ServoParty(
     port=config['servo']['port'], dummy=config['debug'].getboolean('dummy_servo', fallback=False))
 
 # When script exits or is interrupted stop all servos
-atexit.register(servo_party.stop)
+atexit.register(servo_party.close)
 
 # Controller state object
-state = {}
-state["LEFT_STICK_X"] = 0.0
-state["LEFT_STICK_Y"] = 0.0
-state["LEFT_BOTTOM_SHOULDER"] = 0.0
-state["RIGHT_BOTTOM_SHOULDER"] = 0.0
-state["LEFT_TOP_SHOULDER"] = False
-state["RIGHT_TOP_SHOULDER"] = False
-
+state = {
+    "LEFT_STICK_X": 0.0,
+    "LEFT_STICK_Y": 0.0,
+    "LEFT_BOTTOM_SHOULDER": 0.0,
+    "RIGHT_BOTTOM_SHOULDER": 0.0,
+    "LEFT_TOP_SHOULDER" : False,
+    "RIGHT_TOP_SHOULDER" : False
+}
 
 def steering():
     x = state["LEFT_STICK_X"] * -1
@@ -56,27 +56,8 @@ def steering():
     left *= servo_party.speed_factor
     right *= servo_party.speed_factor
 
-    # Make sure we don't have any decimals
-    left = round(left)
-    right = round(right)
-
-    # Different motors need to spin in different directions. We account for that here.
-    if (left < 0):
-        left *= -1
-        left += 1024
-    if (right < 0):
-        right *= -1
-    elif right < 1024:
-        right += 1024
-
-    # Only send message if it's different to the last one
-    if (left != servo_party.last_left and right != servo_party.last_right):
-        # print(left, ",", right)
-        servo_party.move_raw(left, right)
-
-    # Store this message for comparison next time
-    servo_party.last_left = left
-    servo_party.last_right = right
+    # Send command to servos
+    servo_party.move(left, right)
 
 
 def tank_control():
@@ -91,29 +72,24 @@ def tank_control():
 
     #print(left, right)
 
-    # Make sure we don't have any decimals
-    left = round(left)
-    right = round(right)
+    # Send command to servo handler
+    # The independent flag allows the two triggers to operate independently
+    servo_party.move(left, right, independent=True)
 
-    # The servos use 0 - 1023 as clockwise and 1024 - 2048 as counter clockwise, we account for that here
-    if (left < 0):
-        left *= -1
-        left += 1024
-    if (right < 0):
-        right *= -1
+directionalLookup = {
+    "FORWARD": (512, 512),
+    "BACKWARDS": (-512, -512),
+    "LEFT": (-512, 512),
+    "RIGHT": (512, -512)
+}   
+
+def directionalMovement (control, value):
+    if value == "UP":
+        servo_party.move(0, 0)
     else:
-        right += 1024
-
-    # Only send message if it's different to the last one
-    if (left != servo_party.last_left):
-        servo_party.move_raw_left(left)
-    if (right != servo_party.last_right):
-        servo_party.move_raw_right(right)
-
-    # Store this message for comparison next time
-    servo_party.last_left = left
-    servo_party.last_right = right
-
+        servo_party.move(
+            directionalLookup[control][0], 
+            directionalLookup[control][1])
 
 def controlHandler(buf):
     msg = json.loads(buf)
@@ -134,14 +110,19 @@ def controlHandler(buf):
         elif (control == "reboot"):
             print("Rebooting")
             #os.system('restart')
-    else:  # type == "button"
+    elif (typ == "keyboard"):
+        value = msg["value"] # UP, DOWN
+        # Handle directional movement
+        directionalMovement(control, value)
+    elif (typ == "button"):
         value = msg["value"] # UP, DOWN
         # Store in state, because it might be useful
         state[control] = True if value == "DOWN" else False
         # Then handle any button events
+        
 
     # steering()
-    tank_control()
+    #tank_control()
 
 
 async def recieveControlData(websocket, path):
