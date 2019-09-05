@@ -46,8 +46,6 @@ var camColors = [0x480F,
 
 var tempChartCanvas;
 var tempChart;
-
-
 var tempChartData =  {
 	labels: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
 	datasets: [
@@ -59,7 +57,6 @@ var tempChartData =  {
 		]
 	}]
 }
-
 
 // Rainbow
 function rainbow(n) {
@@ -164,7 +161,7 @@ $(document).ready(function(){
 						// Get pixel color from color table
 						var pixel = Math.round(thermal_camera_data[offset]);
 						// Apply colour to the appropriate HTML element 
-						document.getElementById("p" + offset).style = "background:" + rainbow(pixel);
+						$("#p" + offset).css("background", rainbow(pixel));
 					}
 				}
 			}
@@ -173,49 +170,47 @@ $(document).ready(function(){
 			if ("co2" in obj) {
 				var co2 = obj["co2"];
 				// Update graph
-				document.getElementById("co2_level").innerHTML = co2 + "<span style='font-size: 10px'> ppm</span>";
-				document.getElementById("co2_graph").className = "c100 med orange p" + Math.round(co2 / 100);
+				$("#co2_level").html(co2 + "<span style='font-size: 10px'> ppm</span>");
+				$("#co2_graph").attr('class', "c100 med orange p" + Math.round(co2 / 100));
 			}
 			
 			// Get TVOC levels
 			if ("tvoc" in obj) {
 				var tvoc = obj["tvoc"];
 				// Update graph
-				document.getElementById("tvoc_level").innerHTML = tvoc + "<span style='font-size: 10px'> ppb</span>";
-				document.getElementById("tvoc_graph").className = "c100 med orange p" + Math.round(tvoc / 100);
+				$("#tvoc_level").html(tvoc + "<span style='font-size: 10px'> ppb</span>");
+				$("#tvoc_graph").attr('class', "c100 med orange p" + Math.round(tvoc / 100));
 			}
 			
 			// Get temperature data for line graph
 			if ("temp" in obj) {
 				var temp_data = obj["temp"];
-				
 				// Remove oldest element
 				tempChartData.datasets[0].data.shift()
 				// Push new element
 				tempChartData.datasets[0].data.push(temp_data[0]);
-			
+				// Update chart to display new data
 				tempChart.update();
 			}
-			
 			
 			// Get charge level
 			if ("charge" in obj) {
 				var charge_data = obj["charge"];
 				// Update graph
-				document.getElementById("charge_level").innerHTML = charge_data + "%";
-				document.getElementById("charge_graph").className = "c100 med orange p" + charge_data;
+				$("#charge_level").html(charge_data + "%");
+				$("#charge_graph").attr('class', "c100 med orange p" + charge_data);
 			}
 			
 			// Highest CPU core temperature
 			if ("cpu_temp" in obj) {
 				var cpu_temp = Math.round(obj["cpu_temp"]);
-				document.getElementById("cputemp_level").innerHTML = cpu_temp + "&degC";
-				document.getElementById("cputemp_graph").className = "c100 med orange p" + cpu_temp;
+				$("#cputemp_level").html(cpu_temp + "&degC");
+				$("#cputemp_graph").attr('class', "c100 med orange p" + cpu_temp);
 			}
 			
 			// System uptime
 			if ("uptime" in obj) {
-				document.getElementById("uptime").innerHTML = "Uptime: " + obj["uptime"];
+				$("#uptime").html("Uptime: " + obj["uptime"]);
 			}
 
 			last_sensor_data = obj;
@@ -223,5 +218,4 @@ $(document).ready(function(){
 	} catch (err) {
 		console.log(err);
 	}
-
 });
