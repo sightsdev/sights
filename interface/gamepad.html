@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>GamePad Library Demo</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="js/gamepad.js"></script>
+</head>
+<body>
+	<select id="gamepadSelect"></select>
+	<ul id="gamepads"></ul>
+	<p id="connect-notice">Connect your controller and press any button.</p>
+
+	<script>
+
+	$(document).ready(function() {
+		// Attach it to the window so it can be inspected at the console.
+		window.gamepad = new Gamepad();
+		
+		currentGamepad = 0;
+		
+		$('#gamepadSelect').on('change', function (e) {
+			var device = gamepad.gamepads[this.value];
+			$('#gamepads').html('<li id="gamepad-' + device.index + '"><h1>Gamepad #' + device.index + ': &quot;' + device.id + '&quot;</h1></li>');
+
+			var mainWrap = $('#gamepad-' + device.index),
+				statesWrap,
+				logWrap,
+				control,
+				value,
+				i;
+
+			mainWrap.append('<strong>State</strong><ul id="states-' + device.index + '"></ul>');
+			mainWrap.append('<strong>Events</strong><ul id="log-' + device.index + '"></ul>');
+
+			statesWrap = $('#states-' + device.index)
+			logWrap = $('#log-' + device.index)
+
+			for (control in device.state) {
+				value = device.state[control];
+				statesWrap.append('<li>' + control + ': <span id="state-' + device.index + '-' + control + '">' + value + '</span></li>');
+			}
+		});
+
+		gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
+			console.log('Connected', device);
+			$('#gamepadSelect').append('<option value="' + device.index + '">' + device.id +'</option>');
+			
+			$('#gamepadSelect').trigger('change');
+			
+			$('#connect-notice').hide();
+		});
+
+		gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
+			console.log('Disconnected', device);
+
+			$('#gamepad-' + device.index).remove();
+
+			if (gamepad.count() == 0) {
+				$('#connect-notice').show();
+			}
+		});
+
+		gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
+			var gamepad,
+				control,
+				value;
+
+		
+			gamepad = gamepads[currentGamepad];
+
+			if (gamepad) {
+				for (control in gamepad.state) {
+					value = gamepad.state[control];
+					$('#state-' + gamepad.index + '-' + control + '').html(value);
+				}
+			}
+			
+		});
+
+		gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
+			$('#log-' + e.gamepad.index).append('<li>' + e.control + ' DOWN</li>');
+		});
+
+		gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
+			$('#log-' + e.gamepad.index).append('<li>' + e.control + ' UP</li>');
+		});
+
+		gamepad.bind(Gamepad.Event.AXIS_CHANGED, function(e) {
+			$('#log-' + e.gamepad.index).append('<li>' + e.axis + ' changed to ' + e.value + '</li>');
+		});
+
+		if (!gamepad.init()) {
+			alert('Your browser does not support gamepads, get the latest Google Chrome or Firefox.');
+		}
+	});
+
+	</script>
+</body>
+</html>
