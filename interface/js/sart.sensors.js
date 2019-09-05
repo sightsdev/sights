@@ -132,6 +132,7 @@ $(document).ready(function(){
 			bootoast.toast({
 				"message": "Connected to robot",
 				"type": "success",
+				"icon" : "link",
 				"position": "left-bottom"
 			});
 		};
@@ -142,6 +143,7 @@ $(document).ready(function(){
 			bootoast.toast({
 				"message": "Disconnected from robot",
 				"type": "danger",
+				"icon" : "unlink",
 				"position": "left-bottom"
 			});
 		};

@@ -86,6 +86,7 @@ $(document).ready(function() {
 		bootoast.toast({
 			"message": "Controller connected",
 			"type": "success",
+			"icon" : "gamepad",
 			"position": "left-bottom"
 		});
 		
@@ -106,6 +107,7 @@ $(document).ready(function() {
 		bootoast.toast({
 			"message": "Controller disconnected",
 			"type": "danger",
+			"icon" : "gamepad",
 			"position": "left-bottom"
 		});
 	});
