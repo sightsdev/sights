@@ -11,8 +11,6 @@ import sensor_stream
 config = configparser.ConfigParser()
 config.read('robot.cfg')
 
-print("MANAGER: Starting manager process")
-
 class WebSocketThread (multiprocessing.Process):
     def __init__(self, threadID, name, func, port):
         multiprocessing.Process.__init__(self)
@@ -29,16 +27,25 @@ class WebSocketThread (multiprocessing.Process):
         asyncio.get_event_loop().run_forever()
         print("MANAGER: Exiting " + self.name + " thread")
 
+def main():
+    print("MANAGER: Starting manager process")
+    # Create new threads
+    sensorThread = WebSocketThread(
+        1, "sensor data server", sensor_stream.sendSensorData, 5556)
+    controlThread = WebSocketThread(
+        2, "control data receiver", control_gamepad.recieveControlData, 5555)
+    # Start new Threads
+    sensorThread.start()
+    controlThread.start()
+    sensorThread.join()
+    controlThread.join()
+    print("MANAGER: Exiting manager process")
 
-# Create new threads
-sensorThread = WebSocketThread(
-    1, "sensor data server", sensor_stream.sendSensorData, 5556)
-controlThread = WebSocketThread(
-    2, "control data receiver", control_gamepad.recieveControlData, 5555)
 
-# Start new Threads
-sensorThread.start()
-controlThread.start()
-sensorThread.join()
-controlThread.join()
-print("MANAGER: Exiting manager process")
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        pass
+
+
