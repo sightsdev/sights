@@ -89,7 +89,7 @@ def tank_control():
     if (state["RIGHT_TOP_SHOULDER"]):
         right *= -1
 
-    print(left, right)
+    #print(left, right)
 
     # Make sure we don't have any decimals
     left = round(left)
@@ -118,28 +118,27 @@ def tank_control():
 def controlHandler(buf):
     msg = json.loads(buf)
 
-    control = msg["control"]
-    typ = msg["type"]
-    # If axis, store as float
+    typ = msg["type"] # system, axis, button
+    control = msg["control"] # FACE_0, LEFT_STICK_Y, etc.
+
     if (typ == "axis"):
-        value = float(msg["state"])
+        # If axis, store as float
+        value = float(msg["value"])
         # Update state with new value of axis
         state[control] = value
-        if (typ == "system"):
-            value = msg["state"]
-            # Handle power commands
-            if (value == "shutdown"):
-                # Shutdown
-                print("Shutting down")
-                os.system('poweroff')
-            elif (value == "reboot"):
-                # Reboot
-                print("Rebooting")
-                os.system('restart')
+    elif (typ == "system"):
+        # Handle power commands
+        if (control == "shutdown"):
+            print("Shutting down")
+            #os.system('poweroff')
+        elif (control == "reboot"):
+            print("Rebooting")
+            #os.system('restart')
     else:  # type == "button"
-        value = msg["state"]
+        value = msg["value"] # UP, DOWN
         # Store in state, because it might be useful
         state[control] = True if value == "DOWN" else False
+        # Then handle any button events
 
     # steering()
     tank_control()
