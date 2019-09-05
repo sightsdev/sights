@@ -6,6 +6,11 @@
 
 // WebSocket used for controller data
 var controlSocket;
+var currentGamepad = 0;
+var last_axis_state = {
+	"RIGHT_BOTTOM_SHOULDER": 0.0,
+	"LEFT_BOTTOM_SHOULDER" : 0.0
+}
 
 //Log to the console the result of the socket connection attempt. Useful for troubleshooting.
 function socketState() {
@@ -47,7 +52,6 @@ $(document).ready(function() {
 	
 	// Attach it to the window so it can be inspected at the console.
 	window.gamepad = new Gamepad();
-	var currentGamepad = 0;
 	
 	$('#gamepadSelect').on('change', function (e) {
 		//var device = gamepad.gamepads[this.value];
@@ -68,6 +72,7 @@ $(document).ready(function() {
 		});
 		
 		$('#gamepadSelect').append('<option value="' + device.index + '" id="gamepad-' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") +'</option>');
+		$('#gamepadSelect').val(device.index);
 		$('#gamepadSelect').trigger('change');
 	});
 
@@ -89,6 +94,9 @@ $(document).ready(function() {
 
 	gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
 		if (e.gamepad.index == currentGamepad) {
+			if (e.control == "RIGHT_BOTTOM_SHOULDER" || e.control == "LEFT_BOTTOM_SHOULDER") {
+				return;
+			}
 			var c_event = {
 				type: "button",
 				control: e.control, 
@@ -101,6 +109,9 @@ $(document).ready(function() {
 
 	gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
 		if (e.gamepad.index == currentGamepad) {
+			if (e.control == "RIGHT_BOTTOM_SHOULDER" || e.control == "LEFT_BOTTOM_SHOULDER") {
+				return;
+			}
 			var c_event = {
 				type: "button",
 				control: e.control, 
@@ -112,7 +123,10 @@ $(document).ready(function() {
 	});
 
 	gamepad.bind(Gamepad.Event.AXIS_CHANGED, function(e) {
-		if (e.gamepad.index == currentGamepad)
+		if (e.gamepad.index == currentGamepad) {
+			if (e.control == "RIGHT_BOTTOM_SHOULDER" || e.control == "LEFT_BOTTOM_SHOULDER") {
+				return;
+			}
 			if (e.value.toFixed(2) > 0.3 || e.value.toFixed(2) < -0.3) {
 				var c_event = {
 					type: "axis",
@@ -122,12 +136,38 @@ $(document).ready(function() {
 				safeSend(c_event);
 				logControl(e.axis, "changed to " + e.value);
 			}
+		}
 	});
-	
+
+	function axisUpdate (currGamepad, ctrl) {
+		// Current value of specified control, to 2dp
+		var val = currGamepad.state[ctrl].toFixed(2)
+		// Compare against last value
+		if (val != last_axis_state[ctrl]) {
+			// Update last value with current value
+			last_axis_state[ctrl] = val;
+			// Create event message
+			var c_event = {
+				type: "axis",
+				control: ctrl, 
+				state: val
+			};
+			// Send event message
+			safeSend(c_event);
+			// Log to log window
+			logControl(ctrl + "changed to " + val);
+		}
+	}
+
 	gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
 		var gamepad = gamepads[currentGamepad];
-		if (gamepad)
+		if (gamepad) {
 			$("#gamepad-monitor-pre").html(hljs.highlight("JSON", JSON.stringify(gamepad.state, null, "\t")).value);
+			
+			// Check axis state at every tick since event binding doesn't catch all changes
+			axisUpdate(gamepad, "LEFT_BOTTOM_SHOULDER");
+			axisUpdate(gamepad, "RIGHT_BOTTOM_SHOULDER");
+		}
 	});
 
 	if (!gamepad.init()) {
