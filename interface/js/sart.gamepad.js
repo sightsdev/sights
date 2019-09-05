@@ -59,6 +59,24 @@ $(document).ready(function() {
 		//$('#gamepad-monitor-pre').html(JSON.stringify(device.state, null, "\t"));
 	});
 
+	// Handle shutdown and reboot buttons
+	$("#shutdownButton").click(function() {
+		var c_event = {
+			type: "system",
+			control: "shutdown"
+		};
+		safeSend(c_event);
+		logControl("system", "shutdown");
+	});
+	$("#rebootButton").click(function() {
+		var c_event = {
+			type: "system",
+			control: "reboot"
+		};
+		safeSend(c_event);
+		logControl("system", "reboot");
+	});
+
 	gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
 		console.log('Controller connected:', device.id);
 		
@@ -100,7 +118,7 @@ $(document).ready(function() {
 			var c_event = {
 				type: "button",
 				control: e.control, 
-				state: "DOWN"
+				value: "DOWN"
 			};
 			safeSend(c_event);
 			logControl(e.control, "DOWN");
@@ -115,7 +133,7 @@ $(document).ready(function() {
 			var c_event = {
 				type: "button",
 				control: e.control, 
-				state: "UP"
+				value: "UP"
 			};
 			safeSend(c_event);
 			logControl(e.control, "UP");
@@ -131,7 +149,7 @@ $(document).ready(function() {
 				var c_event = {
 					type: "axis",
 					control: e.axis, 
-					state: e.value.toFixed(2)
+					value: e.value.toFixed(2)
 				};
 				safeSend(c_event);
 				logControl(e.axis, "changed to " + e.value);
@@ -150,7 +168,7 @@ $(document).ready(function() {
 			var c_event = {
 				type: "axis",
 				control: ctrl, 
-				state: val
+				value: val
 			};
 			// Send event message
 			safeSend(c_event);
