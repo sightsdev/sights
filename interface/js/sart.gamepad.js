@@ -35,7 +35,7 @@ function safeSend(data) {
 }
 
 function logControl (control, value) {
-	$('#gamepad-log-pre').append("<li>" + new Date().toLocaleTimeString() + " - " + control + " " + value + "</li>" );
+	$('#gamepad-log-pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + control + " " + value + "</li>" );
 }
 
 $(document).ready(function() {
@@ -145,14 +145,15 @@ $(document).ready(function() {
 			if (e.control == "RIGHT_BOTTOM_SHOULDER" || e.control == "LEFT_BOTTOM_SHOULDER") {
 				return;
 			}
-			if (e.value.toFixed(2) > 0.3 || e.value.toFixed(2) < -0.3) {
+			var val = e.value.toFixed(2);
+			if (val > 0.3 || val < -0.3) {
 				var c_event = {
 					type: "axis",
 					control: e.axis, 
-					value: e.value.toFixed(2)
+					value: val
 				};
 				safeSend(c_event);
-				logControl(e.axis, "changed to " + e.value);
+				logControl(e.axis, "changed to " + val);
 			}
 		}
 	});
@@ -173,7 +174,7 @@ $(document).ready(function() {
 			// Send event message
 			safeSend(c_event);
 			// Log to log window
-			logControl(ctrl + "changed to " + val);
+			logControl(ctrl, "changed to " + val);
 		}
 	}
 
