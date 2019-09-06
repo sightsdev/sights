@@ -21,6 +21,12 @@ function DemoMode() {
 		value.src = 'images/demo_' + value.id + '.jpg';
 		value.className = "streamImage";
 	});
+	
+	// SSH modal needs some content
+	$("#ssh_iframe").attr('src', 'https://gitsuppository.net/');
+
+	// Uptime
+	$("#uptime").html("Uptime: 4:18:22");
 
 	// Create example pixel grid for thermal camera
 	for (i = 0; i < 24; i++) {
