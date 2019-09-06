@@ -91,6 +91,8 @@ $(document).ready(function () {
 	createKeyBind(['a', 'left'], "LEFT");
 	createKeyBind(['s', 'down'], "BACKWARDS");
 	createKeyBind(['d', 'right'], "RIGHT");
+	createKeyBind(['+', '='], "SPEED_UP");
+	createKeyBind(['-', '_'], "SPEED_DOWN");
 
 	// Handle shutdown and reboot buttons
 	$("#shutdownButton").click(function () {
