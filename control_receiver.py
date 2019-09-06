@@ -114,7 +114,7 @@ def controlHandler(buf):
         directionalMovement(control, value)
     elif (typ == "button"):
         value = msg["value"]  # UP, DOWN
-        # Store in state, because it might be useful
+        # Store in state, because it might be useful (e.g. for modifiers)
         state[control] = True if value == "DOWN" else False
         # Then handle any button events
 

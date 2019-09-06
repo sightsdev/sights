@@ -4,7 +4,7 @@ import websockets
 import configparser
 import multiprocessing
 import asyncio
-import control_gamepad
+import control_receiver
 import sensor_stream
 
 # Load config file
@@ -22,7 +22,7 @@ class WebSocketThread (multiprocessing.Process):
     def run(self):
         print("MANAGER: Starting " + self.name + " thread")
         start_server = websockets.serve(
-            self.func, config.get('network', 'ip') self.port)
+            self.func, config.get('network', 'ip'), self.port)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
         print("MANAGER: Exiting " + self.name + " thread")
@@ -33,7 +33,7 @@ def main():
     sensorThread = WebSocketThread(
         1, "sensor data server", sensor_stream.sendSensorData, 5556)
     controlThread = WebSocketThread(
-        2, "control data receiver", control_gamepad.recieveControlData, 5555)
+        2, "control data receiver", control_receiver.recieveControlData, 5555)
     # Start new Threads
     sensorThread.start()
     controlThread.start()
