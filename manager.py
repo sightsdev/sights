@@ -12,9 +12,9 @@ config = configparser.ConfigParser()
 config.read('robot.cfg')
 
 class WebSocketProcess (multiprocessing.Process):
-    def __init__(self, pid, name, func, port):
+    def __init__(self, proc, name, func, port):
         multiprocessing.Process.__init__(self)
-        self.pid = pid
+        self.proc = proc
         self.name = name
         self.func = func
         self.port = port
