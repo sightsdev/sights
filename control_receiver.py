@@ -13,9 +13,7 @@ config = configparser.ConfigParser()
 config.read('robot.cfg')
 
 # Servos
-servo_party = ServoParty(
-    port=config.getint('servo', 'port'), 
-    dummy=config.getboolean('debug', 'dummy_servo', fallback=False))
+servo_party = ServoParty()
 
 # When script exits or is interrupted stop all servos
 atexit.register(servo_party.close)

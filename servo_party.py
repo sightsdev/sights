@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 from pyax12.connection import Connection
 from enum import IntEnum
+import configparser
+
+config = configparser.ConfigParser()
+config.read('robot.cfg')
 
 class Servo(IntEnum):
     LEFT_FRONT = 1
@@ -10,9 +14,7 @@ class Servo(IntEnum):
 
 # Replicates the pyax12 Connection class
 class DummyConnection:
-    def __init__(self, port="/dev/null", baudrate=1000000):
-        self.port = port
-        self.baudrate = baudrate
+    def __init__(self):
         print("DEBUG: Opened dummy servo connection")
 
     def set_speed (self, id, speed):
@@ -21,7 +23,6 @@ class DummyConnection:
 
     def close (self):
         print("DEBUG: Closed dummy servo connection")
-        pass
     
     def set_cw_angle_limit (self, dynamixel_id, angle_limit, degrees=False):
         pass
@@ -31,14 +32,18 @@ class DummyConnection:
 
 
 class ServoParty:
-    def __init__(self, port="/dev/null", baudrate=1000000, speed_factor=512, dummy=False):
-        if (dummy):
-            self.sc = DummyConnection()
-        else:   
-            self.sc = Connection(port=port, baudrate=baudrate)
-        self.speed_factor = speed_factor
+    def __init__(self):
+        # Load values from configuration file
+        self.port = config.get('servo', 'port', fallback='/dev/ttyACM0')
+        self.baudrate = config.getint('servo', 'baudrate', fallback=1000000)
+        self.speed_factor = config.getint('servo', 'speed_factor', fallback=512)
         self.last_left = 0
         self.last_right = 0
+        # Whether to use a dummy or real servo connection
+        if (config.getboolean('debug', 'dummy_servo', fallback=False)):
+            self.sc = DummyConnection()
+        else:
+            self.sc = Connection(port=self.port, baudrate=self.baudrate)
 
     def stop(self):
         # Set all servos to 0
@@ -98,7 +103,7 @@ class ServoParty:
             if (right != self.last_right):
                 self.move_raw_right(right)
         else:
-            # Not independent, both left and right must be different
+            # Not independent, both left and right must have changed
             if (left != self.last_left and right != self.last_right):
                 self.move_raw(left, right)
 
