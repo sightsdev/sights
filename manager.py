@@ -11,34 +11,41 @@ import sensor_stream
 config = configparser.ConfigParser()
 config.read('robot.cfg')
 
-class WebSocketThread (multiprocessing.Process):
-    def __init__(self, threadID, name, func, port):
+class WebSocketProcess (multiprocessing.Process):
+    def __init__(self, pid, name, func, port):
         multiprocessing.Process.__init__(self)
-        self.threadID = threadID
+        self.pid = pid
         self.name = name
         self.func = func
         self.port = port
 
     def run(self):
-        print("MANAGER: Starting " + self.name + " thread")
+        print("MANAGER: Starting " + self.name + " process")
         start_server = websockets.serve(
             self.func, config.get('network', 'ip'), self.port)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
-        print("MANAGER: Exiting " + self.name + " thread")
+        print("MANAGER: Exiting " + self.name + " process")
 
 def main():
     print("MANAGER: Starting manager process")
-    # Create new threads
-    sensorThread = WebSocketThread(
-        1, "sensor data server", sensor_stream.sendSensorData, 5556)
-    controlThread = WebSocketThread(
-        2, "control data receiver", control_receiver.recieveControlData, 5555)
-    # Start new Threads
-    sensorThread.start()
-    controlThread.start()
-    sensorThread.join()
-    controlThread.join()
+    # Create new process
+    sensor_process = WebSocketProcess(
+        1, "sensor data server", sensor_stream.send_sensor_data, 5556)
+    control_process = WebSocketProcess(
+        2, "control data receiver", control_receiver.receive_control_data, 5555)
+    # Start new processes
+    sensor_process.start()
+    control_process.start()
+    while True:
+        cmd = input()
+        if (cmd == "q"):
+            print("MANAGER: Terminating")
+            sensor_process.terminate()
+            control_process.terminate()
+            sensor_process.join()
+            control_process.join()
+            break
     print("MANAGER: Exiting manager process")
 
 
