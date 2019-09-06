@@ -62,3 +62,11 @@ td .content {
   height: 3rem;
   top: 120px;
 }
+
+.pb-en {
+  width: 12.5%;
+}
+
+.pb-dis {
+  width: 0%;
+}

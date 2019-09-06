@@ -89,12 +89,14 @@
 								aria-selected="true"><i class="fa fa-fw fa-gamepad"></i> Gamepad Monitor</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" id="sensor-monitor-tab" data-toggle="tab" href="#sensor-monitor"
-								role="tab" aria-controls="sensor-monitor" aria-selected="false"><i class="fa fa-fw fa-chart-area"></i> Sensor Monitor</a>
+							<a class="nav-link text-dark" id="sensor-monitor-tab" data-toggle="tab"
+								href="#sensor-monitor" role="tab" aria-controls="sensor-monitor"
+								aria-selected="false"><i class="fa fa-fw fa-chart-area"></i> Sensor Monitor</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" id="gamepad-log-tab" data-toggle="tab" href="#gamepad-log" role="tab"
-								aria-controls="gamepad-log" aria-selected="false"><i class="fa fa-fw fa-inbox"></i> Message Log</a>
+							<a class="nav-link text-dark" id="gamepad-log-tab" data-toggle="tab" href="#gamepad-log"
+								role="tab" aria-controls="gamepad-log" aria-selected="false"><i
+									class="fa fa-fw fa-inbox"></i> Message Log</a>
 						</li>
 					</ul>
 					<div class="tab-content" id="logTabContent">
@@ -256,7 +258,6 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
 			<div class="col-md-auto">
 				<div class="card" style="border: 0px">
@@ -301,6 +302,41 @@
 							<div class="card-header">
 								<span>TVOC Level</span><br />
 							</div>
+						</div>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col">
+						<div class="card">
+							<ul class="list-group list-group-flush font-weight-light">
+								<li class="list-group-item">
+									<p>Gamepad speed <kbd class="float-right">dpad ▲/▼</kbd></p>
+									<div class="progress">
+										<div id="gp_speed_node_1" class="progress-bar pb-en bg-success">1</div>
+										<div id="gp_speed_node_2" class="progress-bar pb-en bg-success">2</div>
+										<div id="gp_speed_node_3" class="progress-bar pb-en bg-success">3</div>
+										<div id="gp_speed_node_4" class="progress-bar pb-en bg-success">4</div>
+										<div id="gp_speed_node_5" class="progress-bar pb-en bg-success">5</div>
+										<div id="gp_speed_node_6" class="progress-bar pb-dis bg-success">6</div>
+										<div id="gp_speed_node_7" class="progress-bar pb-dis bg-warning">7</div>
+										<div id="gp_speed_node_8" class="progress-bar pb-dis bg-danger">8</div>
+									</div>
+								</li>
+								<li class="list-group-item">
+									<p>Keyboard speed <kbd class="float-right">➕/➖</kbd></p>
+									<div class="progress">
+										<div id="kb_speed_node_1" class="progress-bar pb-en bg-success">1</div>
+										<div id="kb_speed_node_2" class="progress-bar pb-en bg-success">2</div>
+										<div id="kb_speed_node_3" class="progress-bar pb-en bg-success">3</div>
+										<div id="kb_speed_node_4" class="progress-bar pb-en bg-success">4</div>
+										<div id="kb_speed_node_5" class="progress-bar pb-en bg-success">5</div>
+										<div id="kb_speed_node_6" class="progress-bar pb-dis bg-success">6</div>
+										<div id="kb_speed_node_7" class="progress-bar pb-dis bg-warning">7</div>
+										<div id="kb_speed_node_8" class="progress-bar pb-dis bg-danger">8</div>
+									</div>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
