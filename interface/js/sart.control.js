@@ -43,25 +43,25 @@ function logControl(e) {
 
 function createKeyBind(keys, ctrl) {
 	// Create keyboard bindings using KeyboardJS
-	keyboardJS.bind(keys, function (e) {
-		// Key down event
-		e.preventRepeat();
-		var c_event = {
-			type: "keyboard",
-			control: ctrl,
-			value: "DOWN"
-		};
-		safeSend(c_event);
-		logControl(c_event.control, c_event.value);
-	}, function (e) {
-		// Key up event
-		var c_event = {
-			type: "keyboard",
-			control: ctrl,
-			value: "UP"
-		};
-		safeSend(c_event);
-		logControl(c_event.control, c_event.value);
+	keys.forEach(function (key) {
+		keyboardJS.bind(key, function (e) {
+			// Key down event
+			e.preventRepeat();
+			var c_event = {
+				type: "KEYBOARD",
+				control: ctrl,
+				value: "DOWN"
+			};
+			safeSend(c_event);
+		}, function (e) {
+			// Key up event
+			var c_event = {
+				type: "KEYBOARD",
+				control: ctrl,
+				value: "UP"
+			};
+			safeSend(c_event);
+		});
 	});
 }
 
@@ -87,10 +87,10 @@ $(document).ready(function () {
 	});
 
 	// Create keyboard bindings
-	createKeyBind('w', "FORWARD");
-	createKeyBind('a', "LEFT");
-	createKeyBind('s', "BACKWARDS");
-	createKeyBind('d', "RIGHT");
+	createKeyBind(['w', 'up'], "FORWARD");
+	createKeyBind(['a', 'left'], "LEFT");
+	createKeyBind(['s', 'down'], "BACKWARDS");
+	createKeyBind(['d', 'right'], "RIGHT");
 
 	// Handle shutdown and reboot buttons
 	$("#shutdownButton").click(function () {
