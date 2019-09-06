@@ -30,14 +30,14 @@ def getData():
     msg = {}
 
     # Get highest CPU temp from system
-    highest_temp = 0.0
     temp_data = psutil.sensors_temperatures()
     if len(temp_data) != 0:
+        highest_temp = 0.0
         for i in temp_data['coretemp']:
             if (i.current > highest_temp):
                 highest_temp = i.current
-    # Add to message
-    msg["cpu_temp"] = str(highest_temp)
+        # Add to message
+        msg["cpu_temp"] = str(highest_temp)
 
     # Get RAM in use and total RAM
     memory = psutil.virtual_memory()
