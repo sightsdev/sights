@@ -22,7 +22,7 @@ class WebSocketThread (multiprocessing.Process):
     def run(self):
         print("MANAGER: Starting " + self.name + " thread")
         start_server = websockets.serve(
-            self.func, config['network']['ip'], self.port)
+            self.func, config.get('network', 'ip') self.port)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
         print("MANAGER: Exiting " + self.name + " thread")
