@@ -89,12 +89,12 @@
 								aria-selected="true">Controller Monitor</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="gamepad-log-tab" data-toggle="tab" href="#gamepad-log" role="tab"
-								aria-controls="gamepad-log" aria-selected="false">Controller Log</a>
-						</li>
-						<li class="nav-item">
 							<a class="nav-link" id="sensor-monitor-tab" data-toggle="tab" href="#sensor-monitor"
 								role="tab" aria-controls="sensor-monitor" aria-selected="false">Sensor Monitor</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="gamepad-log-tab" data-toggle="tab" href="#gamepad-log" role="tab"
+								aria-controls="gamepad-log" aria-selected="false">Message Log</a>
 						</li>
 					</ul>
 					<div class="tab-content" id="logTabContent">
@@ -102,6 +102,12 @@
 							aria-labelledby="gamepad-monitor-tab">
 							<p>
 								<pre><code id="gamepad-monitor-pre" class="JSON" contenteditable="true"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="sensor-monitor" role="tabpanel"
+							aria-labelledby="sensor-monitor-tab">
+							<p>
+								<pre><code id="sensor-monitor-pre" class="JSON" contenteditable="true"></code></pre>
 							</p>
 						</div>
 						<div class="tab-pane fade" id="gamepad-log" role="tabpanel" aria-labelledby="gamepad-log-tab">
@@ -115,14 +121,7 @@
 								<pre><code id="gamepad-log-pre" class="JSON" contenteditable="true"></code></pre>
 							</p>
 						</div>
-						<div class="tab-pane fade" id="sensor-monitor" role="tabpanel"
-							aria-labelledby="sensor-monitor-tab">
-							<p>
-								<pre><code id="sensor-monitor-pre" class="JSON" contenteditable="true"></code></pre>
-							</p>
-						</div>
 					</div>
-
 					<div class="float-right" id="uptime">Uptime: 0.0s</div>
 				</div>
 			</div>
