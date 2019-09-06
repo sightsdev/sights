@@ -13,7 +13,8 @@ config.read('robot.cfg')
 # Servos
 servo_party = ServoParty()
 # Arduino
-sc_arduino = Serial(port=config['arduino']['port'], baudrate=115200)
+sc_arduino = Serial(port=config['arduino']['port'],
+                    baudrate=int(config['arduino']['baudrate']))
 
 # PID constants
 K_p = 2
@@ -24,7 +25,7 @@ K_d = 0
 speed = 400
 
 # When script exits or is interrupted stop all servos
-atexit.register(servo_party.stop)
+atexit.register(servo_party.close)
 
 
 class Distance(IntEnum):

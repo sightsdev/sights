@@ -11,19 +11,24 @@ from datetime import timedelta
 config = configparser.ConfigParser()
 config.read('robot.cfg')
 
-arduino_connected = True
+# Check if Arduino is enabled in config file
+arduino_enabled = config['arduino'].getboolean('enabled')
 
-msg = {}
-
-try:
-    ser = serial.Serial(config['arduino']['port'], 115200)
-except serial.serialutil.SerialException:
-    print("SERVER: Error: Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
-    print("SERVER: Continuing without Arduino connection\n")
-    arduino_connected = False
+if (arduino_enabled):
+    try:
+        # Attempt to open serial com with Arduino
+        ser = serial.Serial(port=config['arduino']['port'],
+                            baudrate=int(config['arduino']['baudrate']))
+    except serial.serialutil.SerialException:
+        print("SERVER: Error: Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
+        print("SERVER: Continuing without Arduino connection\n")
+        arduino_enabled = False
 
 
 def getData():
+    # Create empty message
+    msg = {}
+
     # Get highest CPU temp from system
     highest_temp = 0.0
     temp_data = psutil.sensors_temperatures()
@@ -46,7 +51,7 @@ def getData():
         msg["uptime"] = str(timedelta(seconds=uptime_seconds))
 
     # Get data from Arduino
-    if arduino_connected:
+    if arduino_enabled:
         buf = ser.readline().decode("UTF-8")
         # If string begins with "D:", it's distance
         if (buf[0] == "D"):
