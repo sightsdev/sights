@@ -93,26 +93,26 @@ def controlHandler(buf):
     typ = msg["type"]  # system, axis, button
     control = msg["control"]  # FACE_0, LEFT_STICK_Y, etc.
 
-    if (typ == "axis"):
+    if (typ == "AXIS"):
         # If axis, store as float
         value = float(msg["value"])
         # Update state with new value of axis
         state[control] = value
-
+        # Handle trigger and stick controls
         gamepadMovementHandler()
-    elif (typ == "system"):
+    elif (typ == "SYSTEM"):
         # Handle power commands
-        if (control == "shutdown"):
-            print("Shutting down")
+        if (control == "SHUTDOWN"):
+            print("RECEIVER: Received shutdown signal, shutting down...")
             os.system('poweroff')
-        elif (control == "reboot"):
-            print("Rebooting")
+        elif (control == "REBOOT"):
+            print("RECEIVER: Received reboot signal, rebooting...")
             os.system('restart')
-    elif (typ == "keyboard"):
+    elif (typ == "KEYBOARD"):
         value = msg["value"]  # UP, DOWN
         # Handle directional movement
         directionalMovement(control, value)
-    elif (typ == "button"):
+    elif (typ == "BUTTON"):
         value = msg["value"]  # UP, DOWN
         # Store in state, because it might be useful (e.g. for modifiers)
         state[control] = True if value == "DOWN" else False
