@@ -35,8 +35,10 @@ directionalLookup = {
     "RIGHT": (512, -512)
 }
 
+speed = 512
 
-def gamepadMovementHandler():
+
+def gamepad_movement_handler():
     if (state["LEFT_BOTTOM_SHOULDER"] != 0 or state["RIGHT_BOTTOM_SHOULDER"] != 0):
         left = state["LEFT_BOTTOM_SHOULDER"] * servo_party.speed_factor
         right = state["RIGHT_BOTTOM_SHOULDER"] * servo_party.speed_factor
@@ -78,16 +80,39 @@ def gamepadMovementHandler():
         servo_party.move(left, right)
 
 
-def directionalMovement(control, value):
-    if value == "UP":
-        servo_party.move(0, 0)
-    else:
-        servo_party.move(
-            directionalLookup[control][0],
-            directionalLookup[control][1])
+def keyboard_handler(control, value):
+    speed = servo_party.keyboard_speed
+    if (control == "FORWARD"):
+        if value == "UP":
+            servo_party.move(0, 0)
+        else:
+            servo_party.move(speed, speed)
+    elif (control == "BACKWARDS"):
+        if value == "UP":
+            servo_party.move(0, 0)
+        else:
+            servo_party.move(-speed, -speed)
+    elif (control == "LEFT"):
+        if value == "UP":
+            servo_party.move(0, 0)
+        else:
+            servo_party.move(-speed, speed)
+    elif (control == "RIGHT"):
+        if value == "UP":
+            servo_party.move(0, 0)
+        else:
+            servo_party.move(speed, -speed)
+    elif (control == "SPEED_UP"):
+        if value == "DOWN":
+            servo_party.keyboard_speed = min(1024, speed + 128)
+            print("speed changed to", speed)
+    elif (control == "SPEED_DOWN"):
+        if value == "DOWN":
+            servo_party.keyboard_speed = max(128, speed - 128)
+            print("speed changed to", speed)
 
 
-def controlHandler(buf):
+def message_handler(buf):
     msg = json.loads(buf)
 
     typ = msg["type"]  # system, axis, button
@@ -99,7 +124,7 @@ def controlHandler(buf):
         # Update state with new value of axis
         state[control] = value
         # Handle trigger and stick controls
-        gamepadMovementHandler()
+        gamepad_movement_handler()
     elif (typ == "SYSTEM"):
         # Handle power commands
         if (control == "SHUTDOWN"):
@@ -110,8 +135,8 @@ def controlHandler(buf):
             os.system('restart')
     elif (typ == "KEYBOARD"):
         value = msg["value"]  # UP, DOWN
-        # Handle directional movement
-        directionalMovement(control, value)
+        # Handle directional movement etc
+        keyboard_handler(control, value)
     elif (typ == "BUTTON"):
         value = msg["value"]  # UP, DOWN
         # Store in state, because it might be useful (e.g. for modifiers)
@@ -119,7 +144,7 @@ def controlHandler(buf):
         # Then handle any button events
 
 
-async def recieveControlData(websocket, path):
+async def receive_control_data(websocket, path):
     while True:
         # Recieve JSON formatted string from websockets
         try:
@@ -131,13 +156,13 @@ async def recieveControlData(websocket, path):
             if config.getboolean('debug', 'debug_printout', fallback=False):
                 print(buf)
             # Convert string data to object and then handle controls
-            controlHandler(buf)
+            message_handler(buf)
 
 
 def main():
     print("RECEIVER: Starting control data reciever")
     start_server = websockets.serve(
-        recieveControlData, config.get('network', 'ip'), 5555)
+        receive_control_data, config.get('network', 'ip'), 5555)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
 

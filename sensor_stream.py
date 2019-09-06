@@ -25,7 +25,7 @@ if (arduino_enabled):
         arduino_enabled = False
 
 
-def getData():
+def get_data():
     # Create empty message
     msg = {}
 
@@ -75,11 +75,11 @@ def getData():
     return json.dumps(msg)
 
 
-async def sendSensorData(websocket, path):
+async def send_sensor_data(websocket, path):
     print("SERVER: Client connected")
     while True:
         try:
-            await websocket.send(getData())
+            await websocket.send(get_data())
         except websockets.exceptions.ConnectionClosed:
             print("SERVER: Client disconnected")
             break
@@ -88,7 +88,7 @@ async def sendSensorData(websocket, path):
 def main():
     print("SERVER: Starting sensor data server")
     start_server = websockets.serve(
-        sendSensorData, config.get('network', 'ip'), 5556)
+        send_sensor_data, config.get('network', 'ip'), 5556)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
 
