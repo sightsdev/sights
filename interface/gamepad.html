@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>GamePad Library Demo</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,16 +11,18 @@
 	<script defer src="js/fontawesome/fontawesome.js"></script>
 	<script defer src="js/fontawesome/solid.js"></script>
 </head>
+
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container">
-		<a class="navbar-brand" href="#"><span style="color: #FF5A00">S.A.R.T.</span> Control Interface</a>
-		<div class="navbar-nav">
-			<div class="nav-item">
+			<a class="navbar-brand" href="#"><span style="color: #FF5A00">S.A.R.T.</span> Control Interface</a>
+			<div class="navbar-nav">
+				<div class="nav-item">
 					<div id="controller-status-connected" class="btn-group mr-2" role="group">
 						<div class="input-group ">
 							<div class="input-group-prepend">
-								<button rel="tooltip" data-placement="bottom" title="Controller connection status" class="btn btn-success btn" type="button">
+								<button rel="tooltip" data-placement="bottom" title="Controller connection status"
+									class="btn btn-success btn" type="button">
 									<i class='fa fa-fw fa-gamepad'></i>
 								</button>
 							</div>
@@ -27,7 +30,7 @@
 						</div>
 					</div>
 				</div>
-		</div>
+			</div>
 		</div>
 	</nav>
 	<div class="container" style="padding-top: 10px">
@@ -36,89 +39,91 @@
 	</div>
 
 	<script>
+		$(document).ready(function () {
+			// Attach it to the window so it can be inspected at the console.
+			window.gamepad = new Gamepad();
 
-	$(document).ready(function() {
-		// Attach it to the window so it can be inspected at the console.
-		window.gamepad = new Gamepad();
-		
-		currentGamepad = 0;
-		
-		$('#gamepadSelect').on('change', function (e) {
-			var device = gamepad.gamepads[this.value];
-			$('#gamepads').html('<span id="gamepad-' + device.index + '"><span>Gamepad #' + device.index + '</span><p class="lead">' + device.id + '</p></span>');
+			currentGamepad = 0;
 
-			var mainWrap = $('#gamepad-' + device.index),
-				statesWrap,
-				logWrap,
-				control,
-				value,
-				i;
+			$('#gamepadSelect').on('change', function (e) {
+				var device = gamepad.gamepads[this.value];
+				$('#gamepads').html('<span id="gamepad-' + device.index + '"><span>Gamepad #' + device.index +
+					'</span><p class="lead">' + device.id + '</p></span>');
 
-			mainWrap.append('<strong>State</strong><ul id="states-' + device.index + '"></ul>');
-			mainWrap.append('<strong>Events</strong><ul id="log-' + device.index + '"></ul>');
+				var mainWrap = $('#gamepad-' + device.index),
+					statesWrap,
+					logWrap,
+					control,
+					value,
+					i;
 
-			statesWrap = $('#states-' + device.index)
-			logWrap = $('#log-' + device.index)
+				mainWrap.append('<strong>State</strong><ul id="states-' + device.index + '"></ul>');
+				mainWrap.append('<strong>Events</strong><ul id="log-' + device.index + '"></ul>');
 
-			for (control in device.state) {
-				value = device.state[control];
-				statesWrap.append('<li>' + control + ': <span id="state-' + device.index + '-' + control + '">' + value + '</span></li>');
-			}
-		});
+				statesWrap = $('#states-' + device.index)
+				logWrap = $('#log-' + device.index)
 
-		gamepad.bind(Gamepad.Event.CONNECTED, function(device) {
-			console.log('Connected', device);
-			$('#gamepadSelect').append('<option value="' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") +'</option>');
-			$('#gamepadSelect').val(device.index);
-			$('#gamepadSelect').trigger('change');
-			
-			$('#connect-notice').hide();
-		});
-
-		gamepad.bind(Gamepad.Event.DISCONNECTED, function(device) {
-			console.log('Disconnected', device);
-
-			$('#gamepad-' + device.index).remove();
-
-			if (gamepad.count() == 0) {
-				$('#connect-notice').show();
-			}
-		});
-
-		gamepad.bind(Gamepad.Event.TICK, function(gamepads) {
-			var gamepad,
-				control,
-				value;
-
-		
-			gamepad = gamepads[currentGamepad];
-
-			if (gamepad) {
-				for (control in gamepad.state) {
-					value = gamepad.state[control];
-					$('#state-' + gamepad.index + '-' + control + '').html(value);
+				for (control in device.state) {
+					value = device.state[control];
+					statesWrap.append('<li>' + control + ': <span id="state-' + device.index + '-' + control +
+						'">' + value + '</span></li>');
 				}
+			});
+
+			gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
+				console.log('Connected', device);
+				$('#gamepadSelect').append('<option value="' + device.index + '">' + device.id.replace(
+					/ *\([^)]*\) */g, "") + '</option>');
+				$('#gamepadSelect').val(device.index);
+				$('#gamepadSelect').trigger('change');
+
+				$('#connect-notice').hide();
+			});
+
+			gamepad.bind(Gamepad.Event.DISCONNECTED, function (device) {
+				console.log('Disconnected', device);
+
+				$('#gamepad-' + device.index).remove();
+
+				if (gamepad.count() == 0) {
+					$('#connect-notice').show();
+				}
+			});
+
+			gamepad.bind(Gamepad.Event.TICK, function (gamepads) {
+				var gamepad,
+					control,
+					value;
+
+
+				gamepad = gamepads[currentGamepad];
+
+				if (gamepad) {
+					for (control in gamepad.state) {
+						value = gamepad.state[control];
+						$('#state-' + gamepad.index + '-' + control + '').html(value);
+					}
+				}
+
+			});
+
+			gamepad.bind(Gamepad.Event.BUTTON_DOWN, function (e) {
+				$('#log-' + e.gamepad.index).append('<li>' + e.control + ' DOWN</li>');
+			});
+
+			gamepad.bind(Gamepad.Event.BUTTON_UP, function (e) {
+				$('#log-' + e.gamepad.index).append('<li>' + e.control + ' UP</li>');
+			});
+
+			gamepad.bind(Gamepad.Event.AXIS_CHANGED, function (e) {
+				$('#log-' + e.gamepad.index).append('<li>' + e.axis + ' changed to ' + e.value + '</li>');
+			});
+
+			if (!gamepad.init()) {
+				alert('Your browser does not support gamepads, get the latest Google Chrome or Firefox.');
 			}
-			
 		});
-
-		gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
-			$('#log-' + e.gamepad.index).append('<li>' + e.control + ' DOWN</li>');
-		});
-
-		gamepad.bind(Gamepad.Event.BUTTON_UP, function(e) {
-			$('#log-' + e.gamepad.index).append('<li>' + e.control + ' UP</li>');
-		});
-
-		gamepad.bind(Gamepad.Event.AXIS_CHANGED, function(e) {
-			$('#log-' + e.gamepad.index).append('<li>' + e.axis + ' changed to ' + e.value + '</li>');
-		});
-
-		if (!gamepad.init()) {
-			alert('Your browser does not support gamepads, get the latest Google Chrome or Firefox.');
-		}
-	});
-
 	</script>
 </body>
+
 </html>

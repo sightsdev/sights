@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<!--#########################################################
+<!--#########################################################
 	# Created by the Semi Autonomous Rescue Team				#
 	#															#
 	# Author: Jack Williams, Connor Kneebone					#
@@ -8,288 +8,316 @@
 	# Licensed under GNU General Public License 3.0				#
 	##########################################################-->
 
-	<title>S.A.R.T. Interface</title>
-	<head>
-		<!--Link CSS and scripts-->
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" href="css/favicon.ico" type="image/x-icon" />
-		
-		<!-- Interface CSS --> 
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/circle.css">
-		<link rel="stylesheet" href="css/bootoast.min.css">
-		<link rel="stylesheet" href="css/sart.style.css">
-		<!-- Syntax highlighting -->
-		<link rel="stylesheet" href="css/monokai.css">
+<title>S.A.R.T. Interface</title>
 
-		<!-- jQuery -->
-		<script src="js/jquery.min.js"></script>
-		<script src="js/jquery-ui.min.js"></script>
-		<!-- Gamepad -->
-		<script src="js/gamepad.js"></script>
-		<!-- Keyboard -->
-		<script src="js/keyboard.min.js"></script>
-		<!-- UI scripts -->
-		<script src="js/popper.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/bootoast-fa.min.js"></script>
-		<script src="js/Chart.bundle.js"></script>
-		<!-- Syntax highlighting -->
-		<script src="js/highlight.pack.js"></script>
-		<!-- Font Awesome -->
-		<script defer src="js/fontawesome/fontawesome.js"></script>
-		<script defer src="js/fontawesome/solid.js"></script>
-		<!-- S.A.R.T. Scripts -->
-		<script src="js/sart.interface.js"></script>
-		<script src="js/sart.demo.js"></script>
-		<script src="js/sart.sensors.js"></script>
-		<script src="js/sart.control.js"></script>	
+<head>
+	<!--Link CSS and scripts-->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="css/favicon.ico" type="image/x-icon" />
 
-	</head>
-	<body>
-		<!-- SSH MODAL -->
-		<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header dragHeader" id="sshDrag">
-						<h4 class="modal-title"><i class="fas fa-fw fa-terminal"></i> SSH</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<iframe id="ssh_iframe" src="" width="100%" height="400px"></iframe>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();"><i class="fa fa-fw fa-redo"></i> Refresh</button>
-						<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
-					</div>
+	<!-- Interface CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/circle.css">
+	<link rel="stylesheet" href="css/bootoast.min.css">
+	<link rel="stylesheet" href="css/sart.style.css">
+	<!-- Syntax highlighting -->
+	<link rel="stylesheet" href="css/monokai.css">
+
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<!-- Gamepad -->
+	<script src="js/gamepad.js"></script>
+	<!-- Keyboard -->
+	<script src="js/keyboard.min.js"></script>
+	<!-- UI scripts -->
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootoast-fa.min.js"></script>
+	<script src="js/Chart.bundle.js"></script>
+	<!-- Syntax highlighting -->
+	<script src="js/highlight.pack.js"></script>
+	<!-- Font Awesome -->
+	<script defer src="js/fontawesome/fontawesome.js"></script>
+	<script defer src="js/fontawesome/solid.js"></script>
+	<!-- S.A.R.T. Scripts -->
+	<script src="js/sart.interface.js"></script>
+	<script src="js/sart.demo.js"></script>
+	<script src="js/sart.sensors.js"></script>
+	<script src="js/sart.control.js"></script>
+
+</head>
+
+<body>
+	<!-- SSH MODAL -->
+	<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header dragHeader" id="sshDrag">
+					<h4 class="modal-title"><i class="fas fa-fw fa-terminal"></i> SSH</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<iframe id="ssh_iframe" src="" width="100%" height="400px"></iframe>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning btn-default" onclick="refreshSSH();"><i
+							class="fa fa-fw fa-redo"></i> Refresh</button>
+					<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 				</div>
 			</div>
 		</div>
-		<!-- LOG MODAL -->
-		<div class="modal fade top" id="logModal" role="dialog" data-backdrop="true">
-			<div class="modal-dialog modal-lg" >
-				<div class="modal-content">
-					<div class="modal-header dragHeader" id="logDrag">
-						<h4 class="modal-title"><i class="fas fa-fw fa-clipboard-list"></i> Logs</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+	</div>
+	<!-- LOG MODAL -->
+	<div class="modal fade top" id="logModal" role="dialog" data-backdrop="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header dragHeader" id="logDrag">
+					<h4 class="modal-title"><i class="fas fa-fw fa-clipboard-list"></i> Logs</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<ul class="nav nav-tabs" id="logTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="gamepad-monitor-tab" data-toggle="tab"
+								href="#gamepad-monitor" role="tab" aria-controls="gamepad-monitor"
+								aria-selected="true">Controller Monitor</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="gamepad-log-tab" data-toggle="tab" href="#gamepad-log" role="tab"
+								aria-controls="gamepad-log" aria-selected="false">Controller Log</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="sensor-monitor-tab" data-toggle="tab" href="#sensor-monitor"
+								role="tab" aria-controls="sensor-monitor" aria-selected="false">Sensor Monitor</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="logTabContent">
+						<div class="tab-pane fade show active" id="gamepad-monitor" role="tabpanel"
+							aria-labelledby="gamepad-monitor-tab">
+							<p>
+								<pre><code id="gamepad-monitor-pre" class="JSON" contenteditable="true"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="gamepad-log" role="tabpanel" aria-labelledby="gamepad-log-tab">
+							<br /><button type="button" class="btn btn-light" id="gamepad-log-select-button">
+								<i class="fa fa-fw fa-check-square"></i> Select All
+							</button>
+							<button type="button" class="btn btn-danger" id="gamepad-log-clear-button">
+								<i class="fa fa-fw fa-trash-alt"></i> Clear
+							</button>
+							<p>
+								<pre><code id="gamepad-log-pre" class="JSON" contenteditable="true"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="sensor-monitor" role="tabpanel"
+							aria-labelledby="sensor-monitor-tab">
+							<p>
+								<pre><code id="sensor-monitor-pre" class="JSON" contenteditable="true"></code></pre>
+							</p>
+						</div>
 					</div>
-					<div class="modal-body">
-						<ul class="nav nav-tabs" id="logTab" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link active" id="gamepad-monitor-tab" data-toggle="tab" href="#gamepad-monitor" role="tab" aria-controls="gamepad-monitor" aria-selected="true">Controller Monitor</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" id="gamepad-log-tab" data-toggle="tab" href="#gamepad-log" role="tab" aria-controls="gamepad-log" aria-selected="false">Controller Log</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" id="sensor-monitor-tab" data-toggle="tab" href="#sensor-monitor" role="tab" aria-controls="sensor-monitor" aria-selected="false">Sensor Monitor</a>
-							</li>
-						</ul>
-						<div class="tab-content" id="logTabContent">
-							<div class="tab-pane fade show active" id="gamepad-monitor" role="tabpanel" aria-labelledby="gamepad-monitor-tab">
-								<p><pre><code id="gamepad-monitor-pre" class="JSON" contenteditable="true"></code></pre></p>
-							</div>
-							<div class="tab-pane fade" id="gamepad-log" role="tabpanel" aria-labelledby="gamepad-log-tab">	
-								<br/><button type="button" class="btn btn-light" id="gamepad-log-select-button">
-									<i class="fa fa-fw fa-check-square"></i> Select All
+
+					<div class="float-right" id="uptime">Uptime: 0.0s</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- NAVIGATION BAR -->
+	<nav class="navbar navbar-toggleable-sm navbar-fixed-top navbar-light bg-light main-nav">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav">
+				<li class="nav-item">
+					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+						<div id="controller-status-disconnected" class="btn-group mr-2" role="group">
+							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
+								title="Controller connection status">
+								<button type="button" id="controller_status" class="btn btn-danger">
+									<i class="fa fa-fw fa-gamepad"></i> Press a button to connect
 								</button>
-								<button type="button" class="btn btn-danger" id="gamepad-log-clear-button">
-									<i class="fa fa-fw fa-trash-alt"></i> Clear
+							</span>
+						</div>
+						<div id="controller-status-connected" class="btn-group mr-2" role="group">
+							<div class="input-group ">
+								<div class="input-group-prepend">
+									<button rel="tooltip" data-placement="bottom" title="Controller connection status"
+										class="btn btn-success btn" type="button">
+										<i class='fa fa-fw fa-gamepad'></i>
+									</button>
+								</div>
+								<select class='custom-select' id='gamepadSelect'>
+
+								</select>
+							</div>
+						</div>
+						<div class="btn-group" role="group">
+							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
+								title="Robot connection status">
+								<button type="button" id="robot_status" class="btn btn-danger"
+									style="pointer-events: none">
+									<i class="fa fa-fw fa-unlink"></i> Disconnected from robot
 								</button>
-								<p><pre><code id="gamepad-log-pre" class="JSON" contenteditable="true"></code></pre></p>
-							</div>
-							<div class="tab-pane fade" id="sensor-monitor" role="tabpanel" aria-labelledby="sensor-monitor-tab">
-								<p><pre><code id="sensor-monitor-pre" class="JSON" contenteditable="true"></code></pre></p>
-							</div>
+							</span>
 						</div>
-
-						<div class="float-right" id="uptime">Uptime: 0.0s</div>
+					</div>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav abs-center-x">
+				<li class="nav-item">
+					<button type="button" class="btn btn-light" id="nav_title" data-toggle="tooltip"
+						data-placement="bottom" title="Reload page">
+						<span style="color: #FF5A00">S.A.R.T.</span> Control Interface
+					</button>
+				</li>
+			</ul>
+			<div class="inline">
+				<button type="button" class="btn btn-outline-dark" id="sensorToggle" data-toggle="tooltip"
+					data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
+					<i class="fa fa-fw fa-chart-area"></i> Toggle Sensors
+				</button>
+				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#sshModal"
+					rel="tooltip" data-placement="bottom" title="Open SSH window">
+					<i class="fa fa-fw fa-terminal"></i> SSH
+				</button>
+				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#logModal"
+					rel="tooltip" data-placement="bottom" title="Open log window">
+					<i class="fa fa-fw fa-clipboard-list"></i> Logs
+				</button>
+				<div class="btn-group dropleft" role="group">
+					<button id="powerButtonDropdown" type="button" class="btn btn-outline-danger dropdown-toggle"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Power
+					</button>
+					<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+						<a class="dropdown-item" href="#" id="shutdownButton" rel="tooltip" data-placement="left"
+							title="Safely power off the robot"><i class="fa fa-fw fa-power-off"></i> Shutdown</a>
+						<a class="dropdown-item" href="#" id="rebootButton" rel="tooltip" data-placement="left"
+							title="Safely reboot the robot"><i class="fa fa-fw fa-undo"></i> Reboot</a>
+						<a class="dropdown-item" href="#" onclick="DemoMode()" rel="tooltip" data-placement="left"
+							title="Load demo mode"><i class="fa fa-fw fa-object-group"></i> Demo Mode</a>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- NAVIGATION BAR -->
-		<nav class="navbar navbar-toggleable-sm navbar-fixed-top navbar-light bg-light main-nav">
-			<div class="container-fluid">
-				<ul class="nav navbar-nav">
-					<li class="nav-item">
-						<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-							<div id="controller-status-disconnected" class="btn-group mr-2" role="group">
-								<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Controller connection status">
-									<button type="button" id="controller_status" class="btn btn-danger">
-										<i class="fa fa-fw fa-gamepad"></i> Press a button to connect
-									</button>
-								</span>
-							</div>
-							<div id="controller-status-connected" class="btn-group mr-2" role="group">
-								<div class="input-group ">
-									<div class="input-group-prepend">
-										<button rel="tooltip" data-placement="bottom" title="Controller connection status" class="btn btn-success btn" type="button">
-											<i class='fa fa-fw fa-gamepad'></i>
-										</button>
-									</div>
-									<select class='custom-select' id='gamepadSelect'>
-										
-									</select>
-								</div>
-							</div>
-							<div class="btn-group" role="group">
-								<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Robot connection status">
-									<button type="button" id="robot_status" class="btn btn-danger" style="pointer-events: none">
-										<i class="fa fa-fw fa-unlink"></i> Disconnected from robot
-									</button>
-								</span>
-							</div>
-						</div>
-					</li>
-				</ul>
-				<ul class="nav navbar-nav abs-center-x">
-					<li class="nav-item">
-						<button type="button" class="btn btn-light" id="nav_title" data-toggle="tooltip" data-placement="bottom" title="Reload page">
-							<span style="color: #FF5A00">S.A.R.T.</span> Control Interface
-						</button>
-					</li>
-				</ul>
-				<div class="inline">
-					<button type="button" class="btn btn-outline-dark" id="sensorToggle" data-toggle="tooltip" data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
-						<i class="fa fa-fw fa-chart-area"></i> Toggle Sensors
-					</button>
-					<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#sshModal" rel="tooltip" data-placement="bottom" title="Open SSH window">
-						<i class="fa fa-fw fa-terminal"></i> SSH
-					</button>
-					<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#logModal" rel="tooltip" data-placement="bottom" title="Open log window">
-						<i class="fa fa-fw fa-clipboard-list"></i> Logs
-					</button>
-					<div class="btn-group dropleft" role="group">
-						<button id="powerButtonDropdown" type="button" class="btn btn-outline-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Power
-						</button>
-						<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-							<a class="dropdown-item" href="#" id="shutdownButton" rel="tooltip" data-placement="left" title="Safely power off the robot"><i class="fa fa-fw fa-power-off"></i> Shutdown</a>
-							<a class="dropdown-item" href="#" id="rebootButton" rel="tooltip" data-placement="left" title="Safely reboot the robot"><i class="fa fa-fw fa-undo"></i> Reboot</a>
-							<a class="dropdown-item" href="#" onclick="DemoMode()" rel="tooltip" data-placement="left" title="Load demo mode"><i class="fa fa-fw fa-object-group"></i> Demo Mode</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</nav>
-		<div class="container-fluid" style="padding-top: 10px">
-			<div class="row justify-content-md-center">
-				<div class="col-md-auto">
-					
-					<div class="row">
-						<div class="col">
-							<div class="card">
-								<div class="card-body">
-									<div id="cputemp_graph" class="c100 p0 med orange">
-										<span id="cputemp_level">0°C</span>
-										<div class="slice">
-											<div class="bar"></div>
-											<div class="fill"></div>
-										</div>
+	</nav>
+	<div class="container-fluid" style="padding-top: 10px">
+		<div class="row justify-content-md-center">
+			<div class="col-md-auto">
+
+				<div class="row">
+					<div class="col">
+						<div class="card">
+							<div class="card-body">
+								<div id="cputemp_graph" class="c100 p0 med orange">
+									<span id="cputemp_level">0°C</span>
+									<div class="slice">
+										<div class="bar"></div>
+										<div class="fill"></div>
 									</div>
 								</div>
-								<div class="card-header">
-									<span>CPU Temp.</span><br/>
-								</div>
 							</div>
-						</div>
-						<div class="col">
-							<div class="card">
-								<div class="card-body">
-									<div id="charge_graph" class="c100 p0 med orange">
-										<span id="charge_level">0%</span>
-										<div class="slice">
-											<div class="bar"></div>
-											<div class="fill"></div>
-										</div>	
-									</div>
-								</div>
-								<div class="card-header">
-									<span>Charge Level</span><br/>
-								</div>
+							<div class="card-header">
+								<span>CPU Temp.</span><br />
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-auto">
-					<div class="card" style="border: 0px">
-						<img id="camera_front" width="480" class="streamImage rotated" src=""/>
-					</div>
-				</div>
-				<div class="col-md-auto">
-					<div class="row">
-						<div class="col">
-							<div class="card">
-								<div class="card-body">
-									<div id="co2_graph" class="c100 p0 med orange">
-										<span id="co2_level">0<span style="font-size: 10px"> ppm</span></span>
-										<div class="slice">
-											<div class="bar"></div>
-											<div class="fill"></div>
-										</div>
+					<div class="col">
+						<div class="card">
+							<div class="card-body">
+								<div id="charge_graph" class="c100 p0 med orange">
+									<span id="charge_level">0%</span>
+									<div class="slice">
+										<div class="bar"></div>
+										<div class="fill"></div>
 									</div>
-								</div>
-								<div class="card-header">
-									<span>CO<sub>2</sub> Level</span><br/>
 								</div>
 							</div>
-						</div>
-						<div class="col">
-							<div class="card">
-								<div class="card-body">
-									<div id="tvoc_graph" class="c100 p0 med orange">
-										<span id="tvoc_level">0<span style="font-size: 10px"> ppb</span></span>
-										<div class="slice">
-											<div class="bar"></div>
-											<div class="fill"></div>
-										</div>
-									</div>
-								</div>
-								<div class="card-header">
-									<span>TVOC Level</span><br/>
-								</div>
+							<div class="card-header">
+								<span>Charge Level</span><br />
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			
-			<div class="row justify-content-md-center" id="btm_view_sensors" style="padding-top:20px">
-				<div class="col-md-auto">
-					<div class="card">
-						<div class="card-header">
-							<i class="fas fa-fw fa-camera"></i> Thermal Camera
-						</div>
-						<div id="thermal_camera">
-							
-						</div>
-					</div>
-				</div>
-				<div class="col-md-auto">
-					<div class="card">
-						<div class="card-header">
-							<i class="fas fa-fw fa-thermometer-half"></i> Temperature
-						</div>
-						<div class="card-body">
-							<canvas id="tempChart" width="400" height="200"></canvas>
-						</div>
-					</div>
+			<div class="col-md-auto">
+				<div class="card" style="border: 0px">
+					<img id="camera_front" width="480" class="streamImage rotated" src="" />
 				</div>
 			</div>
-			<div class="row justify-content-md-center no-gutters" id="btm_view_camera">
-				<div class="col-md-auto">
-					<div class="card" style="border: 0px">
-						<img width="420" id="camera_back" class="img-fluid streamImage" src="" />
+			<div class="col-md-auto">
+				<div class="row">
+					<div class="col">
+						<div class="card">
+							<div class="card-body">
+								<div id="co2_graph" class="c100 p0 med orange">
+									<span id="co2_level">0<span style="font-size: 10px"> ppm</span></span>
+									<div class="slice">
+										<div class="bar"></div>
+										<div class="fill"></div>
+									</div>
+								</div>
+							</div>
+							<div class="card-header">
+								<span>CO<sub>2</sub> Level</span><br />
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card">
+							<div class="card-body">
+								<div id="tvoc_graph" class="c100 p0 med orange">
+									<span id="tvoc_level">0<span style="font-size: 10px"> ppb</span></span>
+									<div class="slice">
+										<div class="bar"></div>
+										<div class="fill"></div>
+									</div>
+								</div>
+							</div>
+							<div class="card-header">
+								<span>TVOC Level</span><br />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-	</body>
+		<div class="row justify-content-md-center" id="btm_view_sensors" style="padding-top:20px">
+			<div class="col-md-auto">
+				<div class="card">
+					<div class="card-header">
+						<i class="fas fa-fw fa-camera"></i> Thermal Camera
+					</div>
+					<div id="thermal_camera">
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-auto">
+				<div class="card">
+					<div class="card-header">
+						<i class="fas fa-fw fa-thermometer-half"></i> Temperature
+					</div>
+					<div class="card-body">
+						<canvas id="tempChart" width="400" height="200"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-md-center no-gutters" id="btm_view_camera">
+			<div class="col-md-auto">
+				<div class="card" style="border: 0px">
+					<img width="420" id="camera_back" class="img-fluid streamImage" src="" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
 </html>
