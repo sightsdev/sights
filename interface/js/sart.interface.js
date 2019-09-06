@@ -23,6 +23,7 @@ function selectTextInElement(id) {
 	selection.addRange(range);
 }
 
+
 $(document).ready(function () {
 
 	// Allow both a tooltip and a modal window on a button
@@ -70,6 +71,11 @@ $(document).ready(function () {
 			$('.streamImage').removeClass("rotated");
 		}
 	});
+	$('.streamImage').css('opacity', '0');
+	$('.streamImage').load(function () {
+		$("#spinner").hide();
+		$('.streamImage').css('opacity', '1');
+	})
 
 	// Set source of camera streams
 	$("#camera_front").attr("src", portString(8081));

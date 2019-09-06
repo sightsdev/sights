@@ -55,3 +55,10 @@ td .content {
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+
+.loading-spinner {
+  position: absolute;
+  width: 3rem; 
+  height: 3rem;
+  top: 120px;
+}
