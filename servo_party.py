@@ -36,7 +36,7 @@ class ServoParty:
         # Load values from configuration file
         self.port = config.get('servo', 'port', fallback='/dev/ttyACM0')
         self.baudrate = config.getint('servo', 'baudrate', fallback=1000000)
-        self.speed_factor = config.getint('servo', 'speed_factor', fallback=512)
+        self.gamepad_speed = config.getint('servo', 'default_gamepad_speed', fallback=512)
         self.keyboard_speed = config.getint('servo', 'default_keyboard_speed', fallback=512)
         self.last_left = 0
         self.last_right = 0

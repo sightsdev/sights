@@ -35,13 +35,10 @@ directionalLookup = {
     "RIGHT": (512, -512)
 }
 
-speed = 512
-
-
 def gamepad_movement_handler():
     if (state["LEFT_BOTTOM_SHOULDER"] != 0 or state["RIGHT_BOTTOM_SHOULDER"] != 0):
-        left = state["LEFT_BOTTOM_SHOULDER"] * servo_party.speed_factor
-        right = state["RIGHT_BOTTOM_SHOULDER"] * servo_party.speed_factor
+        left = state["LEFT_BOTTOM_SHOULDER"] * servo_party.gamepad_speed
+        right = state["RIGHT_BOTTOM_SHOULDER"] * servo_party.gamepad_speed
 
         # If modifier pressed, than invert value
         left *= (-1) ** state["LEFT_TOP_SHOULDER"]
@@ -72,9 +69,9 @@ def gamepad_movement_handler():
         left = max(-1, min(left, 1))
         right = max(-1, min(right, 1))
 
-        # Multiply by speed_factor to get our final speed to be sent to the servos
-        left *= servo_party.speed_factor
-        right *= servo_party.speed_factor
+        # Multiply by gamepad_speed to get our final speed to be sent to the servos
+        left *= servo_party.gamepad_speed
+        right *= servo_party.gamepad_speed
 
         # Send command to servos
         servo_party.move(left, right)
@@ -142,6 +139,12 @@ def message_handler(buf):
         # Store in state, because it might be useful (e.g. for modifiers)
         state[control] = True if value == "DOWN" else False
         # Then handle any button events
+        if (control == "DPAD_UP"):
+            if value == "DOWN":
+                servo_party.gamepad_speed = min(1024, servo_party.gamepad_speed + 128)
+        elif (control == "DPAD_DOWN"):
+            if value == "DOWN":
+                servo_party.gamepad_speed = max(128, servo_party.gamepad_speed - 128)
 
 
 async def receive_control_data(websocket, path):
