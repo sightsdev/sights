@@ -205,7 +205,7 @@ $(document).ready(function () {
 				var co2 = obj["co2"];
 				// Update graph
 				$("#co2_level").html(co2 + "<span style='font-size: 10px'> ppm</span>");
-				$("#co2_graph").attr('class', "c100 med orange p" + Math.round(co2 / 100));
+				$("#co2_graph").attr('class', "c100 med orange center p" + Math.round(co2 / 100));
 			}
 
 			// Get TVOC levels
@@ -213,7 +213,7 @@ $(document).ready(function () {
 				var tvoc = obj["tvoc"];
 				// Update graph
 				$("#tvoc_level").html(tvoc + "<span style='font-size: 10px'> ppb</span>");
-				$("#tvoc_graph").attr('class', "c100 med orange p" + Math.round(tvoc / 100));
+				$("#tvoc_graph").attr('class', "c100 med orange center p" + Math.round(tvoc / 100));
 			}
 
 			// Get temperature data for line graph
@@ -232,14 +232,14 @@ $(document).ready(function () {
 				var charge_data = obj["charge"];
 				// Update graph
 				$("#charge_level").html(charge_data + "%");
-				$("#charge_graph").attr('class', "c100 med orange p" + charge_data);
+				$("#charge_graph").attr('class', "c100 med orange center p" + charge_data);
 			}
 
 			// Highest CPU core temperature
 			if ("cpu_temp" in obj) {
 				var cpu_temp = Math.round(obj["cpu_temp"]);
 				$("#cputemp_level").html(cpu_temp + "&degC");
-				$("#cputemp_graph").attr('class', "c100 med orange p" + cpu_temp);
+				$("#cputemp_graph").attr('class', "c100 med orange center p" + cpu_temp);
 			}
 
 			// System uptime

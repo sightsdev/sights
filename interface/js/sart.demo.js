@@ -2,16 +2,16 @@
 function DemoMode() {
 	// CPU temp graph
 	$("#cputemp_level").html("45&degC");
-	$("#cputemp_graph").attr('class', "c100 med orange p45");
+	$("#cputemp_graph").attr('class', "c100 med orange center p45");
 	// Charge level
 	$("#charge_level").html("97%");
-	$("#charge_graph").attr('class', "c100 med orange p97");
+	$("#charge_graph").attr('class', "c100 med orange center p97");
 	// CO2 level
 	$("#co2_level").html("250<span style='font-size: 10px'> ppm</span>");
-	$("#co2_graph").attr('class', "c100 med orange p25");
+	$("#co2_graph").attr('class', "c100 med orange center p25");
 	// TVOC level
 	$("#tvoc_level").html("75<span style='font-size: 10px'> ppb</span>");
-	$("#tvoc_graph").attr('class', "c100 med orange p14");
+	$("#tvoc_graph").attr('class', "c100 med orange center p14");
 	// Temperature history graph
 	tempChartData.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
 	tempChart.update();
