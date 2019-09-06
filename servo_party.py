@@ -37,6 +37,7 @@ class ServoParty:
         self.port = config.get('servo', 'port', fallback='/dev/ttyACM0')
         self.baudrate = config.getint('servo', 'baudrate', fallback=1000000)
         self.speed_factor = config.getint('servo', 'speed_factor', fallback=512)
+        self.keyboard_speed = config.getint('servo', 'default_keyboard_speed', fallback=512)
         self.last_left = 0
         self.last_right = 0
         # Whether to use a dummy or real servo connection
@@ -51,6 +52,8 @@ class ServoParty:
         self.sc.set_speed(2, 0)
         self.sc.set_speed(3, 0)
         self.sc.set_speed(4, 0)
+        self.last_left = 0
+        self.last_right = 0
     
     def close(self):
         # Set all servos to 0
