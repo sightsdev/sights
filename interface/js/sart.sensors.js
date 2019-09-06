@@ -220,6 +220,11 @@ $(document).ready(function () {
 				$("#uptime").html("Uptime: " + obj["uptime"]);
 			}
 
+			// System memory
+			if ("memory_used" in obj && "memory_total" in obj) {
+				$("#memory").html("Memory: " + obj["memory_used"] + "/" + obj["memory_total"] + " MB");
+			}
+
 			last_sensor_data = obj;
 		}
 	} catch (err) {
