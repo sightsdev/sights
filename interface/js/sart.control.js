@@ -29,13 +29,16 @@ function socketState() {
 
 // Checks if socket is open, then converts data to JSON and sends it
 function safeSend(data) {
-	//console.log(data);
+	logControl(data);
 	if (controlSocket != undefined && controlSocket.readyState == 1)
 		controlSocket.send(JSON.stringify(data));
 }
 
-function logControl(control, value) {
-	$('#gamepad-log-pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + control + " " + value + "</li>");
+function logControl(e) {
+
+	value = ('value' in e) ? e["value"] : "MESSAGE SENT"
+
+	$('#gamepad-log-pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
 }
 
 function createKeyBind(keys, ctrl) {
@@ -92,11 +95,10 @@ $(document).ready(function () {
 	// Handle shutdown and reboot buttons
 	$("#shutdownButton").click(function () {
 		var c_event = {
-			type: "system",
-			control: "shutdown"
+			type: "SYSTEM",
+			control: "SHUTDOWN"
 		};
 		safeSend(c_event);
-		logControl("system", "shutdown");
 		bootoast.toast({
 			"message": "Shutting down",
 			"type": "warning",
@@ -106,8 +108,8 @@ $(document).ready(function () {
 	});
 	$("#rebootButton").click(function () {
 		var c_event = {
-			type: "system",
-			control: "reboot"
+			type: "SYSTEM",
+			control: "REBOOT"
 		};
 		safeSend(c_event);
 		logControl("system", "reboot");
@@ -160,12 +162,11 @@ $(document).ready(function () {
 				return;
 			}
 			var c_event = {
-				type: "button",
+				type: "BUTTON",
 				control: e.control,
 				value: "DOWN"
 			};
 			safeSend(c_event);
-			logControl(e.control, "DOWN");
 		}
 	});
 
@@ -175,12 +176,11 @@ $(document).ready(function () {
 				return;
 			}
 			var c_event = {
-				type: "button",
+				type: "BUTTON",
 				control: e.control,
 				value: "UP"
 			};
 			safeSend(c_event);
-			logControl(e.control, "UP");
 		}
 	});
 
@@ -191,15 +191,16 @@ $(document).ready(function () {
 			}
 			var val = e.value.toFixed(2);
 			var c_event = {
-				type: "axis",
+				type: "AXIS",
 				control: e.axis,
 				value: val
 			};
 			if (val > -0.3 && val < 0.3) {
+				// TODO: Prevent repeats of this message
+				// Currently will send 0 repeatedly
 				c_event.value = 0;
 			}
 			safeSend(c_event);
-			logControl(e.axis, "changed to " + c_event.value);
 		}
 	});
 
@@ -212,14 +213,12 @@ $(document).ready(function () {
 			last_axis_state[ctrl] = val;
 			// Create event message
 			var c_event = {
-				type: "axis",
+				type: "AXIS",
 				control: ctrl,
 				value: val
 			};
 			// Send event message
 			safeSend(c_event);
-			// Log to log window
-			logControl(ctrl, "changed to " + val);
 		}
 	}
 
