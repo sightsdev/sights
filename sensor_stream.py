@@ -12,13 +12,13 @@ config = configparser.ConfigParser()
 config.read('robot.cfg')
 
 # Check if Arduino is enabled in config file
-arduino_enabled = config['arduino'].getboolean('enabled')
+arduino_enabled = config.getboolean('arduino', 'enabled')
 
 if (arduino_enabled):
     try:
         # Attempt to open serial com with Arduino
-        ser = serial.Serial(port=config['arduino']['port'],
-                            baudrate=int(config['arduino']['baudrate']))
+        ser = serial.Serial(port=config.getint('arduino', 'port'),
+                            baudrate=config.getint('arduino', 'baudrate'))
     except serial.serialutil.SerialException:
         print("SERVER: Error: Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
         print("SERVER: Continuing without Arduino connection\n")
@@ -88,7 +88,7 @@ async def sendSensorData(websocket, path):
 def main():
     print("SERVER: Starting sensor data server")
     start_server = websockets.serve(
-        sendSensorData, config['network']['ip'], 5556)
+        sendSensorData, config.get('network', 'ip'), 5556)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
 

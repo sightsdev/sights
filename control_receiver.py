@@ -14,8 +14,8 @@ config.read('robot.cfg')
 
 # Servos
 servo_party = ServoParty(
-    port=config['servo']['port'], 
-    dummy=config['debug'].getboolean('dummy_servo', fallback=False))
+    port=config.getint('servo', 'port'), 
+    dummy=config.getboolean('debug', 'dummy_servo', fallback=False))
 
 # When script exits or is interrupted stop all servos
 atexit.register(servo_party.close)
@@ -106,10 +106,10 @@ def controlHandler(buf):
         # Handle power commands
         if (control == "shutdown"):
             print("Shutting down")
-            # os.system('poweroff')
+            os.system('poweroff')
         elif (control == "reboot"):
             print("Rebooting")
-            # os.system('restart')
+            os.system('restart')
     elif (typ == "keyboard"):
         value = msg["value"]  # UP, DOWN
         # Handle directional movement
@@ -130,7 +130,7 @@ async def recieveControlData(websocket, path):
             print("RECEIVER: Control server connection lost")
             break
         if len(buf) > 0:
-            if config['debug'].getboolean('debug_printout', fallback=False):
+            if config.getboolean('debug', 'debug_printout', fallback=False):
                 print(buf)
             # Convert string data to object and then handle controls
             controlHandler(buf)
@@ -139,7 +139,7 @@ async def recieveControlData(websocket, path):
 def main():
     print("RECEIVER: Starting control data reciever")
     start_server = websockets.serve(
-        recieveControlData, config['network']['ip'], 5555)
+        recieveControlData, config.get('network', 'ip'), 5555)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
 

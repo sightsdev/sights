@@ -13,8 +13,8 @@ config.read('robot.cfg')
 # Servos
 servo_party = ServoParty()
 # Arduino
-sc_arduino = Serial(port=config['arduino']['port'],
-                    baudrate=int(config['arduino']['baudrate']))
+sc_arduino = Serial(port=config.getint('arduino', 'port'),
+                    baudrate=config.getint('arduino', 'baudrate'))
 
 # PID constants
 K_p = 2
