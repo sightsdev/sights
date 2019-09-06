@@ -112,6 +112,33 @@ function rainbow(n) {
 	return 'hsl(' + n * 15 + ',100%,50%)';
 }
 
+var percentColors = [
+	{ pct: 0.0, color: { r: 0x28, g: 0xa7, b: 0x45 } },
+	{ pct: 0.5, color: { r: 0xfd, g: 0x7e, b: 0x14 } },
+	{ pct: 1.0, color: { r: 0xdc, g: 0x35, b: 0x45 } }];
+
+
+var getColorForPercentage = function(pct) {
+    for (var i = 1; i < percentColors.length - 1; i++) {
+        if (pct < percentColors[i].pct) {
+            break;
+        }
+    }
+    var lower = percentColors[i - 1];
+    var upper = percentColors[i];
+    var range = upper.pct - lower.pct;
+    var rangePct = (pct - lower.pct) / range;
+    var pctLower = 1 - rangePct;
+    var pctUpper = rangePct;
+    var color = {
+        r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+        g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+        b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
+    };
+    return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
+    // or output as hex if preferred
+}  
+
 $(document).ready(function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
 	try {
@@ -217,12 +244,14 @@ $(document).ready(function () {
 
 			// System uptime
 			if ("uptime" in obj) {
-				$("#uptime").html("Uptime: " + obj["uptime"]);
+				$("#uptime").html(obj["uptime"]);
 			}
 
 			// System memory
 			if ("memory_used" in obj && "memory_total" in obj) {
-				$("#memory").html("Memory: " + obj["memory_used"] + "/" + obj["memory_total"] + " MB");
+				var percent = Number(obj["memory_used"]) / Number(obj["memory_total"]);
+				$("#memory").css('color', getColorForPercentage(percent))
+				$("#memory").html(obj["memory_used"] + "/" + obj["memory_total"] + " MB");
 			}
 
 			last_sensor_data = obj;
