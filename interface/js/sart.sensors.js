@@ -184,6 +184,12 @@ $(document).ready(function () {
 			// Update sensor monitor (in log modal)
 			$("#sensor-monitor-pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
+			if ("config" in obj) {
+				console.log("Received config file")
+				yaml = jsyaml.safeDump(obj['config'])
+				$("#config-editor-pre").html(hljs.highlight("YAML", yaml).value);
+			}
+
 			// Get thermal camera and create pixel grid
 			if ("thermal_camera" in obj) {
 				var thermal_camera_data = obj["thermal_camera"];

@@ -38,6 +38,8 @@
 	<script src="js/Chart.bundle.js"></script>
 	<!-- Syntax highlighting -->
 	<script src="js/highlight.pack.js"></script>
+	<!-- YAML -->
+	<script src="js/js-yaml.min.js"></script>
 	<!-- Font Awesome -->
 	<script defer src="js/fontawesome/fontawesome.js"></script>
 	<script defer src="js/fontawesome/solid.js"></script>
@@ -98,6 +100,11 @@
 								role="tab" aria-controls="gamepad-log" aria-selected="false"><i
 									class="fa fa-fw fa-inbox"></i> Message Log</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="config-editor-tab" data-toggle="tab" href="#config-editor"
+								role="tab" aria-controls="config-editor" aria-selected="false"><i
+									class="fa fa-fw fa-file-alt"></i> Config Editor</a>
+						</li>
 					</ul>
 					<div class="tab-content" id="logTabContent">
 						<div class="tab-pane fade show active" id="gamepad-monitor" role="tabpanel"
@@ -121,6 +128,23 @@
 							</button>
 							<p>
 								<pre><code id="gamepad-log-pre" class="JSON" contenteditable="true"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="config-editor" role="tabpanel" aria-labelledby="config-editor-tab">
+							<br/>
+							<button type="button" class="btn btn-light" id="config-editor-select-button">
+								<i class="fa fa-fw fa-check-square"></i> Select All
+							</button>
+							<div class="float-right">
+							<button type="button" class="btn btn-info" id="config-editor-reload-button">
+								<i class="fa fa-fw fa-undo	"></i> Reload
+							</button>
+							<button type="button" class="btn btn-success" id="config-editor-save-button">
+								<i class="fa fa-fw fa-save	"></i> Save
+							</button>
+							</div>
+							<p>
+								<pre><code id="config-editor-pre" class="JSON" contenteditable="true"></code></pre>
 							</p>
 						</div>
 					</div>
