@@ -132,8 +132,11 @@ def message_handler(buf):
             os.system('restart')
         # Handle configuration requests
         elif (control == "UPDATE_CONFIG"):
-            print("RECEIVER: Received configuration file")
+            print("RECEIVER: Received new configuration file")
             save_config(msg["value"])
+        elif (control == "REQUEST_CONFIG"):
+            print("RECEIVER: Received request for configuration file")
+            # TODO: Implement this somehow
     elif (typ == "KEYBOARD"):
         value = msg["value"]  # UP, DOWN
         # Handle directional movement etc
