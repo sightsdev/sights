@@ -65,6 +65,11 @@ function createKeyBind(keys, ctrl) {
 	});
 }
 
+function set_speed_indicator(speed) {
+	
+	//$("#gp_speed_node_1")
+}
+
 $(document).ready(function () {
 	$("#controller-status-connected").hide();
 
@@ -114,7 +119,6 @@ $(document).ready(function () {
 			control: "REBOOT"
 		};
 		safeSend(c_event);
-		logControl("system", "reboot");
 		bootoast.toast({
 			"message": "Rebooting",
 			"type": "warning",
@@ -122,6 +126,42 @@ $(document).ready(function () {
 			"position": "left-bottom"
 		});
 	});
+
+	// Config editor button actions
+	$("#config-editor-save-button").click(function () {
+		// Get contents of config editor
+		var contents = $("#config-editor-pre").text();
+		// Convert from YAML to js object
+		// And then to a JSON string
+		var val = JSON.stringify(jsyaml.safeLoad(contents), null, '\t');
+
+		var c_event = {
+			type: "SYSTEM",
+			control: "UPDATE_CONFIG",
+			value: val
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "Sent config file",
+			"type": "success",
+			"icon": "file-alt",
+			"position": "left-bottom"
+		});
+	});
+	$("#config-editor-reload-button").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "REQUEST_CONFIG"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "Requested config file",
+			"type": "info",
+			"icon": "file-alt",
+			"position": "left-bottom"
+		});
+	});
+
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
 		console.log('Controller connected:', device.id);
