@@ -184,9 +184,15 @@ $(document).ready(function () {
 			// Update sensor monitor (in log modal)
 			$("#sensor-monitor-pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
+			// Load config file into config editor window
 			if ("config" in obj) {
-				console.log("Received config file")
-				yaml = jsyaml.safeDump(obj['config'])
+				bootoast.toast({
+					"message": "Received config file",
+					"type": "success",
+					"icon": "file-alt",
+					"position": "left-bottom"
+				});
+				yaml = jsyaml.safeDump(obj['config'], indent=4)
 				$("#config-editor-pre").html(hljs.highlight("YAML", yaml).value);
 			}
 
