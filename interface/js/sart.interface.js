@@ -63,6 +63,10 @@ $(document).ready(function () {
 		// Select the contents of the dump log box
 		selectTextInElement('gamepad-log-pre');
 	});
+	$("#config-editor-select-button").click(function () {
+		// Select the contents of the dump log box
+		selectTextInElement('config-editor-pre');
+	});
 
 	// If the camera stream doesn't load, default to fallback image
 	$('.streamImage').error(function () {
