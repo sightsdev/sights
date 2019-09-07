@@ -74,9 +74,14 @@ def get_data():
     # Return message to be sent to control panel
     return json.dumps(msg)
 
+def get_config():
+    # Prepare config file to be sent to client
+    msg = {"config": config}
+    return json.dumps(msg)
 
 async def send_sensor_data(websocket, path):
     print("SERVER: Client connected")
+    await websocket.send(get_config())
     while True:
         try:
             await websocket.send(get_data())
