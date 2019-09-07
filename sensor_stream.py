@@ -5,14 +5,16 @@ import asyncio
 import psutil
 import json
 import serial
-from ruamel.yaml import YAML
 from datetime import timedelta
 
-f = open("robot.yaml").read()
-config = YAML(typ='safe').load(f)
+# Load config file
+f = open('robot.json')
+config = json.load(f)
 
 # Check if Arduino is enabled in config file
 arduino_enabled = config['arduino']['enabled']
+
+send_config_flag = False
 
 if (arduino_enabled):
     try:
@@ -71,6 +73,10 @@ def get_data():
         elif (buf[0] == "C"):
             # Strip and add to message
             msg["thermal_camera"] = buf[2:-3].split(",")
+    
+    if send_config_flag:
+        msg["config"] = config
+
     # Return message to be sent to control panel
     return json.dumps(msg)
 
@@ -82,6 +88,7 @@ def get_config():
 async def send_sensor_data(websocket, path):
     print("SERVER: Client connected")
     await websocket.send(get_config())
+    print("SERVER: Sent configuration file")
     while True:
         try:
             await websocket.send(get_data())

@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from pyax12.connection import Connection
-from ruamel.yaml import YAML
+import json
 
-f = open("robot.yaml").read()
-config = YAML(typ='safe').load(f)
+# Load config file
+f = open('robot.json')
+config = json.load(f)
 
 sc = Connection(port=config['servo']['port'], baudrate=config['servo']['baudrate'])
 

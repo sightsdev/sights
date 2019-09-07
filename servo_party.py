@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 from pyax12.connection import Connection
 from enum import IntEnum
-from ruamel.yaml import YAML
+import json
 
-f = open("robot.yaml").read()
-config = YAML(typ='safe').load(f)
+# Load config file
+f = open('robot.json')
+config = json.load(f)
 
 class Servo(IntEnum):
     LEFT_FRONT = 1
@@ -13,16 +14,16 @@ class Servo(IntEnum):
     RIGHT_BACK = 4
 
 # Replicates the pyax12 Connection class
-class DummyConnection:
+class VirtualConnection:
     def __init__(self):
-        print("DEBUG: Opened dummy servo connection")
+        print("DEBUG: Opened virtual servo connection")
 
     def set_speed (self, id, speed):
         #print(id, "set to", speed)
         pass
 
     def close (self):
-        print("DEBUG: Closed dummy servo connection")
+        print("DEBUG: Closed virtual servo connection")
     
     def set_cw_angle_limit (self, dynamixel_id, angle_limit, degrees=False):
         pass
@@ -40,9 +41,9 @@ class ServoParty:
         self.keyboard_speed = config['control']['default_keyboard_speed']
         self.last_left = 0
         self.last_right = 0
-        # Whether to use a dummy or real servo connection
-        if (config['debug']['dummy_servo']):
-            self.sc = DummyConnection()
+        # Whether to use a virtual or real servo connection
+        if (config['debug']['use_virtual_servos']):
+            self.sc = VirtualConnection()
         else:
             self.sc = Connection(port=self.port, baudrate=self.baudrate)
 

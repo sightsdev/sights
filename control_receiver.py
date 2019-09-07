@@ -5,12 +5,11 @@ import os
 import json
 import math
 import atexit
-from ruamel.yaml import YAML
 from servo_party import ServoParty
 
 # Load config file
-f = open("robot.yaml").read()
-config = YAML(typ='safe').load(f)
+f = open('robot.json')
+config = json.load(f)
 
 # Servos
 servo_party = ServoParty()
@@ -106,6 +105,9 @@ def keyboard_handler(control, value):
         if value == "DOWN":
             servo_party.keyboard_speed = max(128, speed - 128)
 
+def save_config(cfg):
+    with open('robot.json', 'w') as f:
+        f.write(cfg)
 
 def message_handler(buf):
     msg = json.loads(buf)
@@ -128,6 +130,10 @@ def message_handler(buf):
         elif (control == "REBOOT"):
             print("RECEIVER: Received reboot signal, rebooting...")
             os.system('restart')
+        # Handle configuration requests
+        elif (control == "UPDATE_CONFIG"):
+            print("RECEIVER: Received configuration file")
+            save_config(msg["value"])
     elif (typ == "KEYBOARD"):
         value = msg["value"]  # UP, DOWN
         # Handle directional movement etc
@@ -154,7 +160,7 @@ async def receive_control_data(websocket, path):
             print("RECEIVER: Control server connection lost")
             break
         if len(buf) > 0:
-            if config['debug']['debug_printout']:
+            if config['debug']['print_messages']:
                 print(buf)
             # Convert string data to object and then handle controls
             message_handler(buf)

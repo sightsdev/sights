@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 import os
 import websockets
-import yaml
+import json
 import multiprocessing
 import asyncio
 import control_receiver
 import sensor_stream
-from ruamel.yaml import YAML
 
 # Load config file
-f = open("robot.yaml").read()
-config = YAML(typ='safe').load(f)
+f = open('robot.json')
+config = json.load(f)
 
 class WebSocketProcess (multiprocessing.Process):
     def __init__(self, proc, name, func, port):

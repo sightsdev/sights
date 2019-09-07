@@ -3,12 +3,13 @@ from pyax12.connection import Connection
 from serial import Serial
 from enum import IntEnum
 from servo_party import ServoParty
-from ruamel.yaml import YAML
+import json
 import time
 import atexit
 
-f = open("robot.yaml").read()
-config = YAML(typ='safe').load(f)
+# Load config file
+f = open('robot.json')
+config = json.load(f)
 
 # Servos
 servo_party = ServoParty()
