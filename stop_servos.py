@@ -2,14 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from pyax12.connection import Connection
-import pyax12.packet as pk
-import serial
-import configparser
+from ruamel.yaml import YAML
 
-config = configparser.ConfigParser()
-config.read('robot.cfg')
+f = open("robot.yaml").read()
+config = YAML(typ='safe').load(f)
 
-sc = Connection(port=config['servo']['port'], baudrate=1000000)
+sc = Connection(port=config['servo']['port'], baudrate=config['servo']['baudrate'])
 
 sc.set_speed(1, 0)
 sc.set_speed(2, 0)

@@ -3,18 +3,18 @@ from pyax12.connection import Connection
 from serial import Serial
 from enum import IntEnum
 from servo_party import ServoParty
+from ruamel.yaml import YAML
 import time
 import atexit
-import configparser
 
-config = configparser.ConfigParser()
-config.read('robot.cfg')
+f = open("robot.yaml").read()
+config = YAML(typ='safe').load(f)
 
 # Servos
 servo_party = ServoParty()
 # Arduino
-sc_arduino = Serial(port=config.getint('arduino', 'port'),
-                    baudrate=config.getint('arduino', 'baudrate'))
+sc_arduino = Serial(port=config['arduino']['port'],
+                    baudrate=config['arduino']['baudrate'])
 
 # PID constants
 K_p = 2

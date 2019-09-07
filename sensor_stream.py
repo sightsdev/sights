@@ -5,20 +5,20 @@ import asyncio
 import psutil
 import json
 import serial
-import configparser
+from ruamel.yaml import YAML
 from datetime import timedelta
 
-config = configparser.ConfigParser()
-config.read('robot.cfg')
+f = open("robot.yaml").read()
+config = YAML(typ='safe').load(f)
 
 # Check if Arduino is enabled in config file
-arduino_enabled = config.getboolean('arduino', 'enabled')
+arduino_enabled = config['arduino']['enabled']
 
 if (arduino_enabled):
     try:
         # Attempt to open serial com with Arduino
-        ser = serial.Serial(port=config.getint('arduino', 'port'),
-                            baudrate=config.getint('arduino', 'baudrate'))
+        ser = serial.Serial(port=config['arduino']['port'],
+                            baudrate=config['arduino']['baudrate'])
     except serial.serialutil.SerialException:
         print("SERVER: Error: Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
         print("SERVER: Continuing without Arduino connection\n")
@@ -88,7 +88,7 @@ async def send_sensor_data(websocket, path):
 def main():
     print("SERVER: Starting sensor data server")
     start_server = websockets.serve(
-        send_sensor_data, config.get('network', 'ip'), 5556)
+        send_sensor_data, config['network']['ip'], 5556)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
 

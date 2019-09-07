@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 from pyax12.connection import Connection
 from enum import IntEnum
-import configparser
+from ruamel.yaml import YAML
 
-config = configparser.ConfigParser()
-config.read('robot.cfg')
+f = open("robot.yaml").read()
+config = YAML(typ='safe').load(f)
 
 class Servo(IntEnum):
     LEFT_FRONT = 1
@@ -34,14 +34,14 @@ class DummyConnection:
 class ServoParty:
     def __init__(self):
         # Load values from configuration file
-        self.port = config.get('servo', 'port', fallback='/dev/ttyACM0')
-        self.baudrate = config.getint('servo', 'baudrate', fallback=1000000)
-        self.gamepad_speed = config.getint('servo', 'default_gamepad_speed', fallback=512)
-        self.keyboard_speed = config.getint('servo', 'default_keyboard_speed', fallback=512)
+        self.port = config['servo']['port']
+        self.baudrate = config['servo']['baudrate']
+        self.gamepad_speed = config['control']['default_gamepad_speed']
+        self.keyboard_speed = config['control']['default_keyboard_speed']
         self.last_left = 0
         self.last_right = 0
         # Whether to use a dummy or real servo connection
-        if (config.getboolean('debug', 'dummy_servo', fallback=False)):
+        if (config['debug']['dummy_servo']):
             self.sc = DummyConnection()
         else:
             self.sc = Connection(port=self.port, baudrate=self.baudrate)

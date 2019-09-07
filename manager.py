@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 import os
 import websockets
-import configparser
+import yaml
 import multiprocessing
 import asyncio
 import control_receiver
 import sensor_stream
+from ruamel.yaml import YAML
 
 # Load config file
-config = configparser.ConfigParser()
-config.read('robot.cfg')
+f = open("robot.yaml").read()
+config = YAML(typ='safe').load(f)
 
 class WebSocketProcess (multiprocessing.Process):
     def __init__(self, proc, name, func, port):
@@ -22,7 +23,7 @@ class WebSocketProcess (multiprocessing.Process):
     def run(self):
         print("MANAGER: Starting " + self.name + " process")
         start_server = websockets.serve(
-            self.func, config.get('network', 'ip'), self.port)
+            self.func, config['network']['ip'], self.port)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
         print("MANAGER: Exiting " + self.name + " process")

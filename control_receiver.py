@@ -5,12 +5,12 @@ import os
 import json
 import math
 import atexit
-import configparser
+from ruamel.yaml import YAML
 from servo_party import ServoParty
 
 # Load config file
-config = configparser.ConfigParser()
-config.read('robot.cfg')
+f = open("robot.yaml").read()
+config = YAML(typ='safe').load(f)
 
 # Servos
 servo_party = ServoParty()
@@ -102,11 +102,9 @@ def keyboard_handler(control, value):
     elif (control == "SPEED_UP"):
         if value == "DOWN":
             servo_party.keyboard_speed = min(1024, speed + 128)
-            print("speed changed to", speed)
     elif (control == "SPEED_DOWN"):
         if value == "DOWN":
             servo_party.keyboard_speed = max(128, speed - 128)
-            print("speed changed to", speed)
 
 
 def message_handler(buf):
@@ -156,7 +154,7 @@ async def receive_control_data(websocket, path):
             print("RECEIVER: Control server connection lost")
             break
         if len(buf) > 0:
-            if config.getboolean('debug', 'debug_printout', fallback=False):
+            if config['debug']['debug_printout']:
                 print(buf)
             # Convert string data to object and then handle controls
             message_handler(buf)
@@ -165,7 +163,7 @@ async def receive_control_data(websocket, path):
 def main():
     print("RECEIVER: Starting control data reciever")
     start_server = websockets.serve(
-        receive_control_data, config.get('network', 'ip'), 5555)
+        receive_control_data, config['network']['ip'], 5555)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
 
