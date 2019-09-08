@@ -120,7 +120,7 @@
 							</p>
 						</div>
 						<div class="tab-pane fade" id="gamepad-log" role="tabpanel" aria-labelledby="gamepad-log-tab">
-							<br /><button type="button" class="btn btn-light" id="gamepad-log-select-button">
+							<br /><button type="button" class="btn btn-secondary" id="gamepad-log-select-button">
 								<i class="fa fa-fw fa-check-square"></i> Select All
 							</button>
 							<button type="button" class="btn btn-danger" id="gamepad-log-clear-button">
@@ -130,18 +130,19 @@
 								<pre><code id="gamepad-log-pre" class="JSON" contenteditable="true"></code></pre>
 							</p>
 						</div>
-						<div class="tab-pane fade" id="config-editor" role="tabpanel" aria-labelledby="config-editor-tab">
-							<br/>
-							<button type="button" class="btn btn-light" id="config-editor-select-button">
+						<div class="tab-pane fade" id="config-editor" role="tabpanel"
+							aria-labelledby="config-editor-tab">
+							<br />
+							<button type="button" class="btn btn-secondary" id="config-editor-select-button">
 								<i class="fa fa-fw fa-check-square"></i> Select All
 							</button>
 							<div class="float-right">
-							<button type="button" class="btn btn-info" id="config-editor-reload-button">
-								<i class="fa fa-fw fa-undo	"></i> Reload
-							</button>
-							<button type="button" class="btn btn-success" id="config-editor-save-button">
-								<i class="fa fa-fw fa-save	"></i> Save
-							</button>
+								<button type="button" class="btn btn-info" id="config-editor-reload-button">
+									<i class="fa fa-fw fa-redo"></i> Reload
+								</button>
+								<button type="button" class="btn btn-success" id="config-editor-save-button">
+									<i class="fa fa-fw fa-save"></i> Save
+								</button>
 							</div>
 							<p>
 								<pre><code id="config-editor-pre" class="JSON" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
@@ -161,7 +162,7 @@
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 						<div id="controller-status-disconnected" class="btn-group mr-2" role="group">
 							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
-								title="Controller connection status">
+								title="Gamepad connection status">
 								<button type="button" id="controller_status" class="btn btn-danger">
 									<i class="fa fa-fw fa-gamepad"></i> Press a button to connect
 								</button>
@@ -170,14 +171,12 @@
 						<div id="controller-status-connected" class="btn-group mr-2" role="group">
 							<div class="input-group ">
 								<div class="input-group-prepend">
-									<button rel="tooltip" data-placement="bottom" title="Controller connection status"
+									<button rel="tooltip" data-placement="bottom" title="Gamepad connection status"
 										class="btn btn-success btn" type="button">
 										<i class='fa fa-fw fa-gamepad'></i>
 									</button>
 								</div>
-								<select class='custom-select' id='gamepadSelect'>
-
-								</select>
+								<select class='custom-select' id='gamepadSelect'></select>
 							</div>
 						</div>
 						<div class="btn-group" role="group">
