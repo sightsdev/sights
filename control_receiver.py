@@ -142,6 +142,10 @@ def message_handler(buf):
             print("RECEIVER: Received request for configuration file")
             # Send a message to sensor_stream requesting that they send the config file again
             pipe.send(["REQUEST_CONFIG"])
+        elif (control == "RESTART_SCRIPTS"):
+            print("RECEIVER: Received request to restart scripts")
+            # Send a message to sensor_stream (and manager) requesting a script restart
+            pipe.send(["RESTART_SCRIPTS"])
     elif (typ == "KEYBOARD"):
         value = msg["value"]  # UP, DOWN
         # Handle directional movement etc

@@ -42,7 +42,14 @@ def main():
     sensor_process.start()
     control_process.start()
     while True:
-        cmd = input()
+        # Check if there are messages ready to be received
+        # Normally these are received by sensor_stream but we use them to check for manager requests too
+        if alpha_pipe.poll():
+            # Handle message (received from control_receiver.py)
+            message = alpha_pipe.recv()
+            if message[0] == "RESTART_SCRIPTS":
+                print("MANAGER: Restarting scripts")
+        '''cmd = input()
         if (cmd == "q"):
             print("MANAGER: Terminating")
             sensor_process.terminate()
@@ -50,6 +57,7 @@ def main():
             sensor_process.join()
             control_process.join()
             break
+        '''
     print("MANAGER: Exiting manager process")
 
 
