@@ -26,7 +26,7 @@ function DemoMode() {
 	$("#ssh_iframe").attr('src', 'https://gitsuppository.net/');
 
 	// Uptime
-	$("#uptime").html("Uptime: 4:18:22");
+	$("#uptime").html("4:18:22");
 
 	// Create example pixel grid for thermal camera
 	for (i = 0; i < 24; i++) {

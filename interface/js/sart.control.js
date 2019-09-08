@@ -39,13 +39,11 @@ function safeSend(data) {
 }
 
 function logControl(e) {
-
 	value = ('value' in e) ? e["value"] : "MESSAGE SENT"
-
 	$('#gamepad-log-pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
 }
 
-function createKeyBind(keys, ctrl) {
+function createKeyBind(keys, ctrl, func) {
 	// Create keyboard bindings using KeyboardJS
 	keys.forEach(function (key) {
 		keyboardJS.bind(key, function (e) {
@@ -57,6 +55,10 @@ function createKeyBind(keys, ctrl) {
 				value: "DOWN"
 			};
 			safeSend(c_event);
+			if (func !== undefined) {
+				// optional function was passed
+				func();
+			}
 		}, function (e) {
 			// Key up event
 			var c_event = {

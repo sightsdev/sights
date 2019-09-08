@@ -266,6 +266,14 @@ $(document).ready(function () {
 				$("#memory").html(obj["memory_used"] + "/" + obj["memory_total"] + " MB");
 			}
 
+			// Speed indicators for keyboard and gamepad
+			if ("kb_speed" in obj) {
+				set_speed_indicator("kb", obj["kb_speed"]);
+			}
+			if ("gp_speed" in obj) {
+				set_speed_indicator("gp", obj["gp_speed"]);
+			}
+
 			last_sensor_data = obj;
 		}
 	} catch (err) {
