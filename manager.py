@@ -11,6 +11,9 @@ import sensor_stream
 f = open('robot.json')
 config = json.load(f)
 
+# Used to handle restarting the scripts
+restartFlag = True
+
 # Create pipe
 alpha_pipe, beta_pipe = multiprocessing.Pipe()
 
@@ -32,6 +35,7 @@ class WebSocketProcess (multiprocessing.Process):
         print("MANAGER: Exiting " + self.name + " process")
 
 def main():
+    restartFlag = False
     print("MANAGER: Starting manager process")
     # Create new process
     sensor_process = WebSocketProcess(
@@ -48,22 +52,22 @@ def main():
             # Handle message (received from control_receiver.py)
             message = alpha_pipe.recv()
             if message[0] == "RESTART_SCRIPTS":
-                print("MANAGER: Restarting scripts")
-        '''cmd = input()
-        if (cmd == "q"):
-            print("MANAGER: Terminating")
-            sensor_process.terminate()
-            control_process.terminate()
-            sensor_process.join()
-            control_process.join()
-            break
-        '''
+                # Restart everything
+                print("MANAGER: Terminating processes")
+                sensor_process.terminate()
+                control_process.terminate()
+                sensor_process.join()
+                control_process.join()
+                restartFlag = True
+                break
     print("MANAGER: Exiting manager process")
 
 
 if __name__ == '__main__':
     try:
-        main()
+        # If the restart flag is enabled we want to run the main function
+        while (restartFlag):
+            main()
     except KeyboardInterrupt:
         pass
 
