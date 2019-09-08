@@ -3,8 +3,8 @@
 		"ip": "localhost"
 	},
 	"control": {
-		"default_gamepad_speed": 512,
-		"default_keyboard_speed": 512
+		"default_gamepad_speed": 896,
+		"default_keyboard_speed": 256
 	},
 	"servo": {
 		"port": "/dev/ttyS6",

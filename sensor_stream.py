@@ -74,16 +74,12 @@ def get_data():
     # Return message to be sent to control panel
     return json.dumps(msg)
 
-async def pipe_message_handler(websocket, message):
-    if message[0] == "REQUEST_CONFIG":
+async def pipe_message_handler(websocket, msg):
+    if msg[0] == "REQUEST_CONFIG":
         await send_config(websocket)
-    elif message[0] == "SYNC_SPEED":
-        msg = {}
-        # Create message with type and value of the speed
-        msg[message[1] + "_speed"] = message[2]
-        await websocket.send(json.dumps(msg))
-        print("SERVER: Syncronized speed setting")
-
+    elif msg[0] == "SYNC_SPEED":
+        await send_speed_value(websocket, msg[1], msg[2])
+        
 async def send_config(websocket):
     # Prepare config file to be sent to client
     config = json.load(open('robot.json'))
@@ -91,10 +87,23 @@ async def send_config(websocket):
     await websocket.send(json.dumps(msg))
     print("SERVER: Sent configuration file")
 
+async def send_speed_value(websocket, typ, speed):
+    msg = {}
+    # Create message with type and value of the speed
+    msg[typ + "_speed"] = speed
+    await websocket.send(json.dumps(msg))
+    print("SERVER: Syncronized speed setting")
+
+async def send_default_speeds(ws):
+    await send_speed_value(ws, "kb", config['control']['default_keyboard_speed'])
+    await send_speed_value(ws, "gp", config['control']['default_gamepad_speed'])
+
 async def send_sensor_data(websocket, path):
     print("SERVER: Client connected")
     # Send the configuration file on startup
     await send_config(websocket)
+    # Also send the default gamepad and keyboard speeds
+    await send_default_speeds(websocket)
     while True:
         try:
             # Check if there are messages ready to be received

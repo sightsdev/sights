@@ -154,9 +154,11 @@ def message_handler(buf):
         if (control == "DPAD_UP"):
             if value == "DOWN":
                 servo_party.gamepad_speed = min(1024, servo_party.gamepad_speed + 128)
+                pipe.send(["SYNC_SPEED", "gp", servo_party.gamepad_speed])
         elif (control == "DPAD_DOWN"):
             if value == "DOWN":
                 servo_party.gamepad_speed = max(128, servo_party.gamepad_speed - 128)
+                pipe.send(["SYNC_SPEED", "gp", servo_party.gamepad_speed])
 
 
 async def receive_control_data(websocket, path):
