@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
-
 import websockets
 import asyncio
 import psutil
 import json
 import serial
 from datetime import timedelta
+from websocketprocess import WebSocketProcess
 
-class SensorStream:
-    def __init__(self, pipe):
+class SensorStream(WebSocketProcess):
+    def __init__(self, mpid, pipe):
+        WebSocketProcess.__init__(self, mpid, pipe, 5556)
         # Load config file
         self.config = json.load(open('robot.json'))
-        # Communication pipe to other processes
-        self.pipe = pipe
-        # Set port to communicate over websocket with
-        self.port = 5556
         # Check if Arduino is enabled in config file
         self.arduino_enabled = self.config['arduino']['enabled']
+
         if (self.arduino_enabled):
             try:
                 # Attempt to open serial com with Arduino
@@ -101,7 +99,7 @@ class SensorStream:
         await self.send_speed_value("kb", self.config['control']['default_keyboard_speed'])
         await self.send_speed_value("gp", self.config['control']['default_gamepad_speed'])
 
-    async def run(self, websocket, path):
+    async def main(self, websocket, path):
         print("SERVER: Client connected")
         # Store websocket
         self.websocket = websocket
@@ -123,9 +121,9 @@ class SensorStream:
                 break
 
 if __name__ == '__main__':
-    print("SERVER: Starting sensor data server")
-    server = SensorStream(None)
-    start_server = websockets.serve(
-        server.run, config['network']['ip'], 5556)
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
+    print("SERVER: Starting standalone sensor data server")
+    # Create sensor stream
+    sensor_process = SensorStream(1, None)
+    # Start new processes
+    sensor_process.start()
+    print("SERVER: Exiting standalone sensor data server")

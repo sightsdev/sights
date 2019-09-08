@@ -6,13 +6,13 @@ import json
 import math
 import atexit
 from servo_party import ServoParty
+from websocketprocess import WebSocketProcess
 
-class ControlReceiver:
-    def __init__(self, pipe):
+class ControlReceiver (WebSocketProcess):
+    def __init__(self, mpid, pipe):
+        WebSocketProcess.__init__(self, mpid, pipe, 5555)
         # Load config file
         self.config = json.load(open('robot.json'))
-        # Set port to communicate over websocket with
-        self.port = 5555
         # Create ServoParty to handle servos
         self.servo_party = ServoParty(self.config)
         # When script exits or is interrupted stop all servos
@@ -26,8 +26,6 @@ class ControlReceiver:
             "LEFT_TOP_SHOULDER": False,
             "RIGHT_TOP_SHOULDER": False
         }
-        # Communication port to other processes
-        self.pipe = pipe
 
     def gamepad_movement_handler(self):
         if (self.state["LEFT_BOTTOM_SHOULDER"] != 0 or self.state["RIGHT_BOTTOM_SHOULDER"] != 0):
@@ -141,8 +139,8 @@ class ControlReceiver:
                 self.pipe.send(["REQUEST_CONFIG"])
             elif (control == "RESTART_SCRIPTS"):
                 print("RECEIVER: Received request to restart scripts")
-                # Send a message to sensor_stream (and manager) requesting a script restart
-                self.pipe.send(["RESTART_SCRIPTS"])
+                # Send a message to manager requesting a script restart
+                self.manager_pipe.send(["RESTART_SCRIPTS"])
         elif (typ == "KEYBOARD"):
             value = msg["value"]  # UP, DOWN
             # Handle directional movement etc
@@ -162,7 +160,7 @@ class ControlReceiver:
                     self.pipe.send(["SYNC_SPEED", "gp", self.servo_party.gamepad_speed])
 
 
-    async def run(self, websocket, path):
+    async def main(self, websocket, path):
         # Enter runtime loop
         while True:
             # Recieve JSON formatted string from websockets
@@ -172,16 +170,7 @@ class ControlReceiver:
                 print("RECEIVER: Control server connection lost")
                 break
             if len(buf) > 0:
-                if config['debug']['print_messages']:
+                if self.config['debug']['print_messages']:
                     print(buf)
                 # Convert string data to object and then handle controls
-                message_handler(buf)
-
-
-if __name__ == '__main__':
-    print("RECEIVER: Starting control data reciever")
-    receiver = ControlReceiver(None)
-    start_server = websockets.serve(
-        receiver.run, config['network']['ip'], 5555)
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
+                self.message_handler(buf)
