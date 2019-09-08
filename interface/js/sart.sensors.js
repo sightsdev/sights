@@ -117,8 +117,7 @@ var percentColors = [
 	{ pct: 0.5, color: { r: 0xfd, g: 0x7e, b: 0x14 } },
 	{ pct: 1.0, color: { r: 0xdc, g: 0x35, b: 0x45 } }];
 
-
-var getColorForPercentage = function(pct) {
+function getColorForPercentage (pct) {
     for (var i = 1; i < percentColors.length - 1; i++) {
         if (pct < percentColors[i].pct) {
             break;
@@ -138,6 +137,13 @@ var getColorForPercentage = function(pct) {
     return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
     // or output as hex if preferred
 }  
+
+function update_cameras(config) {
+	['front', 'left', 'right', 'back'].forEach(function (e) {
+		elem = $("#camera_" + e + "_card");
+		config[e] ? elem.show() : elem.hide();
+	});
+}
 
 $(document).ready(function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
@@ -192,8 +198,11 @@ $(document).ready(function () {
 					"icon": "file-alt",
 					"position": "left-bottom"
 				});
-				yaml = jsyaml.safeDump(obj['config'], indent=4)
+				yaml = jsyaml.safeDump(obj['config'], indent=4);
 				$("#config-editor-pre").html(hljs.highlight("YAML", yaml).value);
+
+				update_cameras(obj['config']['cameras']);
+
 			}
 
 			// Get thermal camera and create pixel grid
