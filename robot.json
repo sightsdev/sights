@@ -38,6 +38,12 @@
 			"enabled": true,
 			"width": 32,
 			"height": 24
+		},
+		"temperature": {
+			"enabled": true
+		},
+		"distance_graph": {
+			"enabled": true
 		}
 	},
 	"debug": {
