@@ -186,6 +186,20 @@ $(document).ready(function () {
 		});
 	});
 
+	$("#restart-scripts-button").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "RESTART_SCRIPTS"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "Requested a script restart",
+			"type": "info",
+			"icon": "terminal",
+			"position": "left-bottom"
+		});
+	});
+
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
 		console.log('Controller connected:', device.id);
@@ -274,7 +288,7 @@ $(document).ready(function () {
 
 	function axisUpdate(currGamepad, ctrl) {
 		// Current value of specified control, to 2dp
-		var val = currGamepad.state[ctrl].toFixed(2)
+		var val = currGamepad.state[ctrl].toFixed(1)
 		// Compare against last value
 		if (val != last_axis_state[ctrl]) {
 			// Update last value with current value
