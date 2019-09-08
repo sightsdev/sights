@@ -75,8 +75,14 @@ def get_data():
     return json.dumps(msg)
 
 async def pipe_message_handler(websocket, message):
-    if message == "REQUEST_CONFIG":
+    if message[0] == "REQUEST_CONFIG":
         await send_config(websocket)
+    elif message[0] == "SYNC_SPEED":
+        msg = {}
+        # Create message with type and value of the speed
+        msg[message[1] + "_speed"] = message[2]
+        await websocket.send(json.dumps(msg))
+        print("SERVER: Syncronized speed setting")
 
 async def send_config(websocket):
     # Prepare config file to be sent to client
@@ -87,12 +93,15 @@ async def send_config(websocket):
 
 async def send_sensor_data(websocket, path):
     print("SERVER: Client connected")
+    # Send the configuration file on startup
     await send_config(websocket)
     while True:
         try:
             # Check if there are messages ready to be received
             if pipe.poll():
+                # Handle message (received from control_receiver.py)
                 await pipe_message_handler(websocket, pipe.recv())
+            # Send sensor data etc
             await websocket.send(get_data())
         except websockets.exceptions.ConnectionClosed:
             print("SERVER: Client disconnected")

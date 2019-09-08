@@ -100,9 +100,11 @@ def keyboard_handler(control, value):
     elif (control == "SPEED_UP"):
         if value == "DOWN":
             servo_party.keyboard_speed = min(1024, speed + 128)
+            pipe.send(["SYNC_SPEED", "kb", servo_party.keyboard_speed])
     elif (control == "SPEED_DOWN"):
         if value == "DOWN":
             servo_party.keyboard_speed = max(128, speed - 128)
+            pipe.send(["SYNC_SPEED", "kb", servo_party.keyboard_speed])
 
 def save_config(cfg):
     # Save new config to file
@@ -139,7 +141,7 @@ def message_handler(buf):
         elif (control == "REQUEST_CONFIG"):
             print("RECEIVER: Received request for configuration file")
             # Send a message to sensor_stream requesting that they send the config file again
-            pipe.send("REQUEST_CONFIG")
+            pipe.send(["REQUEST_CONFIG"])
     elif (typ == "KEYBOARD"):
         value = msg["value"]  # UP, DOWN
         # Handle directional movement etc
