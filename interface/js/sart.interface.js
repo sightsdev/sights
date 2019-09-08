@@ -89,17 +89,4 @@ $(document).ready(function () {
 
 	// Set source of SSH window
 	$("#ssh_iframe").attr("src", portString(4200));
-
-	// Generate thermal camera table
-	x = 0;
-	var table = $('<table>');
-	for (i = 0; i < 24; i++) {
-		var row = $('<tr>');
-		for (j = 0; j < 32; j++) {
-			row.append("<td><div class='content' id=p" + x + "></div></td>");
-			x++;
-		}
-		table.append(row);
-	}
-	$('#thermal_camera').append(table);
 });

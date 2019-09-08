@@ -16,11 +16,11 @@
   }
 }
 
-table {
+table .tc {
   width: 100%;
 }
 
-td {
+td .tc-pixel {
   width: 3.125%;
   position: relative;
 }

@@ -158,6 +158,23 @@ function update_sensors(config) {
 		// Set the images's src attribute to be the relevant port
 		//$("#camera_" + e).attr("src", portString(config[e]['port']));
 	});
+	if (config['thermal_camera']['enabled']) {
+		width = config['thermal_camera']['width'];
+		height = config['thermal_camera']['height'];
+		// Generate thermal camera table
+		x = 0;
+		var table = $("<table class='tc'>");
+		for (i = 0; i < height; i++) {
+			var row = $('<tr>');
+			for (j = 0; j < width; j++) {
+				row.append("<td class='tc_pixel'><div class='content' id=p" + x + "></div></td>");
+				x++;
+			}
+			table.append(row);
+		}
+		$('.tc_pixel').css('width', (1 / width * 100) + '%');
+		$('#thermal_camera').append(table);
+	}
 }
 
 $(document).ready(function () {
