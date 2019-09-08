@@ -140,23 +140,35 @@ $(document).ready(function () {
 	// Config editor button actions
 	$("#config-editor-save-button").click(function () {
 		// Get contents of config editor
-		var contents = $("#config-editor-pre").text();
-		// Convert from YAML to js object
-		// And then to a JSON string
-		var val = JSON.stringify(jsyaml.safeLoad(contents), null, '\t');
-
-		var c_event = {
-			type: "SYSTEM",
-			control: "UPDATE_CONFIG",
-			value: val
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "Sent config file",
-			"type": "success",
-			"icon": "file-alt",
-			"position": "left-bottom"
-		});
+		//var contents = $("#config-editor-pre").text();
+		var contents = $("#config-editor-pre")[0].innerText
+		try {
+			// Parse from YAML into JS
+			var yml = jsyaml.safeLoad(contents);
+			// And then turn that into a JSON string
+			var val = JSON.stringify(yml, null, '\t');
+			// Create message event
+			var c_event = {
+				type: "SYSTEM",
+				control: "UPDATE_CONFIG",
+				value: val
+			};
+			safeSend(c_event);
+			bootoast.toast({
+				"message": "Sent config file",
+				"type": "success",
+				"icon": "file-alt",
+				"position": "left-bottom"
+			});
+		} catch (e) {
+			bootoast.toast({
+				"message": "Could not validate config file",
+				"type": "danger",
+				"icon": "file-alt",
+				"position": "left-bottom"
+			});
+		}
+		
 	});
 	$("#config-editor-reload-button").click(function () {
 		var c_event = {
