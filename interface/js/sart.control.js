@@ -9,7 +9,11 @@ var controlSocket;
 var currentGamepad = 0;
 var last_axis_state = {
 	"RIGHT_BOTTOM_SHOULDER": 0.0,
-	"LEFT_BOTTOM_SHOULDER": 0.0
+	"LEFT_BOTTOM_SHOULDER": 0.0,
+	"LEFT_STICK_X": 0.0,
+	"LEFT_STICK_Y": 0.0,
+	"RIGHT_STICK_X": 0.0,
+	"RIGHT_STICK_Y": 0.0
 }
 
 //Log to the console the result of the socket connection attempt. Useful for troubleshooting.
@@ -228,21 +232,23 @@ $(document).ready(function () {
 
 	gamepad.bind(Gamepad.Event.AXIS_CHANGED, function (e) {
 		if (e.gamepad.index == currentGamepad) {
-			if (e.control == "RIGHT_BOTTOM_SHOULDER" || e.control == "LEFT_BOTTOM_SHOULDER") {
+			if (e.axis == "RIGHT_BOTTOM_SHOULDER" || e.axis == "LEFT_BOTTOM_SHOULDER") {
 				return;
 			}
+
 			var val = e.value.toFixed(2);
-			var c_event = {
-				type: "AXIS",
-				control: e.axis,
-				value: val
-			};
-			if (val > -0.3 && val < 0.3) {
-				// TODO: Prevent repeats of this message
-				// Currently will send 0 repeatedly
-				c_event.value = 0;
+			if (val > -0.3 && val < 0.3) val = 0.0;
+
+			if (val != last_axis_state[e.axis]) {
+				// Update last value with current value
+				last_axis_state[e.axis] = val;			
+				var c_event = {
+					type: "AXIS",
+					control: e.axis,
+					value: val
+				};
+				safeSend(c_event);
 			}
-			safeSend(c_event);
 		}
 	});
 
