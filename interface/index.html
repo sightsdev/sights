@@ -100,11 +100,6 @@
 								role="tab" aria-controls="gamepad-log" aria-selected="false"><i
 									class="fa fa-fw fa-inbox"></i> Message Log</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" id="config-editor-tab" data-toggle="tab" href="#config-editor"
-								role="tab" aria-controls="config-editor" aria-selected="false"><i
-									class="fa fa-fw fa-file-alt"></i> Config Editor</a>
-						</li>
 					</ul>
 					<div class="tab-content" id="logTabContent">
 						<div class="tab-pane fade show active" id="gamepad-monitor" role="tabpanel"
@@ -130,7 +125,35 @@
 								<pre><code id="gamepad-log-pre" class="JSON" contenteditable="true"></code></pre>
 							</p>
 						</div>
-						<div class="tab-pane fade" id="config-editor" role="tabpanel"
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade top" id="settingsModal" role="dialog" data-backdrop="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header dragHeader" id="logDrag">
+					<h4 class="modal-title"><i class="fas fa-fw fa-cog"></i> Settings</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<ul class="nav nav-tabs" id="settingsTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link text-dark active" id="config-editor-tab" data-toggle="tab" href="#config-editor"
+								role="tab" aria-controls="config-editor" aria-selected="true"><i
+									class="fa fa-fw fa-file-alt"></i> Config Editor</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="system-control-tab" data-toggle="tab" href="#system-control"
+								role="tab" aria-controls="system-control" aria-selected="false"><i
+									class="fa fa-fw fa-exclamation-triangle"></i> System Control</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="logTabContent">
+						<div class="tab-pane fade active show" id="config-editor" role="tabpanel"
 							aria-labelledby="config-editor-tab">
 							<br />
 							<button type="button" class="btn btn-secondary" id="config-editor-select-button">
@@ -147,9 +170,18 @@
 							<p>
 								<pre><code id="config-editor-pre" class="JSON" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
 							</p>
+							<p>
+								You may need to restart scripts to apply some changes.
+							</p>
+						</div>
+						<div class="tab-pane fade" id="system-control" role="tabpanel"
+							aria-labelledby="system-control-tab">
+							<br />
+							<button type="button" class="btn btn-danger" id="restart-scripts-button">
+								<i class="fa fa-fw fa-undo"></i> Restart Scripts
+							</button>
 						</div>
 					</div>
-					<!--div class="float-right" id="uptime">Uptime: 0.0s</div-->
 				</div>
 			</div>
 		</div>
@@ -212,10 +244,14 @@
 					rel="tooltip" data-placement="bottom" title="Open log window">
 					<i class="fa fa-fw fa-clipboard-list"></i> Logs
 				</button>
+				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#settingsModal"
+					rel="tooltip" data-placement="bottom" title="Open settings">
+					<i class="fa fa-fw fa-cog"></i>
+				</button>
 				<div class="btn-group dropdown" role="group">
 					<button id="powerButtonDropdown" type="button" class="btn btn-outline-danger dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Power
+						<i class="fa fa-fw fa-power-off"></i> Power
 					</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
 						<h6 class="dropdown-header">Power options</h6>
