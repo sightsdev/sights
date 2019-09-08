@@ -140,9 +140,23 @@ function getColorForPercentage (pct) {
 
 function update_cameras(config) {
 	['front', 'left', 'right', 'back'].forEach(function (e) {
-		elem = $("#camera_" + e + "_card");
-		config[e]['enabled'] ? elem.show() : elem.hide();
+		// Get parent div of camera stream image
+		card = $("#camera_" + e + "_card");
+		// Enable the div, if camera is enabled in config file
+		config[e]['enabled'] ? card.show() : card.hide();
+		// Set the images's src attribute to be the relevant port
 		$("#camera_" + e).attr("src", portString(config[e]['port']));
+	});
+}
+
+function update_sensors(config) {
+	['thermal_camera', 'temperature'].forEach(function (e) {
+		// Get parent div of camera stream image
+		card = $("#" + e + "_card");
+		// Enable the div, if camera is enabled in config file
+		config[e]['enabled'] ? card.show() : card.hide();
+		// Set the images's src attribute to be the relevant port
+		//$("#camera_" + e).attr("src", portString(config[e]['port']));
 	});
 }
 
@@ -201,8 +215,12 @@ $(document).ready(function () {
 				});
 				yaml = jsyaml.safeDump(obj['config'], indent=4);
 				$("#config-editor-pre").html(hljs.highlight("YAML", yaml).value);
+				
+				// Now handle loading stuff from the config file
 
+				// Enable / disable cameras and set their ports as defined by the config
 				update_cameras(obj['config']['cameras']);
+				update_sensors(obj['config']['sensors']);
 
 			}
 
