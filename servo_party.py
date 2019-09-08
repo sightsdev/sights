@@ -14,7 +14,6 @@ class VirtualConnection:
         print("DEBUG: Opened virtual servo connection")
 
     def set_speed (self, id, speed):
-        #print(id, "set to", speed)
         pass
 
     def close (self):
