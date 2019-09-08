@@ -8,8 +8,7 @@ import serial
 from datetime import timedelta
 
 # Load config file
-f = open('robot.json')
-config = json.load(f)
+config = json.load(open('robot.json'))
 
 # Check if Arduino is enabled in config file
 arduino_enabled = config['arduino']['enabled']
@@ -75,10 +74,15 @@ def get_data():
             msg["thermal_camera"] = buf[2:-3].split(",")
     
     if send_config_flag:
+        config = json.load(open('robot.json'))
         msg["config"] = config
 
     # Return message to be sent to control panel
     return json.dumps(msg)
+
+async def pipe_message_handler(websocket, message):
+    if message == "REQUEST_CONFIG":
+        await send_config(websocket)
 
 async def send_config(websocket):
     # Prepare config file to be sent to client
@@ -91,6 +95,9 @@ async def send_sensor_data(websocket, path):
     await send_config(websocket)
     while True:
         try:
+            # Check if there are messages ready to be received
+            if pipe.poll():
+                await pipe_message_handler(websocket, pipe.recv())
             await websocket.send(get_data())
         except websockets.exceptions.ConnectionClosed:
             print("SERVER: Client disconnected")

@@ -15,8 +15,13 @@
 		"port": "/dev/ttyACM1",
 		"baudrate": 115200
 	},
+	"sensors": {
+		"thermal_camera": {
+			"enabled": true
+		}
+	},
 	"debug": {
 		"print_messages": false,
-		"use_virtual_servos": false
+		"use_virtual_servos": true
 	}
 }

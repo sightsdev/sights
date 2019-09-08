@@ -11,13 +11,17 @@ import sensor_stream
 f = open('robot.json')
 config = json.load(f)
 
+# Create pipe
+alpha_pipe, beta_pipe = multiprocessing.Pipe()
+
 class WebSocketProcess (multiprocessing.Process):
-    def __init__(self, proc, name, func, port):
+    def __init__(self, proc, name, func, port, pipe, context):
         multiprocessing.Process.__init__(self)
         self.proc = proc
         self.name = name
         self.func = func
         self.port = port
+        context.pipe = pipe
 
     def run(self):
         print("MANAGER: Starting " + self.name + " process")
@@ -31,9 +35,9 @@ def main():
     print("MANAGER: Starting manager process")
     # Create new process
     sensor_process = WebSocketProcess(
-        1, "sensor data server", sensor_stream.send_sensor_data, 5556)
+        1, "sensor data server", sensor_stream.send_sensor_data, 5556, alpha_pipe, sensor_stream)
     control_process = WebSocketProcess(
-        2, "control data receiver", control_receiver.receive_control_data, 5555)
+        2, "control data receiver", control_receiver.receive_control_data, 5555, beta_pipe, control_receiver)
     # Start new processes
     sensor_process.start()
     control_process.start()

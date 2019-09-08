@@ -136,7 +136,8 @@ def message_handler(buf):
             save_config(msg["value"])
         elif (control == "REQUEST_CONFIG"):
             print("RECEIVER: Received request for configuration file")
-            # TODO: Implement this somehow
+            # Send a message to sensor_stream requesting that they send the config file again
+            pipe.send("REQUEST_CONFIG")
     elif (typ == "KEYBOARD"):
         value = msg["value"]  # UP, DOWN
         # Handle directional movement etc
