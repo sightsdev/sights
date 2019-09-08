@@ -15,6 +15,24 @@
 		"port": "/dev/ttyACM1",
 		"baudrate": 115200
 	},
+	"cameras": {
+		"front": {
+			"enabled": true,
+			"port": 8081
+		},
+		"back": {
+			"enabled": true,
+			"port": 8082
+		},
+		"left": {
+			"enabled": true,
+			"port": 8083
+		},
+		"right": {
+			"enabled": true,
+			"port": 8084
+		}
+	},
 	"sensors": {
 		"thermal_camera": {
 			"enabled": true,
