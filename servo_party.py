@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 from pyax12.connection import Connection
 from enum import IntEnum
-import json
-
-# Load config file
-f = open('robot.json')
-config = json.load(f)
 
 class Servo(IntEnum):
     LEFT_FRONT = 1
@@ -33,7 +28,7 @@ class VirtualConnection:
 
 
 class ServoParty:
-    def __init__(self):
+    def __init__(self, config):
         # Load values from configuration file
         self.port = config['servo']['port']
         self.baudrate = config['servo']['baudrate']

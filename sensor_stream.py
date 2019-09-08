@@ -13,8 +13,6 @@ config = json.load(open('robot.json'))
 # Check if Arduino is enabled in config file
 arduino_enabled = config['arduino']['enabled']
 
-send_config_flag = False
-
 if (arduino_enabled):
     try:
         # Attempt to open serial com with Arduino
@@ -73,10 +71,6 @@ def get_data():
             # Strip and add to message
             msg["thermal_camera"] = buf[2:-3].split(",")
     
-    if send_config_flag:
-        config = json.load(open('robot.json'))
-        msg["config"] = config
-
     # Return message to be sent to control panel
     return json.dumps(msg)
 
@@ -86,6 +80,7 @@ async def pipe_message_handler(websocket, message):
 
 async def send_config(websocket):
     # Prepare config file to be sent to client
+    config = json.load(open('robot.json'))
     msg = {"config": config}
     await websocket.send(json.dumps(msg))
     print("SERVER: Sent configuration file")

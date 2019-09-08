@@ -8,8 +8,7 @@ import time
 import atexit
 
 # Load config file
-f = open('robot.json')
-config = json.load(f)
+config = json.load(open('robot.json'))
 
 # Servos
 servo_party = ServoParty()

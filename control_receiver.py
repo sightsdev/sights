@@ -8,11 +8,10 @@ import atexit
 from servo_party import ServoParty
 
 # Load config file
-f = open('robot.json')
-config = json.load(f)
+config = json.load(open('robot.json'))
 
 # Servos
-servo_party = ServoParty()
+servo_party = ServoParty(config)
 
 # When script exits or is interrupted stop all servos
 atexit.register(servo_party.close)
@@ -106,8 +105,11 @@ def keyboard_handler(control, value):
             servo_party.keyboard_speed = max(128, speed - 128)
 
 def save_config(cfg):
+    # Save new config to file
     with open('robot.json', 'w') as f:
         f.write(cfg)
+    # Reload config 
+    config = json.load(open('robot.json'))
 
 def message_handler(buf):
     msg = json.loads(buf)
