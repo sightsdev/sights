@@ -13,69 +13,10 @@ var last_sensor_data = {
 	charge: 0,
 	cpu_temp: 0,
 };
-var tempChartData = {
-	labels: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
-	datasets: [{
-		label: '',
-		data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		borderColor: [
-			'rgba(234, 67, 53, 1)'
-		]
-	}]
-}
-var tempChartOptions = {
-	type: 'line',
-	data: tempChartData,
-	options: {
-		elements: {
-			line: {
-				tension: 0 // disables bezier curves
-			}
-		},
-		animation: {
-			duration: 50
-		},
-		responsive: true,
-		title: {
-			display: false,
-			text: 'Temperature'
-		},
-		tooltips: {
-			enabled: false
-		},
-		hover: {
-			mode: 'nearest',
-			intersect: true
-		},
-		legend: {
-			display: false,
-		},
-		scales: {
-			xAxes: [{
-				display: true,
-				scaleLabel: {
-					display: true,
-					labelString: 'Time'
-				}
-			}],
-			yAxes: [{
-				ticks: {
-					min: 20,
-					max: 40
-				},
-				display: true,
-				scaleLabel: {
-					display: true,
-					labelString: 'Temperature (°C)'
-				}
-			}]
-		}
-	}
-}
 
 // Rainbow
 function rainbow(n) {
-	return 'hsl(' + n * 15 + ',100%,50%)';
+	return 'hsl(' + n * 15 + ', 100%, 50%)';
 }
 
 var percentColors = [
@@ -101,7 +42,6 @@ function getColorForPercentage (pct) {
         b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
     };
     return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
-    // or output as hex if preferred
 }  
 
 function update_cameras(config) {
@@ -145,14 +85,17 @@ function update_sensors(config) {
 $(document).ready(function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
 	try {
-		var tempChartCanvas = $("#tempChart").get(0).getContext('2d');
+		let tempChartCanvas = $("#tempChart").get(0).getContext('2d');
+		let distChartCanvas = $("#distChart").get(0).getContext('2d');
+		// Create temperature and distance chart
+		var tempChart = new Chart(tempChartCanvas, tempChartConfig);
+		var distChart = new Chart(distChartCanvas, distChartConfig);
+		// Style that bad boy
+		$("#tempChart").attr("style", "display: block; height: 187px; width: 374px;");
+		$("#distChart").attr("style", "display: block; height: 187px; width: 374px;");
 	} catch (err) {
 		console.log(err);
 	}
-	// Create temperature chart
-	var tempChart = new Chart(tempChartCanvas, tempChartOptions);
-	// Style that bad boy
-	$("#tempChart").attr("style", "display: block; height: 187px; width: 374px;");
 
 	try {
 		// Start WebSocket receiver
@@ -206,6 +149,22 @@ $(document).ready(function () {
 
 			}
 
+			// Get distance data and create radial graph
+			if ("distance" in obj) {
+				// Update distance chart
+				var dist_data = [];
+				// Unfortunately the graph has directions clockwise (front, right, back, left) in the array. 
+				// We have them front, left, right, back
+				dist_data[0] = obj["distance"][0];
+				dist_data[1] = obj["distance"][2];
+				dist_data[2] = obj["distance"][3];
+				dist_data[3] = obj["distance"][1];
+				// Change chart dataset to use new data
+				distChartConfig.data.datasets[0].data = dist_data;
+				// Reload chart with new data
+				distChart.update();
+			}
+
 			// Get thermal camera and create pixel grid
 			if ("thermal_camera" in obj) {
 				var thermal_camera_data = obj["thermal_camera"];
@@ -242,9 +201,9 @@ $(document).ready(function () {
 			if ("temp" in obj) {
 				var temp_data = obj["temp"];
 				// Remove oldest element
-				tempChartData.datasets[0].data.shift()
+				tempChartConfig.data.datasets[0].data.shift()
 				// Push new element
-				tempChartData.datasets[0].data.push(temp_data[0]);
+				tempChartConfig.data.datasets[0].data.push(temp_data[0]);
 				// Update chart to display new data
 				tempChart.update();
 			}
