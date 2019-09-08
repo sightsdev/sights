@@ -141,7 +141,8 @@ function getColorForPercentage (pct) {
 function update_cameras(config) {
 	['front', 'left', 'right', 'back'].forEach(function (e) {
 		elem = $("#camera_" + e + "_card");
-		config[e] ? elem.show() : elem.hide();
+		config[e]['enabled'] ? elem.show() : elem.hide();
+		$("#camera_" + e).attr("src", portString(config[e]['port']));
 	});
 }
 
