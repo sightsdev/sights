@@ -119,11 +119,3 @@ class SensorStream(WebSocketProcess):
             except websockets.exceptions.ConnectionClosed:
                 print("SERVER: Client disconnected")
                 break
-
-if __name__ == '__main__':
-    print("SERVER: Starting standalone sensor data server")
-    # Create sensor stream
-    sensor_process = SensorStream(1, None)
-    # Start new processes
-    sensor_process.start()
-    print("SERVER: Exiting standalone sensor data server")
