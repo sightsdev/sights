@@ -99,6 +99,14 @@ $(document).ready(function () {
 	createKeyBind(['d', 'right'], "RIGHT");
 	createKeyBind(['+', '='], "SPEED_UP");
 	createKeyBind(['-', '_'], "SPEED_DOWN");
+	// Disable keyboard controls when modal is open
+	$(".modal").on('shown.bs.modal', function(){
+		keyboardJS.pause();
+	});
+	$(".modal").on('hidden.bs.modal', function(){
+		keyboardJS.resume();
+	});
+
 
 	// Handle shutdown and reboot buttons
 	$("#shutdownButton").click(function () {

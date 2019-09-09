@@ -43,7 +43,7 @@ $(document).ready(function () {
 	$(".modal-dialog").draggable({
 		handle: ".modal-header"
 	});
-
+	
 	// Reload page when header pressed
 	$("#nav_title").click(function () {
 		location.reload();
