@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pyax12.connection import Connection
+from pyax12.status_packet import RangeError
 from enum import IntEnum
 
 class Servo(IntEnum):
@@ -62,22 +63,38 @@ class ServoParty:
         self.sc.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
 
     def move_raw(self, left, right):
-        # Left side
-        self.sc.set_speed(Servo.LEFT_FRONT, left)
-        self.sc.set_speed(Servo.LEFT_BACK, left)
-        # Right side
-        self.sc.set_speed(Servo.RIGHT_FRONT, right)
-        self.sc.set_speed(Servo.RIGHT_BACK, right)
+        try:
+            # Left side
+            self.sc.set_speed(Servo.LEFT_FRONT, left)
+            self.sc.set_speed(Servo.LEFT_BACK, left)
+            # Right side
+            self.sc.set_speed(Servo.RIGHT_FRONT, right)
+            self.sc.set_speed(Servo.RIGHT_BACK, right)
+        except:
+            self.crash(left, right)
 
     def move_raw_left(self, left):
         # Left side
-        self.sc.set_speed(Servo.LEFT_FRONT, left)
-        self.sc.set_speed(Servo.LEFT_BACK, left)
+        try:
+            self.sc.set_speed(Servo.LEFT_FRONT, left)
+            self.sc.set_speed(Servo.LEFT_BACK, left)
+        except:
+            self.crash(left, None)
 
     def move_raw_right(self, right):
         # Right side
-        self.sc.set_speed(Servo.RIGHT_FRONT, right)
-        self.sc.set_speed(Servo.RIGHT_BACK, right)
+        try:
+            self.sc.set_speed(Servo.RIGHT_FRONT, right)
+            self.sc.set_speed(Servo.RIGHT_BACK, right)
+        except:
+            self.crash(None, right)
+        
+    def crash(self, left, right):
+        self.close()
+        print("SERVO_PARTY: Something went wrong sending message to servos:")
+        print("Left:", left, "Right:", right)
+        print("Disabling real servos, swapping to virtual connection")
+        self.sc = VirtualConnection()
 
     def move(self, left, right, independent=False):
         # Make sure we don't have any decimals
@@ -93,25 +110,19 @@ class ServoParty:
         elif right < 1024:
             right += 1024
 
-        try:
-            # Only send message if it's different to the last one
-            if (independent):
-                # Allow left and right to be independent
-                if (left != self.last_left):
-                    self.move_raw_left(left)
-                if (right != self.last_right):
-                    self.move_raw_right(right)
-            else:
-                # Not independent, both left and right must have changed
-                if (left != self.last_left and right != self.last_right):
-                    self.move_raw(left, right)
-        except pyax12.status_packet.RangeError:
-            self.close()
-            print("SERVO_PARTY: pyax12.status_packet.RangeError on message:")
-            print("Left:", left, "Right:", right)
-            print("Disabling real servos, swapping to virtual connection")
-            self.sc = VirtualConnection()
-
+        # Only send message if it's different to the last one
+        if (independent):
+            # Allow left and right to be independent
+            if (left != self.last_left):
+                self.move_raw_left(left)
+            if (right != self.last_right):
+                self.move_raw_right(right)
+            print("Left: ", left, "(was:", self.last_left, ") | Right:", right, "(was:", self.last_right, ")")
+        else:
+            # Not independent, both left and right must have changed
+            if (left != self.last_left and right != self.last_right):
+                self.move_raw(left, right)
+    
         # Store this message for comparison next time
         self.last_left = left
         self.last_right = right

@@ -27,8 +27,8 @@ class ControlReceiver (WebSocketProcess):
             "RIGHT_TOP_SHOULDER": False
         }
 
-    def gamepad_movement_handler(self):
-        if (self.state["LEFT_BOTTOM_SHOULDER"] != 0 or self.state["RIGHT_BOTTOM_SHOULDER"] != 0):
+    def gamepad_movement_handler(self, type="TRIGGER"):
+        if (type == "TRIGGER"):
             left = self.state["LEFT_BOTTOM_SHOULDER"] * self.servo_party.gamepad_speed
             right = self.state["RIGHT_BOTTOM_SHOULDER"] * self.servo_party.gamepad_speed
 
@@ -41,30 +41,23 @@ class ControlReceiver (WebSocketProcess):
         else:
             x = self.state["LEFT_STICK_X"] * -1
             y = self.state["LEFT_STICK_Y"] * -1
-
             # convert to polar
             r = math.hypot(y, x)
             t = math.atan2(x, y)
-
             # rotate by 45 degrees
             t += math.pi / 4
-
             # back to cartesian
             left = r * math.cos(t)
             right = r * math.sin(t)
-
             # rescale the new coords
-            left = left * math.sqrt(2)
-            right = right * math.sqrt(2)
-
+            left *= math.sqrt(2)
+            right *= math.sqrt(2)
             # clamp to -1/+1
             left = max(-1, min(left, 1))
             right = max(-1, min(right, 1))
-
             # Multiply by gamepad_speed to get our final speed to be sent to the servos
             left *= self.servo_party.gamepad_speed
             right *= self.servo_party.gamepad_speed
-
             # Send command to servos
             self.servo_party.move(left, right)
 
@@ -120,7 +113,11 @@ class ControlReceiver (WebSocketProcess):
             # Update state with new value of axis
             self.state[control] = value
             # Handle trigger and stick controls
-            self.gamepad_movement_handler()
+            if (control == "LEFT_STICK_X" or control == "LEFT_STICK_Y"):
+                self.gamepad_movement_handler(type="STICK")
+            else:
+                self.gamepad_movement_handler(type="TRIGGER")
+            
         elif (typ == "SYSTEM"):
             # Handle power commands
             if (control == "SHUTDOWN"):
