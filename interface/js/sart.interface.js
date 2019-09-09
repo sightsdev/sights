@@ -7,6 +7,8 @@
 // Shared between all scripts
 var ip = window.location.hostname;
 
+var sensorMode = false;
+
 // Load syntax highlighting
 hljs.initHighlightingOnLoad();
 
@@ -49,8 +51,18 @@ $(document).ready(function () {
 
 	// Swap between camera and sensors view
 	$("#sensorToggle").click(function () {
-		$("#btm_view_camera").toggle();
-		$("#btm_view_sensors").toggle();
+		if (sensorMode) {
+			$("#btm_view_camera").show();
+			$("#btm_view_sensors").hide();
+			$("#sensorToggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
+			sensorMode = false;
+		} else {
+			$("#btm_view_camera").hide();
+			$("#btm_view_sensors").show();
+			$("#sensorToggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
+			sensorMode = true;
+		}
+		
 	});
 
 	// Clear log dump box
