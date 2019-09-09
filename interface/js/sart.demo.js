@@ -31,17 +31,29 @@ function DemoMode() {
 	// Uptime
 	$("#uptime").html("4:18:22");
 
+	// Generate thermal camera table
+	var table = $("<table>");
+	for (i = 0; i < 24; i++) {
+		var row = $('<tr>');
+		for (j = 0; j < 32; j++) {
+			var offset = i * 32 + j;
+			var node = $("<td style='position: relative;'><div class='content' id=p" + offset + "></div></td>");
+			row.append(node);
+		}
+		table.append(row);
+	}
+	$('#thermal_camera').html(table);
 	// Create example pixel grid for thermal camera
 	for (i = 0; i < 24; i++) {
 		for (j = 0; j < 32; j++) {
 			var offset = i * 32 + j;
-			var pixel = 20 + i;
+			var pixel = 20 - i ** j;
 			// Also cool:
 			//var pixel = 24 + i * j;
+			//var pixel = 20 + i ** j;
 			$("#p" + offset).css("background", rainbow(pixel));
 		}
 	}
-	$('.tc_pixel').css('width', '3.125%');
 
 	$("#controller-status-connected").show();
 	$("#controller-status-disconnected").hide();
