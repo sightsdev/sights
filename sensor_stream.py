@@ -59,11 +59,6 @@ class SensorStream(WebSocketProcess):
 	    #msg["tvoc"] = sgp.read_measurements()[0][1]
 	    #msg["temp"] = [round(temp.get_obj_temp(), 1)]
 
-        # System uptime
-        with open('/proc/uptime', 'r') as f:
-            uptime_seconds = round(float(f.readline().split()[0]))
-            msg["uptime"] = str(timedelta(seconds=uptime_seconds))
-
         # Get data from Arduino
         if self.arduino_enabled:
             buf = self.ser.readline().decode("UTF-8")
@@ -109,18 +104,27 @@ class SensorStream(WebSocketProcess):
         await self.websocket.send(json.dumps(msg))
         print("SERVER: Syncronized speed setting")
 
-    async def send_default_speeds(self):
-        await self.send_speed_value("kb", self.config['control']['default_keyboard_speed'] * 128 - 1)
-        await self.send_speed_value("gp", self.config['control']['default_gamepad_speed'] * 128 - 1)
+    async def send_init_info(self):
+        msg = {}
+        # Send the configuration file on startup
+        msg["config"] = self.config
+        # Even though these are part of the config object, we send them seperately
+        # Since we don't want the speed resetting every time we edit the config 
+        msg["kb_speed"] = self.config['control']['default_keyboard_speed'] * 128 - 1
+        msg["gp_speed"] = self.config['control']['default_gamepad_speed'] * 128 - 1
+        # System uptime, as time in seconds since boot
+        with open('/proc/uptime', 'r') as f:
+            msg["uptime"] = round(float(f.readline().split()[0]))
+        # Send message to interface
+        await self.websocket.send(json.dumps(msg))
+        print("SERVER: Send initial message")
 
     async def main(self, websocket, path):
         print("SERVER: Client connected")
         # Store websocket
         self.websocket = websocket
-        # Send the configuration file on startup
-        await self.send_config()
-        # Also send the default gamepad and keyboard speeds
-        await self.send_default_speeds()
+        # Send the configuration file, default speeds, etc.
+        await self.send_init_info()
         # Enter runtime loop
         while True:
             try:
