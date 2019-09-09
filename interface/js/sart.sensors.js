@@ -81,6 +81,17 @@ function update_sensors(config) {
 		$('#thermal_camera').html(table);
 	}
 }
+
+function set_speed_indicator(type, speed) {
+	// Type is either 'kb' or 'gp'
+	// Given speed (127 to 1023) needs to be between 1 and 8
+	speed = (speed + 1) / 128;
+	// Now we enabled relevant nodes
+	for (var i = 0; i < 8; i++) {
+		var val = i < speed ? '12.5%' : '0%';
+		$("#" + type + "_speed_node_" + (i + 1)).css('width', val)
+	}
+}
 $(document).ready(function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
 	try {

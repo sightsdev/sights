@@ -71,17 +71,6 @@ function createKeyBind(keys, ctrl, func) {
 	});
 }
 
-function set_speed_indicator(type, speed) {
-	// Type is either 'kb' or 'gp'
-	// Given speed (128 to 1024) needs to be between 1 and 8
-	speed /= 128;
-	// Now we enabled relevant nodes
-	for (var i = 0; i < 8; i++) {
-		var val = i < speed ? '12.5%' : '0%';
-		$("#" + type + "_speed_node_" + (i + 1)).css('width', val)
-	}
-}
-
 $(document).ready(function () {
 	$("#controller-status-connected").hide();
 
