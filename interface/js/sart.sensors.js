@@ -16,7 +16,10 @@ var last_sensor_data = {
 	cpu_temp: 0,
 };
 
+// Robot time of boot
 var start_time;
+// Total RAM
+var memory_total;
 
 // Rainbow
 function rainbow(n) {
@@ -250,12 +253,12 @@ $(document).ready(function () {
 
 			// System memory
 			if ("memory_used" in obj) {
-				var percent = Number(obj["memory_used"]) / last_sensor_data["memory_total"];
+				var percent = Number(obj["memory_used"]) / memory_total;
 				$("#memory").css('color', getColorForPercentage(percent))
 				$("#memory_used").html(obj["memory_used"]);
 			}
 			if ("memory_total" in obj) {
-				last_sensor_data["memory_total"] = Number(obj["memory_total"]);
+				memory_total = Number(obj["memory_total"]);
 				$("#memory_total").html(obj["memory_total"]);
 			}
 
