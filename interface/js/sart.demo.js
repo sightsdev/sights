@@ -16,7 +16,7 @@ function DemoMode() {
 	tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
 	tempChart.update();
 	// Distance radial graph
-	distChartData.datasets[0].data = [768, 128, 256, 312]; // Four directions
+	distChartConfig.data.datasets[0].data = [768, 128, 256, 312]; // Four directions
 	distChart.update();
 
 	// Camera streams, load dummy images
