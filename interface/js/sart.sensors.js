@@ -16,6 +16,8 @@ var last_sensor_data = {
 	cpu_temp: 0,
 };
 
+var start_time;
+
 // Rainbow
 function rainbow(n) {
 	return 'hsl(' + n * 15 + ', 100%, 50%)';
@@ -92,6 +94,7 @@ function set_speed_indicator(type, speed) {
 		$("#" + type + "_speed_node_" + (i + 1)).css('width', val)
 	}
 }
+
 $(document).ready(function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
 	try {
@@ -235,7 +238,14 @@ $(document).ready(function () {
 
 			// System uptime
 			if ("uptime" in obj) {
-				$("#uptime").html(obj["uptime"]);
+				// Calculate time of boot 
+				start_time = Date.now() - (obj["uptime"] * 1000);
+				setInterval(() => {
+					// Calculate uptime based on time elapsed since reported time of boot
+					var upt = new Date(Date.now() - start_time).toISOString().substr(11, 8);
+					// Format nicely
+					$("#uptime").html(upt);
+				}, 1000);
 			}
 
 			// System memory
