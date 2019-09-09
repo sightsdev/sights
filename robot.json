@@ -1,0 +1,53 @@
+{
+	"network": {
+		"ip": "localhost"
+	},
+	"control": {
+		"default_gamepad_speed": 896,
+		"default_keyboard_speed": 256
+	},
+	"servo": {
+		"port": "/dev/ttyS6",
+		"baudrate": 1000000
+	},
+	"arduino": {
+		"enabled": false,
+		"port": "/dev/ttyACM1",
+		"baudrate": 115200
+	},
+	"cameras": {
+		"front": {
+			"enabled": true,
+			"port": 8081
+		},
+		"back": {
+			"enabled": true,
+			"port": 8082
+		},
+		"left": {
+			"enabled": true,
+			"port": 8083
+		},
+		"right": {
+			"enabled": true,
+			"port": 8084
+		}
+	},
+	"sensors": {
+		"thermal_camera": {
+			"enabled": true,
+			"width": 32,
+			"height": 24
+		},
+		"temperature": {
+			"enabled": true
+		},
+		"distance_graph": {
+			"enabled": true
+		}
+	},
+	"debug": {
+		"print_messages": false,
+		"use_virtual_servos": true
+	}
+}

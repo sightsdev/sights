@@ -3,17 +3,18 @@ from pyax12.connection import Connection
 from serial import Serial
 from enum import IntEnum
 from servo_party import ServoParty
+import json
 import time
 import atexit
-import configparser
 
-config = configparser.ConfigParser()
-config.read('robot.cfg')
+# Load config file
+config = json.load(open('robot.json'))
 
 # Servos
 servo_party = ServoParty()
 # Arduino
-sc_arduino = Serial(port=config['arduino']['port'], baudrate=115200)
+sc_arduino = Serial(port=config['arduino']['port'],
+                    baudrate=config['arduino']['baudrate'])
 
 # PID constants
 K_p = 2
@@ -24,7 +25,7 @@ K_d = 0
 speed = 400
 
 # When script exits or is interrupted stop all servos
-atexit.register(servo_party.stop)
+atexit.register(servo_party.close)
 
 
 class Distance(IntEnum):

@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from pyax12.connection import Connection
-import pyax12.packet as pk
-import serial
-import configparser
+import json
 
-config = configparser.ConfigParser()
-config.read('robot.cfg')
+# Load config file
+f = open('robot.json')
+config = json.load(f)
 
-sc = Connection(port=config['servo']['port'], baudrate=1000000)
+sc = Connection(port=config['servo']['port'], baudrate=config['servo']['baudrate'])
 
 sc.set_speed(1, 0)
 sc.set_speed(2, 0)
