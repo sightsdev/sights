@@ -249,10 +249,14 @@ $(document).ready(function () {
 			}
 
 			// System memory
-			if ("memory_used" in obj && "memory_total" in obj) {
-				var percent = Number(obj["memory_used"]) / Number(obj["memory_total"]);
+			if ("memory_used" in obj) {
+				var percent = Number(obj["memory_used"]) / last_sensor_data["memory_total"];
 				$("#memory").css('color', getColorForPercentage(percent))
-				$("#memory").html(obj["memory_used"] + "/" + obj["memory_total"] + " MB");
+				$("#memory_used").html(obj["memory_used"]);
+			}
+			if ("memory_total" in obj) {
+				last_sensor_data["memory_total"] = Number(obj["memory_total"]);
+				$("#memory_total").html(obj["memory_total"]);
 			}
 
 			// Speed indicators for keyboard and gamepad
