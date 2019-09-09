@@ -107,18 +107,7 @@ class ControlReceiver (WebSocketProcess):
         typ = msg["type"]  # system, axis, button
         control = msg["control"]  # FACE_0, LEFT_STICK_Y, etc.
 
-        if (typ == "AXIS"):
-            # If axis, store as float
-            value = float(msg["value"])
-            # Update state with new value of axis
-            self.state[control] = value
-            # Handle trigger and stick controls
-            if (control == "LEFT_STICK_X" or control == "LEFT_STICK_Y"):
-                self.gamepad_movement_handler(type="STICK")
-            else:
-                self.gamepad_movement_handler(type="TRIGGER")
-            
-        elif (typ == "SYSTEM"):
+        if (typ == "SYSTEM"):
             # Handle power commands
             if (control == "SHUTDOWN"):
                 print("RECEIVER: Received shutdown signal, shutting down...")
@@ -146,6 +135,9 @@ class ControlReceiver (WebSocketProcess):
             value = msg["value"]  # UP, DOWN
             # Store in state, because it might be useful (e.g. for modifiers)
             self.state[control] = True if value == "DOWN" else False
+            # 
+            if (control == "LEFT_TOP_SHOULDER" or control == "RIGHT_TOP_SHOULDER"):
+                self.gamepad_movement_handler(type="TRIGGER")
             # Then handle any button events
             if (control == "DPAD_UP"):
                 if value == "DOWN":
@@ -155,7 +147,17 @@ class ControlReceiver (WebSocketProcess):
                 if value == "DOWN":
                     self.servo_party.gamepad_speed = max(128, self.servo_party.gamepad_speed - 128)
                     self.pipe.send(["SYNC_SPEED", "gp", self.servo_party.gamepad_speed])
-
+        elif (typ == "AXIS"):
+            # If axis, store as float
+            value = float(msg["value"])
+            # Update state with new value of axis
+            self.state[control] = value
+            # Handle trigger and stick controls
+            if (control == "LEFT_STICK_X" or control == "LEFT_STICK_Y"):
+                self.gamepad_movement_handler(type="STICK")
+            else:
+                self.gamepad_movement_handler(type="TRIGGER")
+            
 
     async def main(self, websocket, path):
         # Enter runtime loop
