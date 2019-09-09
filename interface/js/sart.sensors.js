@@ -49,7 +49,7 @@ function getColorForPercentage (pct) {
 function update_cameras(config) {
 	['front', 'left', 'right', 'back'].forEach(function (e) {
 		// Get parent div of camera stream image
-		card = $("#camera_" + e + "_card");
+		var card = $("#camera_" + e + "_card");
 		// Enable the div, if camera is enabled in config file
 		config[e]['enabled'] ? card.show() : card.hide();
 		// Set the images's src attribute to be the relevant port
@@ -60,30 +60,26 @@ function update_cameras(config) {
 function update_sensors(config) {
 	['thermal_camera', 'temperature', 'distance_graph'].forEach(function (e) {
 		// Get parent div of camera stream image
-		let card = $("#" + e + "_card");
+		var card = $("#" + e + "_card");
 		// Enable the div, if camera is enabled in config file
 		config[e]['enabled'] ? card.show() : card.hide();
-		// Set the images's src attribute to be the relevant port
-		//$("#camera_" + e).attr("src", portString(config[e]['port']));
 	});
-	/*if (config['thermal_camera']['enabled']) {
-		let width = config['thermal_camera']['width'];
-		let height = config['thermal_camera']['height'];
+	if (config['thermal_camera']['enabled']) {
+		var width = config['thermal_camera']['width'];
+		var height = config['thermal_camera']['height'];
 		// Generate thermal camera table
-		let x = 0;
-		let table = $("<table class='tc'>");
+		var x = 0;
+		var table = $("<table>");
 		for (i = 0; i < height; i++) {
-			let row = $('<tr>');
+			var row = $('<tr>');
 			for (j = 0; j < width; j++) {
-				row.append("<td class='tc_pixel'><div class='content' id=p" + x + "></div></td>");
+				row.append("<td style='width: " + ((1 / width) * 100) + "%;position: relative;'><div class='content' id=p" + x + "></div></td>");
 				x++;
 			}
 			table.append(row);
 		}
-		//$('.tc_pixel').css('width', ((1 / width) * 100) + '%');
-		console.log(table);
 		$('#thermal_camera').html(table);
-	}*/
+	}
 }
 $(document).ready(function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
@@ -141,7 +137,7 @@ $(document).ready(function () {
 					"icon": "file-alt",
 					"position": "left-bottom"
 				});
-				yaml = jsyaml.safeDump(obj['config'], indent = 4);
+				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
 				$("#config-editor-pre").html(hljs.highlight("YAML", yaml).value);
 
 				// Now handle loading stuff from the config file
