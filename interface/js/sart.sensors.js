@@ -4,6 +4,8 @@
 	
 */
 
+var tempChart, distChart;
+
 var last_sensor_data = {
 	distance: [],
 	thermal_camera: [],
@@ -58,29 +60,30 @@ function update_cameras(config) {
 function update_sensors(config) {
 	['thermal_camera', 'temperature', 'distance_graph'].forEach(function (e) {
 		// Get parent div of camera stream image
-		card = $("#" + e + "_card");
+		let card = $("#" + e + "_card");
 		// Enable the div, if camera is enabled in config file
 		config[e]['enabled'] ? card.show() : card.hide();
 		// Set the images's src attribute to be the relevant port
 		//$("#camera_" + e).attr("src", portString(config[e]['port']));
 	});
-	if (config['thermal_camera']['enabled']) {
-		width = config['thermal_camera']['width'];
-		height = config['thermal_camera']['height'];
+	/*if (config['thermal_camera']['enabled']) {
+		let width = config['thermal_camera']['width'];
+		let height = config['thermal_camera']['height'];
 		// Generate thermal camera table
-		x = 0;
-		var table = $("<table class='tc'>");
+		let x = 0;
+		let table = $("<table class='tc'>");
 		for (i = 0; i < height; i++) {
-			var row = $('<tr>');
+			let row = $('<tr>');
 			for (j = 0; j < width; j++) {
 				row.append("<td class='tc_pixel'><div class='content' id=p" + x + "></div></td>");
 				x++;
 			}
 			table.append(row);
 		}
-		$('.tc_pixel').css('width', (1 / width * 100) + '%');
-		$('#thermal_camera').append(table);
-	}
+		//$('.tc_pixel').css('width', ((1 / width) * 100) + '%');
+		console.log(table);
+		$('#thermal_camera').html(table);
+	}*/
 }
 $(document).ready(function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
@@ -88,8 +91,8 @@ $(document).ready(function () {
 		let tempChartCanvas = $("#tempChart").get(0).getContext('2d');
 		let distChartCanvas = $("#distChart").get(0).getContext('2d');
 		// Create temperature and distance chart
-		var tempChart = new Chart(tempChartCanvas, tempChartConfig);
-		var distChart = new Chart(distChartCanvas, distChartConfig);
+		tempChart = new Chart(tempChartCanvas, tempChartConfig);
+		distChart = new Chart(distChartCanvas, distChartConfig);
 		// Style that bad boy
 		$("#tempChart").attr("style", "display: block; height: 187px; width: 374px;");
 		$("#distChart").attr("style", "display: block; height: 187px; width: 374px;");

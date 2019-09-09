@@ -13,7 +13,7 @@ function DemoMode() {
 	$("#tvoc_level").html("75<span style='font-size: 10px'> ppb</span>");
 	$("#tvoc_graph").attr('class', "c100 med orange center p14");
 	// Temperature history graph
-	tempChartData.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
+	tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
 	tempChart.update();
 
 	// Camera streams, load dummy images
@@ -38,6 +38,7 @@ function DemoMode() {
 			$("#p" + offset).css("background", rainbow(pixel));
 		}
 	}
+	$('.tc_pixel').css('width', '3.125%');
 
 	$("#controller-status-connected").show();
 	$("#controller-status-disconnected").hide();
