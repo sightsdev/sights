@@ -35,6 +35,14 @@ def main():
                 control_process.join()
                 restartFlag = True
                 break
+            if message[0] == "KILL_SCRIPTS":
+                # Kill everyone
+                print("MANAGER: Terminating processes")
+                sensor_process.terminate()
+                control_process.terminate()
+                sensor_process.join()
+                control_process.join()
+                break
     print("MANAGER: Exiting manager process")
 
 

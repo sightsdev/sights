@@ -127,6 +127,10 @@ class ControlReceiver (WebSocketProcess):
                 print("RECEIVER: Received request to restart scripts")
                 # Send a message to manager requesting a script restart
                 self.manager_pipe.send(["RESTART_SCRIPTS"])
+            elif (control == "KILL_SCRIPTS"):
+                print("RECEIVER: Received request to kill scripts")
+                # Send a message to manager requesting death
+                self.manager_pipe.send(["KILL_SCRIPTS"])
         elif (typ == "KEYBOARD"):
             value = msg["value"]  # UP, DOWN
             # Handle directional movement etc
