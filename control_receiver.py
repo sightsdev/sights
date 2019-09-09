@@ -86,11 +86,11 @@ class ControlReceiver (WebSocketProcess):
                 self.servo_party.move(speed, -speed)
         elif (control == "SPEED_UP"):
             if value == "DOWN":
-                self.servo_party.keyboard_speed = min(1024, speed + 128)
+                self.servo_party.keyboard_speed = min(1023, speed + 128)
                 self.pipe.send(["SYNC_SPEED", "kb", self.servo_party.keyboard_speed])
         elif (control == "SPEED_DOWN"):
             if value == "DOWN":
-                self.servo_party.keyboard_speed = max(128, speed - 128)
+                self.servo_party.keyboard_speed = max(127, speed - 128)
                 self.pipe.send(["SYNC_SPEED", "kb", self.servo_party.keyboard_speed])
 
     def save_config(self, cfg):
@@ -141,11 +141,11 @@ class ControlReceiver (WebSocketProcess):
             # Then handle any button events
             if (control == "DPAD_UP"):
                 if value == "DOWN":
-                    self.servo_party.gamepad_speed = min(1024, self.servo_party.gamepad_speed + 128)
+                    self.servo_party.gamepad_speed = min(1023, self.servo_party.gamepad_speed + 128)
                     self.pipe.send(["SYNC_SPEED", "gp", self.servo_party.gamepad_speed])
             elif (control == "DPAD_DOWN"):
                 if value == "DOWN":
-                    self.servo_party.gamepad_speed = max(128, self.servo_party.gamepad_speed - 128)
+                    self.servo_party.gamepad_speed = max(127, self.servo_party.gamepad_speed - 128)
                     self.pipe.send(["SYNC_SPEED", "gp", self.servo_party.gamepad_speed])
         elif (typ == "AXIS"):
             # If axis, store as float

@@ -32,8 +32,8 @@ class ServoParty:
         # Load values from configuration file
         self.port = config['servo']['port']
         self.baudrate = config['servo']['baudrate']
-        self.gamepad_speed = config['control']['default_gamepad_speed']
-        self.keyboard_speed = config['control']['default_keyboard_speed']
+        self.gamepad_speed = config['control']['default_gamepad_speed'] * 128 - 1
+        self.keyboard_speed = config['control']['default_keyboard_speed'] * 128 - 1
         self.last_left = 0
         self.last_right = 0
         # Whether to use a virtual or real servo connection
@@ -92,7 +92,7 @@ class ServoParty:
     def crash(self, left, right):
         self.close()
         print("SERVO_PARTY: Something went wrong sending message to servos:")
-        print("Left:", left, "Right:", right)
+        print("Left: ", left, "(was:", self.last_left, ") | Right:", right, "(was:", self.last_right, ")")
         print("Disabling real servos, swapping to virtual connection")
         self.sc = VirtualConnection()
 
@@ -117,7 +117,6 @@ class ServoParty:
                 self.move_raw_left(left)
             if (right != self.last_right):
                 self.move_raw_right(right)
-            print("Left: ", left, "(was:", self.last_left, ") | Right:", right, "(was:", self.last_right, ")")
         else:
             # Not independent, both left and right must have changed
             if (left != self.last_left and right != self.last_right):

@@ -110,8 +110,8 @@ class SensorStream(WebSocketProcess):
         print("SERVER: Syncronized speed setting")
 
     async def send_default_speeds(self):
-        await self.send_speed_value("kb", self.config['control']['default_keyboard_speed'])
-        await self.send_speed_value("gp", self.config['control']['default_gamepad_speed'])
+        await self.send_speed_value("kb", self.config['control']['default_keyboard_speed'] * 128 - 1)
+        await self.send_speed_value("gp", self.config['control']['default_gamepad_speed'] * 128 - 1)
 
     async def main(self, websocket, path):
         print("SERVER: Client connected")
