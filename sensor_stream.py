@@ -46,7 +46,7 @@ class SensorStream(WebSocketProcess):
                     highest_temp = i.current
             # Add to message
             msg["cpu_temp"] = str(highest_temp)
-            msg["cpu_temp"] = str(psutil.sensors_temperatures()['thermal-fan-est'][0].current)
+        #msg["cpu_temp"] = str(psutil.sensors_temperatures()['thermal-fan-est'][0].current)
 
         # Get RAM in use and total RAM
         memory = psutil.virtual_memory()

@@ -39,8 +39,8 @@ class ControlReceiver (WebSocketProcess):
             # Send command to servo handler, independent flag allows the two sides to operate independently
             self.servo_party.move(left, right, independent=True)
         else:
-            x = state["LEFT_STICK_X"] * -1
-            y = state["LEFT_STICK_Y"] * -1
+            x = self.state["LEFT_STICK_X"] * -1
+            y = self.state["LEFT_STICK_Y"] * -1
 
             # convert to polar
             r = math.hypot(y, x)
