@@ -193,9 +193,22 @@ $(document).ready(function () {
 		};
 		safeSend(c_event);
 		bootoast.toast({
-			"message": "Requested a script restart",
+			"message": "Requested a script restart. Refresh the page",
 			"type": "info",
 			"icon": "terminal",
+			"position": "left-bottom"
+		});
+	});
+	$("#kill-scripts-button").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "KILL_SCRIPTS"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "All scripts will be t̵͔̞e̷̦̜r̝̝m̰̱̠̕inḁ̱̕te̪̕ḍ͕. Goodbye.",
+			"type": "danger",
+			"icon": "skull",
 			"position": "left-bottom"
 		});
 	});
@@ -269,10 +282,11 @@ $(document).ready(function () {
 			if (e.axis == "RIGHT_BOTTOM_SHOULDER" || e.axis == "LEFT_BOTTOM_SHOULDER") {
 				return;
 			}
-
-			var val = e.value.toFixed(2);
-			if (val > -0.3 && val < 0.3) val = 0.0;
-
+			// Current value of specified control, to 1dp
+			var val = e.value.toFixed(1);
+			// Deadzone threshold
+			if (val > -0.2 && val < 0.2) val = 0;
+			// Compare against last
 			if (val != last_axis_state[e.axis]) {
 				// Update last value with current value
 				last_axis_state[e.axis] = val;			
@@ -287,7 +301,7 @@ $(document).ready(function () {
 	});
 
 	function axisUpdate(currGamepad, ctrl) {
-		// Current value of specified control, to 2dp
+		// Current value of specified control, to 1dp
 		var val = currGamepad.state[ctrl].toFixed(1)
 		// Compare against last value
 		if (val != last_axis_state[ctrl]) {
