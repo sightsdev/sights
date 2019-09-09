@@ -4,9 +4,9 @@ import asyncio
 import psutil
 import json
 import serial
-from smbus2 import SMBusWrapper
-from PySGP30 import SGP30
-from PyMLX90614 import MLX90614
+#from smbus2 import SMBusWrapper
+#from PySGP30 import SGP30
+#from PyMLX90614 import MLX90614
 from datetime import timedelta
 from websocketprocess import WebSocketProcess
 
@@ -28,10 +28,10 @@ class SensorStream(WebSocketProcess):
                 print("SERVER: Continuing without Arduino connection\n")
                 self.arduino_enabled = False
         # Setup i2c stuff
-        self.i2cbus = SMBusWrapper(1)
-        self.sgp = SGP30(bus)
-		self.sgp.init_sgp()
-	    self.temp = MLX90614(0x5A)
+        #self.i2cbus = SMBusWrapper(1)
+        #self.sgp = SGP30(bus)
+		#self.sgp.init_sgp()
+	    #self.temp = MLX90614(0x5A)
 
     def get_data(self):
         # Create empty message
@@ -55,9 +55,9 @@ class SensorStream(WebSocketProcess):
         msg["memory_total"] = str(memory.total >> 20)
 
         # i2c devices
-        msg["co2"] = sgp.read_measurements()[0][0]
-	    msg["tvoc"] = sgp.read_measurements()[0][1]
-	    msg["temp"] = [round(temp.get_obj_temp(), 1)]
+        #msg["co2"] = sgp.read_measurements()[0][0]
+	    #msg["tvoc"] = sgp.read_measurements()[0][1]
+	    #msg["temp"] = [round(temp.get_obj_temp(), 1)]
 
         # System uptime
         with open('/proc/uptime', 'r') as f:
