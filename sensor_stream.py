@@ -51,8 +51,7 @@ class SensorStream(WebSocketProcess):
         # Get RAM in use and total RAM
         memory = psutil.virtual_memory()
         # Add to message, use bit shift operator to represent in MB
-        msg["memory_used"] = str(memory.used >> 20)
-        msg["memory_total"] = str(memory.total >> 20)
+        msg["memory_used"] = memory.used >> 20
 
         # i2c devices
         #msg["co2"] = sgp.read_measurements()[0][0]
@@ -115,6 +114,8 @@ class SensorStream(WebSocketProcess):
         # System uptime, as time in seconds since boot
         with open('/proc/uptime', 'r') as f:
             msg["uptime"] = round(float(f.readline().split()[0]))
+        # Get RAM, add to message, use bit shift operator to represent in MB
+        msg["memory_total"] = psutil.virtual_memory().total >> 20
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
         print("SERVER: Send initial message")
