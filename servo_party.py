@@ -93,17 +93,24 @@ class ServoParty:
         elif right < 1024:
             right += 1024
 
-        # Only send message if it's different to the last one
-        if (independent):
-            # Allow left and right to be independent
-            if (left != self.last_left):
-                self.move_raw_left(left)
-            if (right != self.last_right):
-                self.move_raw_right(right)
-        else:
-            # Not independent, both left and right must have changed
-            if (left != self.last_left and right != self.last_right):
-                self.move_raw(left, right)
+        try:
+            # Only send message if it's different to the last one
+            if (independent):
+                # Allow left and right to be independent
+                if (left != self.last_left):
+                    self.move_raw_left(left)
+                if (right != self.last_right):
+                    self.move_raw_right(right)
+            else:
+                # Not independent, both left and right must have changed
+                if (left != self.last_left and right != self.last_right):
+                    self.move_raw(left, right)
+        except pyax12.status_packet.RangeError:
+            self.close()
+            print("SERVO_PARTY: pyax12.status_packet.RangeError on message:")
+            print("Left:", left, "Right:", right)
+            print("Disabling real servos, swapping to virtual connection")
+            self.sc = VirtualConnection()
 
         # Store this message for comparison next time
         self.last_left = left
