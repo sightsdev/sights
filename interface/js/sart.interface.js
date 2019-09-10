@@ -101,4 +101,9 @@ $(document).ready(function () {
 
 	// Set source of SSH window
 	$("#ssh_iframe").attr("src", portString(4200));
+
+	$(window).load(function() {
+		if (ip == "sfxrescue.github.io" || ip == "sfxrescue.com") 
+			DemoMode();
+	});
 });
