@@ -210,6 +210,15 @@ $(document).ready(function () {
 		});
 	});
 
+	// Allow toggling of camera / sensor mode via keyboard
+	keyboardJS.bind('1', null, function (e) {
+		if (sensorMode)
+			toggleSensorMode();
+	});
+	keyboardJS.bind('2', null, function (e) {
+		if (!sensorMode)
+			toggleSensorMode();
+	});
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
 		console.log('Controller connected:', device.id);
@@ -249,6 +258,13 @@ $(document).ready(function () {
 	gamepad.bind(Gamepad.Event.BUTTON_DOWN, function (e) {
 		if (e.gamepad.index == currentGamepad) {
 			if (e.control == "RIGHT_BOTTOM_SHOULDER" || e.control == "LEFT_BOTTOM_SHOULDER") {
+				// These are really axes, but can act as buttons, which we don't need
+				return;
+			}
+			if (e.control == "SELECT_BACK") {
+				// Toggle sensor / camera mode
+				toggleSensorMode();
+				// Select button is *not* passed to the client
 				return;
 			}
 			var c_event = {
@@ -263,6 +279,7 @@ $(document).ready(function () {
 	gamepad.bind(Gamepad.Event.BUTTON_UP, function (e) {
 		if (e.gamepad.index == currentGamepad) {
 			if (e.control == "RIGHT_BOTTOM_SHOULDER" || e.control == "LEFT_BOTTOM_SHOULDER") {
+				// These are really axes, but can act as buttons, which we don't need
 				return;
 			}
 			var c_event = {

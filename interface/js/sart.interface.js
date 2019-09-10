@@ -25,6 +25,19 @@ function selectTextInElement(id) {
 	selection.addRange(range);
 }
 
+function toggleSensorMode() {
+	if (sensorMode) {
+		$("#btm_view_camera").show();
+		$("#btm_view_sensors").hide();
+		$("#sensorToggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
+		sensorMode = false;
+	} else {
+		$("#btm_view_camera").hide();
+		$("#btm_view_sensors").show();
+		$("#sensorToggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
+		sensorMode = true;
+	}
+}
 
 $(document).ready(function () {
 
@@ -43,27 +56,14 @@ $(document).ready(function () {
 	$(".modal-dialog").draggable({
 		handle: ".modal-header"
 	});
-	
+
 	// Reload page when header pressed
 	$("#nav_title").click(function () {
 		location.reload();
 	});
 
 	// Swap between camera and sensors view
-	$("#sensorToggle").click(function () {
-		if (sensorMode) {
-			$("#btm_view_camera").show();
-			$("#btm_view_sensors").hide();
-			$("#sensorToggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
-			sensorMode = false;
-		} else {
-			$("#btm_view_camera").hide();
-			$("#btm_view_sensors").show();
-			$("#sensorToggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
-			sensorMode = true;
-		}
-		
-	});
+	$("#sensorToggle").click(toggleSensorMode);
 
 	// Clear log dump box
 	$("#gamepad-log-clear-button").click(function () {
