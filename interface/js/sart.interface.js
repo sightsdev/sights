@@ -53,9 +53,9 @@ $(document).ready(function () {
 	$("#btm_view_sensors").toggle(false);
 
 	// Allow modals to be draggable
-	$(".modal-dialog").draggable({
+	/*$(".modal-dialog").draggable({
 		handle: ".modal-header"
-	});
+	});*/
 
 	// Reload page when header pressed
 	$("#nav_title").click(function () {
