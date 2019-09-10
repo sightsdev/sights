@@ -60,6 +60,16 @@ function update_cameras(config) {
 		// Set the images's src attribute to be the relevant port
 		$("#camera_" + e).attr("src", portString(config[e]['port']));
 	});
+	if (config['front']['enabled'] 
+	&& !config['back']['enabled']
+	&& !config['left']['enabled']
+	&& !config['right']['enabled']) {
+		$("#sensorToggle").hide();
+		$("#btm_view_camera").hide();
+		$("#btm_view_sensors").show();
+		$("#sensorToggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
+		sensorMode = false;
+	}
 }
 
 function update_sensors(config) {
