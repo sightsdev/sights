@@ -1,7 +1,6 @@
 /*
-	Created by the Semi-Autonomous Rescue Team
-	Licensed under GNU General Public License 3.0
-	
+	Created by the Semi Autonomous Rescue Team
+	Licensed under the GNU General Public License 3.0
 */
 
 // WebSocket used for controller data
@@ -100,10 +99,10 @@ $(document).ready(function () {
 	createKeyBind(['+', '='], "SPEED_UP");
 	createKeyBind(['-', '_'], "SPEED_DOWN");
 	// Disable keyboard controls when modal is open
-	$(".modal").on('shown.bs.modal', function(){
+	$(".modal").on('shown.bs.modal', function () {
 		keyboardJS.pause();
 	});
-	$(".modal").on('hidden.bs.modal', function(){
+	$(".modal").on('hidden.bs.modal', function () {
 		keyboardJS.resume();
 	});
 
@@ -167,7 +166,7 @@ $(document).ready(function () {
 				"position": "left-bottom"
 			});
 		}
-		
+
 	});
 	$("#config-editor-reload-button").click(function () {
 		var c_event = {
@@ -303,7 +302,7 @@ $(document).ready(function () {
 			// Compare against last
 			if (val != last_axis_state[e.axis]) {
 				// Update last value with current value
-				last_axis_state[e.axis] = val;			
+				last_axis_state[e.axis] = val;
 				var c_event = {
 					type: "AXIS",
 					control: e.axis,

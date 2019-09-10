@@ -1,12 +1,12 @@
 /*
-	Created by the Semi-Autonomous Rescue Team
-	Licensed under GNU General Public License 3.0
-	
+	Created by the Semi Autonomous Rescue Team
+	Licensed under the GNU General Public License 3.0
 */
 
 // Shared between all scripts
 var ip = window.location.hostname;
 
+// Whether interface is in sensor or camera view
 var sensorMode = false;
 
 // Load syntax highlighting
@@ -17,6 +17,7 @@ function portString(port) {
 	return "http://" + ip + ":" + port;
 }
 
+// Select text in a text field, allowing to be copied
 function selectTextInElement(id) {
 	var range = document.createRange();
 	var selection = window.getSelection();
@@ -25,6 +26,7 @@ function selectTextInElement(id) {
 	selection.addRange(range);
 }
 
+// Toggle between sensor and camera view
 function toggleSensorMode() {
 	if (sensorMode) {
 		$("#btm_view_camera").show();
@@ -45,24 +47,17 @@ $(document).ready(function () {
 	$('[rel="tooltip"]').tooltip({
 		trigger: "hover"
 	});
-
 	// Enable tooltips
 	$('[data-toggle="tooltip"]').tooltip()
-
-	// Set to camera view by default
-	$("#btm_view_sensors").toggle(false);
-
-	// Allow modals to be draggable
-	/*$(".modal-dialog").draggable({
-		handle: ".modal-header"
-	});*/
 
 	// Reload page when header pressed
 	$("#nav_title").click(function () {
 		location.reload();
 	});
 
-	// Swap between camera and sensors view
+	// Set to camera view by default
+	$("#btm_view_sensors").toggle(false);
+	// Allow button to swap between camera and sensors view
 	$("#sensorToggle").click(toggleSensorMode);
 
 	// Clear log dump box
@@ -70,13 +65,12 @@ $(document).ready(function () {
 		$("#gamepad-log-pre").html("");
 	});
 
-	// Select the contents of the dump log box
+	// Setup button to select the contents of the log box
 	$("#gamepad-log-select-button").click(function () {
-		// Select the contents of the dump log box
 		selectTextInElement('gamepad-log-pre');
 	});
+	// Same for config editor
 	$("#config-editor-select-button").click(function () {
-		// Select the contents of the dump log box
 		selectTextInElement('config-editor-pre');
 	});
 
@@ -87,13 +81,16 @@ $(document).ready(function () {
 			$('.streamImage').removeClass("rotated");
 		}
 	});
+	// Make the image invisible until it has loaded, allowing us to see the loading spinner
 	$('.streamImage').css('opacity', '0');
+	// Once it's loaded, hide the spinner and remove transparency
 	$('.streamImage').load(function () {
 		$("#spinner").hide();
 		$('.streamImage').css('opacity', '1');
 	})
 
-	// Set source of camera streams
+	// Set source of camera streams to default ports
+	// This is not essential and may be removed soon
 	$("#camera_front").attr("src", portString(8081));
 	$("#camera_back").attr("src", portString(8082));
 	$("#camera_left").attr("src", portString(8083));

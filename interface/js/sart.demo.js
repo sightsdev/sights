@@ -1,3 +1,8 @@
+/*
+	Created by the Semi Autonomous Rescue Team
+	Licensed under the GNU General Public License 3.0
+*/
+
 // Populate SARTInterface with dummy data to demonstrate what a functional setup looks like
 function DemoMode() {
 	// CPU temp graph
@@ -24,7 +29,7 @@ function DemoMode() {
 		value.src = 'images/demo_' + value.id + '.jpg';
 		value.className = "streamImage";
 	});
-	
+
 	// SSH modal needs some content
 	$("#ssh_iframe").attr('src', 'https://gitsuppository.net/');
 

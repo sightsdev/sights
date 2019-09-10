@@ -1,7 +1,6 @@
 /*
-	Created by the Semi-Autonomous Rescue Team
-	Licensed under GNU General Public License 3.0
-	
+	Created by the Semi Autonomous Rescue Team
+	Licensed under the GNU General Public License 3.0
 */
 
 var tempChart, distChart;
