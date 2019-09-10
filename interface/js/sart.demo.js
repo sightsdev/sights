@@ -81,4 +81,7 @@ function DemoMode() {
 		"type": "success",
 		"position": "left-bottom"
 	});
+
+	// Icing on the cake
+	$("#demo-mode-indicator").show();
 }

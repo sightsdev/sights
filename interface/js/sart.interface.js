@@ -55,8 +55,11 @@ $(document).ready(function () {
 		location.reload();
 	});
 
+	// Hide demo mode indicator
+	$("#demo-mode-indicator").hide();
+
 	// Set to camera view by default
-	$("#btm_view_sensors").toggle(false);
+	$("#btm_view_sensors").hide();
 	// Allow button to swap between camera and sensors view
 	$("#sensorToggle").click(toggleSensorMode);
 
