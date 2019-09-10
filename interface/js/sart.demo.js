@@ -82,6 +82,8 @@ function DemoMode() {
 		"position": "left-bottom"
 	});
 
+	$("#power-options-divider").hide();
+	$("#demo-mode-button").hide();
 	// Icing on the cake
 	$("#demo-mode-indicator").show();
 }
