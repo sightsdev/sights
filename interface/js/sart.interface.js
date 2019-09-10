@@ -76,7 +76,7 @@ $(document).ready(function () {
 	$("#config-editor-select-button").click(function () {
 		selectTextInElement('config-editor-pre');
 	});
-
+	
 	// If the camera stream doesn't load, default to fallback image
 	$('.streamImage').error(function () {
 		if (this.src != 'images/no-feed-small.png') {
@@ -90,18 +90,12 @@ $(document).ready(function () {
 	$('.streamImage').load(function () {
 		$("#spinner").hide();
 		$('.streamImage').css('opacity', '1');
-	})
-
-	// Set source of camera streams to default ports
-	// This is not essential and may be removed soon
-	$("#camera_front").attr("src", portString(8081));
-	$("#camera_back").attr("src", portString(8082));
-	$("#camera_left").attr("src", portString(8083));
-	$("#camera_right").attr("src", portString(8084));
+	});
 
 	// Set source of SSH window
 	$("#ssh_iframe").attr("src", portString(4200));
 
+	// Load demo mode if on public webserver
 	$(window).load(function() {
 		if (ip == "sfxrescue.github.io" || ip == "sfxrescue.com") 
 			DemoMode();
