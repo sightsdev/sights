@@ -73,14 +73,8 @@ function createKeyBind(keys, ctrl, func) {
 $(document).ready(function () {
 	$("#controller-status-connected").hide();
 
-	console.log("Attempting to connect to the websocket server");
-
-	try {
-		controlSocket = new WebSocket("ws://" + ip + ":5555");
-		console.log("Attempt result: " + socketState());
-	} catch (err) {
-		console.log("Not connected to controller socket");
-	}
+	// Create WebSocket
+	controlSocket = new WebSocket("ws://" + ip + ":5555");
 
 	// Attach it to the window so it can be inspected at the console.
 	window.gamepad = new Gamepad();
