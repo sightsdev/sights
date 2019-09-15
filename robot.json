@@ -42,7 +42,7 @@
 		"temperature": {
 			"enabled": true
 		},
-		"distance_graph": {
+		"distance": {
 			"enabled": true
 		}
 	},
