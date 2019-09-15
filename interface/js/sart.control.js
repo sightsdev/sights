@@ -15,21 +15,6 @@ var last_axis_state = {
 	"RIGHT_STICK_Y": 0.0
 }
 
-//Log to the console the result of the socket connection attempt. Useful for troubleshooting.
-function socketState() {
-	var state = controlSocket.readyState
-	switch (state) {
-		case 0:
-			return "Connecting (The connection is not yet open)";
-		case 1:
-			return "Open (The connection is open and ready to communicate)";
-		case 2:
-			return "Closing (The connection is in the process of closing)";
-		case 3:
-			return "Closed (The connection is closed or couldn't be opened)";
-	}
-}
-
 // Checks if socket is open, then converts data to JSON and sends it
 function safeSend(data) {
 	logControl(data);
@@ -37,11 +22,32 @@ function safeSend(data) {
 		controlSocket.send(JSON.stringify(data));
 }
 
+// Log control to log modal
 function logControl(e) {
 	value = ('value' in e) ? e["value"] : "MESSAGE SENT"
 	$('#gamepad-log-pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
 }
 
+// Runs every tick to check changed axes and send values as required
+function axisUpdate(currGamepad, ctrl) {
+	// Current value of specified control, to 1dp
+	var val = currGamepad.state[ctrl].toFixed(1)
+	// Compare against last value
+	if (val != last_axis_state[ctrl]) {
+		// Update last value with current value
+		last_axis_state[ctrl] = val;
+		// Create event message
+		var c_event = {
+			type: "AXIS",
+			control: ctrl,
+			value: val
+		};
+		// Send event message
+		safeSend(c_event);
+	}
+}
+
+// Create 'KEYBOARD' event bind that is sent to robot
 function createKeyBind(keys, ctrl, func) {
 	// Create keyboard bindings using KeyboardJS
 	keys.forEach(function (key) {
@@ -71,6 +77,7 @@ function createKeyBind(keys, ctrl, func) {
 }
 
 $(document).ready(function () {
+	// Hide 'Controller Connected' indicator, until connected 
 	$("#controller-status-connected").hide();
 
 	// Create WebSocket
@@ -79,138 +86,9 @@ $(document).ready(function () {
 	// Attach it to the window so it can be inspected at the console.
 	window.gamepad = new Gamepad();
 
+	// When the user changes the active gamepad using the dropdown box
 	$('#gamepadSelect').on('change', function (e) {
-		//var device = gamepad.gamepads[this.value];
 		currentGamepad = this.value;
-		//$('#gamepad-monitor-pre').html(JSON.stringify(device.state, null, "\t"));
-	});
-
-	// Create keyboard bindings
-	createKeyBind(['w', 'up'], "FORWARD");
-	createKeyBind(['a', 'left'], "LEFT");
-	createKeyBind(['s', 'down'], "BACKWARDS");
-	createKeyBind(['d', 'right'], "RIGHT");
-	createKeyBind(['+', '='], "SPEED_UP");
-	createKeyBind(['-', '_'], "SPEED_DOWN");
-	// Disable keyboard controls when modal is open
-	$(".modal").on('shown.bs.modal', function () {
-		keyboardJS.pause();
-	});
-	$(".modal").on('hidden.bs.modal', function () {
-		keyboardJS.resume();
-	});
-
-
-	// Handle shutdown and reboot buttons
-	$("#shutdownButton").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "SHUTDOWN"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "Shutting down",
-			"type": "warning",
-			"icon": "power-off",
-			"position": "left-bottom"
-		});
-	});
-	$("#rebootButton").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "REBOOT"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "Rebooting",
-			"type": "warning",
-			"icon": "undo",
-			"position": "left-bottom"
-		});
-	});
-
-	// Config editor button actions
-	$("#config-editor-save-button").click(function () {
-		// Get contents of config editor
-		//var contents = $("#config-editor-pre").text();
-		var contents = $("#config-editor-pre")[0].innerText
-		try {
-			// Parse from YAML into JS
-			var yml = jsyaml.safeLoad(contents);
-			// And then turn that into a JSON string
-			var val = JSON.stringify(yml, null, '\t');
-			// Create message event
-			var c_event = {
-				type: "SYSTEM",
-				control: "UPDATE_CONFIG",
-				value: val
-			};
-			safeSend(c_event);
-			bootoast.toast({
-				"message": "Sent config file",
-				"type": "success",
-				"icon": "file-alt",
-				"position": "left-bottom"
-			});
-		} catch (e) {
-			bootoast.toast({
-				"message": "Could not validate config file",
-				"type": "danger",
-				"icon": "file-alt",
-				"position": "left-bottom"
-			});
-		}
-
-	});
-	$("#config-editor-reload-button").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "REQUEST_CONFIG"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "Requested config file",
-			"type": "info",
-			"icon": "file-alt",
-			"position": "left-bottom"
-		});
-	});
-
-	$("#restart-scripts-button").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "RESTART_SCRIPTS"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "Requested a script restart. Refresh the page",
-			"type": "info",
-			"icon": "terminal",
-			"position": "left-bottom"
-		});
-	});
-	$("#kill-scripts-button").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "KILL_SCRIPTS"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "All scripts will be t̵͔̞e̷̦̜r̝̝m̰̱̠̕inḁ̱̕te̪̕ḍ͕. Goodbye.",
-			"type": "danger",
-			"icon": "skull",
-			"position": "left-bottom"
-		});
-	});
-
-	// Allow toggling of camera / sensor mode via keyboard
-	keyboardJS.bind('1', null, function (e) {
-		if (sensorMode)
-			toggleSensorMode();
-	});
-	keyboardJS.bind('2', null, function (e) {
-		if (!sensorMode)
-			toggleSensorMode();
 	});
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
@@ -287,6 +165,7 @@ $(document).ready(function () {
 	gamepad.bind(Gamepad.Event.AXIS_CHANGED, function (e) {
 		if (e.gamepad.index == currentGamepad) {
 			if (e.axis == "RIGHT_BOTTOM_SHOULDER" || e.axis == "LEFT_BOTTOM_SHOULDER") {
+				// We handle these seperately, since this wasn't providing the required performance
 				return;
 			}
 			// Current value of specified control, to 1dp
@@ -307,24 +186,6 @@ $(document).ready(function () {
 		}
 	});
 
-	function axisUpdate(currGamepad, ctrl) {
-		// Current value of specified control, to 1dp
-		var val = currGamepad.state[ctrl].toFixed(1)
-		// Compare against last value
-		if (val != last_axis_state[ctrl]) {
-			// Update last value with current value
-			last_axis_state[ctrl] = val;
-			// Create event message
-			var c_event = {
-				type: "AXIS",
-				control: ctrl,
-				value: val
-			};
-			// Send event message
-			safeSend(c_event);
-		}
-	}
-
 	gamepad.bind(Gamepad.Event.TICK, function (gamepads) {
 		var gamepad = gamepads[currentGamepad];
 		if (gamepad) {
@@ -337,6 +198,132 @@ $(document).ready(function () {
 	});
 
 	if (!gamepad.init()) {
-		alert('Your browser does not support gamepads, get the latest Google Chrome or Firefox.');
+		alert('Your browser does not support gamepads, please update to a modern web browser');
 	}
+
+	// Create keyboard bindings
+	createKeyBind(['w', 'up'], "FORWARD");
+	createKeyBind(['a', 'left'], "LEFT");
+	createKeyBind(['s', 'down'], "BACKWARDS");
+	createKeyBind(['d', 'right'], "RIGHT");
+	createKeyBind(['+', '='], "SPEED_UP");
+	createKeyBind(['-', '_'], "SPEED_DOWN");
+	// Disable keyboard controls when modal is open
+	$(".modal").on('shown.bs.modal', function () {
+		keyboardJS.pause();
+	});
+	$(".modal").on('hidden.bs.modal', function () {
+		keyboardJS.resume();
+	});
+	// Allow toggling of camera / sensor mode via keyboard
+	keyboardJS.bind('1', null, function (e) {
+		if (sensorMode)
+			toggleSensorMode();
+	});
+	keyboardJS.bind('2', null, function (e) {
+		if (!sensorMode)
+			toggleSensorMode();
+	});
+
+	// Handle shutdown and reboot buttons
+	$("#shutdownButton").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "SHUTDOWN"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "Shutting down",
+			"type": "warning",
+			"icon": "power-off",
+			"position": "left-bottom"
+		});
+	});
+	$("#rebootButton").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "REBOOT"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "Rebooting",
+			"type": "warning",
+			"icon": "undo",
+			"position": "left-bottom"
+		});
+	});
+
+	// Config editor button actions
+	$("#config-editor-save-button").click(function () {
+		// Get contents of config editor
+		var contents = $("#config-editor-pre")[0].innerText
+		try {
+			// Parse from YAML into JS
+			var yml = jsyaml.safeLoad(contents);
+			// And then turn that into a JSON string
+			var val = JSON.stringify(yml, null, '\t');
+			// Create message event
+			var c_event = {
+				type: "SYSTEM",
+				control: "UPDATE_CONFIG",
+				value: val
+			};
+			safeSend(c_event);
+			bootoast.toast({
+				"message": "Sent config file",
+				"type": "success",
+				"icon": "file-alt",
+				"position": "left-bottom"
+			});
+		} catch (e) {
+			bootoast.toast({
+				"message": "Could not validate config file",
+				"type": "danger",
+				"icon": "file-alt",
+				"position": "left-bottom"
+			});
+		}
+
+	});
+	$("#config-editor-reload-button").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "REQUEST_CONFIG"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "Requested config file",
+			"type": "info",
+			"icon": "file-alt",
+			"position": "left-bottom"
+		});
+	});
+
+	// Script control buttons
+	$("#restart-scripts-button").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "RESTART_SCRIPTS"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "Requested a script restart. Refresh the page",
+			"type": "info",
+			"icon": "terminal",
+			"position": "left-bottom"
+		});
+	});
+	$("#kill-scripts-button").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "KILL_SCRIPTS"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "All scripts will be t̵͔̞e̷̦̜r̝̝m̰̱̠̕inḁ̱̕te̪̕ḍ͕. Goodbye.",
+			"type": "danger",
+			"icon": "skull",
+			"position": "left-bottom"
+		});
+	});
 });
