@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
+from smbus2 import SMBusWrapper
+from websocketprocess import WebSocketProcess
+from sensors import *
 import websockets
 import asyncio
 import psutil
 import json
 import serial
-#from smbus2 import SMBusWrapper
-#from PySGP30 import SGP30
-#from PyMLX90614 import MLX90614
-from datetime import timedelta
-from websocketprocess import WebSocketProcess
 
 class SensorStream(WebSocketProcess):
     def __init__(self, mpid, pipe):
@@ -28,35 +26,21 @@ class SensorStream(WebSocketProcess):
                 print("SERVER: Continuing without Arduino connection\n")
                 self.arduino_enabled = False
         # Setup i2c stuff
-        #self.i2cbus = SMBusWrapper(1)
-        #self.sgp = SGP30(bus)
-		#self.sgp.init_sgp()
-	    #self.temp = MLX90614(0x5A)
+        self.i2cbus = SMBus(1)
+        self.sensors = []
+        self.sensors.append(SGP30Wrapper(bus))
+        self.sensors.append(MLX90614Wrapper(bus, config['sensors']['temperature']['address']))
+        self.sensors.append(SystemWrapper())
 
     def get_data(self):
         # Create empty message
         msg = {}
 
-        # Get highest CPU temp from system
-        temp_data = psutil.sensors_temperatures()
-        if len(temp_data) != 0:
-            highest_temp = 0.0
-            for i in temp_data['coretemp']:
-                if (i.current > highest_temp):
-                    highest_temp = i.current
-            # Add to message
-            msg["cpu_temp"] = str(highest_temp)
-        #msg["cpu_temp"] = str(psutil.sensors_temperatures()['thermal-fan-est'][0].current)
-
-        # Get RAM in use and total RAM
-        memory = psutil.virtual_memory()
-        # Add to message, use bit shift operator to represent in MB
-        msg["memory_used"] = memory.used >> 20
-
         # i2c devices
-        #msg["co2"] = sgp.read_measurements()[0][0]
-	    #msg["tvoc"] = sgp.read_measurements()[0][1]
-	    #msg["temp"] = [round(temp.get_obj_temp(), 1)]
+        for sensor in self.sensors:
+            if (sensor.ready):
+                data = sensor.get_data()
+                msg.update(data)
 
         # Get data from Arduino
         if self.arduino_enabled:

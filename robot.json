@@ -40,7 +40,8 @@
 			"height": 24
 		},
 		"temperature": {
-			"enabled": true
+			"enabled": true,
+			"address": "0x5A"
 		},
 		"distance": {
 			"enabled": true
