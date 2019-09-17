@@ -3,7 +3,7 @@ import psutil
 
 class SystemWrapper(SensorWrapper):
     def __init__(self, bus, address, frequency):
-        Sensor.__init__(bus, address, frequency)
+        SensorWrapper.__init__(bus, address, frequency)
 
     def get_data(self):
         msg = {}

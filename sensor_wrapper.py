@@ -1,6 +1,5 @@
 import time
 
-
 class SensorWrapper:
     def __init__(self, bus, address, frequency):
         self.bus = bus
