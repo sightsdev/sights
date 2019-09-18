@@ -93,7 +93,7 @@ function update_cameras(config) {
 }
 
 function update_sensors(config) {
-	['thermal_camera', 'temperature', 'distance_graph'].forEach(function (e) {
+	['thermal_camera', 'temperature', 'distance'].forEach(function (e) {
 		// Get parent div of camera stream image
 		var card = $("#" + e + "_card");
 		// Enable the div, if camera is enabled in config file
