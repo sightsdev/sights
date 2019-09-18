@@ -111,4 +111,9 @@ $(document).ready(function () {
 			$("#ssh_iframe").attr("src", portString(4200));
 		}
 	});
+
+	// Refresh the SSH iframe when refresh button clicked
+	$("#ssh-refresh-button").click(function () {
+		$("#ssh_iframe").attr("src", portString(4200));
+	});
 });
