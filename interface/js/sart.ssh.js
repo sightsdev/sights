@@ -33,10 +33,16 @@ $(document).ready(function () {
 		ssh_current = ssh_count;
 		
 		//Create a new iframe
-		$(".ssh-container").append('<iframe id="ssh_iframe_' + ssh_current + '" src="" width="100%" height="400px"></iframe>');
+		$(".ssh-container").append($("#ssh_iframe_1").clone().attr("id","ssh_iframe_" + ssh_count));
+		$("#ssh_iframe_" + ssh_current).show();
 		
 		//Create a button for the new terminal
-		$(".ssh-button-container").append('<button type="button" class="btn btn-outline-dark" id="ssh-switch-button" number=' + ssh_current + '><i class="fa fa-fw fa-terminal"></i> ' + ssh_current + '</button>');
+		let new_button = $("#ssh-switch-button").clone();
+		new_button.html(function(n,content){
+			return content.substr(0,content.length - 1) + ssh_current;
+		});
+		new_button.attr("number", ssh_current);
+		$(".ssh-button-container").append(new_button);
 		
 		//Load the new SSH terminal
 		$("#ssh_iframe_" + ssh_current).attr("src", "https://gitsuppository.net");
