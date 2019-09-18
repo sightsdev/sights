@@ -2,8 +2,19 @@
 	Created by the Semi Autonomous Rescue Team
 	Licensed under the GNU General Public License 3.0
 */
+
+var ssh_count = 1;
+var ssh_current = 1;
+var max_ssh_terminals = 7;
+	
+function focusCurrentSsh() {
+	setTimeout(function() {
+		$("#ssh_iframe_" + ssh_current).focus();
+	}, 200);
+}
+	
 $(document).ready(function () {
-// Set the src of the modal on first load only
+	// Set the src of the modal on first load only
 	$("#sshModal").on('shown.bs.modal', function () {
 		focusCurrentSsh();
 		// Prevent refresh everytime the modal is loaded
@@ -12,12 +23,9 @@ $(document).ready(function () {
 		}
 	});
 
-	// Refresh the SSH iframe when refresh button clicked
-	var ssh_count = 1;
-	var ssh_current = 1;
-	var max_ssh_terminals = 7;
+	// Create a new SSH terminal
 	$("#ssh-new-button").click(function () {
-		//Hide the current iframe
+		//Hide the current terminal
 		$("#ssh_iframe_" + ssh_current).hide();
 		
 		//Update counts
@@ -25,10 +33,10 @@ $(document).ready(function () {
 		ssh_current = ssh_count;
 		
 		//Create a new iframe
-		$(".ssh-container").append('<iframe id="ssh_iframe_' + ssh_count + '" src="" width="100%" height="400px"></iframe>');
+		$(".ssh-container").append('<iframe id="ssh_iframe_' + ssh_current + '" src="" width="100%" height="400px"></iframe>');
 		
 		//Create a button for the new terminal
-		$(".ssh-button-container").append('<button type="button" class="btn btn-outline-dark" id="ssh-switch-button" number=' + ssh_count + '><i class="fa fa-fw fa-terminal"></i> ' + ssh_count + '</button>');
+		$(".ssh-button-container").append('<button type="button" class="btn btn-outline-dark" id="ssh-switch-button" number=' + ssh_current + '><i class="fa fa-fw fa-terminal"></i> ' + ssh_current + '</button>');
 		
 		//Load the new SSH terminal
 		$("#ssh_iframe_" + ssh_current).attr("src", "https://gitsuppository.net");
@@ -48,10 +56,4 @@ $(document).ready(function () {
 		$("#ssh_iframe_" + ssh_current).show();
 		focusCurrentSsh();
 	});
-	
-	function focusCurrentSsh() {
-		setTimeout(function() {
-			$("#ssh_iframe_" + ssh_current).focus();
-		}, 300);
-	}
 });
