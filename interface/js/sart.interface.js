@@ -41,9 +41,9 @@ function toggleSensorMode() {
 	}
 }
 
-function focusSSH() {
+function focusModalContent(id) {
 	setTimeout(function() {
-		$("#ssh_iframe").focus();
+		$("#"+id).focus();
 	}, 300);
 }
 
