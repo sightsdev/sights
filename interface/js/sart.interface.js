@@ -41,6 +41,12 @@ function toggleSensorMode() {
 	}
 }
 
+function focusSSH() {
+	setTimeout(function() {
+		$("#ssh_iframe").focus();
+	}, 300);
+}
+
 $(document).ready(function () {
 
 	// Allow both a tooltip and a modal window on a button
