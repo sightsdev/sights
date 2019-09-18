@@ -97,7 +97,7 @@ $(document).ready(function () {
 
 	// Load demo mode if on public webserver
 	$(window).load(function() {
-		if (ip == "sfxrescue.github.io" || ip == "sfxrescue.com") 
+		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com") 
 			DemoMode();
 	});
 });
