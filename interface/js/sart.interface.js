@@ -41,6 +41,7 @@ function toggleSensorMode() {
 	}
 }
 
+
 $(document).ready(function () {
 
 	// Allow both a tooltip and a modal window on a button
@@ -99,5 +100,10 @@ $(document).ready(function () {
 	$(window).load(function() {
 		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com") 
 			DemoMode();
+	});
+	
+	// Focus and element in a modal if it is specified
+	$(".modal").on('shown.bs.modal', function () {
+		$("#"+this.getAttribute("focus")).focus();
 	});
 });
