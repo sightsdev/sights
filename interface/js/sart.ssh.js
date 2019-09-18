@@ -37,11 +37,11 @@ $(document).ready(function () {
 		$("#ssh_iframe_" + ssh_current).show();
 		
 		//Create a button for the new terminal
-		let new_button = $("#ssh-switch-button").clone();
-		new_button.html(function(n,content){
+		let new_button = $("#ssh-switch-button").clone(); 				//Clone existing button
+		new_button.html(function(n,content){ 							//Set last html character to new number
 			return content.substr(0,content.length - 1) + ssh_current;
 		});
-		new_button.attr("number", ssh_current);
+		new_button.attr("number", ssh_current); 						//Set custom attribute number
 		$(".ssh-button-container").append(new_button);
 		
 		//Load the new SSH terminal
@@ -56,6 +56,7 @@ $(document).ready(function () {
 		}
 	});
 	
+	// Switch to another terminal
 	$(".ssh-button-container").on('click', 'button', function(){
 		$("#ssh_iframe_" + ssh_current).hide();
 		ssh_current = this.getAttribute("number");
