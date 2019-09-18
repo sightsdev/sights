@@ -113,7 +113,15 @@ $(document).ready(function () {
 	});
 
 	// Refresh the SSH iframe when refresh button clicked
+	var ssh_count = 1;
 	$("#ssh-refresh-button").click(function () {
+		$("#ssh_iframe").prop("id", "ssh_iframe_" + ssh_count);
+		$("#ssh_iframe_" + ssh_count).hide();
+		$(".ssh-container").append('<iframe id="ssh_iframe" src="" width="100%" height="400px"></iframe>');
 		$("#ssh_iframe").attr("src", portString(4200));
+		setTimeout(function() {
+			$("#ssh_iframe").focus();
+		}, 300);
+		ssh_count ++;
 	});
 });
