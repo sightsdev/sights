@@ -12,7 +12,7 @@
 	},
 	"arduino": {
 		"enabled": false,
-		"port": "/dev/ttyACM1",
+		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
 		"baudrate": 115200
 	},
 	"cameras": {
