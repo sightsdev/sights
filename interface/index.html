@@ -49,7 +49,7 @@
 
 <body>
 	<!-- SSH MODAL -->
-	<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="true">
+	<div class="modal fade top" focus="ssh_iframe" id="sshModal" role="dialog" data-backdrop="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header dragHeader" id="sshDrag">
@@ -239,7 +239,7 @@
 					<i class="fa fa-fw fa-chart-area"></i> Show Sensors
 				</button>
 				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#sshModal"
-					onclick="focusModalContent('ssh_iframe')" rel="tooltip" data-placement="bottom" title="Open SSH window">
+					rel="tooltip" data-placement="bottom" title="Open SSH window">
 					<i class="fa fa-fw fa-terminal"></i> SSH
 				</button>
 				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#logModal"

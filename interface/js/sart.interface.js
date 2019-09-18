@@ -41,11 +41,6 @@ function toggleSensorMode() {
 	}
 }
 
-function focusModalContent(id) {
-	setTimeout(function() {
-		$("#"+id).focus();
-	}, 300);
-}
 
 $(document).ready(function () {
 
@@ -105,5 +100,10 @@ $(document).ready(function () {
 	$(window).load(function() {
 		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com") 
 			DemoMode();
+	});
+	
+	// Focus and element in a modal if it is specified
+	$(".modal").on('shown.bs.modal', function () {
+		$("#"+this.getAttribute("focus")).focus();
 	});
 });
