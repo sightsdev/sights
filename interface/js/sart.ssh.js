@@ -14,11 +14,11 @@ function focusCurrentSsh() {
 }
 	
 $(document).ready(function () {
-	// Set the src of the modal on first load only
+	
 	$("#sshModal").on('shown.bs.modal', function () {
-		focusCurrentSsh();
-		// Prevent refresh everytime the modal is loaded
-		if ($("#ssh_iframe_1").attr("src") == "") {
+		focusCurrentSsh(); // Focus the current SSH iframe on modal open
+		// Set the src of the modal on first load only
+		if ($("#ssh_iframe_1").attr("src") == "") {	// Prevent refresh everytime the modal is loaded
 			$("#ssh_iframe_1").attr("src", "https://gitsuppository.net");
 		}
 	});
