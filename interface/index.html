@@ -49,7 +49,7 @@
 
 <body>
 	<!-- SSH MODAL -->
-	<div class="modal fade top" focus="ssh_iframe" id="sshModal" role="dialog" data-backdrop="true">
+	<div class="modal fade top" focus="ssh_iframe_1" id="sshModal" role="dialog" data-backdrop="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header dragHeader" id="sshDrag">
@@ -59,11 +59,14 @@
 					</button>
 				</div>
 				<div class="modal-body ssh-container">
-					<iframe id="ssh_iframe" src="" width="100%" height="400px"></iframe>
+					<iframe id="ssh_iframe_1" src="" width="100%" height="400px"></iframe>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-warning btn-default" id="ssh-refresh-button"><i
-							class="fa fa-fw fa-redo"></i> Refresh</button>
+					<div class="ssh-button-container">
+						<button type="button" class="btn btn-outline-dark" id="ssh-switch-button" number="1"><i class="fa fa-fw fa-terminal"></i> 1</button>
+					</div>
+					<button type="button" class="btn btn-warning btn-default" id="ssh-new-button"><i
+							class="fa fa-fw fa-plus-square"></i> New Terminal</button>
 					<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 				</div>
 			</div>
