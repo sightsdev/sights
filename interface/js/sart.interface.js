@@ -77,7 +77,7 @@ $(document).ready(function () {
 	$("#config-editor-select-button").click(function () {
 		selectTextInElement('config-editor-pre');
 	});
-	
+
 	// If the camera stream doesn't load, default to fallback image
 	$('.streamImage').error(function () {
 		if (this.src != 'images/no-feed-small.png') {
@@ -93,17 +93,22 @@ $(document).ready(function () {
 		$('.streamImage').css('opacity', '1');
 	});
 
-	// Set source of SSH window
-	$("#ssh_iframe").attr("src", portString(4200));
-
 	// Load demo mode if on public webserver
-	$(window).load(function() {
-		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com") 
+	$(window).load(function () {
+		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com")
 			DemoMode();
 	});
-	
+
 	// Focus and element in a modal if it is specified
 	$(".modal").on('shown.bs.modal', function () {
-		$("#"+this.getAttribute("focus")).focus();
+		$("#" + this.getAttribute("focus")).focus();
+	});
+
+	// Set the src of the modal on first load only
+	$("#sshModal").on('shown.bs.modal', function () {
+		// Prevent refresh everytime the modal is loaded
+		if ($("#ssh_iframe").attr("src") == "") {
+			$("#ssh_iframe").attr("src", portString(4200));
+		}
 	});
 });
