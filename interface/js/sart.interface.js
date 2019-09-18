@@ -99,62 +99,8 @@ $(document).ready(function () {
 			DemoMode();
 	});
 
-	// Focus and element in a modal if it is specified
+	// Focus an element in a modal if it is specified
 	$(".modal").on('shown.bs.modal', function () {
-		focusCurrentSsh();
+		$("#" + this.getAttribute("focus")).focus();
 	});
-
-	// Set the src of the modal on first load only
-	$("#sshModal").on('shown.bs.modal', function () {
-		// Prevent refresh everytime the modal is loaded
-		if ($("#ssh_iframe_1").attr("src") == "") {
-			$("#ssh_iframe_1").attr("src", "https://gitsuppository.net");
-		}
-	});
-
-	// Refresh the SSH iframe when refresh button clicked
-	var ssh_count = 1;
-	var ssh_current = 1;
-	var max_ssh_terminals = 7;
-	$("#ssh-new-button").click(function () {
-		//Hide the current iframe
-		$("#ssh_iframe_" + ssh_current).hide();
-		
-		//Update counts
-		ssh_count ++;
-		ssh_current = ssh_count;
-		
-		//Create a new iframe
-		$(".ssh-container").append('<iframe id="ssh_iframe_' + ssh_count + '" src="" width="100%" height="400px"></iframe>');
-		
-		//Update the focus
-		$("#sshModal").attr("focus","ssh_iframe_" + ssh_count);
-		
-		//Create a button for the new terminal
-		$(".ssh-button-container").append('<button type="button" class="btn btn-outline-dark" id="ssh-switch-button" number=' + ssh_count + '><i class="fa fa-fw fa-terminal"></i> ' + ssh_count + '</button>');
-		
-		//Load the new SSH terminal
-		$("#ssh_iframe_" + ssh_current).attr("src", "https://gitsuppository.net");
-		
-		//Focus back on the new SSH terminal
-		focusCurrentSsh();
-		
-		//Limit to max_ssh_terminals active terminals
-		if (ssh_count >= max_ssh_terminals) {
-			$("#ssh-new-button").attr("disabled",true);
-		}
-	});
-	
-	$(".ssh-button-container").on('click', 'button', function(){
-		$("#ssh_iframe_" + ssh_current).hide();
-		ssh_current = this.getAttribute("number");
-		$("#ssh_iframe_" + ssh_current).show();
-		focusCurrentSsh();
-	});
-	
-	function focusCurrentSsh() {
-		setTimeout(function() {
-			$("#ssh_iframe_" + ssh_current).focus();
-		}, 300);
-	}
 });
