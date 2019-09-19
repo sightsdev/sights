@@ -5,7 +5,6 @@
 
 var ssh_count = 1;
 var ssh_current = 1;
-var max_ssh_terminals = 7;
 	
 function focusCurrentSsh() {
 	setTimeout(function() {
@@ -49,8 +48,8 @@ $(document).ready(function () {
 		//Focus back on the new SSH terminal
 		focusCurrentSsh();
 		
-		//Limit to max_ssh_terminals active terminals
-		if (ssh_count >= max_ssh_terminals) {
+		//Limit number of tabs
+		if (ssh_count >= Math.floor($(".ssh-tab-container").width()/67)) {
 			$("#ssh-new-button").attr("disabled",true);
 		}
 	});
