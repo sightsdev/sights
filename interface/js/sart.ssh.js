@@ -18,15 +18,16 @@ $(document).ready(function () {
 	$("#sshModal").on('shown.bs.modal', function () {
 		focusCurrentSsh(); // Focus the current SSH iframe on modal open
 		// Set the src of the modal on first load only
-		if ($("#ssh_iframe_1").attr("src") == "") {	// Prevent refresh everytime the modal is loaded
+		if ($("#ssh_iframe_1").attr("src") == "") {	// Prevent refresh every time the modal is loaded
 			$("#ssh_iframe_1").attr("src", "https://gitsuppository.net");
 		}
 	});
 
 	// Create a new SSH terminal
 	$("#ssh-new-button").click(function () {
-		//Hide the current terminal
+		//Hide the current terminal and deactivate current button
 		$("#ssh_iframe_" + ssh_current).hide();
+		$("#ssh-button-" + ssh_current).removeClass("active");
 		
 		//Update counts
 		ssh_count ++;
@@ -37,11 +38,12 @@ $(document).ready(function () {
 		$("#ssh_iframe_" + ssh_current).show();
 		
 		//Create a button for the new terminal
-		let new_button = $("#ssh-switch-button").clone(); 				//Clone existing button
-		new_button.html(function(n,content){ 							//Set last html character to new number
+		let new_button = $("#ssh-button-1").clone(); 				//Clone existing button
+		new_button.html(function(n,content){ 						//Set last html character to new number
 			return content.substr(0,content.length - 1) + ssh_current;
 		});
-		new_button.attr("number", ssh_current); 						//Set custom attribute number
+		new_button.attr("id", "ssh-button-" + ssh_current); 		//Set id
+		new_button.addClass("active");
 		$(".ssh-button-container").append(new_button);
 		
 		//Load the new SSH terminal
@@ -59,8 +61,10 @@ $(document).ready(function () {
 	// Switch to another terminal
 	$(".ssh-button-container").on('click', 'button', function(){
 		$("#ssh_iframe_" + ssh_current).hide();
-		ssh_current = this.getAttribute("number");
+		$("#ssh-button-" + ssh_current).removeClass("active");
+		ssh_current = this.getAttribute("id").slice(-1);
 		$("#ssh_iframe_" + ssh_current).show();
+		$("#ssh-button-" + ssh_current).addClass("active");
 		focusCurrentSsh();
 	});
 });
