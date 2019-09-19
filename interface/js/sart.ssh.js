@@ -49,7 +49,7 @@ $(document).ready(function () {
 		focusCurrentSsh();
 		
 		//Limit number of tabs
-		if (ssh_count >= Math.floor($(".ssh-tab-container").width()/67)) {
+		if (ssh_count >= Math.floor($(".ssh-tab-container").width()/67) || ssh_count >= 9) {
 			$("#ssh-new-button").attr("disabled",true);
 		}
 	});
