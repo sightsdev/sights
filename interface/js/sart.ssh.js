@@ -27,7 +27,7 @@ $(document).ready(function () {
 	$("#ssh-new-button").click(function () {
 		//Hide the current terminal and deactivate current button
 		$("#ssh_iframe_" + ssh_current).hide();
-		$("#ssh-button-" + ssh_current).removeClass("active");
+		$("#ssh-tab-" + ssh_current).removeClass("active");
 		
 		//Update counts
 		ssh_count ++;
@@ -38,13 +38,13 @@ $(document).ready(function () {
 		$("#ssh_iframe_" + ssh_current).show();
 		
 		//Create a button for the new terminal
-		let new_button = $("#ssh-button-1").clone(); 				//Clone existing button
-		new_button.html(function(n,content){ 						//Set last html character to new number
+		let new_tab = $("#ssh-tab-1").clone(); 				//Clone existing button
+		new_tab.html(function(n,content){ 						//Set last html character to new number
 			return content.substr(0,content.length - 1) + ssh_current;
 		});
-		new_button.attr("id", "ssh-button-" + ssh_current); 		//Set id
-		new_button.addClass("active");
-		$(".ssh-button-container").append(new_button);
+		new_tab.attr("id", "ssh-tab-" + ssh_current); 		//Set id
+		new_tab.addClass("active");
+		$(".ssh-tab-container").append(new_tab);
 		
 		//Load the new SSH terminal
 		$("#ssh_iframe_" + ssh_current).attr("src", "https://gitsuppository.net");
@@ -59,12 +59,12 @@ $(document).ready(function () {
 	});
 	
 	// Switch to another terminal
-	$(".ssh-button-container").on('click', 'button', function(){
+	$(".ssh-tab-container").click(function(){
 		$("#ssh_iframe_" + ssh_current).hide();
-		$("#ssh-button-" + ssh_current).removeClass("active");
-		ssh_current = this.getAttribute("id").slice(-1);
+		$("#ssh-tab-" + ssh_current).removeClass("active");
+		ssh_current = event.target.closest(".ssh-tab").getAttribute("id").slice(-1);
 		$("#ssh_iframe_" + ssh_current).show();
-		$("#ssh-button-" + ssh_current).addClass("active");
+		$("#ssh-tab-" + ssh_current).addClass("active");
 		focusCurrentSsh();
 	});
 });
