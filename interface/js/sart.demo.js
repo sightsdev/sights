@@ -31,7 +31,7 @@ function DemoMode() {
 	});
 
 	// SSH modal needs some content
-	$("#ssh_iframe").attr('src', 'https://gitsuppository.net/');
+	$(".ssh-container iframe").attr('src', 'https://gitsuppository.net/');	// Set src for currently open terminals
 
 	// Uptime
 	$("#uptime").html("4:18:22");

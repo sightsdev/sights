@@ -19,7 +19,7 @@ $(document).ready(function () {
 		focusCurrentSsh(); // Focus the current SSH iframe on modal open
 		// Set the src of the modal on first load only
 		if ($("#ssh_iframe_1").attr("src") == "") {	// Prevent refresh every time the modal is loaded
-			$("#ssh_iframe_1").attr("src", "https://gitsuppository.net");
+			$("#ssh_iframe_1").attr("src", portString(4200));
 		}
 	});
 
@@ -39,15 +39,12 @@ $(document).ready(function () {
 		
 		//Create a button for the new terminal
 		let new_tab = $("#ssh-tab-1").clone(); 				//Clone existing button
-		new_tab.html(function(n,content){ 						//Set last html character to new number
+		new_tab.html(function(n,content){ 				//Set last html character to new number
 			return content.substr(0,content.length - 1) + ssh_current;
 		});
 		new_tab.attr("id", "ssh-tab-" + ssh_current); 		//Set id
 		new_tab.addClass("active");
 		$(".ssh-tab-container").append(new_tab);
-		
-		//Load the new SSH terminal
-		$("#ssh_iframe_" + ssh_current).attr("src", "https://gitsuppository.net");
 		
 		//Focus back on the new SSH terminal
 		focusCurrentSsh();
