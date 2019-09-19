@@ -51,6 +51,7 @@ $(document).ready(function () {
 		//Limit number of tabs
 		if (ssh_count >= Math.floor($(".ssh-tab-container").width()/67) || ssh_count >= 9) {
 			$("#ssh-new-button").attr("disabled",true);
+			$("#ssh-new-button").parent.attr("rel", "");
 		}
 	});
 	
@@ -64,7 +65,7 @@ $(document).ready(function () {
 		focusCurrentSsh();
 	});
 	
-	// Rrefresh terminal
+	// Refresh terminal
 	$("#ssh-refresh-button").click(function () {
 		$("#ssh_iframe_" + ssh_current).attr("src", $("#ssh_iframe_" + ssh_current).attr("src"));
 		focusCurrentSsh();
