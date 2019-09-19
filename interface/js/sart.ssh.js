@@ -63,4 +63,10 @@ $(document).ready(function () {
 		$("#ssh-tab-" + ssh_current).addClass("active");
 		focusCurrentSsh();
 	});
+	
+	// Rrefresh terminal
+	$("#ssh-refresh-button").click(function () {
+		$("#ssh_iframe_" + ssh_current).attr("src", $("#ssh_iframe_" + ssh_current).attr("src"));
+		focusCurrentSsh();
+	});
 });
