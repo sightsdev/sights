@@ -5,7 +5,7 @@ All configuration for these scripts is done in `robot.json`, which can be edited
 
 Python 3.6 or greater is required due to the use of `asyncio`.
 
-Arduino code for sensor data can be found in the `Arduino/` directory.
+Sensors are handled through a modular sensor management wrapper class, and are individually in the `Sensors/` directory. Arduino code for sensor data can be found in the `Arduino/` directory.
 
 Configuration files for camera-streaming software [Motion](https://github.com/Motion-Project/motion) can be found in the `Motion/` directory. 
 
@@ -145,18 +145,22 @@ In the future, `manager.py` will be run as a service, but until then, the easies
 
 ```sh
 motion
-cd /opt/sart/SARTRobot/
-python3 manager.py
+python3 /opt/sart/SARTRobot/manager.py
 ```
 
 Note that `sudo` is not required, as `rc.local` is executed as the root user.
 
+## Usage
+
 If you don't wish to run it at boot, or simply wish to run it manually, you can, with:
 ```sh
-cd /opt/sart/SARTRobot/
-sudo python3 manager.py
+sudo python3 /opt/sart/SARTRobot/manager.py
 ```
-
+Other config files (default is `robot.json` in the installation directory) can be loaded with the `-c` flag:
+```sh
+sudo python3 /opt/sart/SARTRobot/manager.py -c ~/example_config.json
+```
+It will attempt to load the configuration file from the working directory.
 
 ## Scripts
 
