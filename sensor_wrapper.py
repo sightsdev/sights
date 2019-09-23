@@ -1,15 +1,19 @@
 import time
 
 class SensorWrapper:
-    def __init__(self, frequency, bus=None, address=None):
-        # How often to get data from this sensor
-        self.frequency = frequency
-        # i2c bus
+    def __init__(self, bus=None):
+        # i2c bus, if required
         self.bus = bus
-        # i2c address
-        self.address = address
         # Last time data get_data was called
         self.last_run = time.time()
+        # Disabled by default
+        self.enabled = False
+
+    def load_config(self, config):
+        # Whether or not sensor is enabled
+        self.enabled = config[self._key]['enabled']
+        # How often to get data from this sensor
+        self.frequency = config[self._key]['frequency']
 
     def get_data(self):
         return None

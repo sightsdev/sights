@@ -27,9 +27,12 @@ class SensorStream(WebSocketProcess):
         #self.i2cbus = SMBus(1)
         self.sensors = []
         #self.sensors.append(SGP30Wrapper(bus))
-        #self.sensors.append(MLX90614Wrapper(bus, config['sensors']['temperature']['address']))
-        self.sensors.append(CPUTempWrapper(1))
-        self.sensors.append(MemoryWrapper(5))
+        #self.sensors.append(MLX90614Wrapper(bus))
+        self.sensors.append(CPUTempWrapper())
+        self.sensors.append(MemoryWrapper())
+
+        for sensor in self.sensors:
+            sensor.load_config(self.config['sensors'])
 
     def get_data(self):
         # Create empty message

@@ -2,8 +2,10 @@ from sensor_wrapper import SensorWrapper
 from sgp30 import SGP30
 
 class SGP30Wrapper(SensorWrapper):
-    def __init__(self, frequency, bus, address):
-        SensorWrapper.__init__(self, frequency, bus, address)
+    _key = 'gas'
+
+    def __init__(self, bus):
+        SensorWrapper.__init__(self, bus)
         self.sensor = SGP30(self.bus)
         self.sensor.init_sgp()
 

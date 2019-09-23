@@ -2,8 +2,10 @@ from sensor_wrapper import SensorWrapper
 import psutil
 
 class MemoryWrapper(SensorWrapper):
-    def __init__(self, frequency):
-        SensorWrapper.__init__(self, frequency)
+    _key = 'memory'
+
+    def __init__(self):
+        SensorWrapper.__init__(self)
 
     def get_data(self):
         msg = {}
