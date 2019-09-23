@@ -49,7 +49,11 @@ $(document).ready(function() {
 	
 	// Focus the SSH terminal when the user switches tabs
 	$("#ssh-term-list").click(function(){
-		ssh_current = event.target.closest(".ssh-tab").getAttribute("id").replace(/[^0-9\.]/g, '');
-		focusCurrentSsh();
+		try {
+			ssh_current = event.target.closest(".ssh-tab").getAttribute("id").replace(/[^0-9\.]/g, '');
+			focusCurrentSsh();
+		} catch (e) {
+			return;
+		}
 	});
 });
