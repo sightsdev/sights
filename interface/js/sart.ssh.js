@@ -29,8 +29,6 @@ $(document).ready(function() {
 		$('#ssh-new-tab').before('<li class="nav-item ssh-tab" id="ssh-tab-'+ ssh_count +'"><a class="nav-link text-dark active" href="#ssh-term-' + ssh_count + '" role="tab" data-toggle="tab" aria-selected="true">' + ssh_tab_icon + ssh_count + '</a></li>');
         $('#ssh-term-content').append($('<div class="tab-pane fade active show" id="ssh-term-' + ssh_count + '"><iframe id="ssh_iframe_'+ ssh_count +'" src="'+ iframe_url +'" width="100%" height="400px" onload="focusCurrentSsh()"></iframe></div>'));
     });
-
-    var list = document.getElementById("ssh-term-list");
 	
 	$("#sshModal").on('shown.bs.modal', function () {
 		focusCurrentSsh(); // Focus the current SSH iframe on modal open
