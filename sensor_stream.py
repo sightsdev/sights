@@ -9,10 +9,8 @@ import json
 import serial
 
 class SensorStream(WebSocketProcess):
-    def __init__(self, mpid, pipe):
-        WebSocketProcess.__init__(self, mpid, pipe, 5556)
-        # Load config file
-        self.config = json.load(open('robot.json'))
+    def __init__(self, mpid, pipe, config_file):
+        WebSocketProcess.__init__(self, mpid, pipe, config_file, 5556)
         # Check if Arduino is enabled in config file
         self.arduino_enabled = self.config['arduino']['enabled']
 
@@ -26,21 +24,21 @@ class SensorStream(WebSocketProcess):
                 print("SERVER: Continuing without Arduino connection\n")
                 self.arduino_enabled = False
         # Setup i2c stuff
-        self.i2cbus = SMBus(1)
+        '''self.i2cbus = SMBus(1)
         self.sensors = []
         self.sensors.append(SGP30Wrapper(bus))
         self.sensors.append(MLX90614Wrapper(bus, config['sensors']['temperature']['address']))
-        self.sensors.append(SystemWrapper())
+        self.sensors.append(SystemWrapper())'''
 
     def get_data(self):
         # Create empty message
         msg = {}
 
         # i2c devices
-        for sensor in self.sensors:
+        '''for sensor in self.sensors:
             if (sensor.ready):
                 data = sensor.get_data()
-                msg.update(data)
+                msg.update(data)'''
 
         # Get data from Arduino
         if self.arduino_enabled:
@@ -75,7 +73,7 @@ class SensorStream(WebSocketProcess):
             
     async def send_config(self):
         # Prepare config file to be sent to client
-        self.config = json.load(open('robot.json'))
+        self.config = json.load(open(self.config_file))
         msg = {"config": self.config}
         await self.websocket.send(json.dumps(msg))
         print("SERVER: Sent configuration file")
@@ -117,6 +115,7 @@ class SensorStream(WebSocketProcess):
                 if self.pipe.poll():
                     # Handle message (received from control_receiver.py)
                     await self.pipe_message_handler(self.pipe.recv())
+                await asyncio.sleep(0.05)
                 # Send sensor data etc
                 await websocket.send(self.get_data())
             except websockets.exceptions.ConnectionClosed:

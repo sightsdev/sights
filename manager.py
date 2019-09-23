@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 from multiprocessing import Pipe
+from argparse import ArgumentParser
 from control_receiver import ControlReceiver
 from sensor_stream import SensorStream
 
-def main():
+def main(args):
     print("MANAGER: Starting manager process")
+    config_file = args.config_file
     # Create pipe. sensor_pipe receives, and control_pipe sends
     sensor_pipe, control_pipe = Pipe(duplex=False)
     # Create server and receiver processes
-    sensor_process = SensorStream(1, sensor_pipe)
-    control_process = ControlReceiver(2, control_pipe)
+    sensor_process = SensorStream(1, sensor_pipe, config_file)
+    control_process = ControlReceiver(2, control_pipe, config_file)
     # Create pipe for control_process to manager communication
     manager_pipe, super_pipe = Pipe(duplex=False)
     control_process.manager_pipe = super_pipe
@@ -38,9 +40,13 @@ def main():
 
 
 if __name__ == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument("-c", "--config", dest="config_file",
+                        help="load specified configuration file", metavar="<file>")
+    args = parser.parse_args()
     try:
         # If the restart flag is enabled we want to run the main function
-        while(main()):
+        while(main(args)):
             print("MANAGER: Going to restart")
         print("MANAGER: All processes ended")
     except KeyboardInterrupt:

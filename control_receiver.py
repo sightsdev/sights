@@ -9,10 +9,8 @@ from servo_party import ServoParty
 from websocketprocess import WebSocketProcess
 
 class ControlReceiver (WebSocketProcess):
-    def __init__(self, mpid, pipe):
-        WebSocketProcess.__init__(self, mpid, pipe, 5555)
-        # Load config file
-        self.config = json.load(open('robot.json'))
+    def __init__(self, mpid, pipe, config_file):
+        WebSocketProcess.__init__(self, mpid, pipe, config_file, 5555)
         # Create ServoParty to handle servos
         self.servo_party = ServoParty(self.config)
         # When script exits or is interrupted stop all servos
@@ -95,10 +93,10 @@ class ControlReceiver (WebSocketProcess):
 
     def save_config(self, cfg):
         # Save new config to file
-        with open('robot.json', 'w') as f:
+        with open(self.config_file, 'w') as f:
             f.write(cfg)
         # Reload config 
-        self.config = json.load(open('robot.json'))
+        self.config = json.load(open(self.config_file))
 
     def message_handler(self, buf):
         # Load object from JSON

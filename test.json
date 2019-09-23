@@ -1,6 +1,6 @@
 {
 	"network": {
-		"ip": "10.0.0.3"
+		"ip": "localhost"
 	},
 	"control": {
 		"default_gamepad_speed": 3,
@@ -49,6 +49,6 @@
 	},
 	"debug": {
 		"print_messages": false,
-		"use_virtual_servos": false
+		"use_virtual_servos": true
 	}
 }

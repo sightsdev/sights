@@ -1,14 +1,18 @@
 import websockets
 import asyncio
 import multiprocessing
+import json
 
 class WebSocketProcess (multiprocessing.Process):
-    def __init__(self, mpid, pipe, port):
+    def __init__(self, mpid, pipe, config_file, port):
         multiprocessing.Process.__init__(self)
         # Process ID
         self.mpid = mpid
          # Communication port to other processes
         self.pipe = pipe
+        # Load config file
+        self.config_file = config_file
+        self.config = json.load(open(self.config_file))
         # WebSocket port
         self.port = port
 
