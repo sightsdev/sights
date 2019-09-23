@@ -177,3 +177,9 @@ This script will stop the motors from spinning. Although there is a failsafe in 
 
 ### `auto_pid.py`
 This script allows the robot to run in autonomous mode. It's in very early stages currently but in the future, it will allow the robot to navigate any of the main courses autonomously.
+
+### `sensor_wrapper.py`
+This is a class that the files in the `sensors/` directory are inherited from. It provides a standard set of methods that each 'wrapper' will use. A wrapper is created for each sensor connected to the robot. This is to provide a simple and modular way to handle the variety of ways in which all the different sensor libraries work.
+
+### `websocket_process.py`
+This isn't too important. It just provides a template for the SensorStream and ControlReceiver classes to inherit from. It establishes the WebSocket connection for each process.
