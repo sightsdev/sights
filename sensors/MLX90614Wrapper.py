@@ -8,5 +8,6 @@ class MLX90614Wrapper(SensorWrapper):
 
     def get_data(self):
         msg = {}
+        # Get data and round to 1 dp
         msg["temp"][0] = round(self.sensor.get_object_1(), 1)
         return msg

@@ -1,7 +1,7 @@
 from sensor_wrapper import SensorWrapper
 import psutil
 
-class SystemWrapper(SensorWrapper):
+class CPUTempWrapper(SensorWrapper):
     def __init__(self, frequency):
         SensorWrapper.__init__(self, frequency)
 
@@ -23,10 +23,6 @@ class SystemWrapper(SensorWrapper):
                     highest_temp = current
             # Add to message
             msg["cpu_temp"] = highest_temp
-
-        # Add to message, use bit shift operator to represent in MB
-        msg["memory_used"] = psutil.virtual_memory().used >> 20
-
         return msg
 
     def get_info(self):
