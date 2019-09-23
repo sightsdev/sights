@@ -105,3 +105,15 @@ blink, .blink {
   right:-20px;
   top:20px;
 }
+
+/*Add margins back to buttons in ssh button container*/
+.ssh-button-container>:not(:first-child) {
+    margin-left: .25rem;
+}
+.ssh-button-container>:not(:last-child) {
+    margin-right: .25rem;
+}
+
+.ssh-tab, .ssh-tab:hover {
+	color: #343a40
+}

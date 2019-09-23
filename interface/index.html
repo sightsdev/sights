@@ -40,6 +40,7 @@
 	<script defer src="js/fontawesome/solid.js"></script>
 	<!-- S.A.R.T. Scripts -->
 	<script src="js/sart.interface.js"></script>
+	<script src="js/sart.ssh.js"></script>
 	<script src="js/sart.demo.js"></script>
 	<script src="js/sart.sensors.js"></script>
 	<script src="js/sart.charts.config.js"></script>
@@ -49,7 +50,7 @@
 
 <body>
 	<!-- SSH MODAL -->
-	<div class="modal fade top" focus="ssh_iframe" id="sshModal" role="dialog" data-backdrop="true">
+	<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header dragHeader" id="sshDrag">
@@ -58,12 +59,30 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">
-					<iframe id="ssh_iframe" src="" width="100%" height="400px"></iframe>
+				<div class="modal-body ssh-container">
+					<ul id="ssh-term-list" class="nav nav-tabs" role="tablist">
+						<li class="nav-item ssh-tab" id="ssh-tab-1">
+							<a class="nav-link text-dark active" href="#ssh-term-1" role="tab" data-toggle="tab" aria-selected="true"><i class="fa fa-fw fa-terminal"></i> 1</a>
+						</li>
+						<li class="nav-item" id="ssh-new-tab">
+							<span class="d-inline-block" rel="tooltip" data-placement="top" title="Open new tab">
+								<a class="nav-link text-dark" ><i class="fa fa-fw fa-plus"></i></a>
+							</span>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div id="ssh-term-content" class="tab-content">
+						<div class="tab-pane fade show active" id="ssh-term-1">
+							<iframe id="ssh_iframe_1" src="" width="100%" height="400px" onload="focusCurrentSsh()"></iframe>
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-warning btn-default" id="ssh-refresh-button"><i
-							class="fa fa-fw fa-redo"></i> Refresh</button>
+					<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Refresh current tab">
+						<button type="button" class="btn btn-warning btn-default" id="ssh-refresh-button"><i
+							class="fa fa-fw fa-redo-alt"></i> Refresh</button>
+					</span>
 					<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
 				</div>
 			</div>

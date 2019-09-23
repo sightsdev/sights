@@ -99,21 +99,8 @@ $(document).ready(function () {
 			DemoMode();
 	});
 
-	// Focus and element in a modal if it is specified
+	// Focus an element in a modal if it is specified
 	$(".modal").on('shown.bs.modal', function () {
 		$("#" + this.getAttribute("focus")).focus();
-	});
-
-	// Set the src of the modal on first load only
-	$("#sshModal").on('shown.bs.modal', function () {
-		// Prevent refresh everytime the modal is loaded
-		if ($("#ssh_iframe").attr("src") == "") {
-			$("#ssh_iframe").attr("src", portString(4200));
-		}
-	});
-
-	// Refresh the SSH iframe when refresh button clicked
-	$("#ssh-refresh-button").click(function () {
-		$("#ssh_iframe").attr("src", portString(4200));
 	});
 });
