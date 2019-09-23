@@ -10,7 +10,7 @@ Arduino code for sensor data can be found in the **_Arduino_** directory.
 Configuration files for camera-streaming software _Motion_ can be found in the **_Motion_** directory. 
 
 ## Installation
-Installation is preferably done to the `/opt/sart` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot). Since this directory is owned by root, you might need to run some commands 
+Installation is preferably done to the `/opt/sart` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot).
 
 ### 1. Setting up the installation directory
 
@@ -50,9 +50,14 @@ $ nano /opt/sart/SARTRobot/robot.json
 
 ### 3. Setting up Apache2
 
-A web server should be configured to point to the `SARTInterface` directory. I've chosen to use Apache2, but if you wish to use another webserver, you certainly can. Just configure it to point to `/opt/sart/SARTInterface`
+A web server should be configured to point to the `SARTInterface` directory. I've chosen to use Apache2, but if you wish to use another (perhaps a more lightweight) webserver, you certainly can. Just configure it to point to `/opt/sart/SARTInterface`
 
-1. Edit `/etc/apache2/apache2.conf` and add the following in the relevant section to allow Apache to access the `/opt/sart/` directory:
+1. Install Apache2 with:
+    ```sh
+    $ sudo apt install apache2
+    ```
+
+2. Edit `/etc/apache2/apache2.conf` and add the following in the relevant section to allow Apache to access the `/opt/sart/` directory:
 
     ```xml
     <Directory /opt/sart/>
@@ -62,7 +67,7 @@ A web server should be configured to point to the `SARTInterface` directory. I'v
     </Directory>
     ```
 
-2. Either create a new file in `/etc/apache2/sites-available` or edit the existing `000-default.conf` and change the `DocumentRoot` option, so it looks like this:
+3. Either create a new file in `/etc/apache2/sites-available` or edit the existing `000-default.conf` and change the `DocumentRoot` option, so it looks like this:
 
     ```xml
     <VirtualHost *:80>
@@ -74,7 +79,19 @@ A web server should be configured to point to the `SARTInterface` directory. I'v
     </VirtualHost>
 
     ```
-
+    If you created a new file, you will need to enable it (and disable the default) with:
+    ```sh
+    $ sudo a2ensite <new_site>.conf
+    $ sudo a2dissite 000-default.conf
+    ```
+    Regardless of new file or old, you'll need to reload Apache2 with:
+    ```sh
+    $ sudo service apache2 reload
+    ```
+    Or you might need to start the service, if it hasn't been already:
+    ```sh
+    $ sudo service apache2 start
+    ```
 ### 4. Setting up Motion
 
 Motion is part of the Debian, Ubuntu and Raspbian repositories and can be installed with:
