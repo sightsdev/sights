@@ -7,12 +7,12 @@
 		"default_keyboard_speed": 5
 	},
 	"servo": {
-		"port": "/dev/ttyACM0",
+		"port": "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00",
 		"baudrate": 1000000
 	},
 	"arduino": {
 		"enabled": false,
-		"port": "/dev/ttyACM1",
+		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
 		"baudrate": 115200
 	},
 	"cameras": {
