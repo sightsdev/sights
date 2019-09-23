@@ -42,7 +42,7 @@ def main(args):
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument("-c", "--config", dest="config_file",
-                        help="load specified configuration file", metavar="<file>")
+                        help="load specified configuration file", metavar="<file>", default="robot.json")
     args = parser.parse_args()
     try:
         # If the restart flag is enabled we want to run the main function
