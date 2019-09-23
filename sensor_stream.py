@@ -13,7 +13,7 @@ class SensorStream(WebSocketProcess):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5556)
         # Check if Arduino is enabled in config file
         self.arduino_enabled = self.config['arduino']['enabled']
-
+        # Attempt to open Arduino serial connection
         if (self.arduino_enabled):
             try:
                 # Attempt to open serial com with Arduino
@@ -25,12 +25,13 @@ class SensorStream(WebSocketProcess):
                 self.arduino_enabled = False
         # Setup i2c stuff
         #self.i2cbus = SMBus(1)
+        # Create list of sensors
         self.sensors = []
         #self.sensors.append(SGP30Wrapper(bus))
         #self.sensors.append(MLX90614Wrapper(bus))
         self.sensors.append(CPUTempWrapper())
         self.sensors.append(MemoryWrapper())
-
+        # Load configuration from file for each sensor
         for sensor in self.sensors:
             sensor.load_config(self.config['sensors'])
 
@@ -38,13 +39,14 @@ class SensorStream(WebSocketProcess):
         # Create empty message
         msg = {}
 
-        # i2c devices
+        # Get data from each Sensor
         for sensor in self.sensors:
-            if (sensor.ready()):
+            # Ensure time elapsed is greater than frequency
+            if (sensor.is_ready()):
                 data = sensor.get_data()
                 msg.update(data)
 
-        # Get data from Arduino
+        # Get data from Arduino. This is only here for backwards compatibility
         if self.arduino_enabled:
             buf = self.ser.readline().decode("UTF-8")
             # If string begins with "D:", it's distance
@@ -91,8 +93,9 @@ class SensorStream(WebSocketProcess):
 
     async def send_init_info(self):
         msg = {}
-        # Send the configuration file on startup
+        # Send the configuration file and it's filename on startup
         msg["config"] = self.config
+        msg["config_file"] = self.config_file
         # Even though these are part of the config object, we send them seperately
         # Since we don't want the speed resetting every time we edit the config 
         msg["kb_speed"] = self.config['control']['default_keyboard_speed'] * 128 - 1
@@ -104,7 +107,7 @@ class SensorStream(WebSocketProcess):
         msg["memory_total"] = psutil.virtual_memory().total >> 20
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
-        print("SERVER: Send initial message")
+        print("SERVER: Sent initial message")
 
     async def main(self, websocket, path):
         print("SERVER: Client connected")

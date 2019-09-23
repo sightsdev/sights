@@ -21,10 +21,13 @@ class SensorWrapper:
     def get_info(self):
         return None        
 
-    def ready(self):
+    def is_ready(self):
+        # Time since last checked
         elapsed_time = time.time() - self.last_run
         if (elapsed_time > self.frequency):
+            # Store current time as last_time 
             self.last_run = time.time()
-            return True
+            # Only return True if sensor is actually enabled
+            return self.enabled
         else:
             return False
