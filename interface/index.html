@@ -60,14 +60,22 @@
 					</button>
 				</div>
 				<div class="modal-body ssh-container">
-					<ul class="nav nav-tabs ssh-tab-container">
-						<a class="nav-link ssh-tab active" id="ssh-tab-1" href="#"><i class="fa fa-fw fa-terminal"></i> 1</a>
+					<ul id="ssh-term-list" class="nav nav-tabs" role="tablist">
+						<li class="nav-item" id="ssh-tab-1">
+							<a class="nav-link text-dark active" href="#ssh-term-1" role="tab" data-toggle="tab" aria-selected="true"><i class="fa fa-fw fa-terminal"></i> 1</a>
+						</li>
 					</ul>
-					<iframe id="ssh_iframe_1" src="" width="100%" height="400px"></iframe>
+
+					<!-- Tab panes -->
+					<div id="ssh-term-content" class="tab-content">
+						<div class="tab-pane fade show active" id="ssh-term-1">
+							<iframe id="ssh_iframe_1" src="" width="100%" height="400px"></iframe>
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Open new tab">
-						<button type="button" class="btn btn-warning btn-default" id="ssh-new-button"><i
+						<button type="button" class="btn btn-warning btn-default" id="ssh-new-tab"><i
 							class="fa fa-fw fa-plus-square"></i> New</button>
 					</span>
 					<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Refresh current tab">
