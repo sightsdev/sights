@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from smbus2 import SMBus
-from websocketprocess import WebSocketProcess
+from websocket_process import WebSocketProcess
 from sensors import *
 import websockets
 import asyncio

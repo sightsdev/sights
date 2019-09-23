@@ -6,7 +6,7 @@ import json
 import math
 import atexit
 from servo_party import ServoParty
-from websocketprocess import WebSocketProcess
+from websocket_process import WebSocketProcess
 
 class ControlReceiver (WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
