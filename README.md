@@ -3,34 +3,158 @@ The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.
 
 The Python scripts require at least Python 3.6 due to it's use of _asyncio_.
 
-All configuration for these scripts is done in `robot.json`, including com port settings,
+All configuration for these scripts is done in `robot.json`, which can be edited through the web interface. The only configuration option that must be done manually is the robot's IP address, as that defines what address the WebSocket server will bind to.
 
 Arduino code for sensor data can be found in the **_Arduino_** directory.
 
 Configuration files for camera-streaming software _Motion_ can be found in the **_Motion_** directory. 
 
-## Quick Installation
-Clone this repository, as well as [`SARTInterface`](https://github.com/SFXRescue/SARTInterface). A web server (e.g. `apache2`) should be configured to point to the `SARTInterface` directory. 
+## Installation
+Installation is preferably done to the `/opt/sart` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot). Since this directory is owned by root, you might need to run some commands 
 
-Install the required packages with `pip3 install pyax12 websockets psutil` (non-exhaustive list)
+### 1. Setting up the installation directory
 
-The _Motion_ config files can be copied into the `~/.motion` directory and the _Motion_ daemon can then be started with `sudo motion`. A better option (in case the config files are updated) is to point to the config files in the repository either with a symlink or _Motion_'s `-c` option. 
+First, you'll want to create that directory, and we'll make it owned by the `sart` user for convenience:
+```sh
+$ sudo mkdir /opt/sart
+$ sudo chown sart:sart /opt/sart
+```
 
-The main program can be ran with `sudo python3 manager.py`.
+### 2. Downloading the software
+
+Next clone this repository, as well as [`SARTInterface`](https://github.com/SFXRescue/SARTInterface). 
+
+```sh
+$ cd /opt/sart
+$ git clone https://github.com/SFXRescue/SARTRobot
+$ git clone https://github.com/SFXRescue/SARTInterface
+```
+
+Then install SARTRobot's dependencies with:
+
+```sh
+$ cd /opt/sart/SARTRobot
+$ python3 -m pip install -r requirements.txt
+```
+
+Edit `robot.json` and change the value of `ip` to the robot's IP address:
+```s
+$ nano /opt/sart/SARTRobot/robot.json
+```
+
+```json
+    "network": {
+		"ip": "<robot_ip>"
+	},
+```
+
+### 3. Setting up Apache2
+
+A web server should be configured to point to the `SARTInterface` directory. I've chosen to use Apache2, but if you wish to use another webserver, you certainly can. Just configure it to point to `/opt/sart/SARTInterface`
+
+1. Edit `/etc/apache2/apache2.conf` and add the following in the relevant section to allow Apache to access the `/opt/sart/` directory:
+
+    ```xml
+    <Directory /opt/sart/>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+    ```
+
+2. Either create a new file in `/etc/apache2/sites-available` or edit the existing `000-default.conf` and change the `DocumentRoot` option, so it looks like this:
+
+    ```xml
+    <VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /opt/sart/SARTInterface
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+    </VirtualHost>
+
+    ```
+
+### 4. Setting up Motion
+
+Motion is part of the Debian, Ubuntu and Raspbian repositories and can be installed with:
+
+```sh
+$ sudo apt install motion
+```
+However, you might want to get the latest version from the [official repository](https://github.com/Motion-Project/motion).
+
+The provided `motion.conf` file should be copied into the `/etc/motion/` directory.
+
+```sh
+$ cp /opt/sart/SARTRobot/Motion/motion.conf /etc/motion/
+```
+
+Keep in mind that this file points to the individual camera config files in `/opt/sart/SARTRobot/Motion`.
+
+Motion can be started with the command:
+```sh
+$ motion
+```
+
+### 5. Setting up ShellInABox
+[ShellInABox](https://github.com/shellinabox/shellinabox) is a web-based terminal emulator that is integrated into the interface to provide easy access to the underlying OS.
+
+It can be installed with:
+```sh
+$ sudo apt install shellinabox
+```
+Since we're running only over a local network and don't want to use SSL, we can disable SSL by editing the `ShellInABox` config file:
+```sh
+$ sudo nano /etc/default/shellinabox
+```
+And changing the final line so it reads:
+```sh
+SHELLINABOX_ARGS="--no-beep --disable-ssl"
+```
+You can then start the service with:
+```
+$ sudo service shellinabox start
+```
+To test it out, navigate to `http://<robot_ip>:4200`
+
+### 6. Running at boot
+
+All we need to do now is ensure that both `motion` and `SARTRobot`'s `manager.py` both run on boot.
+
+Keep in mind that `manager.py` needs to be run as root for shutdown and reboot functionality to work.
+
+In the future, `manager.py` will be run as a service, but until then, the easiest method is to edit `/etc/rc.local` and add the following lines _before_ the final line which should read `exit 0`
+
+```sh
+motion
+cd /opt/sart/SARTRobot/
+python3 manager.py
+```
+
+If you don't wish to run it at boot, or simply wish to run it manually, you can, with:
+```sh
+cd /opt/sart/SARTRobot/
+sudo python3 manager.py
+```
+
 
 ## Scripts
 
-### _servo_party.py_
+### `manager.py`
+This is the main script that handles running the server and receiver. It essentially runs the `sensor_stream.py` and `control_receiver.py` scripts in parallel, and handles restarting those scripts as well as shutting down and rebooting the robot.
+
+### `sensor_stream.py`
+This is the server part of the software. This script handles getting various sensor data from the robot and connected Arduino or I²C devices, and then streaming it to the control panel via the WebSocket server. This includes all the data from the distance, temperature and gas sensors. It uses the Python module psutil to get the CPU usage, highest CPU core temperature, total RAM and current RAM usage from the board itself.
+
+### `control_receiver.py`
+This is the receiver part of the software. This script handles receiving information from the SARTInterface. It runs a WebSocket client, which receives a JSON formatted string from the control panel. The string contains all the required data from the interface, including controller information, such as button and axis events. It processes this and using _servo_party.py_, calculates the appropriate speed and power distribution of the servos based on the thumb-stick or trigger values. This script also handles keyboard controls and various other messages from the interface, such as shutdown and reboot requests.
+
+### `servo_party.py`
 This script provides a reusable class to control the movement of the robot and is used by the control script and autonomy scripts. It manages connecting to the servos via the _pyax12_ library. It provides convenient functions for setting up and moving the servos as well as an option for virtual servos (useful for testing).
 
-### _control_receiver.py_
-This script handles the movement of the robot via the SARTInterface. It runs a WebSocket client, which receives a JSON formatted string from the control panel. The string contains all the required data from the controller, such as what buttons are pressed and what position the thumb sticks and triggers are at. It processes this and calculates the appropriate speed and power distribution of the servos based on the thumb-stick or trigger values. The robot also supports keyboard controls. This script also handles various other messages from the interface, such as shutdown requests.
+### `stop_servos.py`
+This script will stop the motors from spinning. Although there is a failsafe in each of the main scripts that turns off the servos if the script stops, this provides a backup in case of an internal Python or system error. 
 
-### _sensor_stream.py_
-This script handles getting various sensor data from a connected Arduino, the i2c bus, and system data and then streaming it to the control panel via a WebSocket server. This includes all the data from the distance, temperature and gas sensors from the Arduino. It uses the Python module psutil to get the CPU usage, highest CPU core temperature, total RAM and current RAM usage from the board itself.
-
-### _stop_servos.py_
-In case of the all-to-common crash which leaves all the motors still spinning, this script will stop the motors from spinning. Although there is a failsafe in each of the main scripts that turns off the servos if the script stops, this provides a backup in case of an internal Python or system error.
-
-### _auto_pid.py_
+### `auto_pid.py`
 This script allows the robot to run in autonomous mode. It's in very early stages currently but in the future, it will allow the robot to navigate any of the main courses autonomously.
