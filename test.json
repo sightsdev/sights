@@ -34,17 +34,32 @@
 		}
 	},
 	"sensors": {
+		"memory": {
+			"enabled": true,
+			"frequency": 3
+		},
+		"cpu_temp": {
+			"enabled": true,
+			"frequency": 5
+		},
 		"thermal_camera": {
 			"enabled": true,
+			"frequency": 0.5,
 			"width": 32,
 			"height": 24
 		},
 		"temperature": {
 			"enabled": true,
+			"frequency": 2,
 			"address": "0x5A"
 		},
 		"distance": {
-			"enabled": true
+			"enabled": true,
+			"frequency": 2
+		},
+		"gas": {
+			"enabled": true,
+			"frequency": 2
 		}
 	},
 	"debug": {
