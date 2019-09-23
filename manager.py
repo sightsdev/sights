@@ -3,6 +3,7 @@ from multiprocessing import Pipe
 from argparse import ArgumentParser
 from control_receiver import ControlReceiver
 from sensor_stream import SensorStream
+import os
 
 def main(args):
     print("MANAGER: Starting manager process")
@@ -40,10 +41,16 @@ def main(args):
 
 
 if __name__ == '__main__':
+    # Get the directory that this script exists in, in typical ugly Python fashion
+    path = os.path.dirname(os.path.realpath(__file__))
+
+    # Setup argument parser for config file loading
     parser = ArgumentParser()
     parser.add_argument("-c", "--config", dest="config_file",
-                        help="load specified configuration file", metavar="<file>", default="robot.json")
+                        help="load specified configuration file", metavar="<file>", default=path+"/robot.json")
     args = parser.parse_args()
+    
+    # Main program loop
     try:
         # If the restart flag is enabled we want to run the main function
         while(main(args)):
