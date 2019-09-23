@@ -1,16 +1,16 @@
 # SARTRobot
 The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark III / IV rescue robot.
 
-The Python scripts require at least Python 3.6 due to it's use of _asyncio_.
-
 All configuration for these scripts is done in `robot.json`, which can be edited through the web interface. The only configuration option that must be done manually is the robot's IP address, as that defines what address the WebSocket server will bind to.
 
-Arduino code for sensor data can be found in the **_Arduino_** directory.
+Python 3.6 or greater is required due to the use of `asyncio`.
 
-Configuration files for camera-streaming software _Motion_ can be found in the **_Motion_** directory. 
+Arduino code for sensor data can be found in the `Arduino/` directory.
+
+Configuration files for camera-streaming software [Motion](https://github.com/Motion-Project/motion) can be found in the `Motion/` directory. 
 
 ## Installation
-Installation is preferably done to the `/opt/sart` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot).
+Installation is preferably done to the `/opt/sart` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues.
 
 ### 1. Setting up the installation directory
 
@@ -84,7 +84,7 @@ A web server should be configured to point to the `SARTInterface` directory. I'v
     $ sudo a2ensite <new_site>.conf
     $ sudo a2dissite 000-default.conf
     ```
-    Regardless of new file or old, you'll need to reload Apache2 with:
+4. Regardless of new file or old, you'll need to reload Apache2 with:
     ```sh
     $ sudo service apache2 reload
     ```
@@ -104,7 +104,7 @@ However, you might want to get the latest version from the [official repository]
 The provided `motion.conf` file should be copied into the `/etc/motion/` directory.
 
 ```sh
-$ cp /opt/sart/SARTRobot/Motion/motion.conf /etc/motion/
+$ sudo cp /opt/sart/SARTRobot/Motion/motion.conf /etc/motion/
 ```
 
 Keep in mind that this file points to the individual camera config files in `/opt/sart/SARTRobot/Motion`.
@@ -137,7 +137,7 @@ To test it out, navigate to `http://<robot_ip>:4200`
 
 ### 6. Running at boot
 
-All we need to do now is ensure that both `motion` and `SARTRobot`'s `manager.py` both run on boot.
+All we need to do now is ensure that both `motion` and `SARTRobot`'s `manager.py` run on boot.
 
 Keep in mind that `manager.py` needs to be run as root for shutdown and reboot functionality to work.
 
@@ -148,6 +148,8 @@ motion
 cd /opt/sart/SARTRobot/
 python3 manager.py
 ```
+
+Note that `sudo` is not required, as `rc.local` is executed as the root user.
 
 If you don't wish to run it at boot, or simply wish to run it manually, you can, with:
 ```sh
