@@ -2,28 +2,32 @@ from sensor_wrapper import SensorWrapper
 import psutil
 
 class SystemWrapper(SensorWrapper):
-    def __init__(self, bus, address, frequency):
-        SensorWrapper.__init__(bus, address, frequency)
+    def __init__(self, frequency):
+        SensorWrapper.__init__(self, frequency)
 
     def get_data(self):
         msg = {}
         # Get highest CPU temp from system
         temp_data = psutil.sensors_temperatures()
-        if len(temp_data) != 0:
+        # Check if we can get temp sensors (since it might be empty on Windows systems)
+        if temp_data:
             highest_temp = 0.0
+            # Compare CPU core temps and find highest value
             for i in temp_data['coretemp']:
                 if (i.current > highest_temp):
                     highest_temp = i.current
+            # Some systems (e.g. Nvidia Jetson) will report it in this 
+            if (temp_data['thermal-fan-est']):
+                current = temp_data['thermal-fan-est'][0].current
+                if (current > highest_temp):
+                    highest_temp = current
             # Add to message
-            msg["cpu_temp"] = str(highest_temp)
-        #msg["cpu_temp"] = str(psutil.sensors_temperatures()['thermal-fan-est'][0].current)
+            msg["cpu_temp"] = highest_temp
 
-        # Get RAM in use and total RAM
-        memory = psutil.virtual_memory()
         # Add to message, use bit shift operator to represent in MB
-        msg["memory_used"] = memory.used >> 20
+        msg["memory_used"] = psutil.virtual_memory().used >> 20
 
         return msg
 
     def get_info(self):
-        return self.sensor.read_features() + self.sensor.read_serial()
+        return psutil.sensors_temperatures()

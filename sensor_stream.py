@@ -24,21 +24,21 @@ class SensorStream(WebSocketProcess):
                 print("SERVER: Continuing without Arduino connection\n")
                 self.arduino_enabled = False
         # Setup i2c stuff
-        '''self.i2cbus = SMBus(1)
+        #self.i2cbus = SMBus(1)
         self.sensors = []
-        self.sensors.append(SGP30Wrapper(bus))
-        self.sensors.append(MLX90614Wrapper(bus, config['sensors']['temperature']['address']))
-        self.sensors.append(SystemWrapper())'''
+        #self.sensors.append(SGP30Wrapper(bus))
+        #self.sensors.append(MLX90614Wrapper(bus, config['sensors']['temperature']['address']))
+        self.sensors.append(SystemWrapper(1))
 
     def get_data(self):
         # Create empty message
         msg = {}
 
         # i2c devices
-        '''for sensor in self.sensors:
-            if (sensor.ready):
+        for sensor in self.sensors:
+            if (sensor.ready()):
                 data = sensor.get_data()
-                msg.update(data)'''
+                msg.update(data)
 
         # Get data from Arduino
         if self.arduino_enabled:
@@ -115,9 +115,13 @@ class SensorStream(WebSocketProcess):
                 if self.pipe.poll():
                     # Handle message (received from control_receiver.py)
                     await self.pipe_message_handler(self.pipe.recv())
-                await asyncio.sleep(0.05)
                 # Send sensor data etc
-                await websocket.send(self.get_data())
+                data = self.get_data()
+                # Make sure data is not empty
+                if data != "{}":
+                    await websocket.send(data)
+                # Short sleep to prevent issues
+                await asyncio.sleep(0.05)
             except websockets.exceptions.ConnectionClosed:
                 print("SERVER: Client disconnected")
                 break
