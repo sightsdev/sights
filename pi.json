@@ -3,8 +3,9 @@
 		"ip": "10.0.0.11"
 	},
 	"servo": {
-		"port": "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00",
-		"baudrate": 1000000
+		"type": "serial",
+		"port": "/dev/ttyAMA0",
+		"baudrate": 9600
 	},
 	"cameras": {
 		"right": {
@@ -63,7 +64,6 @@
 		"default_keyboard_speed": 3
 	},
 	"debug": {
-		"print_messages": false,
-		"use_virtual_servos": true
+		"print_messages": false
 	}
 }

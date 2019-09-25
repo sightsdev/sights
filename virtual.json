@@ -7,7 +7,8 @@
 		"default_keyboard_speed": 3
 	},
 	"servo": {
-		"port": "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00",
+		"type": "virtual",
+		"port": "/dev/null",
 		"baudrate": 1000000
 	},
 	"arduino": {
@@ -63,7 +64,6 @@
 		}
 	},
 	"debug": {
-		"print_messages": false,
-		"use_virtual_servos": true
+		"print_messages": false
 	}
 }
