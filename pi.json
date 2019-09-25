@@ -1,0 +1,69 @@
+{
+	"network": {
+		"ip": "10.0.0.11"
+	},
+	"servo": {
+		"port": "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00",
+		"baudrate": 1000000
+	},
+	"cameras": {
+		"right": {
+			"port": 8084,
+			"enabled": false
+		},
+		"front": {
+			"port": 8081,
+			"enabled": true
+		},
+		"back": {
+			"port": 8082,
+			"enabled": false
+		},
+		"left": {
+			"port": 8083,
+			"enabled": false
+		}
+	},
+	"arduino": {
+		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
+		"baudrate": 115200,
+		"enabled": false
+	},
+	"sensors": {
+		"temperature": {
+			"address": "0x5A",
+			"frequency": 2,
+			"enabled": false
+		},
+		"gas": {
+			"frequency": 2,
+			"enabled": false
+		},
+		"distance": {
+			"frequency": 2,
+			"enabled": false
+		},
+		"memory": {
+			"frequency": 3,
+			"enabled": true
+		},
+		"cpu_temp": {
+			"frequency": 5,
+			"enabled": false
+		},
+		"thermal_camera": {
+			"width": 32,
+			"height": 24,
+			"frequency": 0.5,
+			"enabled": false
+		}
+	},
+	"control": {
+		"default_gamepad_speed": 3,
+		"default_keyboard_speed": 3
+	},
+	"debug": {
+		"print_messages": false,
+		"use_virtual_servos": true
+	}
+}

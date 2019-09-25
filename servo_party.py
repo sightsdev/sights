@@ -2,6 +2,8 @@
 from pyax12.connection import Connection
 from pyax12.status_packet import RangeError
 from enum import IntEnum
+import serial
+import time
 
 class Servo(IntEnum):
     LEFT_FRONT = 1
@@ -41,13 +43,15 @@ class ServoParty:
             self.sc = VirtualConnection()
         else:
             self.sc = Connection(port=self.port, baudrate=self.baudrate)
+        self.ser = serial.Serial(port='/dev/ttyAMA0', baudrate=9600, )
 
     def stop(self):
         # Set all servos to 0
-        self.sc.set_speed(1, 0)
-        self.sc.set_speed(2, 0)
-        self.sc.set_speed(3, 0)
-        self.sc.set_speed(4, 0)
+        self.ser.write(bytes([0]))
+        #self.sc.set_speed(1, 0)
+        #self.sc.set_speed(2, 0)
+        #self.sc.set_speed(3, 0)
+        #self.sc.set_speed(4, 0)
         self.last_left = 0
         self.last_right = 0
     
@@ -55,7 +59,7 @@ class ServoParty:
         # Set all servos to 0
         self.stop();
         # Close the connection
-        self.sc.close()
+        #self.sc.close()
 
     def setup_servo(self, dynamixel_id):
         # Set the "wheel mode"
@@ -63,7 +67,15 @@ class ServoParty:
         self.sc.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
 
     def move_raw(self, left, right):
-        try:
+        # Left side
+        val = 64 + round(63 / 100 * max(min(left, 100), -100))
+        self.ser.write(bytes([val]))
+        # Right side
+        val = 192 + round(63 / 100 * max(min(right, 100), -100))
+        self.ser.write(bytes([val]))
+        
+        
+        '''try:
             # Left side
             self.sc.set_speed(Servo.LEFT_FRONT, left)
             self.sc.set_speed(Servo.LEFT_BACK, left)
@@ -72,22 +84,27 @@ class ServoParty:
             self.sc.set_speed(Servo.RIGHT_BACK, right)
         except:
             self.crash(left, right)
+    '''
 
     def move_raw_left(self, left):
-        # Left side
+        val = 64 + round(63 / 100 * max(min(left, 100), -100))
+        self.ser.write(bytes([val]))
+        '''# Left side
         try:
             self.sc.set_speed(Servo.LEFT_FRONT, left)
             self.sc.set_speed(Servo.LEFT_BACK, left)
         except:
-            self.crash(left, None)
+            self.crash(left, None)'''
 
     def move_raw_right(self, right):
+        val = 192 + round(63 / 100 * max(min(right, 100), -100))
+        self.ser.write(bytes([val]))
         # Right side
-        try:
+        '''try:
             self.sc.set_speed(Servo.RIGHT_FRONT, right)
             self.sc.set_speed(Servo.RIGHT_BACK, right)
         except:
-            self.crash(None, right)
+            self.crash(None, right)'''
         
     def crash(self, left, right):
         self.close()
@@ -100,15 +117,15 @@ class ServoParty:
         # Make sure we don't have any decimals
         left = round(left)
         right = round(right)
-
-        # Different motors need to spin in different directions. We account for that here.
-        if (left < 0):
+    
+    # Different motors need to spin in different directions. We account for that here.
+        '''if (left < 0):
             left *= -1
             left += 1024
         if (right < 0):
             right *= -1
         elif right < 1024:
-            right += 1024
+            right += 1024'''
 
         # Only send message if it's different to the last one
         if (independent):
