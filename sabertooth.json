@@ -2,33 +2,37 @@
 	"network": {
 		"ip": "10.0.0.11"
 	},
+	"control": {
+		"default_gamepad_speed": 3,
+		"default_keyboard_speed": 3
+	},
 	"servo": {
 		"type": "serial",
 		"port": "/dev/ttyAMA0",
 		"baudrate": 9600
 	},
+	"arduino": {
+		"enabled": false,
+		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
+		"baudrate": 115200
+	},
 	"cameras": {
 		"right": {
-			"port": 8084,
-			"enabled": false
+			"enabled": false,
+			"port": 8084
 		},
 		"front": {
-			"port": 8081,
-			"enabled": true
+			"enabled": true,
+			"port": 8081
 		},
 		"back": {
-			"port": 8082,
-			"enabled": false
+			"enabled": false,
+			"port": 8082
 		},
 		"left": {
-			"port": 8083,
-			"enabled": false
+			"enabled": false,
+			"port": 8083
 		}
-	},
-	"arduino": {
-		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
-		"baudrate": 115200,
-		"enabled": false
 	},
 	"sensors": {
 		"temperature": {
@@ -58,10 +62,6 @@
 			"frequency": 0.5,
 			"enabled": false
 		}
-	},
-	"control": {
-		"default_gamepad_speed": 3,
-		"default_keyboard_speed": 3
 	},
 	"debug": {
 		"print_messages": false

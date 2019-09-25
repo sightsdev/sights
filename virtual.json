@@ -7,9 +7,7 @@
 		"default_keyboard_speed": 3
 	},
 	"servo": {
-		"type": "virtual",
-		"port": "/dev/null",
-		"baudrate": 1000000
+		"type": "virtual"
 	},
 	"arduino": {
 		"enabled": false,
@@ -17,21 +15,21 @@
 		"baudrate": 115200
 	},
 	"cameras": {
+		"right": {
+			"enabled": false,
+			"port": 8084
+		},
 		"front": {
 			"enabled": true,
 			"port": 8081
 		},
 		"back": {
-			"enabled": true,
+			"enabled": false,
 			"port": 8082
 		},
 		"left": {
 			"enabled": false,
 			"port": 8083
-		},
-		"right": {
-			"enabled": false,
-			"port": 8084
 		}
 	},
 	"sensors": {
