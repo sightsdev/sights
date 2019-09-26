@@ -114,7 +114,8 @@ $(document).ready(function () {
 		let url = new URL($(this).closest('.cameraWrapper').find('.streamImage').attr("src"));
 		let cameraId = url.port.charAt(url.port.length-1);
 		let cameraWrapper = $(this).closest('.cameraWrapper')
-		$.get('http://' + ip + ':8080/' + cameraId + '/action/snapshot', function(){
+		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot'
+		$.get(snapshot_url, function(){
 			cameraWrapper.fadeOut(150).fadeIn(150);
 			let link = document.createElement('a');
 			link.href = 'images/downloads/screenshot.jpg';

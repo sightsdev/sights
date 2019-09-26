@@ -5,6 +5,7 @@
 
 // Populate SARTInterface with dummy data to demonstrate what a functional setup looks like
 function DemoMode() {
+	demo = true;
 	// CPU temp graph
 	$("#cputemp_level").html("45&degC");
 	$("#cputemp_graph").attr('class', "c100 med orange center p45");
