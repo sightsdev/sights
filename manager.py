@@ -77,7 +77,7 @@ if __name__ == '__main__':
                         dest="config_file", 
                         help="load specified configuration file", 
                         metavar="<file>", 
-                        default=path+"/robot.json")
+                        default=path+"/configs/default.json")
     # Actually parse the arguments
     args = parser.parse_args()
     
