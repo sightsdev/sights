@@ -1,12 +1,13 @@
 {
 	"network": {
-		"ip": "localhost"
+		"ip": "10.0.0.3"
 	},
 	"control": {
 		"default_gamepad_speed": 3,
 		"default_keyboard_speed": 3
 	},
 	"servo": {
+		"type": "dynamixel",
 		"port": "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00",
 		"baudrate": 1000000
 	},
@@ -63,7 +64,6 @@
 		}
 	},
 	"debug": {
-		"print_messages": false,
-		"use_virtual_servos": true
+		"print_messages": false
 	}
 }

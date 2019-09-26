@@ -1,0 +1,69 @@
+{
+	"network": {
+		"ip": "10.0.0.11"
+	},
+	"control": {
+		"default_gamepad_speed": 3,
+		"default_keyboard_speed": 3
+	},
+	"servo": {
+		"type": "serial",
+		"port": "/dev/ttyAMA0",
+		"baudrate": 9600
+	},
+	"arduino": {
+		"enabled": false,
+		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
+		"baudrate": 115200
+	},
+	"cameras": {
+		"right": {
+			"enabled": false,
+			"port": 8084
+		},
+		"front": {
+			"enabled": true,
+			"port": 8081
+		},
+		"back": {
+			"enabled": false,
+			"port": 8082
+		},
+		"left": {
+			"enabled": false,
+			"port": 8083
+		}
+	},
+	"sensors": {
+		"temperature": {
+			"address": "0x5A",
+			"frequency": 2,
+			"enabled": false
+		},
+		"gas": {
+			"frequency": 2,
+			"enabled": false
+		},
+		"distance": {
+			"frequency": 2,
+			"enabled": false
+		},
+		"memory": {
+			"frequency": 3,
+			"enabled": true
+		},
+		"cpu_temp": {
+			"frequency": 5,
+			"enabled": false
+		},
+		"thermal_camera": {
+			"width": 32,
+			"height": 24,
+			"frequency": 0.5,
+			"enabled": false
+		}
+	},
+	"debug": {
+		"print_messages": false
+	}
+}

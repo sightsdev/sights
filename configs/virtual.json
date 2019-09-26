@@ -1,14 +1,13 @@
 {
 	"network": {
-		"ip": "10.0.0.3"
+		"ip": "localhost"
 	},
 	"control": {
 		"default_gamepad_speed": 3,
 		"default_keyboard_speed": 3
 	},
 	"servo": {
-		"port": "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00",
-		"baudrate": 1000000
+		"type": "virtual"
 	},
 	"arduino": {
 		"enabled": false,
@@ -16,21 +15,21 @@
 		"baudrate": 115200
 	},
 	"cameras": {
+		"right": {
+			"enabled": false,
+			"port": 8084
+		},
 		"front": {
 			"enabled": true,
 			"port": 8081
 		},
 		"back": {
-			"enabled": true,
+			"enabled": false,
 			"port": 8082
 		},
 		"left": {
 			"enabled": false,
 			"port": 8083
-		},
-		"right": {
-			"enabled": false,
-			"port": 8084
 		}
 	},
 	"sensors": {
@@ -63,7 +62,6 @@
 		}
 	},
 	"debug": {
-		"print_messages": false,
-		"use_virtual_servos": false
+		"print_messages": false
 	}
 }
