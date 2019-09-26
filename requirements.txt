@@ -4,3 +4,4 @@ websockets==7.0
 pyserial==3.4
 PySGP30
 PyMLX90614
+smbus2
