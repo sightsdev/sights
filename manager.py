@@ -44,6 +44,12 @@ if __name__ == '__main__':
     # Get the directory that this script exists in, in typical ugly Python fashion
     path = os.path.dirname(os.path.realpath(__file__))
 
+    # Save process ID to file
+    pid = str(os.getpid())
+    with open(path + '/../sart.pid', 'w') as f:
+        f.write(pid)
+    print("MANAGER: PID", pid)
+
     # Setup argument parser for config file loading
     parser = ArgumentParser()
     parser.add_argument("-c", "--config", dest="config_file",
