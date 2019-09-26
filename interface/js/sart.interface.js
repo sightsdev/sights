@@ -41,23 +41,6 @@ function toggleSensorMode() {
 	}
 }
 
-function forceDownload(url, fileName){
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "blob";
-    xhr.onload = function(){
-        var urlCreator = window.URL || window.webkitURL;
-        var imageUrl = urlCreator.createObjectURL(this.response);
-        var tag = document.createElement('a');
-        tag.href = imageUrl;
-        tag.download = fileName;
-        document.body.appendChild(tag);
-        tag.click();
-        document.body.removeChild(tag);
-    }
-    xhr.send();
-}
-
 
 $(document).ready(function () {
 
@@ -127,8 +110,18 @@ $(document).ready(function () {
 	});
 	
 	$('.camera-screenshot-button').click(function() {
-		let downloadLink = $(this).closest('.cameraWrapper').find('.streamImage').attr("src");
-		forceDownload(downloadLink, "screenshot.jpg");
-		//document.body.removeChild(link);
+		//Get camera ID from port. Safe for up to 9 cameras as long as properly configured in motion.
+		let url = new URL($(this).closest('.cameraWrapper').find('.streamImage').attr("src"));
+		let cameraId = url.port.charAt(url.port.length-1);
+		$.get('http://' + ip + ':8080/' + cameraId + '/action/snapshot', function(){
+			let link = document.createElement('a');
+			link.href = 'images/downloads/screenshot.jpg';
+			link.download = 'screenshot.jpg';
+			link.target = "_blank";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		});
+		
 	});
 });
