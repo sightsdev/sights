@@ -121,12 +121,12 @@ $(document).ready(function () {
 		$("#" + this.getAttribute("focus")).focus();
 	});
 	
-	$('#camera-refresh-button').click(function() {
+	$('.camera-refresh-button').click(function() {
 		let stream = $(this).closest('.cameraWrapper').find('.streamImage')
 		stream.attr('src', $(stream).attr('src') + '?');
 	});
 	
-	$('#camera-screenshot-button').click(function() {
+	$('.camera-screenshot-button').click(function() {
 		let downloadLink = $(this).closest('.cameraWrapper').find('.streamImage').attr("src");
 		forceDownload(downloadLink, "screenshot.jpg");
 		//document.body.removeChild(link);
