@@ -106,7 +106,7 @@ $(document).ready(function () {
 	
 	$('.camera-refresh-button').click(function() {
 		let stream = $(this).closest('.cameraWrapper').find('.streamImage')
-		stream.attr('src', stream.attr("port"));
+		stream.attr('src', stream.attr("refresh_src") + '?' + Math.random());
 	});
 	
 	$('.camera-screenshot-button').click(function() {

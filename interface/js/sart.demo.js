@@ -25,9 +25,10 @@ function DemoMode() {
 	distChart.update();
 
 	// Camera streams, load dummy images
-	$('.streamImage').each(function (index, value) {
-		value.src = 'https://picsum.photos/575/430?' + Math.random();
-		value.className = "streamImage";
+	$('.streamImage').each(function (index) {
+		$(this).attr('src','https://picsum.photos/575/430?' + Math.random());
+		$(this).attr('refresh_src','https://picsum.photos/575/430?' + Math.random());
+		$(this).className = "streamImage";
 	});
 
 	// SSH modal needs some content
