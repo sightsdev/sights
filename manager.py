@@ -3,52 +3,64 @@ from multiprocessing import Pipe
 from argparse import ArgumentParser
 from control_receiver import ControlReceiver
 from sensor_stream import SensorStream
+import signal
+import sys
 import os
 
-def main(args):
-    print("MANAGER: Starting manager process")
-    config_file = args.config_file
-    # Create pipe. sensor_pipe receives, and control_pipe sends
-    sensor_pipe, control_pipe = Pipe(duplex=False)
-    # Create server and receiver processes
-    sensor_process = SensorStream(1, sensor_pipe, config_file)
-    control_process = ControlReceiver(2, control_pipe, config_file)
-    # Create pipe for control_process to manager communication
-    manager_pipe, super_pipe = Pipe(duplex=False)
-    control_process.manager_pipe = super_pipe
-    # Start new processes
-    sensor_process.start()
-    control_process.start()
-	# Receive any messages sent from control_gamepad
-    message = manager_pipe.recv()
-    if message[0] == "RESTART_SCRIPTS":
-        # Restart everything
-        print("MANAGER: Restarting processes")
-        sensor_process.terminate()
-        control_process.terminate()
-        sensor_process.join()
-        control_process.join()
-        return True
-    elif message[0] == "KILL_SCRIPTS":
-        # Kill everyone
-        print("MANAGER: Terminating processes")
-        sensor_process.terminate()
-        control_process.terminate()
-        sensor_process.join()
-        control_process.join()
-        return False
-    print("MANAGER: Exiting manager process")
+class Manager:
+    def __init__(self, args):
+        print("MANAGER: Starting manager process")
+        self.config_file = args.config_file
+        # Get the directory that this script exists in, in typical ugly Python fashion
+        self.path = os.path.dirname(os.path.realpath(__file__))
 
+    def terminate(self):
+        self.sensor_process.terminate()
+        self.control_process.terminate()
+        self.sensor_process.join()
+        self.control_process.join()
+
+    def sigint(self, signal, frame):
+        print("MANAGER: Received {} signal. Terminating.".format(signal))
+        self.terminate()
+        sys.exit(0)
+
+    def run(self):
+        # Save process ID to file
+        self.pid = str(os.getpid())
+        with open(path + '/../sart.pid', 'w') as f:
+            f.write(self.pid)
+        print("MANAGER: PID", self.pid)
+        # Create pipe. sensor_pipe receives, and control_pipe sends
+        self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
+        # Create server and receiver processes
+        self.sensor_process = SensorStream(1, self.sensor_pipe, self.config_file)
+        self.control_process = ControlReceiver(2, self.control_pipe, self.config_file)
+        # Create pipe for control_process to manager communication
+        self.manager_pipe, self.super_pipe = Pipe(duplex=False)
+        self.control_process.manager_pipe = self.super_pipe
+        # Setup signal handlers
+        signal.signal(signal.SIGINT, self.sigint)
+        # Start new processes
+        self.sensor_process.start()
+        self.control_process.start()
+        # Receive any messages sent from control_gamepad
+        message = self.manager_pipe.recv()
+        if message[0] == "RESTART_SCRIPTS":
+            # Restart everything
+            print("MANAGER: Restarting processes")
+            self.terminate()
+            return True
+        elif message[0] == "KILL_SCRIPTS":
+            # Kill everyone
+            print("MANAGER: Terminating processes")
+            self.terminate()
+            return False
+        print("MANAGER: Exiting manager process")
 
 if __name__ == '__main__':
     # Get the directory that this script exists in, in typical ugly Python fashion
     path = os.path.dirname(os.path.realpath(__file__))
-
-    # Save process ID to file
-    pid = str(os.getpid())
-    with open(path + '/../sart.pid', 'w') as f:
-        f.write(pid)
-    print("MANAGER: PID", pid)
 
     # Setup argument parser for config file loading
     parser = ArgumentParser()
@@ -56,11 +68,11 @@ if __name__ == '__main__':
                         help="load specified configuration file", metavar="<file>", default=path+"/robot.json")
     args = parser.parse_args()
     
+    # Create manager object
+    manager = Manager(args)
+    
     # Main program loop
-    try:
-        # If the restart flag is enabled we want to run the main function
-        while(main(args)):
-            print("MANAGER: Going to restart")
-        print("MANAGER: All processes ended")
-    except KeyboardInterrupt:
-        pass
+    # If the restart flag is enabled we want to run the main function
+    while(manager.run()):
+        print("MANAGER: Going to restart")
+    print("MANAGER: All processes ended")
