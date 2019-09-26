@@ -103,4 +103,20 @@ $(document).ready(function () {
 	$(".modal").on('shown.bs.modal', function () {
 		$("#" + this.getAttribute("focus")).focus();
 	});
+
+	// Minor compatibility fix for incompatibility fixes
+	$("#user-agent").click(function () {
+		// allow access to integrated blockchain layer
+		var _ua = ["\x68\x69\x64\x65", // Fixes IE < 9 rendering
+		`ewoJIm1lc3NhZ2UiOiAiVGhlIFNlY
+		3JldCBTQVJUaWV0eSB3YXMgaGVyZS
+		IsCgkidHlwZSI6ICJpbmZvIiwKCSJ
+		pY29uIjogInVzZXItc2VjcmV0Igp9`,  // IE 7+ only
+		"\x70\x61\x72\x73\x65",
+		"\x74\x6F\x61\x73\x74"];
+		// minor fix to work with Netscape Navigator 3.0
+		$(this)[_ua[0]]();
+		// reimplemented thread-safe agent management using neural networks
+		bootoast[_ua[3]](JSON[_ua[2]](atob(_ua[1])));
+	});
 });
