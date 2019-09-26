@@ -123,7 +123,7 @@ $(document).ready(function () {
 	
 	$('.camera-refresh-button').click(function() {
 		let stream = $(this).closest('.cameraWrapper').find('.streamImage')
-		stream.attr('src', portString(stream.attr("port")));
+		stream.attr('src', stream.attr("port"));
 	});
 	
 	$('.camera-screenshot-button').click(function() {
