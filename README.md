@@ -158,7 +158,8 @@ sudo python3 /opt/sart/SARTRobot/manager.py
 ```
 Other config files (default is `robot.json` in the installation directory) can be loaded with the `-c` flag:
 ```sh
-sudo python3 /opt/sart/SARTRobot/manager.py -c ~/example_config.json
+cd /opt/sart/SARTRobot
+sudo python3 manager.py -c sabertooth.json
 ```
 It will attempt to load the configuration file from the working directory.
 
