@@ -14,7 +14,11 @@ class CPUTempWrapper(SensorWrapper):
         # Check if 'coretemp' is reported by psutil
         if 'coretemp' in temp_data:
             # Find highest CPU core temp
-            msg['cpu_temp'] = max(temp_data['coretemp'])
+            highest = 0
+            for core in temp_data['coretemp']:
+                if core.current > highest:
+                    highest = core.current
+            msg['cpu_temp'] = highest
         # Some systems (e.g. Nvidia Jetson) will report temp differently
         elif 'thermal-fan-est' in temp_data:
             msg['cpu_temp'] = temp_data['thermal-fan-est'][0].current
