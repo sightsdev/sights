@@ -10,11 +10,13 @@ import os
 class Manager:
     def __init__(self, args):
         print("MANAGER: Starting manager process")
+        # Store config file name
         self.config_file = args.config_file
         # Get the directory that this script exists in, in typical ugly Python fashion
         self.path = os.path.dirname(os.path.realpath(__file__))
 
     def terminate(self):
+        # Terminate the two processes we spawn
         self.sensor_process.terminate()
         self.control_process.terminate()
         self.sensor_process.join()
@@ -22,7 +24,9 @@ class Manager:
 
     def sigint(self, signal, frame):
         print("MANAGER: Received {} signal. Terminating.".format(signal))
+        # Make sure we terminate the child processes to prevent a zombie uprising
         self.terminate()
+        # Also kill this process too
         sys.exit(0)
 
     def run(self):
@@ -49,12 +53,16 @@ class Manager:
         if message[0] == "RESTART_SCRIPTS":
             # Restart everything
             print("MANAGER: Restarting processes")
+            # Terminate child processes
             self.terminate()
+            # Restart
             return True
         elif message[0] == "KILL_SCRIPTS":
             # Kill everyone
             print("MANAGER: Terminating processes")
+            # Terminate child processes
             self.terminate()
+            # Do not restart
             return False
         print("MANAGER: Exiting manager process")
 
@@ -64,8 +72,13 @@ if __name__ == '__main__':
 
     # Setup argument parser for config file loading
     parser = ArgumentParser()
-    parser.add_argument("-c", "--config", dest="config_file",
-                        help="load specified configuration file", metavar="<file>", default=path+"/robot.json")
+    # Create argument for config file
+    parser.add_argument("-c", "--config", 
+                        dest="config_file", 
+                        help="load specified configuration file", 
+                        metavar="<file>", 
+                        default=path+"/robot.json")
+    # Actually parse the arguments
     args = parser.parse_args()
     
     # Create manager object
