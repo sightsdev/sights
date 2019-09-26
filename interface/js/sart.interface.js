@@ -41,6 +41,23 @@ function toggleSensorMode() {
 	}
 }
 
+function forceDownload(url, fileName){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.responseType = "blob";
+    xhr.onload = function(){
+        var urlCreator = window.URL || window.webkitURL;
+        var imageUrl = urlCreator.createObjectURL(this.response);
+        var tag = document.createElement('a');
+        tag.href = imageUrl;
+        tag.download = fileName;
+        document.body.appendChild(tag);
+        tag.click();
+        document.body.removeChild(tag);
+    }
+    xhr.send();
+}
+
 
 $(document).ready(function () {
 
@@ -102,5 +119,16 @@ $(document).ready(function () {
 	// Focus an element in a modal if it is specified
 	$(".modal").on('shown.bs.modal', function () {
 		$("#" + this.getAttribute("focus")).focus();
+	});
+	
+	$('#camera-refresh-button').click(function() {
+		let stream = $(this).closest('.cameraWrapper').find('.streamImage')
+		stream.attr('src', $(stream).attr('src') + '?');
+	});
+	
+	$('#camera-screenshot-button').click(function() {
+		let downloadLink = $(this).closest('.cameraWrapper').find('.streamImage').attr("src");
+		forceDownload(downloadLink, "screenshot.jpg");
+		//document.body.removeChild(link);
 	});
 });

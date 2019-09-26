@@ -26,7 +26,7 @@ function DemoMode() {
 
 	// Camera streams, load dummy images
 	$('.streamImage').each(function (index, value) {
-		value.src = 'images/demo_' + value.id + '.jpg';
+		value.src = 'https://picsum.photos/575/430?' + Math.random();
 		value.className = "streamImage";
 	});
 
