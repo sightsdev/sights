@@ -2,7 +2,7 @@
 	Created by the Semi Autonomous Rescue Team
 	Licensed under the GNU General Public License 3.0
 */
-
+var demo = false;
 // Populate SARTInterface with dummy data to demonstrate what a functional setup looks like
 function DemoMode() {
 	demo = true;
