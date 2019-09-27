@@ -125,6 +125,7 @@ $(document).ready(function () {
 			link.click();
 			document.body.removeChild(link);
 		});
+	});
 
 	// Minor compatibility fix for incompatibility fixes
 	$("#user-agent").click(function () {
