@@ -117,3 +117,15 @@ blink, .blink {
 .ssh-tab, .ssh-tab:hover {
 	color: #343a40
 }
+
+.cameraButtons {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	display: none;
+}
+
+.cameraWrapper:hover .cameraButtons {
+	display: inline-block;
+}
+

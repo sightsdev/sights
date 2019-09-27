@@ -103,6 +103,29 @@ $(document).ready(function () {
 	$(".modal").on('shown.bs.modal', function () {
 		$("#" + this.getAttribute("focus")).focus();
 	});
+  
+	$('.camera-refresh-button').click(function() {
+		let stream = $(this).closest('.cameraWrapper').find('.streamImage')
+		stream.attr('src', stream.attr("refresh_src") + '?' + Math.random());
+	});
+	
+	$('.camera-screenshot-button').click(function() {
+		//Get camera ID from port. Safe for up to 9 cameras as long as properly configured in motion.
+		let url = new URL($(this).closest('.cameraWrapper').find('.streamImage').attr("src"));
+		let cameraId = url.port.charAt(url.port.length-1);
+		let cameraWrapper = $(this).closest('.cameraWrapper')
+		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot'
+		$.get(snapshot_url, function(){
+			cameraWrapper.fadeOut(150).fadeIn(150);
+			let link = document.createElement('a');
+			link.href = 'images/downloads/screenshot.jpg';
+			link.download = 'screenshot.jpg';
+			link.target = "_blank";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		});
+	});
 
 	// Minor compatibility fix for incompatibility fixes
 	$("#user-agent").click(function () {

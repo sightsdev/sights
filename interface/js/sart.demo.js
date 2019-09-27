@@ -2,9 +2,10 @@
 	Created by the Semi Autonomous Rescue Team
 	Licensed under the GNU General Public License 3.0
 */
-
+var demo = false;
 // Populate SARTInterface with dummy data to demonstrate what a functional setup looks like
 function DemoMode() {
+	demo = true;
 	// CPU temp graph
 	$("#cputemp_level").html("45&degC");
 	$("#cputemp_graph").attr('class', "c100 med orange center p45");
@@ -25,9 +26,10 @@ function DemoMode() {
 	distChart.update();
 
 	// Camera streams, load dummy images
-	$('.streamImage').each(function (index, value) {
-		value.src = 'images/demo_' + value.id + '.jpg';
-		value.className = "streamImage";
+	$('.streamImage').each(function (index) {
+		$(this).attr('src','https://picsum.photos/575/430?' + Math.random());
+		$(this).attr('refresh_src','https://picsum.photos/575/430?' + Math.random());
+		$(this).className = "streamImage";
 	});
 
 	// SSH modal needs some content

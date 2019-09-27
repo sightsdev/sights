@@ -78,7 +78,9 @@ function update_cameras(config) {
 		// Enable the div, if camera is enabled in config file
 		config[e]['enabled'] ? card.show() : card.hide();
 		// Set the images's src attribute to be the relevant port
-		$("#camera_" + e).attr("src", portString(config[e]['port']));
+		let camera = $("#camera_" + e)
+		camera.attr("src", portString(config[e]['port']));
+		camera.attr("port", portString(config[e]['port']));
 	});
 	if (config['front']['enabled'] &&
 		!config['back']['enabled'] &&
