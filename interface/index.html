@@ -510,9 +510,15 @@
 			<div class="col-md-auto" id="thermal_camera_card">
 				<div class="card">
 					<div class="card-header">
-						<i class="fas fa-fw fa-camera"></i> Thermal Camera
+						<i class="fas fa-fw fa-camera"></i> Thermal Camera 
+						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Overlay">
+							<button type="button" class="btn btn-outline-dark btn-sm py-0" id="thermal-overlay-button"><i
+							class="fa fa-xs fa-arrow-up"></i></button>
+						</span>
 					</div>
-					<div id="thermal_camera"></div>
+					<div id="thermal_camera_container">
+						<div id="thermal_camera"></div>
+					</div>
 				</div>
 			</div>
 			<div class="col-md-auto" id="temperature_card">

@@ -126,6 +126,27 @@ $(document).ready(function () {
 			document.body.removeChild(link);
 		});
 	});
+	
+	// Whether the thermal camera is overlayed on the main camera
+	var overlayed = false;
+	//Swap thermal overlay on click
+	$('#thermal-overlay-button').click(function() {
+		if(!overlayed) {
+			$('#thermal_camera').css({ 'opacity' : 0.2 });
+			$('#camera_front').css({'filter': 'grayscale(100%)'});
+			$('#camera_front').after($('#thermal_camera'));
+			$('#thermal-overlay-button').toggleClass('fa-rotate-180')
+			overlayed = true;
+		}
+		else {
+			$('#thermal_camera').css({ 'opacity' : 1 });
+			$('#thermal_camera_container').append($('#thermal_camera'));
+			$('#camera_front').css({'filter': ''});
+			$('#thermal-overlay-button').toggleClass('fa-rotate-180')
+			overlayed = false;
+		}
+		
+	});
 
 	// Minor compatibility fix for incompatibility fixes
 	$("#user-agent").click(function () {
