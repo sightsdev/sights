@@ -188,3 +188,54 @@ This is a class that the files in the `sensors/` directory are inherited from. I
 
 ### `websocket_process.py`
 This isn't too important. It just provides a template for the SensorStream and ControlReceiver classes to inherit from. It establishes the WebSocket connection for each process.
+
+## Configuration file options
+
+Configuration files contain the following options:
+
+### `network`
+`ip`
+
+The ip address of the robot (e.g. 10.0.0.3). The WebSocket server and client will attempt to bind to this address.
+
+### `control`
+
+`default_gamepad_speed`
+
+Default gamepad speed option between 1 and 8.
+
+`default_keyboard_speed`
+
+Default keyboard speed option between 1 and 8.
+
+### `servo`
+>_Note: This may be renamed in the future to `motors`._
+
+`type`
+
+Type of servo connection to use. Available options:
+- `dynamixel` for Dynamixel AX series servos
+- `serial` for Sabertooth motor controllers
+- `virtual` for a virtual servo connection (for testing)
+
+`port`
+
+Serial port to connect over (e.g. `/dev/ttyACM0`). Not required for virtual connection.
+
+`baudrate`
+
+Baudrate to connect to the specified serial port with. 
+
+### `cameras`
+
+For each camera, if the `enabled` option is set, it will be shown on the interface. The port that the interface will attempt to load the camera stream from is defined in the `port` option. Note that these settings don't modify the Motion settings, and are meant to be set to whatever has been set in the relevant Motion config files.
+
+### `sensors`
+Each sensor will have _at least_ an `enabled` option, to enable the sensor, and a `frequency` option which defines (in seconds) how often the sensor is polled.
+
+Some sensors will have an additional `address` option to set the I<sup>2</sup>C address.
+
+### `debug`
+`print_messages`
+
+Print any messages received from the interface to the console.
