@@ -118,14 +118,14 @@ blink, .blink {
 	color: #343a40
 }
 
-.cameraButtons {
+.camera-buttons {
 	position: absolute;
 	left: 20px;
 	top: 20px;
 	display: none;
 }
 
-.cameraWrapper:hover .cameraButtons {
+.camera-container:hover .camera-buttons {
 	display: inline-block;
 }
 

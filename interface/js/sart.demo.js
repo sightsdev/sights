@@ -26,10 +26,10 @@ function DemoMode() {
 	distChart.update();
 
 	// Camera streams, load dummy images
-	$('.streamImage').each(function (index) {
+	$('.stream-image').each(function (index) {
 		$(this).attr('src','https://picsum.photos/575/430?' + Math.random());
 		$(this).attr('refresh_src','https://picsum.photos/575/430?' + Math.random());
-		$(this).className = "streamImage";
+		$(this).className = "stream-image";
 	});
 
 	// SSH modal needs some content
@@ -74,11 +74,11 @@ function DemoMode() {
 		charge: 0.97,
 		cpu_temp: 45,
 	};
-	$("#sensor-monitor-pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
+	$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
 	// Controller status indicator
-	$("#controller-status-connected").show();
-	$("#controller-status-disconnected").hide();
+	$("#controller_status_connected").show();
+	$("#controller_status_disconnected").hide();
 	// Create corresponding toast
 	bootoast.toast({
 		"message": "Controller connected",
@@ -87,7 +87,7 @@ function DemoMode() {
 		"position": "left-bottom"
 	});
 	// Active gamepad dropdown menu
-	$('#gamepadSelect').html('<option value="0" id="gamepad">Xbox 360 Controller</option>');
+	$('#gamepad_select').html('<option value="0" id="gamepad">Xbox 360 Controller</option>');
 
 	// Gamepad monitor data
 	obj = {
@@ -113,7 +113,7 @@ function DemoMode() {
 		"RIGHT_STICK_X": 0,
 		"RIGHT_STICK_Y": 0.03492790460586548
 	}
-	$('#gamepad-monitor-pre').html(hljs.highlight("JSON",JSON.stringify(obj, null, '\t')).value);
+	$('#gamepad_monitor_pre').html(hljs.highlight("JSON",JSON.stringify(obj, null, '\t')).value);
 
 	// Config editor box
 	obj = {
@@ -170,7 +170,7 @@ function DemoMode() {
 		}
 	}
 	var yaml = jsyaml.safeDump(obj, indent = 4);
-	$("#config-editor-pre").html(hljs.highlight("YAML", yaml).value);
+	$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
 	// Set robot connection status indicator
 	$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
@@ -185,9 +185,9 @@ function DemoMode() {
 	});
 
 	// Hide 'Demo Mode' button and the seperator near it
-	$("#power-options-divider").hide();
-	$("#demo-mode-button").hide();
+	$("#power_options_divider").hide();
+	$("#demo_mode_button").hide();
 
 	// Icing on the cake
-	$("#demo-mode-indicator").show();
+	$("#demo_mode_indicator").show();
 }

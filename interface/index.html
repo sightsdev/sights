@@ -50,7 +50,7 @@
 
 <body>
 	<!-- SSH MODAL -->
-	<div class="modal fade top" id="sshModal" role="dialog" data-backdrop="true">
+	<div class="modal fade top" id="ssh_modal" role="dialog" data-backdrop="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -60,11 +60,11 @@
 					</button>
 				</div>
 				<div class="modal-body ssh-container">
-					<ul id="ssh-term-list" class="nav nav-tabs" role="tablist">
-						<li class="nav-item ssh-tab" id="ssh-tab-1">
-							<a class="nav-link text-dark active" href="#ssh-term-1" role="tab" data-toggle="tab" aria-selected="true"><i class="fa fa-fw fa-terminal"></i> 1</a>
+					<ul id="ssh_term_list" class="nav nav-tabs" role="tablist">
+						<li class="nav-item ssh-tab" id="ssh_tab_1">
+							<a class="nav-link text-dark active" href="#ssh_term_1" role="tab" data-toggle="tab" aria-selected="true"><i class="fa fa-fw fa-terminal"></i> 1</a>
 						</li>
-						<li class="nav-item" id="ssh-new-tab">
+						<li class="nav-item" id="ssh_new_tab">
 							<span class="d-inline-block" rel="tooltip" data-placement="top" title="Open new tab">
 								<a class="nav-link text-dark" ><i class="fa fa-fw fa-plus"></i></a>
 							</span>
@@ -72,15 +72,15 @@
 					</ul>
 
 					<!-- Tab panes -->
-					<div id="ssh-term-content" class="tab-content">
-						<div class="tab-pane fade show active" id="ssh-term-1">
+					<div id="ssh_term_content" class="tab-content">
+						<div class="tab-pane fade show active" id="ssh_term_1">
 							<iframe id="ssh_iframe_1" src="" width="100%" height="400px" onload="focusCurrentSsh()" class="rounded-bottom"></iframe>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Refresh current tab">
-						<button type="button" class="btn btn-warning btn-default" id="ssh-refresh-button"><i
+						<button type="button" class="btn btn-warning btn-default" id="ssh_refresh_button"><i
 							class="fa fa-fw fa-redo-alt"></i> Refresh</button>
 					</span>
 					<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
@@ -89,7 +89,7 @@
 		</div>
 	</div>
 	<!-- LOG MODAL -->
-	<div class="modal fade top" id="logModal" role="dialog" data-backdrop="true">
+	<div class="modal fade top" id="log_modal" role="dialog" data-backdrop="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -99,45 +99,45 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<ul class="nav nav-tabs" id="logTab" role="tablist">
+					<ul class="nav nav-tabs" id="log_tab" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link text-dark active" id="gamepad-monitor-tab" data-toggle="tab"
-								href="#gamepad-monitor" role="tab" aria-controls="gamepad-monitor"
+							<a class="nav-link text-dark active" id="gamepad_monitor_tab" data-toggle="tab"
+								href="#gamepad_monitor" role="tab" aria-controls="gamepad_monitor"
 								aria-selected="true"><i class="fa fa-fw fa-gamepad"></i> Gamepad Monitor</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" id="sensor-monitor-tab" data-toggle="tab"
-								href="#sensor-monitor" role="tab" aria-controls="sensor-monitor"
+							<a class="nav-link text-dark" id="sensor_monitor_tab" data-toggle="tab"
+								href="#sensor_monitor" role="tab" aria-controls="sensor_monitor"
 								aria-selected="false"><i class="fa fa-fw fa-chart-area"></i> Sensor Monitor</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" id="gamepad-log-tab" data-toggle="tab" href="#gamepad-log"
-								role="tab" aria-controls="gamepad-log" aria-selected="false"><i
+							<a class="nav-link text-dark" id="gamepad_log_tab" data-toggle="tab" href="#gamepad_log"
+								role="tab" aria-controls="gamepad_log" aria-selected="false"><i
 									class="fa fa-fw fa-inbox"></i> Message Log</a>
 						</li>
 					</ul>
-					<div class="tab-content" id="logTabContent">
-						<div class="tab-pane fade show active" id="gamepad-monitor" role="tabpanel"
-							aria-labelledby="gamepad-monitor-tab">
+					<div class="tab-content" id="log_tab_content">
+						<div class="tab-pane fade show active" id="gamepad_monitor" role="tabpanel"
+							aria-labelledby="gamepad_monitor_tab">
 							<p>
-								<pre><code id="gamepad-monitor-pre" class="JSON rounded" contenteditable="true"></code></pre>
+								<pre><code id="gamepad_monitor_pre" class="JSON rounded" contenteditable="true"></code></pre>
 							</p>
 						</div>
-						<div class="tab-pane fade" id="sensor-monitor" role="tabpanel"
-							aria-labelledby="sensor-monitor-tab">
+						<div class="tab-pane fade" id="sensor_monitor" role="tabpanel"
+							aria-labelledby="sensor_monitor_tab">
 							<p>
-								<pre><code id="sensor-monitor-pre" class="JSON rounded" contenteditable="true"></code></pre>
+								<pre><code id="sensor_monitor_pre" class="JSON rounded" contenteditable="true"></code></pre>
 							</p>
 						</div>
-						<div class="tab-pane fade" id="gamepad-log" role="tabpanel" aria-labelledby="gamepad-log-tab">
-							<br /><button type="button" class="btn btn-secondary" id="gamepad-log-select-button">
+						<div class="tab-pane fade" id="gamepad_log" role="tabpanel" aria-labelledby="gamepad_log_tab">
+							<br /><button type="button" class="btn btn-secondary" id="gamepad_log_select_button">
 								<i class="fa fa-fw fa-check-square"></i> Select All
 							</button>
-							<button type="button" class="btn btn-danger" id="gamepad-log-clear-button">
+							<button type="button" class="btn btn-danger" id="gamepad_log_clear_button">
 								<i class="fa fa-fw fa-trash-alt"></i> Clear
 							</button>
 							<p>
-								<pre><code id="gamepad-log-pre" class="JSON rounded" contenteditable="true"></code></pre>
+								<pre><code id="gamepad_log_pre" class="JSON rounded" contenteditable="true"></code></pre>
 							</p>
 						</div>
 					</div>
@@ -146,7 +146,7 @@
 		</div>
 	</div>
 	<!-- SETTINGS MODAL -->
-	<div class="modal fade top" id="settingsModal" role="dialog" data-backdrop="true">
+	<div class="modal fade top" id="settings_modal" role="dialog" data-backdrop="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -156,57 +156,57 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<ul class="nav nav-tabs" id="settingsTab" role="tablist">
+					<ul class="nav nav-tabs" id="settings_tab" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link text-dark active" id="config-editor-tab" data-toggle="tab"
-								href="#config-editor" role="tab" aria-controls="config-editor" aria-selected="true"><i
+							<a class="nav-link text-dark active" id="config_editor_tab" data-toggle="tab"
+								href="#config_editor" role="tab" aria-controls="config_editor" aria-selected="true"><i
 									class="fa fa-fw fa-file-alt"></i> Config Editor</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" id="system-control-tab" data-toggle="tab"
-								href="#system-control" role="tab" aria-controls="system-control"
+							<a class="nav-link text-dark" id="system_control_tab" data-toggle="tab"
+								href="#system_control" role="tab" aria-controls="system_control"
 								aria-selected="false"><i class="fa fa-fw fa-exclamation-triangle"></i> System
 								Control</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" id="about-tab" data-toggle="tab" href="#about" role="tab"
+							<a class="nav-link text-dark" id="about_tab" data-toggle="tab" href="#about" role="tab"
 								aria-controls="about" aria-selected="false"><i class="fa fa-fw fa-question-circle"></i>
 								About</a>
 						</li>
 					</ul>
-					<div class="tab-content" id="logTabContent">
-						<div class="tab-pane fade active show" id="config-editor" role="tabpanel"
-							aria-labelledby="config-editor-tab">
+					<div class="tab-content" id="log_tab_content">
+						<div class="tab-pane fade active show" id="config_editor" role="tabpanel"
+							aria-labelledby="config_editor_tab">
 							<br />
-							<button type="button" class="btn btn-secondary" id="config-editor-select-button">
+							<button type="button" class="btn btn-secondary" id="config_editor_select_button">
 								<i class="fa fa-fw fa-check-square"></i> Select All
 							</button>
 							<div class="float-right">
-								<button type="button" class="btn btn-info" id="config-editor-reload-button">
+								<button type="button" class="btn btn-info" id="config_editor_reload_button">
 									<i class="fa fa-fw fa-redo"></i> Reload
 								</button>
-								<button type="button" class="btn btn-success" id="config-editor-save-button">
+								<button type="button" class="btn btn-success" id="config_editor_save_button">
 									<i class="fa fa-fw fa-save"></i> Save
 								</button>
 							</div>
 							<p>
-								<pre><code id="config-editor-pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
+								<pre><code id="config_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
 							</p>
 							<p>
 								You may need to restart scripts to apply some changes.
 							</p>
 						</div>
-						<div class="tab-pane fade" id="system-control" role="tabpanel"
-							aria-labelledby="system-control-tab">
+						<div class="tab-pane fade" id="system_control" role="tabpanel"
+							aria-labelledby="system_control_tab">
 							<br />
-							<button type="button" class="btn btn-warning" id="restart-scripts-button">
+							<button type="button" class="btn btn-warning" id="restart_scripts_button">
 								<i class="fa fa-fw fa-undo"></i> Restart Scripts
 							</button>
-							<button type="button" class="btn btn-danger float-right" id="kill-scripts-button">
+							<button type="button" class="btn btn-danger float-right" id="kill_scripts_button">
 								<i class="fa fa-fw fa-skull"></i> Kill Scripts
 							</button>
 						</div>
-						<div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+						<div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about_tab">
 							<br />
 							<h4>About</h4>
 							<p>
@@ -259,7 +259,7 @@
 									<strong>KeyboardJS</strong>
 									&lt;<a href="https://github.com/RobertWHurst/KeyboardJS">https://github.com/RobertWHurst/KeyboardJS</a>&gt;<br/>
 									Released under the MIT license
-									<span class="float-right" id="user-agent"><i class="fa fa-fw fa-user-secret"></i></span>
+									<span class="float-right" id="user_agent"><i class="fa fa-fw fa-user-secret"></i></span>
 								</li>
 							</ul>
 						</div>
@@ -274,7 +274,7 @@
 			<ul class="nav navbar-nav">
 				<li class="nav-item">
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-						<div id="controller-status-disconnected" class="btn-group mr-2" role="group">
+						<div id="controller_status_disconnected" class="btn-group mr-2" role="group">
 							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
 								title="Gamepad connection status">
 								<button type="button" id="controller_status" class="btn btn-danger">
@@ -282,7 +282,7 @@
 								</button>
 							</span>
 						</div>
-						<div id="controller-status-connected" class="btn-group mr-2" role="group">
+						<div id="controller_status_connected" class="btn-group mr-2" role="group">
 							<div class="input-group ">
 								<div class="input-group-prepend">
 									<button rel="tooltip" data-placement="bottom" title="Gamepad connection status"
@@ -290,7 +290,7 @@
 										<i class='fa fa-fw fa-gamepad'></i>
 									</button>
 								</div>
-								<select class='custom-select' id='gamepadSelect'></select>
+								<select class='custom-select' id='gamepad_select'></select>
 							</div>
 						</div>
 						<div class="btn-group" role="group">
@@ -310,41 +310,41 @@
 					<button type="button" class="btn btn-light" id="nav_title" data-toggle="tooltip"
 						data-placement="bottom" title="Reload page">
 						<span style="color: #FF5A00">S.A.R.T.</span> Control Interface 
-						<div class="float-right banner" id="demo-mode-indicator"><blink class="ugly">Demo Mode</blink></div>
+						<div class="float-right banner" id="demo_mode_indicator"><blink class="ugly">Demo Mode</blink></div>
 					</button>
 				</li>
 			</ul>
 			<div class="inline">
-				<button type="button" class="btn btn-outline-dark" id="sensorToggle" data-toggle="tooltip"
+				<button type="button" class="btn btn-outline-dark" id="sensor_toggle" data-toggle="tooltip"
 					data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
 					<i class="fa fa-fw fa-chart-area"></i> Show Sensors
 				</button>
-				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#sshModal"
+				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ssh_modal"
 					rel="tooltip" data-placement="bottom" title="Open SSH window">
 					<i class="fa fa-fw fa-terminal"></i> SSH
 				</button>
-				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#logModal"
+				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#log_modal"
 					rel="tooltip" data-placement="bottom" title="Open log window">
 					<i class="fa fa-fw fa-clipboard-list"></i> Logs
 				</button>
-				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#settingsModal"
+				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#settings_modal"
 					rel="tooltip" data-placement="bottom" title="Open settings">
 					<i class="fa fa-fw fa-cog"></i>
 				</button>
 				<div class="btn-group dropdown" role="group">
-					<button id="powerButtonDropdown" type="button" class="btn btn-outline-danger dropdown-toggle"
+					<button id="power_button_dropdown" type="button" class="btn btn-outline-danger dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="fa fa-fw fa-power-off"></i> Power
 					</button>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
 						<h6 class="dropdown-header">Power options</h6>
-						<a class="dropdown-item" href="#" id="shutdownButton" rel="tooltip" data-placement="left"
+						<a class="dropdown-item" href="#" id="shutdown_button" rel="tooltip" data-placement="left"
 							title="Safely power off the robot"><i class="fa fa-fw fa-power-off"></i> Shutdown</a>
-						<a class="dropdown-item" href="#" id="rebootButton" rel="tooltip" data-placement="left"
+						<a class="dropdown-item" href="#" id="reboot_button" rel="tooltip" data-placement="left"
 							title="Safely reboot the robot"><i class="fa fa-fw fa-undo"></i> Reboot</a>
-						<div class="dropdown-divider" id="power-options-divider"></div>
+						<div class="dropdown-divider" id="power_options_divider"></div>
 						<a class="dropdown-item" href="#" onclick="DemoMode()" rel="tooltip" data-placement="left"
-							title="Load demo mode" id="demo-mode-button"><i class="fa fa-fw fa-object-group"></i> Demo Mode</a>
+							title="Load demo mode" id="demo_mode_button"><i class="fa fa-fw fa-object-group"></i> Demo Mode</a>
 					</div>
 				</div>
 			</div>
@@ -402,7 +402,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-auto cameraWrapper" id="camera_front_card">
+			<div class="col-md-auto camera-container" id="camera_front_card">
 				<div class="card" style="border: 0px">
 					<div class="d-flex justify-content-center">
 						<div id="spinner" class="spinner-border text-warning loading-spinner"
@@ -410,9 +410,9 @@
 							<span class="sr-only">Loading...</span>
 						</div>
 					</div>
-					<img id="camera_front" width="512" class="rounded-top streamImage" src="" refresh_src=""/>
+					<img id="camera_front" width="512" class="rounded-top stream-image" src="" refresh_src=""/>
 					<div id="thermal_overlay" style="overflow:hidden"></div>
-					<div class="cameraButtons">
+					<div class="camera-buttons">
 						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Refresh">
 							<button type="button" class="btn btn-dark camera-refresh-button"><i
 							class="fa fa-fw fa-redo-alt"></i></button>
@@ -504,7 +504,7 @@
 						<i class="fas fa-fw fa-chart-pie header-icon"></i> Distance
 					</div>
 					<div class="card-body">
-						<canvas id="distChart" width="400" height="200"></canvas>
+						<canvas id="dist_chart" width="400" height="200"></canvas>
 					</div>
 				</div>
 			</div>
@@ -512,7 +512,7 @@
 				<div class="card">
 					<div class="card-header">
 						<i class="fas fa-fw fa-camera header-icon"></i> Thermal Camera
-						<button style="margin-left: 10px; padding: 0px 2px 0px 2px" type="button" class="btn btn-secondary" id="thermal-overlay-button" 
+						<button style="margin-left: 10px; padding: 0px 2px 0px 2px" type="button" class="btn btn-secondary" id="thermal_overlay_button" 
 							rel="tooltip" data-placement="bottom" title="Toggle overlay">
 							<i class="fa fa-fw fa-arrow-up"></i>
 						</button>
@@ -527,12 +527,12 @@
 							X Scale
 							<button style="padding: 0px" class="btn float-right" id="thermal_overlay_xscale_reset"><i class="fa fa-fw fa-undo"></i></button>
 						</p>
-						<input id="thermal_overlay_xscale" class="custom-range thermal_overlay_scale" type="range" min="0.5" max="1.5" step="0.01" value = "1">
+						<input id="thermal_overlay_xscale" class="custom-range thermal-overlay-scale" type="range" min="0.5" max="1.5" step="0.01" value = "1">
 						<p style="margin: 0px">
 							Y Scale
 							<button style="padding: 0px" class="btn float-right" id="thermal_overlay_yscale_reset"><i class="fa fa-fw fa-undo"></i></button>
 						</p>
-						<input id="thermal_overlay_yscale" class="custom-range thermal_overlay_scale" type="range" min="0.5" max="1.5" step="0.01" value = "1">
+						<input id="thermal_overlay_yscale" class="custom-range thermal-overlay-scale" type="range" min="0.5" max="1.5" step="0.01" value = "1">
 					</div>
 					<div id="thermal_camera_container">
 						<div id="thermal_camera"></div>
@@ -545,16 +545,16 @@
 						<i class="fas fa-fw fa-thermometer-half header-icon"></i> Temperature
 					</div>
 					<div class="card-body">
-						<canvas id="tempChart" width="400" height="200"></canvas>
+						<canvas id="temp_chart" width="400" height="200"></canvas>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row justify-content-md-center no-gutters" id="btm_view_camera">
-			<div class="col-md-auto cameraWrapper" id="camera_left_card">
+			<div class="col-md-auto camera-container" id="camera_left_card">
 				<div class="card" style="border: 0px">
-					<img id="camera_left" width="420" class="img-fluid rounded-left streamImage" src="" refresh_src="" />
-					<div class="cameraButtons">
+					<img id="camera_left" width="420" class="img-fluid rounded-left stream-image" src="" refresh_src="" />
+					<div class="camera-buttons">
 						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Refresh">
 							<button type="button" class="btn btn-dark camera-refresh-button"><i
 							class="fa fa-fw fa-redo-alt"></i></button>
@@ -566,10 +566,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-auto cameraWrapper" id="camera_back_card">
+			<div class="col-md-auto camera-container" id="camera_back_card">
 				<div class="card" style="border: 0px">
-					<img id="camera_back" width="420" class="img-fluid streamImage" src="" refresh_src="" />
-					<div class="cameraButtons">
+					<img id="camera_back" width="420" class="img-fluid stream-image" src="" refresh_src="" />
+					<div class="camera-buttons">
 						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Refresh">
 							<button type="button" class="btn btn-dark camera-refresh-button"><i
 							class="fa fa-fw fa-redo-alt"></i></button>
@@ -581,10 +581,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-auto cameraWrapper" id="camera_right_card">
+			<div class="col-md-auto camera-container" id="camera_right_card">
 				<div class="card" style="border: 0px">
-					<img id="camera_right" width="420" class="img-fluid rounded-right streamImage" src="" refresh_src="" />
-					<div class="cameraButtons">
+					<img id="camera_right" width="420" class="img-fluid rounded-right stream-image" src="" refresh_src="" />
+					<div class="camera-buttons">
 						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Refresh">
 							<button type="button" class="btn btn-dark camera-refresh-button"><i
 							class="fa fa-fw fa-redo-alt"></i></button>

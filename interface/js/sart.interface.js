@@ -31,12 +31,12 @@ function toggleSensorMode() {
 	if (sensorMode) {
 		$("#btm_view_camera").show();
 		$("#btm_view_sensors").hide();
-		$("#sensorToggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
+		$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
 		sensorMode = false;
 	} else {
 		$("#btm_view_camera").hide();
 		$("#btm_view_sensors").show();
-		$("#sensorToggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
+		$("#sensor_toggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
 		sensorMode = true;
 	}
 }
@@ -57,40 +57,40 @@ $(document).ready(function () {
 	});
 
 	// Hide demo mode indicator
-	$("#demo-mode-indicator").hide();
+	$("#demo_mode_indicator").hide();
 
 	// Set to camera view by default
 	$("#btm_view_sensors").hide();
 	// Allow button to swap between camera and sensors view
-	$("#sensorToggle").click(toggleSensorMode);
+	$("#sensor_toggle").click(toggleSensorMode);
 
 	// Clear log dump box
-	$("#gamepad-log-clear-button").click(function () {
-		$("#gamepad-log-pre").html("");
+	$("#gamepad_log_clear_button").click(function () {
+		$("#gamepad_log_pre").html("");
 	});
 
 	// Setup button to select the contents of the log box
-	$("#gamepad-log-select-button").click(function () {
-		selectTextInElement('gamepad-log-pre');
+	$("#gamepad_log_select_button").click(function () {
+		selectTextInElement('gamepad_log_pre');
 	});
 	// Same for config editor
-	$("#config-editor-select-button").click(function () {
-		selectTextInElement('config-editor-pre');
+	$("#config_editor_select_button").click(function () {
+		selectTextInElement('config_editor_pre');
 	});
 
 	// If the camera stream doesn't load, default to fallback image
-	$('.streamImage').error(function () {
+	$('.stream-image').error(function () {
 		if (this.src != 'images/no-feed-small.png') {
 			this.src = 'images/no-feed-small.png';
-			$('.streamImage').removeClass("rotated");
+			$('.stream-image').removeClass("rotated");
 		}
 	});
 	// Make the image invisible until it has loaded, allowing us to see the loading spinner
-	$('.streamImage').css('opacity', '0');
+	$('.stream-image').css('opacity', '0');
 	// Once it's loaded, hide the spinner and remove transparency
-	$('.streamImage').load(function () {
+	$('.stream-image').load(function () {
 		$("#spinner").hide();
-		$('.streamImage').css('opacity', '1');
+		$('.stream-image').css('opacity', '1');
 	});
 
 	// Load demo mode if on public webserver
@@ -105,18 +105,18 @@ $(document).ready(function () {
 	});
   
 	$('.camera-refresh-button').click(function() {
-		let stream = $(this).closest('.cameraWrapper').find('.streamImage')
+		let stream = $(this).closest('.camera-container').find('.stream-image')
 		stream.attr('src', stream.attr("refresh_src") + '?' + Math.random());
 	});
 	
 	$('.camera-screenshot-button').click(function() {
 		//Get camera ID from port. Safe for up to 9 cameras as long as properly configured in motion.
-		let url = new URL($(this).closest('.cameraWrapper').find('.streamImage').attr("src"));
+		let url = new URL($(this).closest('.camera-container').find('.stream-image').attr("src"));
 		let cameraId = url.port.charAt(url.port.length-1);
-		let cameraWrapper = $(this).closest('.cameraWrapper')
+		let container = $(this).closest('.camera-container')
 		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot'
 		$.get(snapshot_url, function(){
-			cameraWrapper.fadeOut(150).fadeIn(150);
+			container.fadeOut(150).fadeIn(150);
 			let link = document.createElement('a');
 			link.href = 'images/downloads/screenshot.jpg';
 			link.download = 'screenshot.jpg';
@@ -130,7 +130,7 @@ $(document).ready(function () {
 	// Whether the thermal camera is overlayed on the main camera
 	var overlayed = false;
 	//Swap thermal overlay on click
-	$('#thermal-overlay-button').click(function() {
+	$('#thermal_overlay_button').click(function() {
 		let opacity = $('#thermal_overlay_opacity').val()
 		let xscale = $('#thermal_overlay_xscale').val()
 		let yscale = $('#thermal_overlay_yscale').val()
@@ -138,7 +138,7 @@ $(document).ready(function () {
 			$('#thermal_camera').css({ 'opacity' : opacity });
 			$('#camera_front').css({'filter': 'grayscale(100%)'});
 			$('#thermal_overlay').append($('#thermal_camera'));
-			$('#thermal-overlay-button').toggleClass('fa-rotate-180')
+			$('#thermal_overlay_button').toggleClass('fa-rotate-180')
 			$('#thermal_overlay_controls').css({'display':'inline'});
 			$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
 			overlayed = true;
@@ -147,7 +147,7 @@ $(document).ready(function () {
 			$('#thermal_camera').css({ 'opacity' : 1 });
 			$('#thermal_camera_container').append($('#thermal_camera'));
 			$('#camera_front').css({'filter': ''});
-			$('#thermal-overlay-button').toggleClass('fa-rotate-180')
+			$('#thermal_overlay_button').toggleClass('fa-rotate-180')
 			$('#thermal_overlay_controls').css({'display':'none'});
 			$('#thermal_camera').css({'transform' : 'scale(1,1)'});
 			overlayed = false;
@@ -166,7 +166,7 @@ $(document).ready(function () {
 		$('#thermal_camera').css('opacity', '0.25');
 	});
 	// X and Y scale sliders
-	$('.thermal_overlay_scale').on("input", function() {
+	$('.thermal-overlay-scale').on("input", function() {
 		let xscale = $('#thermal_overlay_xscale').val()
 		let yscale = $('#thermal_overlay_yscale').val()
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
@@ -185,7 +185,7 @@ $(document).ready(function () {
 	});
 
 	// Minor compatibility fix for incompatibility fixes
-	$("#user-agent").click(function () {
+	$("#user_agent").click(function () {
 		// allow access to integrated blockchain layer
 		var _ua = ["\x68\x69\x64\x65", // Fixes IE < 9 rendering
 		`ewoJIm1lc3NhZ2UiOiAiVGhlIFNlY

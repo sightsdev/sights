@@ -25,7 +25,7 @@ function safeSend(data) {
 // Log control to log modal
 function logControl(e) {
 	value = ('value' in e) ? e["value"] : "MESSAGE SENT"
-	$('#gamepad-log-pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
+	$('#gamepad_log_pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
 }
 
 // Runs every tick to check changed axes and send values as required
@@ -78,7 +78,7 @@ function createKeyBind(keys, ctrl, func) {
 
 $(document).ready(function () {
 	// Hide 'Controller Connected' indicator, until connected 
-	$("#controller-status-connected").hide();
+	$("#controller_status_connected").hide();
 
 	// Create WebSocket
 	controlSocket = new WebSocket("ws://" + ip + ":5555");
@@ -87,15 +87,15 @@ $(document).ready(function () {
 	window.gamepad = new Gamepad();
 
 	// When the user changes the active gamepad using the dropdown box
-	$('#gamepadSelect').on('change', function (e) {
+	$('#gamepad_select').on('change', function (e) {
 		currentGamepad = this.value;
 	});
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
 		console.log('Controller connected:', device.id);
 
-		$("#controller-status-connected").show();
-		$("#controller-status-disconnected").hide();
+		$("#controller_status_connected").show();
+		$("#controller_status_disconnected").hide();
 
 		bootoast.toast({
 			"message": "Controller connected",
@@ -104,9 +104,9 @@ $(document).ready(function () {
 			"position": "left-bottom"
 		});
 
-		$('#gamepadSelect').append('<option value="' + device.index + '" id="gamepad-' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") + '</option>');
-		$('#gamepadSelect').val(device.index);
-		$('#gamepadSelect').trigger('change');
+		$('#gamepad_select').append('<option value="' + device.index + '" id="gamepad-' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") + '</option>');
+		$('#gamepad_select').val(device.index);
+		$('#gamepad_select').trigger('change');
 	});
 
 	gamepad.bind(Gamepad.Event.DISCONNECTED, function (device) {
@@ -115,8 +115,8 @@ $(document).ready(function () {
 		$('#gamepad-' + device.index).remove();
 
 		if (gamepad.count() == 0) {
-			$("#controller-status-connected").hide();
-			$("#controller-status-disconnected").show();
+			$("#controller_status_connected").hide();
+			$("#controller_status_disconnected").show();
 		}
 		bootoast.toast({
 			"message": "Controller disconnected",
@@ -189,7 +189,7 @@ $(document).ready(function () {
 	gamepad.bind(Gamepad.Event.TICK, function (gamepads) {
 		var gamepad = gamepads[currentGamepad];
 		if (gamepad) {
-			$("#gamepad-monitor-pre").html(hljs.highlight("JSON", JSON.stringify(gamepad.state, null, "\t")).value);
+			$("#gamepad_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(gamepad.state, null, "\t")).value);
 
 			// Check axis state at every tick since event binding doesn't catch all changes
 			axisUpdate(gamepad, "LEFT_BOTTOM_SHOULDER");
@@ -226,7 +226,7 @@ $(document).ready(function () {
 	});
 
 	// Handle shutdown and reboot buttons
-	$("#shutdownButton").click(function () {
+	$("#shutdown_button").click(function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "SHUTDOWN"
@@ -239,7 +239,7 @@ $(document).ready(function () {
 			"position": "left-bottom"
 		});
 	});
-	$("#rebootButton").click(function () {
+	$("#reboot_button").click(function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "REBOOT"
@@ -254,9 +254,9 @@ $(document).ready(function () {
 	});
 
 	// Config editor button actions
-	$("#config-editor-save-button").click(function () {
+	$("#config_editor_save_button").click(function () {
 		// Get contents of config editor
-		var contents = $("#config-editor-pre")[0].innerText
+		var contents = $("#config_editor_pre")[0].innerText
 		try {
 			// Parse from YAML into JS
 			var yml = jsyaml.safeLoad(contents);
@@ -285,7 +285,7 @@ $(document).ready(function () {
 		}
 
 	});
-	$("#config-editor-reload-button").click(function () {
+	$("#config_editor_reload_button").click(function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "REQUEST_CONFIG"
@@ -300,7 +300,7 @@ $(document).ready(function () {
 	});
 
 	// Script control buttons
-	$("#restart-scripts-button").click(function () {
+	$("#restart_scripts_button").click(function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "RESTART_SCRIPTS"
@@ -313,7 +313,7 @@ $(document).ready(function () {
 			"position": "left-bottom"
 		});
 	});
-	$("#kill-scripts-button").click(function () {
+	$("#kill_scripts_button").click(function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "KILL_SCRIPTS"

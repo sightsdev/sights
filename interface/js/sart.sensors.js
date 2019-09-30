@@ -86,10 +86,10 @@ function update_cameras(config) {
 		!config['back']['enabled'] &&
 		!config['left']['enabled'] &&
 		!config['right']['enabled']) {
-		$("#sensorToggle").hide();
+		$("#sensor_toggle").hide();
 		$("#btm_view_camera").hide();
 		$("#btm_view_sensors").show();
-		$("#sensorToggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
+		$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
 		sensorMode = false;
 	}
 }
@@ -133,14 +133,14 @@ function set_speed_indicator(type, speed) {
 $(document).ready(function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
 	try {
-		let tempChartCanvas = $("#tempChart").get(0).getContext('2d');
-		let distChartCanvas = $("#distChart").get(0).getContext('2d');
+		let tempChartCanvas = $("#temp_chart").get(0).getContext('2d');
+		let distChartCanvas = $("#dist_chart").get(0).getContext('2d');
 		// Create temperature and distance chart
 		tempChart = new Chart(tempChartCanvas, tempChartConfig);
 		distChart = new Chart(distChartCanvas, distChartConfig);
 		// Style that bad boy
-		$("#tempChart").attr("style", "display: block; height: 187px; width: 374px;");
-		$("#distChart").attr("style", "display: block; height: 187px; width: 374px;");
+		$("#temp_chart").attr("style", "display: block; height: 187px; width: 374px;");
+		$("#dist_chart").attr("style", "display: block; height: 187px; width: 374px;");
 	} catch (err) {
 		console.log(err);
 	}
@@ -175,7 +175,7 @@ $(document).ready(function () {
 		var obj = JSON.parse(event.data);
 
 		// Update sensor monitor (in log modal)
-		$("#sensor-monitor-pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
+		$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
 		// Load config file into config editor window
 		if ("config" in obj) {
@@ -186,7 +186,7 @@ $(document).ready(function () {
 				"position": "left-bottom"
 			});
 			var yaml = jsyaml.safeDump(obj['config'], indent = 4);
-			$("#config-editor-pre").html(hljs.highlight("YAML", yaml).value);
+			$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
 			// Now handle loading stuff from the config file
 
