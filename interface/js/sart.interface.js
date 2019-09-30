@@ -126,6 +126,63 @@ $(document).ready(function () {
 			document.body.removeChild(link);
 		});
 	});
+	
+	// Whether the thermal camera is overlayed on the main camera
+	var overlayed = false;
+	//Swap thermal overlay on click
+	$('#thermal-overlay-button').click(function() {
+		let opacity = $('#thermal_overlay_opacity').val()
+		let xscale = $('#thermal_overlay_xscale').val()
+		let yscale = $('#thermal_overlay_yscale').val()
+		if(!overlayed) {
+			$('#thermal_camera').css({ 'opacity' : opacity });
+			$('#camera_front').css({'filter': 'grayscale(100%)'});
+			$('#thermal_overlay').append($('#thermal_camera'));
+			$('#thermal-overlay-button').toggleClass('fa-rotate-180')
+			$('#thermal_overlay_controls').css({'display':'inline'});
+			$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
+			overlayed = true;
+		}
+		else {
+			$('#thermal_camera').css({ 'opacity' : 1 });
+			$('#thermal_camera_container').append($('#thermal_camera'));
+			$('#camera_front').css({'filter': ''});
+			$('#thermal-overlay-button').toggleClass('fa-rotate-180')
+			$('#thermal_overlay_controls').css({'display':'none'});
+			$('#thermal_camera').css({'transform' : 'scale(1,1)'});
+			overlayed = false;
+		}
+		
+	});
+	
+	// Thermal Overlay Settings
+	// Opacity slider
+	$('#thermal_overlay_opacity').on("input", function() {
+		$('#thermal_camera').css({ 'opacity' : $(this).val() });
+	}); 
+	// Opacity slider reset button
+	$('#thermal_overlay_opacity_reset').click(function() {
+		$('#thermal_overlay_opacity').val('0.25');
+		$('#thermal_camera').css('opacity', '0.25');
+	});
+	// X and Y scale sliders
+	$('.thermal_overlay_scale').on("input", function() {
+		let xscale = $('#thermal_overlay_xscale').val()
+		let yscale = $('#thermal_overlay_yscale').val()
+		$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
+	})
+	// X scale slider reset button
+	$('#thermal_overlay_xscale_reset').click(function() {
+		$('#thermal_overlay_xscale').val('1');
+		let yscale = $('#thermal_overlay_yscale').val()
+		$('#thermal_camera').css({'transform' : 'scale(1,'+yscale+')'});
+	});
+	// Y scale slider reset button
+	$('#thermal_overlay_yscale_reset').click(function() {
+		$('#thermal_overlay_yscale').val('1');
+		let xscale = $('#thermal_overlay_xscale').val()
+		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
+	});
 
 	// Minor compatibility fix for incompatibility fixes
 	$("#user-agent").click(function () {
