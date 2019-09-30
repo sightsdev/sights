@@ -217,14 +217,10 @@ $(document).ready(function () {
 			var thermal_camera_data = obj["thermal_camera"];
 
 			// Iterate through pixels
-			for (i = 0; i < 24; i++) {
-				for (j = 0; j < 32; j++) {
-					var offset = i * 32 + j;
-					// Get pixel color from color table
-					var pixel = Math.round(thermal_camera_data[offset]);
-					// Apply colour to the appropriate HTML element 
-					$("#p" + offset).css("background", rainbow(pixel));
-				}
+			for (i = 0; i < thermal_camera_data.length; i++) {
+				// Apply colour to the appropriate HTML element 
+				var pixel = Math.round(thermal_camera_data[i]);
+				$("#p" + i).css("background", rainbow(pixel));
 			}
 		}
 
