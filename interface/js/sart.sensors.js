@@ -219,7 +219,7 @@ $(document).ready(function () {
 			// Iterate through pixels
 			for (i = 0; i < thermal_camera_data.length; i++) {
 				// Apply colour to the appropriate HTML element 
-				var pixel = Math.round(thermal_camera_data[offset]);
+				var pixel = Math.round(thermal_camera_data[i]);
 				$("#p" + i).css("background", rainbow(pixel));
 			}
 		}
