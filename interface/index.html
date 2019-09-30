@@ -411,6 +411,7 @@
 						</div>
 					</div>
 					<img id="camera_front" width="512" class="streamImage" src="" refresh_src=""/>
+					<div id="thermal_overlay" style="overflow:hidden"></div>
 					<div class="cameraButtons">
 						<span class="d-inline-block" rel="tooltip" data-placement="bottom" title="Refresh">
 							<button type="button" class="btn btn-dark camera-refresh-button"><i
@@ -517,8 +518,12 @@
 						</span>
 					</div>
 					<div class="card-body" style="display:none" id="thermal_overlay_controls">
-						<p>Opacity</p>
+						<p style="margin: 0px">Opacity</p>
 						<input id="thermal_overlay_opacity" class="custom-range" type="range" min="0" max="1" step="0.01" value = "0.25">
+						<p style="margin: 0px">X Scale</p>
+						<input id="thermal_overlay_xscale" class="custom-range thermal_overlay_scale" type="range" min="0.5" max="1.5" step="0.01" value = "1">
+						<p style="margin: 0px">Y Scale</p>
+						<input id="thermal_overlay_yscale" class="custom-range thermal_overlay_scale" type="range" min="0.5" max="1.5" step="0.01" value = "1">
 					</div>
 					<div id="thermal_camera_container">
 						<div id="thermal_camera"></div>

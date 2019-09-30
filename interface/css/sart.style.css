@@ -129,7 +129,7 @@ blink, .blink {
 	display: inline-block;
 }
 
-#thermal_camera {
+#thermal_overlay {
 	position: absolute;
 	width: 100%;
 }

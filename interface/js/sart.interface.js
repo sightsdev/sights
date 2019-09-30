@@ -132,12 +132,15 @@ $(document).ready(function () {
 	//Swap thermal overlay on click
 	$('#thermal-overlay-button').click(function() {
 		let opacity = $('#thermal_overlay_opacity').val()
+		let xscale = $('#thermal_overlay_xscale').val()
+		let yscale = $('#thermal_overlay_yscale').val()
 		if(!overlayed) {
 			$('#thermal_camera').css({ 'opacity' : opacity });
 			$('#camera_front').css({'filter': 'grayscale(100%)'});
-			$('#camera_front').after($('#thermal_camera'));
+			$('#thermal_overlay').append($('#thermal_camera'));
 			$('#thermal-overlay-button').toggleClass('fa-rotate-180')
 			$('#thermal_overlay_controls').css({'display':'inline'});
+			$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
 			overlayed = true;
 		}
 		else {
@@ -146,14 +149,22 @@ $(document).ready(function () {
 			$('#camera_front').css({'filter': ''});
 			$('#thermal-overlay-button').toggleClass('fa-rotate-180')
 			$('#thermal_overlay_controls').css({'display':'none'});
+			$('#thermal_camera').css({'transform' : 'scale(1,1)'});
 			overlayed = false;
 		}
 		
 	});
 	
+	// Thermal Overlay Settings
 	$('#thermal_overlay_opacity').on("input", function() {
 		$('#thermal_camera').css({ 'opacity' : $(this).val() });
 	});
+	
+	$('.thermal_overlay_scale').on("input", function() {
+		let xscale = $('#thermal_overlay_xscale').val()
+		let yscale = $('#thermal_overlay_yscale').val()
+		$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
+	})
 
 	// Minor compatibility fix for incompatibility fixes
 	$("#user-agent").click(function () {
