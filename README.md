@@ -99,7 +99,7 @@ Motion is part of the Debian, Ubuntu and Raspbian repositories and can be instal
 ```sh
 $ sudo apt install motion
 ```
-However, you might want to get the latest version from the [official repository](https://github.com/Motion-Project/motion).
+If you want the latest version, you might need to get it from the [official repository](https://github.com/Motion-Project/motion).
 
 The provided `motion.conf` file should be copied into the `/etc/motion/` directory.
 
@@ -109,9 +109,17 @@ $ sudo cp /opt/sart/SARTRobot/Motion/motion.conf /etc/motion/
 
 Keep in mind that this file points to the individual camera config files in `/opt/sart/SARTRobot/Motion`.
 
-Motion can be started with the command:
+Next, allow Motion to be run as a service by editing `/etc/default/motion` and changing `start_motion_daemon=no` to `start_motion_daemon=yes`.
+
+Then enable the service with:
+
 ```sh
-$ motion
+$ sudo systemctl enable motion
+```
+
+Reboot and ensure it is running with the command:
+```sh
+$ sudo service motion status
 ```
 
 ### 5. Setting up ShellInABox
@@ -137,14 +145,13 @@ To test it out, navigate to `http://<robot_ip>:4200`
 
 ### 6. Running at boot
 
-All we need to do now is ensure that both `motion` and `SARTRobot`'s `manager.py` run on boot.
+All we need to do now is ensure that `SARTRobot`'s `manager.py` runs on boot.
 
 Keep in mind that `manager.py` needs to be run as root for shutdown and reboot functionality to work.
 
-In the future, `manager.py` will be run as a service, but until then, the easiest method is to edit `/etc/rc.local` and add the following lines _before_ the final line which should read `exit 0`
+In the future, `manager.py` will be run as a service, but until then, the easiest method is to edit `/etc/rc.local` and add the following line _before_ the final line which should read `exit 0`
 
 ```sh
-motion
 python3 /opt/sart/SARTRobot/manager.py
 ```
 
