@@ -134,3 +134,6 @@ blink, .blink {
 	width: 100%;
 }
 
+.header-icon {
+  margin-right: 3px;
+}
