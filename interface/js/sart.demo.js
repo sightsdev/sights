@@ -62,7 +62,7 @@ function DemoMode() {
 			// Also cool:
 			//var pixel = 24 + i * j;
 			//var pixel = 20 + i ** j;
-			$("#p" + offset).css("background", rainbow(pixel));
+			$("#p" + offset).css("background", rainbow(pixel%360));
 		}
 	}
 
