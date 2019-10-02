@@ -79,9 +79,9 @@ function update_cameras(config) {
 		config[e]['enabled'] ? card.show() : card.hide();
 		// Set image attributes to the relevant URL
 		let camera = $("#camera_" + e);
-		let controller = "http://" + ip + ":8081/" + config[e]['id'] + "/"
-		camera.attr("src", controller + "stream");
-		camera.attr("controller", controller);
+		let id = config[e]['id']
+		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
+		camera.attr("id", config[e]['id']);
 	});
 	if (config['front']['enabled'] &&
 		!config['back']['enabled'] &&
