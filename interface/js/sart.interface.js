@@ -111,7 +111,7 @@ $(document).ready(function () {
 	
 	$('.camera-screenshot-button').click(function() {
 		//Get camera ID from port. Safe for up to 9 cameras as long as properly configured in motion.
-		let cameraController = $(this).closest('.camera-container').find('.stream-image').attr("controller"));
+		let cameraController = $(this).closest('.camera-container').find('.stream-image').attr("controller");
 		let container = $(this).closest('.camera-container')
 		container.fadeOut(150).fadeIn(150);
 		let link = document.createElement('a');
