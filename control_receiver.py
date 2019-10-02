@@ -112,7 +112,7 @@ class ControlReceiver (WebSocketProcess):
                 os.system('poweroff')
             elif (control == "REBOOT"):
                 print("RECEIVER: Received reboot signal, rebooting...")
-                os.system('restart')
+                os.system('reboot')
             # Handle configuration requests
             elif (control == "UPDATE_CONFIG"):
                 print("RECEIVER: Received new configuration file")
