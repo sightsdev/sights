@@ -121,7 +121,6 @@ $(document).ready(function () {
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
-		});
 	});
 	
 	// Whether the thermal camera is overlayed on the main camera
