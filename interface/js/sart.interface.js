@@ -113,15 +113,17 @@ $(document).ready(function () {
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
 		let container = $(this).closest('.camera-container')
 		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot'
-		$.get(snapshot_url, function(){
-			container.fadeOut(150).fadeIn(150);
-			let link = document.createElement('a');
-			link.href = 'images/downloads/lastsnap.jpg';
-			link.download = 'lastsnap.jpg';
-			link.target = "_blank";
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
+		$.get(snapshot_url).done(function(){ // When request is done
+			setTimeout(function() {          // Give it a bit more time after request
+				container.fadeOut(150).fadeIn(150);
+				let link = document.createElement('a');
+				link.href = 'images/downloads/lastsnap.jpg';
+				link.download = 'lastsnap.jpg';
+				link.target = "_blank";
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			},500);
 		});
 	});
 	
