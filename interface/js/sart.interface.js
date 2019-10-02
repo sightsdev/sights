@@ -106,7 +106,8 @@ $(document).ready(function () {
   
 	$('.camera-refresh-button').click(function() {
 		let stream = $(this).closest('.camera-container').find('.stream-image')
-		stream.attr('src', stream.attr("refresh_src") + '?' + Math.random());
+		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
+		stream.attr('src', 'http://' + ip + ':8081/' + cameraId + '/stream/' + Math.random());
 	});
 	
 	$('.camera-screenshot-button').click(function() {
