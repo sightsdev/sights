@@ -1,7 +1,7 @@
 # SARTRobot
 The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark III / IV rescue robot.
 
-All configuration for these scripts is done in `robot.json`, which can be edited through the web interface. The only configuration option that must be done manually is the robot's IP address, as that defines what address the WebSocket server will bind to.
+All configuration for these scripts is done in `default.json`, which can be edited through the web interface. The only configuration option that must be done manually is the robot's IP address, as that defines what address the WebSocket server will bind to.
 
 Python 3.6 or greater is required due to the use of `asyncio`.
 
@@ -37,9 +37,9 @@ $ cd /opt/sart/SARTRobot
 $ python3 -m pip install -r requirements.txt
 ```
 
-Edit `robot.json` and change the value of `ip` to the robot's IP address:
+Edit `default.json` and change the value of `ip` to the robot's IP address:
 ```s
-$ nano /opt/sart/SARTRobot/robot.json
+$ nano /opt/sart/SARTRobot/configs/default.json
 ```
 
 ```json
@@ -163,10 +163,10 @@ If you don't wish to run it at boot, or simply wish to run it manually, you can,
 ```sh
 sudo python3 /opt/sart/SARTRobot/manager.py
 ```
-Other config files (default is `robot.json` in the installation directory) can be loaded with the `-c` flag:
+Other config files (default is `robot.json` in the configs directory) can be loaded with the `-c` flag:
 ```sh
 cd /opt/sart/SARTRobot
-sudo python3 manager.py -c sabertooth.json
+sudo python3 manager.py -c configs/sabertooth.json
 ```
 It will attempt to load the configuration file from the working directory.
 
