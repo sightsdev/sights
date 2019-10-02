@@ -111,19 +111,16 @@ $(document).ready(function () {
 	
 	$('.camera-screenshot-button').click(function() {
 		//Get camera ID from port. Safe for up to 9 cameras as long as properly configured in motion.
-		let url = new URL($(this).closest('.camera-container').find('.stream-image').attr("src"));
-		let cameraId = url.port.charAt(url.port.length-1);
+		let cameraController = $(this).closest('.camera-container').find('.stream-image').attr("controller"));
 		let container = $(this).closest('.camera-container')
-		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot'
-		$.get(snapshot_url, function(){
-			container.fadeOut(150).fadeIn(150);
-			let link = document.createElement('a');
-			link.href = 'images/downloads/screenshot.jpg';
-			link.download = 'screenshot.jpg';
-			link.target = "_blank";
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
+		container.fadeOut(150).fadeIn(150);
+		let link = document.createElement('a');
+		link.href = demo ? 'images/lastsnap.jpg' : cameraController + "current";
+		link.download = 'lastsnap.jpg';
+		link.target = "_blank";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 		});
 	});
 	
