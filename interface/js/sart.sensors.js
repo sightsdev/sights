@@ -77,10 +77,11 @@ function update_cameras(config) {
 		var card = $("#camera_" + e + "_card");
 		// Enable the div, if camera is enabled in config file
 		config[e]['enabled'] ? card.show() : card.hide();
-		// Set the images's src attribute to be the relevant port
-		let camera = $("#camera_" + e)
-		camera.attr("src", portString(config[e]['port']));
-		camera.attr("port", portString(config[e]['port']));
+		// Set image attributes to the relevant URL
+		let camera = $("#camera_" + e);
+		let controller = "http://" + ip + ":8081/" + config[e]['id'] + "/"
+		camera.attr("src", controller + "stream");
+		camera.attr("controller", controller);
 	});
 	if (config['front']['enabled'] &&
 		!config['back']['enabled'] &&
