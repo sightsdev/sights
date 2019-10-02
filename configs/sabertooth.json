@@ -19,19 +19,19 @@
 	"cameras": {
 		"right": {
 			"enabled": false,
-			"port": 8084
+			"id": 4
 		},
 		"front": {
 			"enabled": true,
-			"port": 8081
+			"id": 1
 		},
 		"back": {
 			"enabled": false,
-			"port": 8082
+			"id": 2
 		},
 		"left": {
 			"enabled": false,
-			"port": 8083
+			"id": 3
 		}
 	},
 	"sensors": {
