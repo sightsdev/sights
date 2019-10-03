@@ -94,12 +94,13 @@ A web server should be configured to point to the `SARTInterface` directory. I'v
     ```
 ### 4. Setting up Motion
 
-Motion is part of the Debian, Ubuntu and Raspbian repositories and can be installed with:
+Motion version 4.2 or greater is required. Install the latest version of Motion from the [official repository](https://github.com/Motion-Project/motion).
 
+For example, to download and install the 4.2.2 release for Ubuntu 18.04, do:
 ```sh
-$ sudo apt install motion
+$ wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/bionic_motion_4.2.2-1_amd64.deb
+$ sudo apt install ./bionic_motion_4.2.2-1_amd64.deb
 ```
-If you want the latest version, you might need to get it from the [official repository](https://github.com/Motion-Project/motion).
 
 The provided `motion.conf` file should be copied into the `/etc/motion/` directory.
 
