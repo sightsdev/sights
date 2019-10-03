@@ -106,24 +106,25 @@ $(document).ready(function () {
   
 	$('.camera-refresh-button').click(function() {
 		let stream = $(this).closest('.camera-container').find('.stream-image')
-		stream.attr('src', stream.attr("refresh_src") + '?' + Math.random());
+		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
+		stream.attr('src', 'http://' + ip + ':8081/' + cameraId + '/stream/' + Math.random());
 	});
 	
 	$('.camera-screenshot-button').click(function() {
-		//Get camera ID from port. Safe for up to 9 cameras as long as properly configured in motion.
-		let url = new URL($(this).closest('.camera-container').find('.stream-image').attr("src"));
-		let cameraId = url.port.charAt(url.port.length-1);
+		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
 		let container = $(this).closest('.camera-container')
 		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot'
-		$.get(snapshot_url).fail(function(){
-			container.fadeOut(150).fadeIn(150);
-			let link = document.createElement('a');
-			link.href = 'images/downloads/lastsnap.jpg';
-			link.download = 'screenshot.jpg';
-			link.target = "_blank";
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
+		$.get(snapshot_url).done(function(){ // When request is done
+			setTimeout(function() {          // Give it a bit more time after request
+				container.fadeOut(150).fadeIn(150);
+				let link = document.createElement('a');
+				link.href = 'images/downloads/lastsnap.jpg';
+				link.download = 'lastsnap.jpg';
+				link.target = "_blank";
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			},500);
 		});
 	});
 	
