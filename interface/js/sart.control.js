@@ -76,12 +76,25 @@ function createKeyBind(keys, ctrl, func) {
 	});
 }
 
-$(document).ready(function () {
-	// Hide 'Controller Connected' indicator, until connected 
-	$("#controller_status_connected").hide();
-
+function controlConnection() {
 	// Create WebSocket
 	controlSocket = new WebSocket("ws://" + ip + ":5555");
+
+	controlSocket.onclose = function (event) {
+		setTimeout(function(){controlConnection()},5000);
+		console.log("Attempting control connection");
+	};
+
+	controlSocket.onopen = function (event) {
+		console.log("Connected control");
+	}
+}
+
+$(document).ready(function () {
+	controlConnection();
+
+	// Hide 'Controller Connected' indicator, until connected 
+	$("#controller_status_connected").hide();
 
 	// Attach it to the window so it can be inspected at the console.
 	window.gamepad = new Gamepad();

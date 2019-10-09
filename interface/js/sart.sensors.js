@@ -3,6 +3,8 @@
 	Licensed under the GNU General Public License 3.0
 */
 
+var sensorSocket;
+
 var tempChart, distChart;
 
 var last_sensor_data = {
@@ -131,23 +133,9 @@ function set_speed_indicator(type, speed) {
 	}
 }
 
-$(document).ready(function () {
-	// Get temp chart canvas so we can use it as the canvas for our tempchart
-	try {
-		let tempChartCanvas = $("#temp_chart").get(0).getContext('2d');
-		let distChartCanvas = $("#dist_chart").get(0).getContext('2d');
-		// Create temperature and distance chart
-		tempChart = new Chart(tempChartCanvas, tempChartConfig);
-		distChart = new Chart(distChartCanvas, distChartConfig);
-		// Style that bad boy
-		$("#temp_chart").attr("style", "display: block; height: 187px; width: 374px;");
-		$("#dist_chart").attr("style", "display: block; height: 187px; width: 374px;");
-	} catch (err) {
-		console.log(err);
-	}
-
+function sensorConnection() {
 	// Start WebSocket receiver
-	var sensorSocket = new WebSocket("ws://" + ip + ":5556");
+	sensorSocket = new WebSocket("ws://" + ip + ":5556");
 
 	sensorSocket.onopen = function (event) {
 		$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
@@ -170,6 +158,8 @@ $(document).ready(function () {
 			"icon": "unlink",
 			"position": "left-bottom"
 		});
+
+		setTimeout(function(){sensorConnection()},5000);
 	};
 	// Setup update event
 	sensorSocket.onmessage = function (event) {
@@ -201,7 +191,7 @@ $(document).ready(function () {
 		if ("distance" in obj) {
 			// Update distance chart
 			var dist_data = [];
-			// Unfortunately the graph has directions clockwise (front, right, back, left) in the array. 
+			// Unfortunately the graph has directions clockwise (front, right, back, left) in the array.
 			// We have them front, left, right, back
 			dist_data[0] = obj["distance"][0];
 			dist_data[1] = obj["distance"][2];
@@ -219,7 +209,7 @@ $(document).ready(function () {
 
 			// Iterate through pixels
 			for (i = 0; i < thermal_camera_data.length; i++) {
-				// Apply colour to the appropriate HTML element 
+				// Apply colour to the appropriate HTML element
 				var pixel = Math.round(thermal_camera_data[i]);
 				$("#p" + i).css("background", rainbow(pixel));
 			}
@@ -269,7 +259,7 @@ $(document).ready(function () {
 
 		// System uptime
 		if ("uptime" in obj) {
-			// Calculate time of boot 
+			// Calculate time of boot
 			start_time = Date.now() - (obj["uptime"] * 1000);
 			setInterval(() => {
 				// Calculate uptime based on time elapsed since reported time of boot
@@ -300,4 +290,22 @@ $(document).ready(function () {
 
 		last_sensor_data = obj;
 	}
+}
+
+$(document).ready(function () {
+	// Get temp chart canvas so we can use it as the canvas for our tempchart
+	try {
+		let tempChartCanvas = $("#temp_chart").get(0).getContext('2d');
+		let distChartCanvas = $("#dist_chart").get(0).getContext('2d');
+		// Create temperature and distance chart
+		tempChart = new Chart(tempChartCanvas, tempChartConfig);
+		distChart = new Chart(distChartCanvas, distChartConfig);
+		// Style that bad boy
+		$("#temp_chart").attr("style", "display: block; height: 187px; width: 374px;");
+		$("#dist_chart").attr("style", "display: block; height: 187px; width: 374px;");
+	} catch (err) {
+		console.log(err);
+	}
+
+	sensorConnection();
 });
