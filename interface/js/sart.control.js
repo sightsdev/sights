@@ -83,10 +83,30 @@ function controlConnection() {
 
 	controlSocket.onopen = function (event) {
 		controlConnected = true;
+		$("#control_status").html("<i class='fa fa-fw fa-link'></i>");
+		$("#control_status").attr("class", "btn btn-success");
+
+		bootoast.toast({
+			"message": "Control socket connected",
+			"type": "success",
+			"icon": "link",
+			"position": "left-bottom"
+		});
 	}
 
 	controlSocket.onclose = function (event) {
-		controlConnected = false;
+		if(controlConnected) {
+			$("#control_status").html("<i class='fa fa-fw fa-unlink'></i> Control socket disconnected");
+			$("#control_status").attr("class", "btn btn-danger");
+
+			bootoast.toast({
+				"message": "Control socket disconnected",
+				"type": "danger",
+				"icon": "unlink",
+				"position": "left-bottom"
+			});
+			controlConnected = false;
+		}
 		setTimeout(function(){controlConnection()},1000);
 	};
 }

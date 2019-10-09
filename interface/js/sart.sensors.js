@@ -140,11 +140,11 @@ function sensorConnection() {
 
 	sensorSocket.onopen = function (event) {
 		sensorConnected = true;
-		$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
-		$("#robot_status").attr("class", "btn btn-success");
+		$("#sensor_status").html("<i class='fa fa-fw fa-link'></i>");
+		$("#sensor_status").attr("class", "btn btn-success");
 
 		bootoast.toast({
-			"message": "Connected to robot",
+			"message": "Sensor socket connected",
 			"type": "success",
 			"icon": "link",
 			"position": "left-bottom"
@@ -152,11 +152,11 @@ function sensorConnection() {
 	};
 	sensorSocket.onclose = function (event) {
 		if(sensorConnected) {
-			$("#robot_status").html("<i class='fa fa-fw fa-unlink'></i> Disconnected from robot");
-			$("#robot_status").attr("class", "btn btn-danger");
+			$("#sensor_status").html("<i class='fa fa-fw fa-unlink'></i> Sensor socket disconnected");
+			$("#sensor_status").attr("class", "btn btn-danger");
 
 			bootoast.toast({
-				"message": "Disconnected from robot",
+				"message": "Sensor socket disconnected",
 				"type": "danger",
 				"icon": "unlink",
 				"position": "left-bottom"

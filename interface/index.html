@@ -298,12 +298,21 @@
 								<select class='custom-select' id='gamepad_select'></select>
 							</div>
 						</div>
-						<div class="btn-group" role="group">
+						<div class="btn-group mr-2" role="group">
 							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
-								title="Robot connection status">
-								<button type="button" id="robot_status" class="btn btn-danger"
+								title="Sensor socket connection status">
+								<button type="button" id="sensor_status" class="btn btn-danger"
 									style="pointer-events: none">
-									<i class="fa fa-fw fa-unlink"></i> Disconnected from robot
+									<i class="fa fa-fw fa-unlink"></i> Sensor socket disconnected
+								</button>
+							</span>
+						</div>
+						<div class="btn-group mr-2" role="group">
+							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
+								  title="Control socket connection status">
+								<button type="button" id="control_status" class="btn btn-danger"
+										style="pointer-events: none">
+									<i class="fa fa-fw fa-unlink"></i> Control socket disconnected
 								</button>
 							</span>
 						</div>
