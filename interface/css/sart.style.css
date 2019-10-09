@@ -137,3 +137,18 @@ blink, .blink {
 .header-icon {
   margin-right: 3px;
 }
+
+/* For buttons sharing a parent, display only external borders
+ * and a separator border for the first button
+ * Without adding/changing hover effects */
+.btn-border-outside {
+  border-color:#343a40;
+}
+
+.btn-border-outside:not(:first-child):last-child {
+  border-left: none;
+}
+
+.btn-border-outside:not(:first-child):not(:last-child) {
+  border-right: none;
+}

@@ -140,8 +140,7 @@ function sensorConnection() {
 
 	sensorSocket.onopen = function (event) {
 		sensorConnected = true;
-		$("#sensor_status").html("<i class='fa fa-fw fa-link'></i>");
-		$("#sensor_status").attr("class", "btn btn-success");
+		$("#sensor_status").attr("class", "btn btn-border-outside btn-success");
 
 		bootoast.toast({
 			"message": "Sensor socket connected",
@@ -152,8 +151,7 @@ function sensorConnection() {
 	};
 	sensorSocket.onclose = function (event) {
 		if(sensorConnected) {
-			$("#sensor_status").html("<i class='fa fa-fw fa-unlink'></i> Sensor socket disconnected");
-			$("#sensor_status").attr("class", "btn btn-danger");
+			$("#sensor_status").attr("class", "btn btn-border-outside btn-danger");
 
 			bootoast.toast({
 				"message": "Sensor socket disconnected",

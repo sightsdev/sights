@@ -279,42 +279,36 @@
 			<ul class="nav navbar-nav">
 				<li class="nav-item">
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-						<div id="controller_status_disconnected" class="btn-group mr-2" role="group">
-							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
-								title="Gamepad connection status">
-								<button type="button" id="controller_status" class="btn btn-danger">
-									<i class="fa fa-fw fa-gamepad"></i> Press a button to connect
-								</button>
-							</span>
+						<div id="controller_status_disconnected" class="btn-group mr-2" role="group"
+							 rel="tooltip" data-placement="bottom" title="Gamepad connection status">
+							<button type="button" id="controller_status" class="btn btn-danger btn-border-outside">
+								<i class="fa fa-fw fa-gamepad"></i>
+							</button>
+							<button type="button" class="btn btn-border-outside">Press a button to connect</button>
 						</div>
 						<div id="controller_status_connected" class="btn-group mr-2" role="group">
-							<div class="input-group ">
+							<div class="input-group">
 								<div class="input-group-prepend">
 									<button rel="tooltip" data-placement="bottom" title="Gamepad connection status"
-										class="btn btn-success btn" type="button">
+										class="btn btn-success btn-border-outside" type="button">
 										<i class='fa fa-fw fa-gamepad'></i>
 									</button>
 								</div>
-								<select class='custom-select' id='gamepad_select'></select>
+								<select class='custom-select btn-border-outside' id='gamepad_select'></select>
 							</div>
 						</div>
 						<div class="btn-group mr-2" role="group">
-							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
-								title="Sensor socket connection status">
-								<button type="button" id="sensor_status" class="btn btn-danger"
-									style="pointer-events: none">
-									<i class="fa fa-fw fa-unlink"></i> Sensor socket disconnected
-								</button>
-							</span>
-						</div>
-						<div class="btn-group mr-2" role="group">
-							<span class="d-inline-block" rel="tooltip" data-placement="bottom"
-								  title="Control socket connection status">
-								<button type="button" id="control_status" class="btn btn-danger"
-										style="pointer-events: none">
-									<i class="fa fa-fw fa-unlink"></i> Control socket disconnected
-								</button>
-							</span>
+							<button type="button" class="btn btn-border-outside" rel="tooltip" data-placement="bottom"
+									title="Websocket connection status">
+								<i class="fa fa-fw fa-link"></i> Connection</button>
+							<button id="control_status" type="button" class="btn btn-border-outside btn-danger"
+									rel="tooltip" data-placement="bottom" title="Uplink (control)">
+									<i class="fa fa-fw fa-arrow-up"></i>
+							</button>
+							<button id="sensor_status" type="button" class="btn btn-border-outside btn-danger"
+									rel="tooltip" data-placement="bottom" title="Downlink (sensors)">
+									<i class="fa fa-fw fa-arrow-down"></i>
+							</button>
 						</div>
 					</div>
 				</li>

@@ -83,8 +83,7 @@ function controlConnection() {
 
 	controlSocket.onopen = function (event) {
 		controlConnected = true;
-		$("#control_status").html("<i class='fa fa-fw fa-link'></i>");
-		$("#control_status").attr("class", "btn btn-success");
+		$("#control_status").attr("class", "btn btn-border-outside btn-success");
 
 		bootoast.toast({
 			"message": "Control socket connected",
@@ -96,8 +95,7 @@ function controlConnection() {
 
 	controlSocket.onclose = function (event) {
 		if(controlConnected) {
-			$("#control_status").html("<i class='fa fa-fw fa-unlink'></i> Control socket disconnected");
-			$("#control_status").attr("class", "btn btn-danger");
+			$("#control_status").attr("class", "btn btn-border-outside btn-danger");
 
 			bootoast.toast({
 				"message": "Control socket disconnected",
