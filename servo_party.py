@@ -147,9 +147,9 @@ class ServoParty:
         if (independent):
             # Allow left and right to be independent
             if (left != self.last_left):
-                self.move_raw(left=left)
+                self.connection.move_raw(left=left)
             if (right != self.last_right):
-                self.move_raw(right=right)
+                self.connection.move_raw(right=right)
         else:
             # Not independent, both left and right must have changed
             if (left != self.last_left and right != self.last_right):
