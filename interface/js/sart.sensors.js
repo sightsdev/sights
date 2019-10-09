@@ -4,6 +4,7 @@
 */
 
 var sensorSocket;
+var sensorConnected = false;
 
 var tempChart, distChart;
 
@@ -138,6 +139,7 @@ function sensorConnection() {
 	sensorSocket = new WebSocket("ws://" + ip + ":5556");
 
 	sensorSocket.onopen = function (event) {
+		sensorConnected = true;
 		$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
 		$("#robot_status").attr("class", "btn btn-success");
 
@@ -149,15 +151,18 @@ function sensorConnection() {
 		});
 	};
 	sensorSocket.onclose = function (event) {
-		$("#robot_status").html("<i class='fa fa-fw fa-unlink'></i> Disconnected from robot");
-		$("#robot_status").attr("class", "btn btn-danger");
+		if(sensorConnected) {
+			$("#robot_status").html("<i class='fa fa-fw fa-unlink'></i> Disconnected from robot");
+			$("#robot_status").attr("class", "btn btn-danger");
 
-		bootoast.toast({
-			"message": "Disconnected from robot",
-			"type": "danger",
-			"icon": "unlink",
-			"position": "left-bottom"
-		});
+			bootoast.toast({
+				"message": "Disconnected from robot",
+				"type": "danger",
+				"icon": "unlink",
+				"position": "left-bottom"
+			});
+			sensorConnected = false;
+		}
 
 		setTimeout(function(){sensorConnection()},5000);
 	};

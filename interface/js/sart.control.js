@@ -5,6 +5,7 @@
 
 // WebSocket used for controller data
 var controlSocket;
+var controlConnected = false;
 var currentGamepad = 0;
 var last_axis_state = {
 	"RIGHT_BOTTOM_SHOULDER": 0.0,
@@ -80,14 +81,14 @@ function controlConnection() {
 	// Create WebSocket
 	controlSocket = new WebSocket("ws://" + ip + ":5555");
 
-	controlSocket.onclose = function (event) {
-		setTimeout(function(){controlConnection()},5000);
-		console.log("Attempting control connection");
-	};
-
 	controlSocket.onopen = function (event) {
-		console.log("Connected control");
+		controlConnected = true;
 	}
+
+	controlSocket.onclose = function (event) {
+		controlConnected = false;
+		setTimeout(function(){controlConnection()},1000);
+	};
 }
 
 $(document).ready(function () {
