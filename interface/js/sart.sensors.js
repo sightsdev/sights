@@ -245,7 +245,7 @@ $(document).ready(function () {
 		if ("temp" in obj) {
 			var temp_data = obj["temp"];
 			// Remove oldest element
-			tempChartConfig.data.datasets[0].data.shift()
+			tempChartConfig.data.datasets[0].data.shift();
 			// Push new element
 			tempChartConfig.data.datasets[0].data.push(temp_data[0]);
 			// Update chart to display new data
@@ -282,7 +282,7 @@ $(document).ready(function () {
 		// System memory
 		if ("memory_used" in obj) {
 			var percent = Number(obj["memory_used"]) / memory_total;
-			$("#memory").css('color', getColorForPercentage(percent))
+			$("#memory").css('color', getColorForPercentage(percent));
 			$("#memory_used").html(obj["memory_used"]);
 		}
 		if ("memory_total" in obj) {

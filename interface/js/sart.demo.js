@@ -38,7 +38,7 @@ function DemoMode() {
 	// Uptime
 	$("#uptime").html("4:18:22");
 	// Memory
-	$("#memory").css('color', getColorForPercentage(0.3))
+	$("#memory").css('color', getColorForPercentage(0.3));
 	$("#memory_used").html(1273);
 	$("#memory_total").html(8192);
 
@@ -112,7 +112,7 @@ function DemoMode() {
 		"LEFT_STICK_Y": 0,
 		"RIGHT_STICK_X": 0,
 		"RIGHT_STICK_Y": 0.03492790460586548
-	}
+	};
 	$('#gamepad_monitor_pre').html(hljs.highlight("JSON",JSON.stringify(obj, null, '\t')).value);
 
 	// Config editor box
@@ -168,7 +168,7 @@ function DemoMode() {
 			"print_messages": false,
 			"use_virtual_servos": true
 		}
-	}
+	};
 	var yaml = jsyaml.safeDump(obj, indent = 4);
 	$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
 

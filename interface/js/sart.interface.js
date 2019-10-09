@@ -49,7 +49,7 @@ $(document).ready(function () {
 		trigger: "hover"
 	});
 	// Enable tooltips
-	$('[data-toggle="tooltip"]').tooltip()
+	$('[data-toggle="tooltip"]').tooltip();
 
 	// Reload page when header pressed
 	$("#nav_title").click(function () {
@@ -105,15 +105,15 @@ $(document).ready(function () {
 	});
   
 	$('.camera-refresh-button').click(function() {
-		let stream = $(this).closest('.camera-container').find('.stream-image')
+		let stream = $(this).closest('.camera-container').find('.stream-image');
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
 		stream.attr('src', 'http://' + ip + ':8081/' + cameraId + '/stream/' + Math.random());
 	});
 	
 	$('.camera-screenshot-button').click(function() {
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
-		let container = $(this).closest('.camera-container')
-		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot'
+		let container = $(this).closest('.camera-container');
+		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot';
 		$.get(snapshot_url).done(function(){ // When request is done
 			setTimeout(function() {          // Give it a bit more time after request
 				container.fadeOut(150).fadeIn(150);
@@ -132,14 +132,14 @@ $(document).ready(function () {
 	var overlayed = false;
 	//Swap thermal overlay on click
 	$('#thermal_overlay_button').click(function() {
-		let opacity = $('#thermal_overlay_opacity').val()
-		let xscale = $('#thermal_overlay_xscale').val()
-		let yscale = $('#thermal_overlay_yscale').val()
+		let opacity = $('#thermal_overlay_opacity').val();
+		let xscale = $('#thermal_overlay_xscale').val();
+		let yscale = $('#thermal_overlay_yscale').val();
 		if(!overlayed) {
 			$('#thermal_camera').css({ 'opacity' : opacity });
 			$('#camera_front').css({'filter': 'grayscale(100%)'});
 			$('#thermal_overlay').append($('#thermal_camera'));
-			$('#thermal_overlay_button').toggleClass('fa-rotate-180')
+			$('#thermal_overlay_button').toggleClass('fa-rotate-180');
 			$('#thermal_overlay_controls').css({'display':'inline'});
 			$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
 			overlayed = true;
@@ -148,7 +148,7 @@ $(document).ready(function () {
 			$('#thermal_camera').css({ 'opacity' : 1 });
 			$('#thermal_camera_container').append($('#thermal_camera'));
 			$('#camera_front').css({'filter': ''});
-			$('#thermal_overlay_button').toggleClass('fa-rotate-180')
+			$('#thermal_overlay_button').toggleClass('fa-rotate-180');
 			$('#thermal_overlay_controls').css({'display':'none'});
 			$('#thermal_camera').css({'transform' : 'scale(1,1)'});
 			overlayed = false;
@@ -168,20 +168,20 @@ $(document).ready(function () {
 	});
 	// X and Y scale sliders
 	$('.thermal-overlay-scale').on("input", function() {
-		let xscale = $('#thermal_overlay_xscale').val()
-		let yscale = $('#thermal_overlay_yscale').val()
+		let xscale = $('#thermal_overlay_xscale').val();
+		let yscale = $('#thermal_overlay_yscale').val();
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
-	})
+	});
 	// X scale slider reset button
 	$('#thermal_overlay_xscale_reset').click(function() {
 		$('#thermal_overlay_xscale').val('1');
-		let yscale = $('#thermal_overlay_yscale').val()
+		let yscale = $('#thermal_overlay_yscale').val();
 		$('#thermal_camera').css({'transform' : 'scale(1,'+yscale+')'});
 	});
 	// Y scale slider reset button
 	$('#thermal_overlay_yscale_reset').click(function() {
 		$('#thermal_overlay_yscale').val('1');
-		let xscale = $('#thermal_overlay_xscale').val()
+		let xscale = $('#thermal_overlay_xscale').val();
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
 	});
 
