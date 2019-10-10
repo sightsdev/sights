@@ -6,25 +6,6 @@ var demo = false;
 // Populate SARTInterface with dummy data to demonstrate what a functional setup looks like
 function DemoMode() {
 	demo = true;
-	// CPU temp graph
-	$("#cputemp_level").html("45&degC");
-	$("#cputemp_graph").attr('class', "c100 med orange center p45");
-	// Charge level
-	$("#charge_level").html("97%");
-	$("#charge_graph").attr('class', "c100 med orange center p97");
-	// CO2 level
-	$("#co2_level").html("250<span style='font-size: 10px'> ppm</span>");
-	$("#co2_graph").attr('class', "c100 med orange center p25");
-	// TVOC level
-	$("#tvoc_level").html("75<span style='font-size: 10px'> ppb</span>");
-	$("#tvoc_graph").attr('class', "c100 med orange center p14");
-	// Temperature history graph
-	tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
-	tempChart.update();
-	// Distance radial graph
-	distChartConfig.data.datasets[0].data = [768, 128, 256, 312]; // Four directions
-	distChart.update();
-
 	// Camera streams, load dummy images
 	$('.stream-image').each(function (index) {
 		$(this).attr('src','https://picsum.photos/575/430?' + Math.random());
@@ -34,47 +15,6 @@ function DemoMode() {
 
 	// SSH modal needs some content
 	$(".ssh-container iframe").attr('src', 'https://gitsuppository.net/');	// Set src for currently open terminals
-
-	// Uptime
-	$("#uptime").html("4:18:22");
-	// Memory
-	$("#memory").css('color', getColorForPercentage(0.3))
-	$("#memory_used").html(1273);
-	$("#memory_total").html(8192);
-
-	// Generate thermal camera table
-	var table = $("<table>");
-	for (i = 0; i < 24; i++) {
-		var row = $('<tr>');
-		for (j = 0; j < 32; j++) {
-			var offset = i * 32 + j;
-			var node = $("<td style='position: relative;'><div class='content' id=p" + offset + "></div></td>");
-			row.append(node);
-		}
-		table.append(row);
-	}
-	$('#thermal_camera').html(table);
-
-	// Hue values for demo thermal camera data
-	var thermal_camera_data = [244, 246, 248, 250, 252, 252, 251, 253, 251, 250, 248, 248, 247, 247, 247, 246, 246, 246, 246, 246, 246, 246, 246, 246, 248, 248, 249, 248, 249, 249, 250, 249, 235, 241, 244, 245, 245, 244, 244, 245, 244, 243, 243, 243, 241, 239, 239, 240, 241, 240, 238, 238, 239, 239, 240, 242, 243, 243, 243, 243, 242, 243, 243, 244, 222, 230, 236, 235, 234, 235, 235, 236, 234, 232, 232, 228, 226, 226, 226, 226, 226, 225, 225, 226, 225, 224, 226, 227, 229, 229, 229, 229, 231, 230, 231, 231, 212, 218, 221, 221, 222, 223, 223, 222, 220, 219, 219, 218, 215, 216, 216, 214, 213, 216, 216, 215, 217, 216, 216, 216, 216, 217, 219, 219, 218, 219, 220, 220, 204, 210, 213, 212, 212, 214, 213, 212, 211, 210, 210, 208, 206, 207, 170, 26, 169, 205, 207, 206, 206, 206, 207, 208, 207, 206, 209, 210, 209, 209, 211, 210, 193, 199, 202, 201, 202, 203, 203, 201, 199, 200, 200, 196, 198, 184, 88, 9, 129, 191, 197, 195, 194, 194, 196, 196, 195, 195, 198, 198, 196, 196, 200, 198, 182, 188, 192, 191, 189, 192, 193, 190, 186, 188, 188, 185, 181, 68, 9, 11, 156, 181, 183, 179, 179, 181, 184, 183, 182, 183, 184, 184, 182, 182, 187, 185, 167, 173, 177, 177, 174, 179, 178, 173, 171, 173, 172, 168, 158, 21, 10, 8, 89, 169, 168, 164, 164, 166, 167, 167, 166, 166, 170, 169, 168, 169, 174, 172, 149, 155, 158, 157, 155, 160, 162, 156, 155, 158, 157, 154, 145, 14, 0, 2, 27, 129, 150, 146, 147, 148, 151, 151, 152, 151, 154, 153, 152, 156, 159, 158, 125, 135, 138, 136, 136, 144, 144, 135, 137, 139, 138, 132, 125, 98, 7, 360, 18, 107, 132, 127, 127, 128, 130, 126, 127, 133, 137, 132, 130, 136, 141, 146, 120, 120, 121, 121, 120, 122, 122, 121, 121, 121, 121, 120, 121, 51, 8, 2, 62, 39, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 127, 149, 120, 120, 120, 120, 120, 120, 120, 119, 120, 120, 120, 119, 120, 102, 0, 0, 61, 118, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 139, 119, 120, 119, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 19, 0, 81, 120, 120, 120, 120, 120, 119, 120, 120, 120, 120, 120, 120, 120, 121, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 121, 120, 44, 0, 78, 120, 120, 121, 120, 120, 120, 120, 120, 121, 120, 120, 120, 120, 120, 120, 93, 104, 114, 117, 118, 120, 119, 119, 120, 119, 118, 117, 119, 107, 2, 1, 79, 111, 116, 116, 120, 115, 117, 117, 112, 104, 116, 119, 120, 120, 120, 120, 72, 79, 88, 89, 89, 92, 90, 91, 90, 90, 91, 89, 91, 28, 7, 10, 74, 83, 85, 86, 90, 89, 85, 78, 51, 58, 87, 91, 110, 106, 104, 97, 60, 67, 71, 75, 77, 77, 74, 77, 78, 76, 75, 74, 73, 5, 15, 35, 72, 74, 74, 76, 77, 74, 74, 76, 76, 82, 86, 84, 102, 117, 104, 97, 47, 53, 56, 60, 61, 62, 63, 65, 65, 64, 64, 65, 65, 56, 45, 49, 68, 69, 71, 71, 72, 72, 75, 77, 81, 83, 90, 68, 85, 116, 102, 99, 43, 48, 53, 56, 57, 57, 62, 62, 63, 64, 64, 62, 66, 61, 64, 66, 68, 68, 68, 68, 69, 71, 74, 74, 77, 79, 76, 72, 80, 88, 90, 84, 44, 48, 54, 57, 59, 57, 61, 64, 65, 65, 63, 64, 66, 64, 62, 65, 67, 68, 67, 67, 71, 72, 72, 73, 73, 69, 49, 54, 73, 81, 82, 79, 43, 48, 54, 56, 58, 58, 61, 62, 64, 62, 62, 65, 65, 65, 63, 67, 70, 70, 70, 71, 71, 71, 70, 70, 73, 72, 61, 54, 70, 78, 81, 82, 38, 42, 51, 56, 58, 57, 59, 61, 61, 59, 60, 63, 64, 64, 63, 64, 67, 67, 66, 69, 70, 69, 69, 71, 71, 64, 61, 56, 67, 76, 81, 81, 36, 41, 50, 55, 56, 55, 57, 58, 59, 57, 60, 66, 65, 64, 62, 60, 62, 62, 59, 63, 63, 63, 64, 65, 62, 49, 51, 60, 61, 71, 74, 77, 32, 39, 47, 53, 56, 55, 57, 56, 56, 56, 61, 64, 60, 57, 54, 53, 56, 57, 56, 59, 59, 58, 59, 63, 52, 45, 41, 52, 63, 71, 73, 73];
-
-	// Create example pixel grid for thermal camera
-	for (i = 0; i < thermal_camera_data.length; i++) {
-		// Apply colour to the appropriate HTML element 
-		$("#p" + i).css("background", 'hsl(' + thermal_camera_data[i] + ', 100%, 50%)');
-	}
-
-	// Update sensor monitor (in log modal)
-	var obj = {
-		distance: [768, 128, 256, 312],
-		thermal_camera: [],
-		co2: 250,
-		tvoc: 75,
-		temp: [22],
-		charge: 0.97,
-		cpu_temp: 45,
-	};
-	$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
 	// Controller status indicator
 	$("#controller_status_connected").show();
@@ -112,7 +52,7 @@ function DemoMode() {
 		"LEFT_STICK_Y": 0,
 		"RIGHT_STICK_X": 0,
 		"RIGHT_STICK_Y": 0.03492790460586548
-	}
+	};
 	$('#gamepad_monitor_pre').html(hljs.highlight("JSON",JSON.stringify(obj, null, '\t')).value);
 
 	// Config editor box
@@ -168,21 +108,101 @@ function DemoMode() {
 			"print_messages": false,
 			"use_virtual_servos": true
 		}
-	}
+	};
+
 	var yaml = jsyaml.safeDump(obj, indent = 4);
 	$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
-	// Set robot connection status indicator
-	$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
-	$("#robot_status").attr("class", "btn btn-success");
+	// After the sensor socket has connected
+	setTimeout(function(){
+		$("#sensor_status").attr("class", "btn btn-border-outside btn-success");
 
-	// Create toast for robot connected
-	bootoast.toast({
-		"message": "Connected to robot",
-		"icon": "link",
-		"type": "success",
-		"position": "left-bottom"
-	});
+		bootoast.toast({
+			"message": "Sensor socket connected",
+			"type": "success",
+			"icon": "link",
+			"position": "left-bottom"
+		});
+
+		bootoast.toast({
+			"message": "Received config file",
+			"type": "success",
+			"icon": "file-alt",
+			"position": "left-bottom"
+		});
+
+		// CPU temp graph
+		$("#cputemp_level").html("45&degC");
+		$("#cputemp_graph").attr('class', "c100 med orange center p45");
+		// Charge level
+		$("#charge_level").html("97%");
+		$("#charge_graph").attr('class', "c100 med orange center p97");
+		// CO2 level
+		$("#co2_level").html("250<span style='font-size: 10px'> ppm</span>");
+		$("#co2_graph").attr('class', "c100 med orange center p25");
+		// TVOC level
+		$("#tvoc_level").html("75<span style='font-size: 10px'> ppb</span>");
+		$("#tvoc_graph").attr('class', "c100 med orange center p14");
+		// Temperature history graph
+		tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
+		tempChart.update();
+		// Distance radial graph
+		distChartConfig.data.datasets[0].data = [768, 128, 256, 312]; // Four directions
+		distChart.update();
+
+		// Uptime
+		$("#uptime").html("4:18:22");
+		// Memory
+		$("#memory").css('color', getColorForPercentage(0.3));
+		$("#memory_used").html(1273);
+		$("#memory_total").html(8192);
+
+		// Generate thermal camera table
+		var table = $("<table>");
+		for (i = 0; i < 24; i++) {
+			var row = $('<tr>');
+			for (j = 0; j < 32; j++) {
+				var offset = i * 32 + j;
+				var node = $("<td style='position: relative;'><div class='content' id=p" + offset + "></div></td>");
+				row.append(node);
+			}
+			table.append(row);
+		}
+		$('#thermal_camera').html(table);
+
+		// Hue values for demo thermal camera data
+		var thermal_camera_data = [244, 246, 248, 250, 252, 252, 251, 253, 251, 250, 248, 248, 247, 247, 247, 246, 246, 246, 246, 246, 246, 246, 246, 246, 248, 248, 249, 248, 249, 249, 250, 249, 235, 241, 244, 245, 245, 244, 244, 245, 244, 243, 243, 243, 241, 239, 239, 240, 241, 240, 238, 238, 239, 239, 240, 242, 243, 243, 243, 243, 242, 243, 243, 244, 222, 230, 236, 235, 234, 235, 235, 236, 234, 232, 232, 228, 226, 226, 226, 226, 226, 225, 225, 226, 225, 224, 226, 227, 229, 229, 229, 229, 231, 230, 231, 231, 212, 218, 221, 221, 222, 223, 223, 222, 220, 219, 219, 218, 215, 216, 216, 214, 213, 216, 216, 215, 217, 216, 216, 216, 216, 217, 219, 219, 218, 219, 220, 220, 204, 210, 213, 212, 212, 214, 213, 212, 211, 210, 210, 208, 206, 207, 170, 26, 169, 205, 207, 206, 206, 206, 207, 208, 207, 206, 209, 210, 209, 209, 211, 210, 193, 199, 202, 201, 202, 203, 203, 201, 199, 200, 200, 196, 198, 184, 88, 9, 129, 191, 197, 195, 194, 194, 196, 196, 195, 195, 198, 198, 196, 196, 200, 198, 182, 188, 192, 191, 189, 192, 193, 190, 186, 188, 188, 185, 181, 68, 9, 11, 156, 181, 183, 179, 179, 181, 184, 183, 182, 183, 184, 184, 182, 182, 187, 185, 167, 173, 177, 177, 174, 179, 178, 173, 171, 173, 172, 168, 158, 21, 10, 8, 89, 169, 168, 164, 164, 166, 167, 167, 166, 166, 170, 169, 168, 169, 174, 172, 149, 155, 158, 157, 155, 160, 162, 156, 155, 158, 157, 154, 145, 14, 0, 2, 27, 129, 150, 146, 147, 148, 151, 151, 152, 151, 154, 153, 152, 156, 159, 158, 125, 135, 138, 136, 136, 144, 144, 135, 137, 139, 138, 132, 125, 98, 7, 360, 18, 107, 132, 127, 127, 128, 130, 126, 127, 133, 137, 132, 130, 136, 141, 146, 120, 120, 121, 121, 120, 122, 122, 121, 121, 121, 121, 120, 121, 51, 8, 2, 62, 39, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 127, 149, 120, 120, 120, 120, 120, 120, 120, 119, 120, 120, 120, 119, 120, 102, 0, 0, 61, 118, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 139, 119, 120, 119, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 19, 0, 81, 120, 120, 120, 120, 120, 119, 120, 120, 120, 120, 120, 120, 120, 121, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 121, 120, 44, 0, 78, 120, 120, 121, 120, 120, 120, 120, 120, 121, 120, 120, 120, 120, 120, 120, 93, 104, 114, 117, 118, 120, 119, 119, 120, 119, 118, 117, 119, 107, 2, 1, 79, 111, 116, 116, 120, 115, 117, 117, 112, 104, 116, 119, 120, 120, 120, 120, 72, 79, 88, 89, 89, 92, 90, 91, 90, 90, 91, 89, 91, 28, 7, 10, 74, 83, 85, 86, 90, 89, 85, 78, 51, 58, 87, 91, 110, 106, 104, 97, 60, 67, 71, 75, 77, 77, 74, 77, 78, 76, 75, 74, 73, 5, 15, 35, 72, 74, 74, 76, 77, 74, 74, 76, 76, 82, 86, 84, 102, 117, 104, 97, 47, 53, 56, 60, 61, 62, 63, 65, 65, 64, 64, 65, 65, 56, 45, 49, 68, 69, 71, 71, 72, 72, 75, 77, 81, 83, 90, 68, 85, 116, 102, 99, 43, 48, 53, 56, 57, 57, 62, 62, 63, 64, 64, 62, 66, 61, 64, 66, 68, 68, 68, 68, 69, 71, 74, 74, 77, 79, 76, 72, 80, 88, 90, 84, 44, 48, 54, 57, 59, 57, 61, 64, 65, 65, 63, 64, 66, 64, 62, 65, 67, 68, 67, 67, 71, 72, 72, 73, 73, 69, 49, 54, 73, 81, 82, 79, 43, 48, 54, 56, 58, 58, 61, 62, 64, 62, 62, 65, 65, 65, 63, 67, 70, 70, 70, 71, 71, 71, 70, 70, 73, 72, 61, 54, 70, 78, 81, 82, 38, 42, 51, 56, 58, 57, 59, 61, 61, 59, 60, 63, 64, 64, 63, 64, 67, 67, 66, 69, 70, 69, 69, 71, 71, 64, 61, 56, 67, 76, 81, 81, 36, 41, 50, 55, 56, 55, 57, 58, 59, 57, 60, 66, 65, 64, 62, 60, 62, 62, 59, 63, 63, 63, 64, 65, 62, 49, 51, 60, 61, 71, 74, 77, 32, 39, 47, 53, 56, 55, 57, 56, 56, 56, 61, 64, 60, 57, 54, 53, 56, 57, 56, 59, 59, 58, 59, 63, 52, 45, 41, 52, 63, 71, 73, 73];
+
+		// Create example pixel grid for thermal camera
+		for (i = 0; i < thermal_camera_data.length; i++) {
+			// Apply colour to the appropriate HTML element
+			$("#p" + i).css("background", 'hsl(' + thermal_camera_data[i] + ', 100%, 50%)');
+		}
+
+		// Update sensor monitor (in log modal)
+		var obj = {
+			distance: [768, 128, 256, 312],
+			thermal_camera: [],
+			co2: 250,
+			tvoc: 75,
+			temp: [22],
+			charge: 0.97,
+			cpu_temp: 45,
+		};
+		$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
+	},Math.ceil(Math.random()*2000));
+
+	// After the control socket has connected
+	setTimeout(function(){
+		$("#control_status").attr("class", "btn btn-border-outside btn-success");
+
+		bootoast.toast({
+			"message": "Control socket connected",
+			"type": "success",
+			"icon": "link",
+			"position": "left-bottom"
+		});
+	},Math.ceil(Math.random()*2000));
 
 	// Hide 'Demo Mode' button and the seperator near it
 	$("#power_options_divider").hide();

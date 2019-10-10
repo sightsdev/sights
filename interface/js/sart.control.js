@@ -5,6 +5,7 @@
 
 // WebSocket used for controller data
 var controlSocket;
+var controlConnected = false;
 var currentGamepad = 0;
 var last_axis_state = {
 	"RIGHT_BOTTOM_SHOULDER": 0.0,
@@ -76,12 +77,47 @@ function createKeyBind(keys, ctrl, func) {
 	});
 }
 
+function controlConnection() {
+	if(!demo) {
+		// Create WebSocket
+		controlSocket = new WebSocket("ws://" + ip + ":5555");
+
+		controlSocket.onopen = function (event) {
+			controlConnected = true;
+			$("#control_status").attr("class", "btn btn-border-outside btn-success");
+
+			bootoast.toast({
+				"message": "Control socket connected",
+				"type": "success",
+				"icon": "link",
+				"position": "left-bottom"
+			});
+		}
+
+		controlSocket.onclose = function (event) {
+			if (controlConnected) {
+				$("#control_status").attr("class", "btn btn-border-outside btn-danger");
+
+				bootoast.toast({
+					"message": "Control socket disconnected",
+					"type": "danger",
+					"icon": "unlink",
+					"position": "left-bottom"
+				});
+				controlConnected = false;
+			}
+			setTimeout(function () {
+				controlConnection()
+			}, 1000);
+		};
+	}
+}
+
 $(document).ready(function () {
+	controlConnection();
+
 	// Hide 'Controller Connected' indicator, until connected 
 	$("#controller_status_connected").hide();
-
-	// Create WebSocket
-	controlSocket = new WebSocket("ws://" + ip + ":5555");
 
 	// Attach it to the window so it can be inspected at the console.
 	window.gamepad = new Gamepad();
