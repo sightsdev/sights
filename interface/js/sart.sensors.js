@@ -193,6 +193,11 @@ function sensorConnection() {
 
 			}
 
+			// Current config file name
+			if ("config_file" in obj) {
+				$("#config_filename").html(obj["config_file"]);
+			}
+
 			// Get distance data and create radial graph
 			if ("distance" in obj) {
 				// Update distance chart
