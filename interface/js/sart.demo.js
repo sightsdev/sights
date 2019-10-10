@@ -173,16 +173,33 @@ function DemoMode() {
 	$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
 	// Set robot connection status indicator
-	$("#robot_status").html("<i class='fa fa-fw fa-link'></i>");
-	$("#robot_status").attr("class", "btn btn-success");
+	setTimeout(function(){
+		$("#sensor_status").attr("class", "btn btn-border-outside btn-success");
 
-	// Create toast for robot connected
-	bootoast.toast({
-		"message": "Connected to robot",
-		"icon": "link",
-		"type": "success",
-		"position": "left-bottom"
-	});
+		bootoast.toast({
+			"message": "Sensor socket connected",
+			"type": "success",
+			"icon": "link",
+			"position": "left-bottom"
+		});
+
+		bootoast.toast({
+			"message": "Received config file",
+			"type": "success",
+			"icon": "file-alt",
+			"position": "left-bottom"
+		});
+	},Math.ceil(Math.random()*2000));
+	setTimeout(function(){
+		$("#control_status").attr("class", "btn btn-border-outside btn-success");
+
+		bootoast.toast({
+			"message": "Control socket connected",
+			"type": "success",
+			"icon": "link",
+			"position": "left-bottom"
+		});
+	},Math.ceil(Math.random()*2000));
 
 	// Hide 'Demo Mode' button and the seperator near it
 	$("#power_options_divider").hide();
