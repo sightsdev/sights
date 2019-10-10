@@ -135,163 +135,167 @@ function set_speed_indicator(type, speed) {
 }
 
 function sensorConnection() {
-	// Start WebSocket receiver
-	sensorSocket = new WebSocket("ws://" + ip + ":5556");
+	if(!demo) {
+		// Start WebSocket receiver
+		sensorSocket = new WebSocket("ws://" + ip + ":5556");
 
-	sensorSocket.onopen = function (event) {
-		sensorConnected = true;
-		$("#sensor_status").attr("class", "btn btn-border-outside btn-success");
-
-		bootoast.toast({
-			"message": "Sensor socket connected",
-			"type": "success",
-			"icon": "link",
-			"position": "left-bottom"
-		});
-	};
-	sensorSocket.onclose = function (event) {
-		if(sensorConnected) {
-			$("#sensor_status").attr("class", "btn btn-border-outside btn-danger");
+		sensorSocket.onopen = function (event) {
+			sensorConnected = true;
+			$("#sensor_status").attr("class", "btn btn-border-outside btn-success");
 
 			bootoast.toast({
-				"message": "Sensor socket disconnected",
-				"type": "danger",
-				"icon": "unlink",
-				"position": "left-bottom"
-			});
-			sensorConnected = false;
-		}
-
-		setTimeout(function(){sensorConnection()},5000);
-	};
-	// Setup update event
-	sensorSocket.onmessage = function (event) {
-		var obj = JSON.parse(event.data);
-
-		// Update sensor monitor (in log modal)
-		$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
-
-		// Load config file into config editor window
-		if ("config" in obj) {
-			bootoast.toast({
-				"message": "Received config file",
+				"message": "Sensor socket connected",
 				"type": "success",
-				"icon": "file-alt",
+				"icon": "link",
 				"position": "left-bottom"
 			});
-			var yaml = jsyaml.safeDump(obj['config'], indent = 4);
-			$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
+		};
+		sensorSocket.onclose = function (event) {
+			if (sensorConnected) {
+				$("#sensor_status").attr("class", "btn btn-border-outside btn-danger");
 
-			// Now handle loading stuff from the config file
-
-			// Enable / disable cameras and set their ports as defined by the config
-			update_cameras(obj['config']['cameras']);
-			update_sensors(obj['config']['sensors']);
-
-		}
-
-		// Get distance data and create radial graph
-		if ("distance" in obj) {
-			// Update distance chart
-			var dist_data = [];
-			// Unfortunately the graph has directions clockwise (front, right, back, left) in the array.
-			// We have them front, left, right, back
-			dist_data[0] = obj["distance"][0];
-			dist_data[1] = obj["distance"][2];
-			dist_data[2] = obj["distance"][3];
-			dist_data[3] = obj["distance"][1];
-			// Change chart dataset to use new data
-			distChartConfig.data.datasets[0].data = dist_data;
-			// Reload chart with new data
-			distChart.update();
-		}
-
-		// Get thermal camera and create pixel grid
-		if ("thermal_camera" in obj) {
-			var thermal_camera_data = obj["thermal_camera"];
-
-			// Iterate through pixels
-			for (i = 0; i < thermal_camera_data.length; i++) {
-				// Apply colour to the appropriate HTML element
-				var pixel = Math.round(thermal_camera_data[i]);
-				$("#p" + i).css("background", rainbow(pixel));
+				bootoast.toast({
+					"message": "Sensor socket disconnected",
+					"type": "danger",
+					"icon": "unlink",
+					"position": "left-bottom"
+				});
+				sensorConnected = false;
 			}
-		}
 
-		// Get CO2 levels
-		if ("co2" in obj) {
-			var co2 = obj["co2"];
-			// Update graph
-			$("#co2_level").html(co2 + "<span style='font-size: 10px'> ppm</span>");
-			$("#co2_graph").attr('class', "c100 med orange center p" + Math.round(co2 / 100));
-		}
+			setTimeout(function () {
+				sensorConnection()
+			}, 5000);
+		};
+		// Setup update event
+		sensorSocket.onmessage = function (event) {
+			var obj = JSON.parse(event.data);
 
-		// Get TVOC levels
-		if ("tvoc" in obj) {
-			var tvoc = obj["tvoc"];
-			// Update graph
-			$("#tvoc_level").html(tvoc + "<span style='font-size: 10px'> ppb</span>");
-			$("#tvoc_graph").attr('class', "c100 med orange center p" + Math.round(tvoc / 100));
-		}
+			// Update sensor monitor (in log modal)
+			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
-		// Get temperature data for line graph
-		if ("temp" in obj) {
-			var temp_data = obj["temp"];
-			// Remove oldest element
-			tempChartConfig.data.datasets[0].data.shift();
-			// Push new element
-			tempChartConfig.data.datasets[0].data.push(temp_data[0]);
-			// Update chart to display new data
-			tempChart.update();
-		}
+			// Load config file into config editor window
+			if ("config" in obj) {
+				bootoast.toast({
+					"message": "Received config file",
+					"type": "success",
+					"icon": "file-alt",
+					"position": "left-bottom"
+				});
+				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
+				$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
-		// Get charge level
-		if ("charge" in obj) {
-			var charge_data = obj["charge"];
-			// Update graph
-			$("#charge_level").html(charge_data + "%");
-			$("#charge_graph").attr('class', "c100 med orange center p" + charge_data);
-		}
+				// Now handle loading stuff from the config file
 
-		// Highest CPU core temperature
-		if ("cpu_temp" in obj) {
-			var cpu_temp = Math.round(obj["cpu_temp"]);
-			$("#cputemp_level").html(cpu_temp + "&degC");
-			$("#cputemp_graph").attr('class', "c100 med orange center p" + cpu_temp);
-		}
+				// Enable / disable cameras and set their ports as defined by the config
+				update_cameras(obj['config']['cameras']);
+				update_sensors(obj['config']['sensors']);
 
-		// System uptime
-		if ("uptime" in obj) {
-			// Calculate time of boot
-			start_time = Date.now() - (obj["uptime"] * 1000);
-			setInterval(() => {
-				// Calculate uptime based on time elapsed since reported time of boot
-				var upt = new Date(Date.now() - start_time).toISOString().substr(11, 8);
-				// Format nicely
-				$("#uptime").html(upt);
-			}, 1000);
-		}
+			}
 
-		// System memory
-		if ("memory_used" in obj) {
-			var percent = Number(obj["memory_used"]) / memory_total;
-			$("#memory").css('color', getColorForPercentage(percent));
-			$("#memory_used").html(obj["memory_used"]);
-		}
-		if ("memory_total" in obj) {
-			memory_total = Number(obj["memory_total"]);
-			$("#memory_total").html(obj["memory_total"]);
-		}
+			// Get distance data and create radial graph
+			if ("distance" in obj) {
+				// Update distance chart
+				var dist_data = [];
+				// Unfortunately the graph has directions clockwise (front, right, back, left) in the array.
+				// We have them front, left, right, back
+				dist_data[0] = obj["distance"][0];
+				dist_data[1] = obj["distance"][2];
+				dist_data[2] = obj["distance"][3];
+				dist_data[3] = obj["distance"][1];
+				// Change chart dataset to use new data
+				distChartConfig.data.datasets[0].data = dist_data;
+				// Reload chart with new data
+				distChart.update();
+			}
 
-		// Speed indicators for keyboard and gamepad
-		if ("kb_speed" in obj) {
-			set_speed_indicator("kb", obj["kb_speed"]);
-		}
-		if ("gp_speed" in obj) {
-			set_speed_indicator("gp", obj["gp_speed"]);
-		}
+			// Get thermal camera and create pixel grid
+			if ("thermal_camera" in obj) {
+				var thermal_camera_data = obj["thermal_camera"];
 
-		last_sensor_data = obj;
+				// Iterate through pixels
+				for (i = 0; i < thermal_camera_data.length; i++) {
+					// Apply colour to the appropriate HTML element
+					var pixel = Math.round(thermal_camera_data[i]);
+					$("#p" + i).css("background", rainbow(pixel));
+				}
+			}
+
+			// Get CO2 levels
+			if ("co2" in obj) {
+				var co2 = obj["co2"];
+				// Update graph
+				$("#co2_level").html(co2 + "<span style='font-size: 10px'> ppm</span>");
+				$("#co2_graph").attr('class', "c100 med orange center p" + Math.round(co2 / 100));
+			}
+
+			// Get TVOC levels
+			if ("tvoc" in obj) {
+				var tvoc = obj["tvoc"];
+				// Update graph
+				$("#tvoc_level").html(tvoc + "<span style='font-size: 10px'> ppb</span>");
+				$("#tvoc_graph").attr('class', "c100 med orange center p" + Math.round(tvoc / 100));
+			}
+
+			// Get temperature data for line graph
+			if ("temp" in obj) {
+				var temp_data = obj["temp"];
+				// Remove oldest element
+				tempChartConfig.data.datasets[0].data.shift();
+				// Push new element
+				tempChartConfig.data.datasets[0].data.push(temp_data[0]);
+				// Update chart to display new data
+				tempChart.update();
+			}
+
+			// Get charge level
+			if ("charge" in obj) {
+				var charge_data = obj["charge"];
+				// Update graph
+				$("#charge_level").html(charge_data + "%");
+				$("#charge_graph").attr('class', "c100 med orange center p" + charge_data);
+			}
+
+			// Highest CPU core temperature
+			if ("cpu_temp" in obj) {
+				var cpu_temp = Math.round(obj["cpu_temp"]);
+				$("#cputemp_level").html(cpu_temp + "&degC");
+				$("#cputemp_graph").attr('class', "c100 med orange center p" + cpu_temp);
+			}
+
+			// System uptime
+			if ("uptime" in obj) {
+				// Calculate time of boot
+				start_time = Date.now() - (obj["uptime"] * 1000);
+				setInterval(() => {
+					// Calculate uptime based on time elapsed since reported time of boot
+					var upt = new Date(Date.now() - start_time).toISOString().substr(11, 8);
+					// Format nicely
+					$("#uptime").html(upt);
+				}, 1000);
+			}
+
+			// System memory
+			if ("memory_used" in obj) {
+				var percent = Number(obj["memory_used"]) / memory_total;
+				$("#memory").css('color', getColorForPercentage(percent));
+				$("#memory_used").html(obj["memory_used"]);
+			}
+			if ("memory_total" in obj) {
+				memory_total = Number(obj["memory_total"]);
+				$("#memory_total").html(obj["memory_total"]);
+			}
+
+			// Speed indicators for keyboard and gamepad
+			if ("kb_speed" in obj) {
+				set_speed_indicator("kb", obj["kb_speed"]);
+			}
+			if ("gp_speed" in obj) {
+				set_speed_indicator("gp", obj["gp_speed"]);
+			}
+
+			last_sensor_data = obj;
+		}
 	}
 }
 

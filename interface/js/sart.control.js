@@ -78,35 +78,39 @@ function createKeyBind(keys, ctrl, func) {
 }
 
 function controlConnection() {
-	// Create WebSocket
-	controlSocket = new WebSocket("ws://" + ip + ":5555");
+	if(!demo) {
+		// Create WebSocket
+		controlSocket = new WebSocket("ws://" + ip + ":5555");
 
-	controlSocket.onopen = function (event) {
-		controlConnected = true;
-		$("#control_status").attr("class", "btn btn-border-outside btn-success");
-
-		bootoast.toast({
-			"message": "Control socket connected",
-			"type": "success",
-			"icon": "link",
-			"position": "left-bottom"
-		});
-	}
-
-	controlSocket.onclose = function (event) {
-		if(controlConnected) {
-			$("#control_status").attr("class", "btn btn-border-outside btn-danger");
+		controlSocket.onopen = function (event) {
+			controlConnected = true;
+			$("#control_status").attr("class", "btn btn-border-outside btn-success");
 
 			bootoast.toast({
-				"message": "Control socket disconnected",
-				"type": "danger",
-				"icon": "unlink",
+				"message": "Control socket connected",
+				"type": "success",
+				"icon": "link",
 				"position": "left-bottom"
 			});
-			controlConnected = false;
 		}
-		setTimeout(function(){controlConnection()},1000);
-	};
+
+		controlSocket.onclose = function (event) {
+			if (controlConnected) {
+				$("#control_status").attr("class", "btn btn-border-outside btn-danger");
+
+				bootoast.toast({
+					"message": "Control socket disconnected",
+					"type": "danger",
+					"icon": "unlink",
+					"position": "left-bottom"
+				});
+				controlConnected = false;
+			}
+			setTimeout(function () {
+				controlConnection()
+			}, 1000);
+		};
+	}
 }
 
 $(document).ready(function () {
