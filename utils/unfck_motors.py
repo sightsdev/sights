@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 ''' Clears overheating errors and reenables motors '''
 from pyax12.connection import Connection
+from argparse import ArgumentParser
 import json
 
 # Setup argument parser for config file loading
