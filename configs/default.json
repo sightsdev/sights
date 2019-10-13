@@ -26,11 +26,11 @@
 			"id": 2
 		},
 		"left": {
-			"enabled": false,
+			"enabled": true,
 			"id": 3
 		},
 		"right": {
-			"enabled": false,
+			"enabled": true,
 			"id": 4
 		}
 	},
