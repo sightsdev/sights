@@ -7,13 +7,13 @@
 
 The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark III / IV rescue robot.
 
-All configuration for these scripts is done in `default.json`, which can be edited through the web interface. The only configuration option that must be done manually is the robot's IP address, as that defines what address the WebSocket server will bind to.
+All configuration for these scripts are done in the `.json` files within the `configs/` directory, which can be edited through the web interface. By default, the robot  will load the `default.json` config file. The only configuration option that must be done manually is the robot's IP address, as that defines what address the WebSocket server will bind to.
 
 Python 3.6 or greater is required due to the use of `asyncio`.
 
 Sensors are handled through a modular sensor management wrapper class, and are individually in the `Sensors/` directory. Arduino code for sensor data can be found in the `Arduino/` directory.
 
-Configuration files for camera-streaming software [Motion](https://github.com/Motion-Project/motion) can be found in the `Motion/` directory. 
+Configuration files for camera-streaming software [Motion](https://github.com/Motion-Project/motion) can be found in the `motion/` directory. 
 
 ## Installation
 Installation is preferably done to the `/opt/sart` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues.
