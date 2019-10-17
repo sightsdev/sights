@@ -1,4 +1,10 @@
+
 # SARTRobot
+[![Build status](https://img.shields.io/badge/build-passing-brightgreen)](https://www.sfxrescue.com)
+[![GitHub license](https://img.shields.io/github/license/SFXRescue/SARTRobot)](https://github.com/SFXRescue/SARTRobot/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/SFXRescue/SARTRobot)](https://github.com/SFXRescue/SARTRobot/issues)
+[![GitHub forks](https://img.shields.io/github/forks/SFXRescue/SARTRobot)](https://github.com/SFXRescue/SARTRobot/network)
+
 The scripts and programs written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark III / IV rescue robot.
 
 All configuration for these scripts is done in `default.json`, which can be edited through the web interface. The only configuration option that must be done manually is the robot's IP address, as that defines what address the WebSocket server will bind to.
