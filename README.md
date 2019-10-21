@@ -266,7 +266,7 @@ Default keyboard speed option between 1 and 8.
 
 Type of servo connection to use. Available options:
 
-- `dynamixel` for Dynamixel AX series servos
+- `dynamixel` for Dynamixel AX-series servos
 - `serial` for Sabertooth motor controllers
 - `virtual` for a virtual servo connection (for testing)
 
@@ -290,7 +290,7 @@ _Only required for Dynamixel connection._
 
 ### `cameras`
 
-For each camera, if the `enabled` option is set, it will be shown on the interface. The port that the interface will attempt to load the camera stream from is defined in the `port` option. Note that these settings don't modify the Motion settings, and are meant to be set to whatever has been set in the relevant Motion config files.
+For each camera, if the `enabled` option is set, it will be shown on the interface. The URL that the interface will attempt to load the camera stream from is defined in the `id` option. Note that these settings don't modify the Motion settings, and are meant to be set to whatever has been set in the relevant Motion config files.
 
 ### `sensors`
 
