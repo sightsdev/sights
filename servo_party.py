@@ -1,15 +1,7 @@
 #!/usr/bin/env python3
 import pyax12.connection
 from pyax12.status_packet import RangeError
-from enum import IntEnum
 import serial
-import time
-
-class Servo(IntEnum):
-    LEFT_FRONT = 1
-    RIGHT_FRONT = 2
-    LEFT_BACK = 3
-    RIGHT_BACK = 4
 
 # Virtual motor connection
 class VirtualConnection:
@@ -57,6 +49,7 @@ class DynamixelConnection:
         self.baudrate = baudrate
         self.motors = pyax12.connection.Connection(
             port=port, baudrate=baudrate)
+        
 
     def move_raw(self, left=None, right=None):
         # Both left and right are optional parameters
@@ -66,8 +59,8 @@ class DynamixelConnection:
                 left *= -1
                 left += 1024
             try:
-                self.motors.set_speed(Servo.LEFT_FRONT, left)
-                self.motors.set_speed(Servo.LEFT_BACK, left)
+                for servo in self.ids['left']:
+                    self.motors.set_speed(servo, left)
             except:
                 self.crash(left, None)
         if right is not None:
@@ -77,8 +70,8 @@ class DynamixelConnection:
             elif right < 1024:
                 right += 1024
             try:
-                self.motors.set_speed(Servo.RIGHT_FRONT, right)
-                self.motors.set_speed(Servo.RIGHT_BACK, right)
+                for servo in self.ids['right']:
+                    self.motors.set_speed(servo, right)
             except:
                 self.crash(None, right)
 
@@ -127,6 +120,7 @@ class ServoParty:
             self.connection = SerialConnection(self.port, self.baudrate)
         elif (self.type == 'dynamixel'):
             self.connection = DynamixelConnection(self.port, self.baudrate)
+            self.connection.ids = config['servo']['ids']
         else:
             print("SERVO_PARTY: Could not determine motor connection type")
             print("SERVO_PARTY: Falling back to virtual connection")

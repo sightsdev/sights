@@ -272,11 +272,21 @@ Type of servo connection to use. Available options:
 
 `port`
 
-Serial port to connect over (e.g. `/dev/ttyACM0`). Not required for virtual connection.
+Serial port to connect over (e.g. `/dev/ttyACM0`).
+
+_Not required for virtual connection._
 
 `baudrate`
 
 Baudrate to connect to the specified serial port with.
+
+_Not required for virtual connection._
+
+`ids`
+
+Configure Dynamixel ID assignment for each motor group. Currently only `left` and `right` groups are supported which define which servos are on the left and right side. Each group is a list, allowing for multiple motors.
+
+_Only required for Dynamixel connection._
 
 ### `cameras`
 
