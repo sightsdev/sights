@@ -80,7 +80,7 @@ class DynamixelConnection:
                 self.motors.set_speed(Servo.RIGHT_FRONT, right)
                 self.motors.set_speed(Servo.RIGHT_BACK, right)
             except:
-                self.crash(left, None)
+                self.crash(None, right)
 
     def stop(self):
         # Set all motors to 0
@@ -93,9 +93,15 @@ class DynamixelConnection:
         self.motors.close()
 
     def crash(self, left, right):
-        self.close()
         print("SERVO_PARTY: Something went wrong sending message to servos:")
         print("Left: {} (was: {}) | Right: {} (was: {})".format(left, self.last_left, right, self.last_right))
+        print("SERVO_PARTY: Attempting to reopen connection")
+        # Reopen connection
+        self.motors = pyax12.connection.Connection(
+            port=self.port, baudrate=self.baudrate)
+        print("SERVO_PARTY: Attempting to stop servos")
+        self.stop()
+
 
     def setup_servo(self, dynamixel_id):
         # Set the "wheel mode"
