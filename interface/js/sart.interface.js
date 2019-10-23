@@ -39,10 +39,22 @@ function toggleSensorMode() {
 		$("#sensor_toggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
 		sensorMode = true;
 	}
-}
-
+} 
 
 $(document).ready(function () {
+
+	//$("#darkmode_toggle").checked = localStorage.getItem("darkmode") !== null && localStorage.getItem("darkmode") === "true";;
+	
+	// Toggling dark mode
+	$("#darkmode_toggle").change(function() {
+		if (this.checked) {
+			document.body.setAttribute("data-theme", "dark");
+			//localStorage.setItem("darkmode", "true");
+		} else {
+			document.body.removeAttribute("data-theme");
+			//localStorage.removeItem("darkmode");
+		}
+	});
 
 	// Allow both a tooltip and a modal window on a button
 	$('[rel="tooltip"]').tooltip({
