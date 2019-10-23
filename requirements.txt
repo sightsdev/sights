@@ -1,7 +1,8 @@
-psutil==5.6.2
-pyax12==0.5.dev3
-websockets==7.0
-pyserial==3.4
+psutil>=5.6.2
+pyax12>=0.5.dev3
+websockets>=7.0
+pyserial>=3.4
 PySGP30
 PyMLX90614
 smbus2
+multiprocessing-logging
