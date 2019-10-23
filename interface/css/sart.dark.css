@@ -1,10 +1,10 @@
 [data-theme="dark"] {
-  background-color: #111 !important;
-  color: #eee;
+  background-color: #333333 !important;
+  color: #d8d8d8;
 }
 
 [data-theme="dark"] .bg-light {
-  background-color: #333 !important;
+  background-color: #262626 !important;
 }
 
 [data-theme="dark"] .bg-white {
@@ -13,4 +13,30 @@
 
 [data-theme="dark"] .bg-black {
   background-color: #eee !important;
+}
+
+/* Buttons */
+[data-theme="dark"] .btn-border-outside {
+  border-color:#ffffff;
+}
+
+[data-theme="dark"] .btn {
+  color: #d8d8d8;
+}
+
+/* Cards */
+[data-theme="dark"] .card-body {
+  background-color: #262626 !important;
+}
+
+[data-theme="dark"] .card-header {
+  background-color: #1a1a1a !important;
+}
+
+[data-theme="dark"] .card {
+  background-color: transparent !important;
+}
+
+[data-theme="dark"] .list-group-item {
+  background-color: #262626 !important;
 }
