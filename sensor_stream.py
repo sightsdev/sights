@@ -7,10 +7,13 @@ import asyncio
 import psutil
 import json
 import serial
+import logging
 
 class SensorStream(WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5556)
+        # Setup logger
+        self.logger = logging.getLogger(__name__)
         # Check if Arduino is enabled in config file
         self.arduino_enabled = self.config['arduino']['enabled']
         # Attempt to open Arduino serial connection
@@ -20,8 +23,8 @@ class SensorStream(WebSocketProcess):
                 self.ser = serial.Serial(port=self.config['arduino']['port'],
                                     baudrate=self.config['arduino']['baudrate'])
             except serial.serialutil.SerialException:
-                print("SERVER: Error: Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
-                print("SERVER: Continuing without Arduino connection\n")
+                self.logger.error("Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
+                self.logger.info("Continuing without Arduino connection\n")
                 self.arduino_enabled = False
         # Setup i2c stuff
         #self.i2cbus = SMBus(1)
@@ -34,6 +37,7 @@ class SensorStream(WebSocketProcess):
         # Load configuration from file for each sensor
         for sensor in self.sensors:
             sensor.load_config(self.config['sensors'])
+        
 
     def get_data(self):
         # Create empty message
@@ -82,14 +86,14 @@ class SensorStream(WebSocketProcess):
         self.config = json.load(open(self.config_file))
         msg = {"config": self.config}
         await self.websocket.send(json.dumps(msg))
-        print("SERVER: Sent configuration file")
+        self.logger.info("Sent configuration file")
 
     async def send_speed_value(self, typ, speed):
         msg = {}
         # Create message with type and value of the speed
         msg[typ + "_speed"] = speed
         await self.websocket.send(json.dumps(msg))
-        print("SERVER: Syncronized speed setting")
+        self.logger.info("Syncronized speed setting")
 
     async def send_init_info(self):
         msg = {}
@@ -107,10 +111,10 @@ class SensorStream(WebSocketProcess):
         msg["memory_total"] = psutil.virtual_memory().total >> 20
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
-        print("SERVER: Sent initial message")
+        self.logger.info("Sent initial message")
 
     async def main(self, websocket, path):
-        print("SERVER: Client connected")
+        self.logger.info("Client connected")
         # Store websocket
         self.websocket = websocket
         # Send the configuration file, default speeds, etc.
@@ -130,5 +134,5 @@ class SensorStream(WebSocketProcess):
                 # Short sleep to prevent issues
                 await asyncio.sleep(0.05)
             except websockets.exceptions.ConnectionClosed:
-                print("SERVER: Client disconnected")
+                self.logger.info("Client disconnected")
                 break

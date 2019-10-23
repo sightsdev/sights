@@ -62,6 +62,6 @@
 		}
 	},
 	"debug": {
-		"print_messages": false
+		"print_messages": true
 	}
 }

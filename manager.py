@@ -6,10 +6,13 @@ from sensor_stream import SensorStream
 import signal
 import sys
 import os
+import logging
+import multiprocessing_logging
 
 class Manager:
-    def __init__(self, args):
-        print("MANAGER: Starting manager process")
+    def __init__(self, args, logger):
+        self.logger = logger
+        self.logger.info("Starting manager process")
         # Store config file name
         self.config_file = args.config_file
         # Get the directory that this script exists in, in typical ugly Python fashion
@@ -23,7 +26,7 @@ class Manager:
         self.control_process.join()
 
     def sigint(self, signal, frame):
-        print("MANAGER: Received {} signal. Terminating.".format(signal))
+        self.logger.info("Received INT signal. Terminating.")
         # Make sure we terminate the child processes to prevent a zombie uprising
         self.terminate()
         # Also kill this process too
@@ -34,7 +37,7 @@ class Manager:
         self.pid = str(os.getpid())
         with open(path + '/../sart.pid', 'w') as f:
             f.write(self.pid)
-        print("MANAGER: PID", self.pid)
+        self.logger.info("PID {}".format(self.pid))
         # Create pipe. sensor_pipe receives, and control_pipe sends
         self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
         # Create server and receiver processes
@@ -52,21 +55,26 @@ class Manager:
         message = self.manager_pipe.recv()
         if message[0] == "RESTART_SCRIPTS":
             # Restart everything
-            print("MANAGER: Restarting processes")
+            self.logger.info("Restarting processes")
             # Terminate child processes
             self.terminate()
             # Restart
             return True
         elif message[0] == "KILL_SCRIPTS":
             # Kill everyone
-            print("MANAGER: Terminating processes")
+            self.logger.info("Terminating processes")
             # Terminate child processes
             self.terminate()
             # Do not restart
             return False
-        print("MANAGER: Exiting manager process")
+        self.logger.info("Exiting manager process")
 
 if __name__ == '__main__':
+    # Setup logger
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s') #filename='/opt/sart/sart_robot.log', 
+    multiprocessing_logging.install_mp_handler()
+    logger = logging.getLogger(__name__)
+    
     # Get the directory that this script exists in, in typical ugly Python fashion
     path = os.path.dirname(os.path.realpath(__file__))
 
@@ -82,10 +90,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     # Create manager object
-    manager = Manager(args)
+    manager = Manager(args, logger)
     
     # Main program loop
     # If the restart flag is enabled we want to run the main function
     while(manager.run()):
-        print("MANAGER: Going to restart")
-    print("MANAGER: All processes ended")
+        logger.info("Going to restart")
+    logger.info("All processes ended")
