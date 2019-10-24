@@ -16,7 +16,8 @@
 }
 
 /* Buttons */
-[data-theme="dark"] .btn-border-outside, .btn-outline-dark {
+[data-theme="dark"] .btn-border-outside,
+[data-theme="dark"] .btn-outline-dark {
   border-color:#505050;
 }
 
@@ -67,7 +68,8 @@
   background-color: #222222;
 }
 
-[data-theme="dark"] .c100.orange .bar, .c100.orange .fill {
+[data-theme="dark"] .c100.orange .bar,
+[data-theme="dark"] .c100.orange .fill {
   border-color: #d65a31 !important;
 }
 
