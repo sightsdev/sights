@@ -50,9 +50,25 @@ $(document).ready(function () {
 		if (this.checked) {
 			document.body.setAttribute("data-theme", "dark");
 			//localStorage.setItem("darkmode", "true");
+			distChartConfig.options.scale.ticks.showLabelBackdrop = false;
+			distChartConfig.options.scale.gridLines.color = 'rgba(255, 255, 255, 0.2)';
+			distChartConfig.options.scale.angleLines.color = 'white';
+			tempChart.options.scales.xAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
+			tempChart.options.scales.yAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
+			Chart.defaults.global.defaultFontColor = '#d8d8d8';	
+			distChart.update();
+			tempChart.update();
 		} else {
 			document.body.removeAttribute("data-theme");
 			//localStorage.removeItem("darkmode");
+			distChartConfig.options.scale.ticks.showLabelBackdrop = true;
+			distChartConfig.options.scale.gridLines.color = 'rgba(0, 0, 0, 0.1)';
+			distChartConfig.options.scale.angleLines.color = 'white';
+			tempChart.options.scales.xAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
+			tempChart.options.scales.yAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
+			Chart.defaults.global.defaultFontColor = '#666';	
+			distChart.update();
+			tempChart.update();
 		}
 	});
 

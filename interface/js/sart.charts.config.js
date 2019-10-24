@@ -60,7 +60,7 @@ var tempChartConfig = {
             }]
         }
     }
-}
+};
 
 var distChartConfig = {
     type: 'polarArea',
@@ -97,4 +97,4 @@ var distChartConfig = {
             }
         }
     }
-}
+};
