@@ -90,7 +90,8 @@
   color: #d8d8d8 !important;
 }
 
-[data-theme="dark"] .modal-header, .nav-tabs {
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .nav-tabs {
   border-bottom: 1px solid #1a1a1a !important;
 }
 
