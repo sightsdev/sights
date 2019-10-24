@@ -17,12 +17,23 @@
 
 /* Buttons */
 [data-theme="dark"] .btn-border-outside {
-  border-color:#ffffff;
+  border-color:#505050;
+  color: #d8d8d8; 
 }
 
-[data-theme="dark"] .btn {
+[data-theme="dark"] .btn-outline-dark {
   color: #d8d8d8;
 }
+
+[data-theme="dark"] .btn-light {
+  color: #d8d8d8;
+  background-color: #333333 !important
+}
+
+[data-theme="dark"] .custom-select {
+  background-color: transparent
+}
+
 
 /* Cards */
 [data-theme="dark"] .card-body {
@@ -39,4 +50,24 @@
 
 [data-theme="dark"] .list-group-item {
   background-color: #262626 !important;
+}
+
+/* Input hints */
+[data-theme="dark"] kbd {
+  background-color: #313539 !important;
+}
+
+/* Circle */
+[data-theme="dark"] .c100 {
+  background-color: #333333 !important;
+}
+
+[data-theme="dark"] .c100:after {
+  background-color: #222222;
+}
+
+/* Demo mode indicator */
+[data-theme="dark"] .ugly {
+  color: #ffffff;
+  text-shadow: 0 0 9px #fff, 0 0 18px #fff, 0 0 27px #e60073, 0 0 36px #e60073, 0 0 45px #e60073, 0 0 54px #e60073, 0 0 63px #e60073;
 }
