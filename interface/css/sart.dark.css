@@ -17,17 +17,19 @@
 
 /* Buttons */
 [data-theme="dark"] .btn-border-outside {
-  border-color:#505050;
   color: #d8d8d8; 
+  border-color:#505050;
 }
 
 [data-theme="dark"] .btn-outline-dark {
   color: #d8d8d8;
+  border-color:#505050;
 }
 
 [data-theme="dark"] .btn-light {
   color: #d8d8d8;
-  background-color: #333333 !important
+  background-color: #333333 !important;
+  border-color:#505050;
 }
 
 [data-theme="dark"] .custom-select {
@@ -64,6 +66,10 @@
 
 [data-theme="dark"] .c100:after {
   background-color: #222222;
+}
+
+[data-theme="dark"] .c100.orange .bar, .c100.orange .fill {
+  border-color: #d65a31 !important;
 }
 
 /* Demo mode indicator */
