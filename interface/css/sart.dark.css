@@ -77,3 +77,16 @@
   color: #ffffff;
   text-shadow: 0 0 9px #fff, 0 0 18px #fff, 0 0 27px #e60073, 0 0 36px #e60073, 0 0 45px #e60073, 0 0 54px #e60073, 0 0 63px #e60073;
 }
+
+/* Modal */
+[data-theme="dark"] .modal-content {
+  background-color: #262626 !important;
+}
+
+[data-theme="dark"] .text-dark {
+  color: #d8d8d8 !important;
+}
+
+[data-theme="dark"] .text-dark:hover, .text-dark:focus {
+  color: #d8d8d8 !important;
+}
