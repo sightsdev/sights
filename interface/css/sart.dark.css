@@ -86,7 +86,8 @@
   color: #d8d8d8 !important;
 }
 
-[data-theme="dark"] .text-dark:hover, .text-dark:focus {
+[data-theme="dark"] .text-dark:hover,
+[data-theme="dark"] .text-dark:focus {
   color: #d8d8d8 !important;
 }
 
