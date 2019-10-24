@@ -89,3 +89,20 @@
 [data-theme="dark"] .text-dark:hover, .text-dark:focus {
   color: #d8d8d8 !important;
 }
+
+[data-theme="dark"] .modal-header, .nav-tabs {
+  border-bottom: 1px solid #1a1a1a !important;
+}
+
+[data-theme="dark"] .modal-footer {
+  border-top: 1px solid #1a1a1a !important;
+}
+
+[data-theme="dark"] .nav-link.active {
+  background-color: #1a1a1a !important;
+  border-color: transparent !important;
+}
+
+[data-theme="dark"] .nav-link:hover {
+  border-color: #1a1a1a !important;
+}
