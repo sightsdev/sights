@@ -65,8 +65,8 @@ $(document).ready(function () {
 		} else {
 			// Disable dark theme CSS
 			document.body.removeAttribute("data-theme");
-			// Remove dark theme cookie
-			localStorage.removeItem("darkmode");
+			// Set dark theme cookie to false
+			localStorage.setItem("darkmode", "false");
 			// Revert charts to original display
 			distChartConfig.options.scale.ticks.showLabelBackdrop = true;
 			distChartConfig.options.scale.gridLines.color = 'rgba(0, 0, 0, 0.1)';
@@ -82,10 +82,15 @@ $(document).ready(function () {
 		}
 	});
 
+	let darkModeCookie = localStorage.getItem("darkmode");
 	// Enable dark mode if cookie found
-	if (localStorage.getItem("darkmode") !== null) {
+	// Sets dark mode based on OS or browser preference, but don't override the user's site-level setting
+	if (darkModeCookie === "true"
+		|| (matchMedia('(prefers-color-scheme: dark)').matches && darkModeCookie === null)) {
 		$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
 	}
+
+
 
 	// Allow both a tooltip and a modal window on a button
 	$('[rel="tooltip"]').tooltip({
