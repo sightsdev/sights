@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="css/circle.css">
 	<link rel="stylesheet" href="css/bootoast.min.css">
 	<link rel="stylesheet" href="css/sart.style.css">
+	<link rel="stylesheet" href="css/sart.dark.css">
 	<!-- Syntax highlighting -->
 	<link rel="stylesheet" href="css/monokai.css">
 
@@ -39,11 +40,11 @@
 	<script defer src="js/fontawesome/fontawesome.js"></script>
 	<script defer src="js/fontawesome/solid.js"></script>
 	<!-- S.A.R.T. Scripts -->
+	<script src="js/sart.charts.config.js"></script>
 	<script src="js/sart.interface.js"></script>
 	<script src="js/sart.ssh.js"></script>
 	<script src="js/sart.demo.js"></script>
 	<script src="js/sart.sensors.js"></script>
-	<script src="js/sart.charts.config.js"></script>
 	<script src="js/sart.control.js"></script>
 
 </head>
@@ -130,10 +131,10 @@
 							</p>
 						</div>
 						<div class="tab-pane fade" id="gamepad_log" role="tabpanel" aria-labelledby="gamepad_log_tab">
-							<br /><button type="button" class="btn btn-secondary" id="gamepad_log_select_button">
+							<br /><button type="button" class="btn btn-secondary btn-default" id="gamepad_log_select_button">
 								<i class="fa fa-fw fa-check-square"></i> Select All
 							</button>
-							<button type="button" class="btn btn-danger" id="gamepad_log_clear_button">
+							<button type="button" class="btn btn-danger btn-default" id="gamepad_log_clear_button">
 								<i class="fa fa-fw fa-trash-alt"></i> Clear
 							</button>
 							<p>
@@ -179,7 +180,7 @@
 							<br />
 							<div class="row">
 								<div class="col-auto">
-									<button type="button" class="btn btn-secondary" id="config_editor_select_button">
+									<button type="button" class="btn btn-secondary btn-default" id="config_editor_select_button">
 										<i class="fa fa-fw fa-check-square"></i> Select All
 									</button>
 								</div>
@@ -189,10 +190,10 @@
 								</div>
 								<div class="col-auto">
 									<div class="float-right">
-										<button type="button" class="btn btn-info" id="config_editor_reload_button">
+										<button type="button" class="btn btn-info btn-default" id="config_editor_reload_button">
 											<i class="fa fa-fw fa-redo"></i> Reload
 										</button>
-										<button type="button" class="btn btn-success" id="config_editor_save_button">
+										<button type="button" class="btn btn-success btn-default" id="config_editor_save_button">
 											<i class="fa fa-fw fa-save"></i> Save
 										</button>
 									</div>
@@ -208,10 +209,10 @@
 						<div class="tab-pane fade" id="system_control" role="tabpanel"
 							aria-labelledby="system_control_tab">
 							<br />
-							<button type="button" class="btn btn-warning" id="restart_scripts_button">
+							<button type="button" class="btn btn-warning btn-default" id="restart_scripts_button">
 								<i class="fa fa-fw fa-undo"></i> Restart Scripts
 							</button>
-							<button type="button" class="btn btn-danger float-right" id="kill_scripts_button">
+							<button type="button" class="btn btn-danger btn-default float-right" id="kill_scripts_button">
 								<i class="fa fa-fw fa-skull"></i> Kill Scripts
 							</button>
 						</div>
@@ -331,7 +332,7 @@
 					</button>
 				</li>
 			</ul>
-			<div class="inline">
+			<div class="inline">	
 				<button type="button" class="btn btn-outline-dark" id="sensor_toggle" data-toggle="tooltip"
 					data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
 					<i class="fa fa-fw fa-chart-area"></i> Show Sensors
@@ -348,6 +349,11 @@
 					rel="tooltip" data-placement="bottom" title="Open settings">
 					<i class="fa fa-fw fa-cog"></i>
 				</button>
+				<span class="btn-group-toggle" data-toggle="buttons">
+					<label class="btn btn-outline-dark" rel="tooltip" data-placement="bottom" title="Toggle dark mode">
+					  <input type="checkbox" autocomplete="off" id="darkmode_toggle"><i class="fa fa-fw fa-cloud-moon"></i>
+					</label>
+				  </span>
 				<div class="btn-group dropdown" role="group">
 					<button id="power_button_dropdown" type="button" class="btn btn-outline-danger dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -529,7 +535,7 @@
 				<div class="card">
 					<div class="card-header">
 						<i class="fas fa-fw fa-camera header-icon"></i> Thermal Camera
-						<button style="margin-left: 10px; padding: 0px 2px 0px 2px" type="button" class="btn btn-secondary" id="thermal_overlay_button" 
+						<button style="margin-left: 10px; padding: 0px 2px 0px 2px" type="button" class="btn btn-secondary" id="thermal_overlay_button"
 							rel="tooltip" data-placement="bottom" title="Toggle overlay">
 							<i class="fa fa-fw fa-arrow-up"></i>
 						</button>

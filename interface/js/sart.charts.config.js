@@ -45,6 +45,9 @@ var tempChartConfig = {
                 scaleLabel: {
                     display: true,
                     labelString: 'Time'
+                },
+                gridLines: {
+
                 }
             }],
             yAxes: [{
@@ -56,11 +59,14 @@ var tempChartConfig = {
                 scaleLabel: {
                     display: true,
                     labelString: 'Temperature (°C)'
+                },
+                gridLines: {
+                    
                 }
             }]
         }
     }
-}
+};
 
 var distChartConfig = {
     type: 'polarArea',
@@ -94,7 +100,13 @@ var distChartConfig = {
                 max: 1200,
                 min: 0,
                 stepSize: 100
+            },
+            gridLines: {
+
+            },
+            angleLines: {
+                
             }
         }
     }
-}
+};

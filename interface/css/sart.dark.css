@@ -1,0 +1,112 @@
+[data-theme="dark"] {
+  background-color: #333333 !important;
+  color: #d8d8d8;
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: #262626 !important;
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: #000 !important;
+}
+
+[data-theme="dark"] .bg-black {
+  background-color: #eee !important;
+}
+
+/* Buttons */
+[data-theme="dark"] .btn-border-outside,
+[data-theme="dark"] .btn-outline-dark {
+  border-color:#505050;
+}
+
+[data-theme="dark"] .btn:not(.btn-default) {
+  color: #d8d8d8;
+}
+
+[data-theme="dark"] .btn-light {
+  color: #d8d8d8;
+  background-color: #333333 !important;
+  border-color:#505050;
+}
+
+[data-theme="dark"] .custom-select {
+  background-color: transparent;
+  color: #d8d8d8;
+}
+
+
+/* Cards */
+[data-theme="dark"] .card-body {
+  background-color: #262626 !important;
+}
+
+[data-theme="dark"] .card-header {
+  background-color: #1a1a1a !important;
+}
+
+[data-theme="dark"] .card {
+  background-color: transparent !important;
+}
+
+[data-theme="dark"] .list-group-item {
+  background-color: #262626 !important;
+}
+
+/* Input hints */
+[data-theme="dark"] kbd {
+  background-color: #313539 !important;
+}
+
+/* Circle */
+[data-theme="dark"] .c100 {
+  background-color: #333333 !important;
+}
+
+[data-theme="dark"] .c100:after {
+  background-color: #222222;
+}
+
+[data-theme="dark"] .c100.orange .bar,
+[data-theme="dark"] .c100.orange .fill {
+  border-color: #d65a31 !important;
+}
+
+/* Demo mode indicator */
+[data-theme="dark"] .ugly {
+  color: #ffffff;
+  text-shadow: 0 0 9px #fff, 0 0 18px #fff, 0 0 27px #e60073, 0 0 36px #e60073, 0 0 45px #e60073, 0 0 54px #e60073, 0 0 63px #e60073;
+}
+
+/* Modal */
+[data-theme="dark"] .modal-content {
+  background-color: #262626 !important;
+}
+
+[data-theme="dark"] .text-dark {
+  color: #d8d8d8 !important;
+}
+
+[data-theme="dark"] .text-dark:hover,
+[data-theme="dark"] .text-dark:focus {
+  color: #d8d8d8 !important;
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .nav-tabs {
+  border-bottom: 1px solid #1a1a1a !important;
+}
+
+[data-theme="dark"] .modal-footer {
+  border-top: 1px solid #1a1a1a !important;
+}
+
+[data-theme="dark"] .nav-link.active {
+  background-color: #1a1a1a !important;
+  border-color: transparent !important;
+}
+
+[data-theme="dark"] .nav-link:hover {
+  border-color: #1a1a1a !important;
+}

@@ -39,10 +39,69 @@ function toggleSensorMode() {
 		$("#sensor_toggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
 		sensorMode = true;
 	}
-}
-
+} 
 
 $(document).ready(function () {
+	
+	// Dark mode toggle handler
+	$("#darkmode_toggle").change(function() {
+		if (this.checked) {
+			// Enabled dark theme CSS
+			document.body.setAttribute("data-theme", "dark");
+			// Set dark theme cookie to true
+			localStorage.setItem("darkmode", "true");
+			// Modify charts to display properly
+			distChartConfig.options.scale.ticks.showLabelBackdrop = false;
+			distChartConfig.options.scale.gridLines.color = 'rgba(255, 255, 255, 0.2)';
+			distChartConfig.options.scale.angleLines.color = 'white';
+			tempChartConfig.options.scales.xAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
+			tempChartConfig.options.scales.yAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
+			Chart.defaults.global.defaultFontColor = '#d8d8d8';	
+			// Only update charts if they have actually been initialised yet
+			if (distChart)
+				distChart.update();
+			if (tempChart)
+				tempChart.update();
+		} else {
+			// Disable dark theme CSS
+			document.body.removeAttribute("data-theme");
+			// Set dark theme cookie to false
+			localStorage.setItem("darkmode", "false");
+			// Revert charts to original display
+			distChartConfig.options.scale.ticks.showLabelBackdrop = true;
+			distChartConfig.options.scale.gridLines.color = 'rgba(0, 0, 0, 0.1)';
+			distChartConfig.options.scale.angleLines.color = 'white';
+			tempChartConfig.options.scales.xAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
+			tempChartConfig.options.scales.yAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
+			Chart.defaults.global.defaultFontColor = '#666';	
+			// Only update charts if they have actually been initialised yet
+			if (distChart)
+				distChart.update();
+			if (tempChart)
+				tempChart.update();
+		}
+	});
+
+	let darkModeCookie = localStorage.getItem("darkmode");
+	let darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	// Enable dark mode if cookie found
+	// Sets dark mode based on OS or browser preference, but don't override the user's site-level setting
+	if (darkModeCookie === "true"
+		|| (darkModeMediaQuery.matches && darkModeCookie === null)) {
+		$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
+	}
+
+	darkModeMediaQuery.addEventListener("change", (e) => {
+		let darkModeOn = e.matches;
+		if(darkModeOn && localStorage.getItem("darkmode") === "false") { // Site is light, switch
+			$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
+		}
+		else if (!darkModeOn && localStorage.getItem("darkmode") === "true"){ // Site is dark, switch
+			$("#darkmode_toggle").click().prop('checked', false).parent('.btn').removeClass('active');
+		}
+	});
+
+
 
 	// Allow both a tooltip and a modal window on a button
 	$('[rel="tooltip"]').tooltip({
