@@ -42,35 +42,50 @@ function toggleSensorMode() {
 } 
 
 $(document).ready(function () {
-
-	//$("#darkmode_toggle").checked = localStorage.getItem("darkmode") !== null && localStorage.getItem("darkmode") === "true";;
 	
-	// Toggling dark mode
+	// Dark mode toggle handler
 	$("#darkmode_toggle").change(function() {
 		if (this.checked) {
+			// Enabled dark theme CSS
 			document.body.setAttribute("data-theme", "dark");
-			//localStorage.setItem("darkmode", "true");
+			// Set dark theme cookie to true
+			localStorage.setItem("darkmode", "true");
+			// Modify charts to display properly
 			distChartConfig.options.scale.ticks.showLabelBackdrop = false;
 			distChartConfig.options.scale.gridLines.color = 'rgba(255, 255, 255, 0.2)';
 			distChartConfig.options.scale.angleLines.color = 'white';
-			tempChart.options.scales.xAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
-			tempChart.options.scales.yAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
+			tempChartConfig.options.scales.xAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
+			tempChartConfig.options.scales.yAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
 			Chart.defaults.global.defaultFontColor = '#d8d8d8';	
-			distChart.update();
-			tempChart.update();
+			// Only update charts if they have actually been initialised yet
+			if (distChart)
+				distChart.update();
+			if (tempChart)
+				tempChart.update();
 		} else {
+			// Disable dark theme CSS
 			document.body.removeAttribute("data-theme");
-			//localStorage.removeItem("darkmode");
+			// Remove dark theme cookie
+			localStorage.removeItem("darkmode");
+			// Revert charts to original display
 			distChartConfig.options.scale.ticks.showLabelBackdrop = true;
 			distChartConfig.options.scale.gridLines.color = 'rgba(0, 0, 0, 0.1)';
 			distChartConfig.options.scale.angleLines.color = 'white';
-			tempChart.options.scales.xAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
-			tempChart.options.scales.yAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
+			tempChartConfig.options.scales.xAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
+			tempChartConfig.options.scales.yAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
 			Chart.defaults.global.defaultFontColor = '#666';	
-			distChart.update();
-			tempChart.update();
+			// Only update charts if they have actually been initialised yet
+			if (distChart)
+				distChart.update();
+			if (tempChart)
+				tempChart.update();
 		}
 	});
+
+	// Enable dark mode if cookie found
+	if (localStorage.getItem("darkmode") !== null) {
+		$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
+	}
 
 	// Allow both a tooltip and a modal window on a button
 	$('[rel="tooltip"]').tooltip({

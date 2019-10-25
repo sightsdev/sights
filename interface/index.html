@@ -40,11 +40,11 @@
 	<script defer src="js/fontawesome/fontawesome.js"></script>
 	<script defer src="js/fontawesome/solid.js"></script>
 	<!-- S.A.R.T. Scripts -->
+	<script src="js/sart.charts.config.js"></script>
 	<script src="js/sart.interface.js"></script>
 	<script src="js/sart.ssh.js"></script>
 	<script src="js/sart.demo.js"></script>
 	<script src="js/sart.sensors.js"></script>
-	<script src="js/sart.charts.config.js"></script>
 	<script src="js/sart.control.js"></script>
 
 </head>
@@ -332,13 +332,7 @@
 					</button>
 				</li>
 			</ul>
-			<div class="inline">
-				<span class="btn-group-toggle" data-toggle="buttons">
-				  <label class="btn btn-outline-dark">
-					<input type="checkbox" autocomplete="off" id="darkmode_toggle"><i class="fa fa-fw fa-cloud-moon"></i> Dark Mode
-				  </label>
-				</span>
-				
+			<div class="inline">	
 				<button type="button" class="btn btn-outline-dark" id="sensor_toggle" data-toggle="tooltip"
 					data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
 					<i class="fa fa-fw fa-chart-area"></i> Show Sensors
@@ -355,6 +349,11 @@
 					rel="tooltip" data-placement="bottom" title="Open settings">
 					<i class="fa fa-fw fa-cog"></i>
 				</button>
+				<span class="btn-group-toggle" data-toggle="buttons">
+					<label class="btn btn-outline-dark" rel="tooltip" data-placement="bottom" title="Toggle dark mode">
+					  <input type="checkbox" autocomplete="off" id="darkmode_toggle"><i class="fa fa-fw fa-cloud-moon"></i>
+					</label>
+				  </span>
 				<div class="btn-group dropdown" role="group">
 					<button id="power_button_dropdown" type="button" class="btn btn-outline-danger dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
