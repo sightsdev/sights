@@ -83,12 +83,23 @@ $(document).ready(function () {
 	});
 
 	let darkModeCookie = localStorage.getItem("darkmode");
+	let darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 	// Enable dark mode if cookie found
 	// Sets dark mode based on OS or browser preference, but don't override the user's site-level setting
 	if (darkModeCookie === "true"
-		|| (matchMedia('(prefers-color-scheme: dark)').matches && darkModeCookie === null)) {
+		|| (darkModeMediaQuery.matches && darkModeCookie === null)) {
 		$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
 	}
+
+	darkModeMediaQuery.addEventListener("change", (e) => {
+		let darkModeOn = e.matches;
+		if(darkModeOn && localStorage.getItem("darkmode") === "false") { // Site is light, switch
+			$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
+		}
+		else if (!darkModeOn && localStorage.getItem("darkmode") === "true"){ // Site is dark, switch
+			$("#darkmode_toggle").click().prop('checked', false).parent('.btn').removeClass('active');
+		}
+	});
 
 
 
