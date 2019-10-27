@@ -19,7 +19,7 @@ class WebSocketProcess (multiprocessing.Process):
         self.port = port
 
     def run(self):
-        self.logger.info("Starting " + self.name + " process")
+        self.logger.info("Starting " + self.name + " process at " + self.config['network']['ip'] + ":" + str(self.port))
         start_server = websockets.serve(self.main, self.config['network']['ip'], self.port)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
