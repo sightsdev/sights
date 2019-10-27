@@ -5,12 +5,15 @@ import os
 import json
 import math
 import atexit
+import logging
 from servo_party import ServoParty
 from websocket_process import WebSocketProcess
 
 class ControlReceiver (WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5555)
+        # Setup logger
+        self.logger = logging.getLogger(__name__)
         # Create ServoParty to handle servos
         self.servo_party = ServoParty(self.config)
         # When script exits or is interrupted stop all servos
@@ -108,25 +111,25 @@ class ControlReceiver (WebSocketProcess):
         if (typ == "SYSTEM"):
             # Handle power commands
             if (control == "SHUTDOWN"):
-                print("RECEIVER: Received shutdown signal, shutting down...")
+                self.logger.info("Received shutdown signal, shutting down...")
                 os.system('poweroff')
             elif (control == "REBOOT"):
-                print("RECEIVER: Received reboot signal, rebooting...")
+                self.logger.info("Received reboot signal, rebooting...")
                 os.system('reboot')
             # Handle configuration requests
             elif (control == "UPDATE_CONFIG"):
-                print("RECEIVER: Received new configuration file")
+                self.logger.info("Received new configuration file")
                 self.save_config(msg["value"])
             elif (control == "REQUEST_CONFIG"):
-                print("RECEIVER: Received request for configuration file")
+                self.logger.info("Received request for configuration file")
                 # Send a message to sensor_stream requesting that they send the config file again
                 self.pipe.send(["REQUEST_CONFIG"])
             elif (control == "RESTART_SCRIPTS"):
-                print("RECEIVER: Received request to restart scripts")
+                self.logger.info("Received request to restart scripts")
                 # Send a message to manager requesting a script restart
                 self.manager_pipe.send(["RESTART_SCRIPTS"])
             elif (control == "KILL_SCRIPTS"):
-                print("RECEIVER: Received request to kill scripts")
+                self.logger.info("Received request to kill scripts")
                 # Send a message to manager requesting death
                 self.manager_pipe.send(["KILL_SCRIPTS"])
         elif (typ == "KEYBOARD"):
@@ -168,10 +171,10 @@ class ControlReceiver (WebSocketProcess):
             try:
                 buf = await websocket.recv()
             except websockets.exceptions.ConnectionClosed:
-                print("RECEIVER: Control server connection lost")
+                self.logger.info("Control server connection lost")
                 break
             if len(buf) > 0:
                 if self.config['debug']['print_messages']:
-                    print(buf)
+                    self.logger.info(buf)
                 # Convert string data to object and then handle controls
                 self.message_handler(buf)

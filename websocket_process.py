@@ -2,10 +2,12 @@ import websockets
 import asyncio
 import multiprocessing
 import json
+import logging
 
 class WebSocketProcess (multiprocessing.Process):
     def __init__(self, mpid, pipe, config_file, port):
         multiprocessing.Process.__init__(self)
+        self.logger = logging.getLogger(__name__)
         # Process ID
         self.mpid = mpid
          # Communication port to other processes
@@ -17,9 +19,9 @@ class WebSocketProcess (multiprocessing.Process):
         self.port = port
 
     def run(self):
-        print("MANAGER: Starting " + self.name + " process")
+        self.logger.info("Starting " + self.name + " process")
         start_server = websockets.serve(self.main, self.config['network']['ip'], self.port)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
-        print("MANAGER: Exiting " + self.name + " process")
+        self.logger.info("Exiting " + self.name + " process")
  

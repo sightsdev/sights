@@ -2,6 +2,7 @@
 import pyax12.connection
 from pyax12.status_packet import RangeError
 import serial
+import logging
 
 # Virtual motor connection
 class VirtualConnection:
@@ -86,13 +87,13 @@ class DynamixelConnection:
         self.motors.close()
 
     def crash(self, left, right):
-        print("SERVO_PARTY: Something went wrong sending message to servos:")
-        print("Left: {} (was: {}) | Right: {} (was: {})".format(left, self.last_left, right, self.last_right))
-        print("SERVO_PARTY: Attempting to reopen connection")
+        self.logger.error("SERVO_PARTY: Something went wrong sending message to servos:")
+        self.logger.error("Left: {} (was: {}) | Right: {} (was: {})".format(left, self.last_left, right, self.last_right))
+        self.logger.info("SERVO_PARTY: Attempting to reopen connection")
         # Reopen connection
         self.motors = pyax12.connection.Connection(
             port=self.port, baudrate=self.baudrate)
-        print("SERVO_PARTY: Attempting to stop servos")
+        self.logger.info("SERVO_PARTY: Attempting to stop servos")
         self.stop()
 
 
@@ -104,6 +105,8 @@ class DynamixelConnection:
 
 class ServoParty:
     def __init__(self, config):
+        # Setup logger
+        self.logger = logging.getLogger(__name__)
         # Load values from configuration file
         self.type = config['servo']['type'].lower()
         if (self.type != 'virtual'):
@@ -121,11 +124,12 @@ class ServoParty:
         elif (self.type == 'dynamixel'):
             self.connection = DynamixelConnection(self.port, self.baudrate)
             self.connection.ids = config['servo']['ids']
+            self.connection.logger = self.logger
         else:
-            print("SERVO_PARTY: Could not determine motor connection type")
-            print("SERVO_PARTY: Falling back to virtual connection")
+            self.logger.warn("Could not determine motor connection type")
+            self.logger.info("Falling back to virtual connection")
             self.connection = VirtualConnection()
-        print("SERVO_PARTY: Opening motor connection of type:", self.type)
+        self.logger.info("Opening motor connection of type: {}".format(self.type))
 
     def stop(self):
         # Set all servos to 0
@@ -134,7 +138,7 @@ class ServoParty:
         self.last_right = 0
 
     def close(self):
-        print("SERVO_PARTY: Closing motor connection")
+        self.logger.info("Closing motor connection")
         # Set all servos to 0 and close connection
         self.connection.stop()
         self.connection.close()
