@@ -85,9 +85,13 @@ A web server should be configured to point to the `SARTInterface` directory. I'v
         ServerAdmin webmaster@localhost
         DocumentRoot /opt/sart/SARTInterface
 
+        ProxyPass "/RPC2" "http://localhost:9001/RPC2"                                                                                                                                               ProxyPassReverse "/RPC2" "http://localhost:9001/RPC2"
+
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
     </VirtualHost>
+
+    The `ProxyPass` is important as it allows access to Supervisor's XML-RPC API from HTTP port 80.
 
     ```
 
@@ -98,10 +102,17 @@ A web server should be configured to point to the `SARTInterface` directory. I'v
     sudo a2dissite 000-default.conf
     ```
 
-4. Regardless of new file or old, you'll need to reload Apache2 with:
+4. Enable the reverse proxy modules, which we use to access Supervisor from the same origin.
 
     ```sh
-    sudo service apache2 reload
+    sudo a2enmod proxy
+    sudo a2enmod proxy_http
+    ```
+
+5. Regardless of new file or old, you'll need to restart Apache2 with:
+
+    ```sh
+    sudo service apache2 restart
     ```
 
     Or you might need to start the service, if it hasn't been already:
