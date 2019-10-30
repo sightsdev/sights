@@ -173,23 +173,51 @@ sudo service shellinabox start
 
 To test it out, navigate to `http://<robot_ip>:4200`
 
-### 6. Running at boot
+### 6. Running as a managed service with Supervisor
 
-All we need to do now is ensure that `SARTRobot`'s `manager.py` runs on boot.
+All we need to do now is ensure that `SARTRobot`'s `manager.py` is run on boot and as a service so we can start, stop and restart it at will.
 
-Keep in mind that `manager.py` needs to be run as root for shutdown and reboot functionality to work.
+For this, we'll use [Supervisor](http://supervisord.org/) which is a software package designed to manage other processes and handle starting/stopping/restarting processes as well as logging the output from said processes.
 
-In the future, `manager.py` will be run as a service, but until then, the easiest method is to edit `/etc/rc.local` and add the following line _before_ the final line which should read `exit 0`
+First install Supervisor with:
 
 ```sh
-python3 /opt/sart/SARTRobot/manager.py
+sudo -H pip3 install supervisor
+```
+
+And then copy the provided configuration file to the relevant directory with:
+
+```sh
+sudo cp /opt/sart/SARTRobot/configs/supervisor/supervisord.conf /etc/
+```
+
+The Supervisor daemon can now be run with
+
+```sh
+supervisord
+```
+
+This will automatically run the SARTRobot process. You can manage this in a similar fashion to most unix services (such as Apache or Motion) with:
+
+```sh
+supervisorctl {start|stop|restart|status} sart
+```
+
+`supervisorctl` can also be run in interactive mode by running the command with no arguments.
+
+Additionally, supervisor provides a web interface, which can be accessed at `http://<robot_ip>:9001`. It allows you to manage processes and view their logs.
+
+To ensure that `supervisord` is run at boot, edit `/etc/rc.local` and add the following line _before_ the final line which should read `exit 0`
+
+```sh
+supervisord
 ```
 
 Note that `sudo` is not required, as `rc.local` is executed as the root user.
 
 ## Usage
 
-If you don't wish to run it at boot, or simply wish to run it manually, you can, with:
+If you don't wish to run it under supervisor, or simply wish to run it manually, you can, with:
 
 ```sh
 sudo python3 /opt/sart/SARTRobot/manager.py
