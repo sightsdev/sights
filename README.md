@@ -175,14 +175,14 @@ To test it out, navigate to `http://<robot_ip>:4200`
 
 ### 6. Running as a managed service with Supervisor
 
-All we need to do now is ensure that `SARTRobot`'s `manager.py` is run on boot and as a service so we can start, stop and restart it at will.
+All we need to do now is ensure that `SARTRobot`'s `manager.py` is run on boot as a managed service so we can start, stop and restart it at will.
 
-For this, we'll use [Supervisor](http://supervisord.org/) which is a software package designed to manage other processes and handle starting/stopping/restarting processes as well as logging the output from said processes.
+For this, we'll use [Supervisor](http://supervisord.org/) which is a software package designed to manage (including starting/stopping/restarting) processes and also handle logging their output.
 
 First install Supervisor with:
 
 ```sh
-sudo -H pip3 install supervisor
+sudo -H python3 -m pip install supervisor
 ```
 
 And then copy the provided configuration file to the relevant directory with:
@@ -205,9 +205,9 @@ supervisorctl {start|stop|restart|status} sart
 
 `supervisorctl` can also be run in interactive mode by running the command with no arguments.
 
-Additionally, supervisor provides a web interface, which can be accessed at `http://<robot_ip>:9001`. It allows you to manage processes and view their logs.
+Additionally, supervisor provides a web interface, which can be accessed at `http://<robot_ip>:9001`. It provides complete management of processes as well as an interface to view their logs.
 
-To ensure that `supervisord` is run at boot, edit `/etc/rc.local` and add the following line _before_ the final line which should read `exit 0`
+To ensure that `supervisord` is run at boot, edit `/etc/rc.local` and add the following line _before_ the final line which should read `exit 0`:
 
 ```sh
 supervisord
@@ -217,13 +217,13 @@ Note that `sudo` is not required, as `rc.local` is executed as the root user.
 
 ## Usage
 
-If you don't wish to run it under supervisor, or simply wish to run it manually, you can, with:
+If you don't wish to run it under supervisor, or simply wish to run it manually, you can do so with:
 
 ```sh
 sudo python3 /opt/sart/SARTRobot/manager.py
 ```
 
-Other config files (default is `robot.json` in the configs directory) can be loaded with the `-c` flag:
+Other config files (default is `robot.json` in the `configs/` directory) can be loaded with the `-c` flag:
 
 ```sh
 cd /opt/sart/SARTRobot
