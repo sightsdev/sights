@@ -14,9 +14,9 @@ function updateServiceInfo(response, status, jqXHR) {
     $("#service_info_statename").removeClass("btn-success btn-danger btn-warning");
     switch (state) {
         case "RUNNING":
-        case "STARTING":
             $("#service_info_statename").addClass("btn-success");
             break;
+        case "STARTING":
         case "STOPPING":
         case "BACKOFF":
             $("#service_info_statename").addClass("btn-warning");
@@ -53,5 +53,108 @@ function updateService() {
 }
 
 $(document).ready(function () {
-    setInterval(updateService, 1000);
+    setInterval(updateService, 500);
+
+    $('#process_start_button').click(function() {
+        bootoast.toast({
+            "message": "Starting process",
+            "type": "info",
+            "icon": "server",
+            "position": "left-bottom"
+        });
+		$.xmlrpc({
+            url: '/RPC2',
+            methodName: 'supervisor.startProcess',
+            params: {name: 'sart'},
+            success: function(response, status, jqXHR) {
+                bootoast.toast({
+					"message": "Process started",
+					"type": "success",
+					"icon": "server",
+					"position": "left-bottom"
+				});
+            },
+            error: function(jqXHR, status, error) {
+                bootoast.toast({
+                    "message": "Couldn't start process",
+                    "type": "danger",
+                    "icon": "server",
+                    "position": "left-bottom"
+                });
+            }
+        });
+    });
+    $('#process_stop_button').click(function() {
+        bootoast.toast({
+            "message": "Stopping process",
+            "type": "info",
+            "icon": "server",
+            "position": "left-bottom"
+        });
+		$.xmlrpc({
+            url: '/RPC2',
+            methodName: 'supervisor.stopProcess',
+            params: {name: 'sart'},
+            success: function(response, status, jqXHR) {
+                bootoast.toast({
+					"message": "Process stopped",
+					"type": "danger",
+					"icon": "server",
+					"position": "left-bottom"
+				});
+            },
+            error: function(jqXHR, status, error) {
+                bootoast.toast({
+                    "message": "Couldn't stop process",
+                    "type": "danger",
+                    "icon": "server",
+                    "position": "left-bottom"
+                });
+            }
+        });
+    });
+    $('#process_restart_button').click(function() {
+        bootoast.toast({
+            "message": "Restarting process",
+            "type": "info",
+            "icon": "server",
+            "position": "left-bottom"
+        });
+		$.xmlrpc({
+            url: '/RPC2',
+            methodName: 'supervisor.stopProcess',
+            params: {name: 'sart'},
+            success: function(response, status, jqXHR) {
+                $.xmlrpc({
+                    url: '/RPC2',
+                    methodName: 'supervisor.startProcess',
+                    params: {name: 'sart'},
+                    success: function(response, status, jqXHR) {
+                        bootoast.toast({
+                            "message": "Process restarted",
+                            "type": "success",
+                            "icon": "server",
+                            "position": "left-bottom"
+                        });
+                    },
+                    error: function(jqXHR, status, error) { 
+                        bootoast.toast({
+                            "message": "Couldn't start process",
+                            "type": "danger",
+                            "icon": "server",
+                            "position": "left-bottom"
+                        });
+                    }
+                });
+            },
+            error: function(jqXHR, status, error) {
+                bootoast.toast({
+                    "message": "Couldn't stop process",
+                    "type": "danger",
+                    "icon": "server",
+                    "position": "left-bottom"
+                });
+            }
+        });
+	});
 });

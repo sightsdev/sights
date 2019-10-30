@@ -123,15 +123,17 @@
 						</li>
 					</ul>
 					<div class="tab-content" id="log_tab_content">
-						<div class="tab-pane fade show active" id="service_info" role="tabpanel"
-							aria-labelledby="service_info_tab">
-							<br/>
-							<div class="btn-group float-right" role="group" aria-label="Basic example" id="service_info_buttons">
-								<button type="button" class="btn btn-light btn-sm" id="service_info_name"></button>
-								<button type="button" class="btn btn-success btn-sm" id="service_info_statename"></button>
+						<div class="tab-pane fade show active" id="service_info" role="tabpanel" aria-labelledby="service_info_tab">
+							<br/>				
+							<button type="button" class="btn btn-secondary btn-default" id="service_info_select_button">
+								<i class="fa fa-fw fa-check-square"></i> Select All
+							</button>
+							<button type="button" class="btn btn-danger btn-default" id="service_info_clear_button">
+								<i class="fa fa-fw fa-trash-alt"></i> Clear
+							</button>
+							<div class="float-right">
+									<p class="text-monospace" id="service_info_logfile" style="padding:6px;margin:0px"></p>
 							</div>
-							<p class="text-monospace" id="service_info_logfile" style="padding-top:6px;padding-bottom:6px;margin:0px">
-							</p>
 							<p>
 								<pre><code id="service_info_pre" class="JSON rounded" contenteditable="true"></code></pre>
 							</p>
@@ -438,6 +440,19 @@
 								<li class="list-group-item"><strong>Memory: </strong><span style="float:right;"
 										id="memory"><span id="memory_used">0</span>/<span id="memory_total">0</span>
 										MB</span></li>
+								<li class="list-group-item">
+										<strong>Process: </strong>
+									<div class="btn-group float-right" role="group">
+										<button type="button" class="btn btn-success btn-sm" id="service_info_statename" 
+											rel="tooltip" data-placement="bottom" title="Process state"></button>
+										<button type="button" class="btn btn-outline-dark btn-sm" id="process_start_button"
+											rel="tooltip" data-placement="bottom" title="Start process"><i class="fa fa-fw fa-play"></i></button>
+										<button type="button" class="btn btn-outline-dark btn-sm" id="process_stop_button"
+											rel="tooltip" data-placement="bottom" title="Stop process"><i class="fa fa-fw fa-stop"></i></button>
+										<button type="button" class="btn btn-outline-dark btn-sm" id="process_restart_button"
+											rel="tooltip" data-placement="bottom" title="Restart process"><i class="fa fa-fw fa-undo"></i></button>
+									</div>
+								</li>
 							</ul>
 						</div>
 					</div>
