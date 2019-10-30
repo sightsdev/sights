@@ -32,14 +32,14 @@ function updateServiceInfo(response, status, jqXHR) {
 
 function updateService() {
     $.xmlrpc({
-        url: '/rpc',
+        url: '/RPC2',
         methodName: 'supervisor.getProcessInfo',
         params: {name: 'sart'},
         success: updateServiceInfo,
         error: function(jqXHR, status, error) { }
     });
     $.xmlrpc({
-        url: '/rpc',
+        url: '/RPC2',
         methodName: 'supervisor.tailProcessStdoutLog',
         params: {name: 'sart', offset: '0', length: '1500'},
         success: function(response, status, jqXHR) {
