@@ -24,6 +24,7 @@
 
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.xmlrpc.min.js"></script>
 	<!-- Gamepad -->
 	<script src="js/gamepad.js"></script>
 	<!-- Keyboard -->
@@ -42,6 +43,7 @@
 	<!-- S.A.R.T. Scripts -->
 	<script src="js/sart.charts.config.js"></script>
 	<script src="js/sart.interface.js"></script>
+	<script src="js/sart.supervisor.js"></script>
 	<script src="js/sart.ssh.js"></script>
 	<script src="js/sart.demo.js"></script>
 	<script src="js/sart.sensors.js"></script>
@@ -102,7 +104,15 @@
 				<div class="modal-body">
 					<ul class="nav nav-tabs" id="log_tab" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link text-dark active" id="gamepad_monitor_tab" data-toggle="tab"
+							<a class="nav-link text-dark active" id="service_info_tab" data-toggle="tab" href="#service_info"
+								role="tab" aria-controls="service_info_tab" aria-selected="false"><i class="fa fa-fw fa-server"></i> Service Log</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="gamepad_log_tab" data-toggle="tab" href="#gamepad_log"
+								role="tab" aria-controls="gamepad_log" aria-selected="false"><i	class="fa fa-fw fa-inbox"></i> Message Log</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="gamepad_monitor_tab" data-toggle="tab"
 								href="#gamepad_monitor" role="tab" aria-controls="gamepad_monitor"
 								aria-selected="true"><i class="fa fa-fw fa-gamepad"></i> Gamepad Monitor</a>
 						</li>
@@ -111,23 +121,19 @@
 								href="#sensor_monitor" role="tab" aria-controls="sensor_monitor"
 								aria-selected="false"><i class="fa fa-fw fa-chart-area"></i> Sensor Monitor</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" id="gamepad_log_tab" data-toggle="tab" href="#gamepad_log"
-								role="tab" aria-controls="gamepad_log" aria-selected="false"><i
-									class="fa fa-fw fa-inbox"></i> Message Log</a>
-						</li>
 					</ul>
 					<div class="tab-content" id="log_tab_content">
-						<div class="tab-pane fade show active" id="gamepad_monitor" role="tabpanel"
-							aria-labelledby="gamepad_monitor_tab">
-							<p>
-								<pre><code id="gamepad_monitor_pre" class="JSON rounded" contenteditable="true"></code></pre>
+						<div class="tab-pane fade show active" id="service_info" role="tabpanel"
+							aria-labelledby="service_info_tab">
+							<br/>
+							<div class="btn-group float-right" role="group" aria-label="Basic example" id="service_info_buttons">
+								<button type="button" class="btn btn-light btn-sm" id="service_info_name"></button>
+								<button type="button" class="btn btn-success btn-sm" id="service_info_statename"></button>
+							</div>
+							<p class="text-monospace" id="service_info_logfile" style="padding-top:6px;padding-bottom:6px;margin:0px">
 							</p>
-						</div>
-						<div class="tab-pane fade" id="sensor_monitor" role="tabpanel"
-							aria-labelledby="sensor_monitor_tab">
 							<p>
-								<pre><code id="sensor_monitor_pre" class="JSON rounded" contenteditable="true"></code></pre>
+								<pre><code id="service_info_pre" class="JSON rounded" contenteditable="true"></code></pre>
 							</p>
 						</div>
 						<div class="tab-pane fade" id="gamepad_log" role="tabpanel" aria-labelledby="gamepad_log_tab">
@@ -139,6 +145,18 @@
 							</button>
 							<p>
 								<pre><code id="gamepad_log_pre" class="JSON rounded" contenteditable="true"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="gamepad_monitor" role="tabpanel"
+							aria-labelledby="gamepad_monitor_tab">
+							<p>
+								<pre><code id="gamepad_monitor_pre" class="JSON rounded" contenteditable="true"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="sensor_monitor" role="tabpanel"
+							aria-labelledby="sensor_monitor_tab">
+							<p>
+								<pre><code id="sensor_monitor_pre" class="JSON rounded" contenteditable="true"></code></pre>
 							</p>
 						</div>
 					</div>
