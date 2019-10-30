@@ -176,12 +176,6 @@ function sensorConnection() {
 
 			// Load config file into config editor window
 			if ("config" in obj) {
-				bootoast.toast({
-					"message": "Received config file",
-					"type": "success",
-					"icon": "file-alt",
-					"position": "left-bottom"
-				});
 				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
 				$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
