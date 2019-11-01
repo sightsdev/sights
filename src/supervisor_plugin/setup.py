@@ -2,11 +2,11 @@
 import setuptools
 
 setuptools.setup(
-    name = 'supervisor_setfile',
+    name = 'supervisor_sart_config',
     version = '0.0.1',
     license = 'License :: OSI Approved :: MIT License',
-    url = 'https://github.com/SFXRescue/supervisor_setfile',
-    description = "supervisor_setfile RPC extension for supervisor. Allows modifying a single file",
+    url = 'https://github.com/SFXRescue/supervisor_sart_config',
+    description = "supervisor_sart_config RPC extension for supervisor. Config file management for SART software",
     classifiers = [
 		'Environment :: No Input/Output (Daemon)',
 		'Intended Audience :: System Administrators',
@@ -27,5 +27,5 @@ setuptools.setup(
     author_email='connor@sfxrescue.com',
     packages = setuptools.find_packages(),
     install_requires = ['supervisor >= 3.0a6'],
-    namespace_packages = ['supervisor_setfile']
+    namespace_packages = ['supervisor_sart_config']
 )

@@ -1,14 +1,17 @@
 from supervisor.states import SupervisorStates
 from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
-import os
+from os import listdir
+from os.path import isfile, join
 
 API_VERSION = '0.2'
-FILE = '/opt/sart/CONFIG_FILE'
+ACTIVE_CONFIG_FILE = '/opt/sart/SARTRobot/configs/ACTIVE_CONFIG'
+CONFIG_DIR = '/opt/sart/SARTRobot/configs'
+CONFIG_EXT = '.json'
 
-class SetFileNamespaceRPCInterface:
+class SARTConfigNamespaceRPCInterface:
     """ An extension for Supervisor that implements a basic 
-        interface to manages data storage to a single file
+        configuration file handling thing
     """
 
     def __init__(self, supervisord):
@@ -19,25 +22,32 @@ class SetFileNamespaceRPCInterface:
         @return string  version
         """
         return API_VERSION
+    
+    def getConfigs(self):
+        """ Returns all the available config files
+        @return [string]  array of config file names 
+        """
+        files = [f for f in listdir(CONFIG_DIR) if isfile(join(CONFIG_DIR, f)) and f.endswith(CONFIG_EXT)]
+        return files
 
-    def set(self, value):
+    def setActiveConfig(self, value):
         """ Sets contents of file
         @return boolean      Always true unless error
         """
-        with open(FILE, 'w') as f:
+        with open(ACTIVE_CONFIG_FILE, 'w') as f:
             f.write(value)
         return True
 
-    def get(self):
+    def getActiveConfig(self):
         """ Gets contents of file
         @return string      Contents of file
         """
         try:
-            with open(FILE, 'r') as f:
+            with open(ACTIVE_CONFIG_FILE, 'r') as f:
                 read_data = f.read()
         except FileNotFoundError:
             read_data = ""
         return read_data
 
-def make_setfile_rpcinterface(supervisord, **config):
-    return SetFileNamespaceRPCInterface(supervisord)
+def make_sart_config_rpcinterface(supervisord, **config):
+    return SARTConfigNamespaceRPCInterface(supervisord)
