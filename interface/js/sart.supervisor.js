@@ -189,6 +189,32 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#service_info_clear_button').click(function() {
+        $.xmlrpc({
+            url: '/RPC2',
+            methodName: 'supervisor.clearProcessLog',
+            params: {name: 'sart'},
+            success: function(response, status, jqXHR) {
+                bootoast.toast({
+                    "message": "Cleared service logs",
+                    "type": "info",
+                    "icon": "server",
+                    "position": "left-bottom"
+                });
+            },
+            error: function(jqXHR, status, error) {
+                bootoast.toast({
+                    "message": "Could not clear service logs",
+                    "type": "info",
+                    "icon": "server",
+                    "position": "left-bottom"
+                });
+            }
+        });
+    });
+
+
     $('#service_restart_button').click(function() {
         bootoast.toast({
             "message": "Restarting service",

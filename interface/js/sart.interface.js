@@ -128,17 +128,9 @@ $(document).ready(function () {
 		$("#gamepad_log_pre").html("");
 	});
 
-	// Setup button to select the contents of the log box
-	$("#gamepad_log_select_button").click(function () {
-		selectTextInElement('gamepad_log_pre');
-	});
-	// Same for config editor
+	// Setup button to select the contents of the config editor
 	$("#config_editor_select_button").click(function () {
 		selectTextInElement('config_editor_pre');
-	});
-	// And for service log
-	$("#service_info_select_button").click(function () {
-		selectTextInElement('service_info_pre');
 	});
 
 	// If the camera stream doesn't load, default to fallback image

@@ -125,11 +125,9 @@
 					<div class="tab-content" id="log_tab_content">
 						<div class="tab-pane fade show active" id="service_info" role="tabpanel" aria-labelledby="service_info_tab">
 							<br/>				
-							<button type="button" class="btn btn-secondary btn-default" id="service_info_select_button">
-								<i class="fa fa-fw fa-check-square"></i> Select All
-							</button>
-							<button type="button" class="btn btn-danger btn-default" id="service_info_clear_button">
-								<i class="fa fa-fw fa-trash-alt"></i> Clear
+							<button type="button" class="btn btn-danger btn-default" id="service_info_clear_button"
+								rel="tooltip" data-placement="right" title="Clear log on disk">
+								<i class="fa fa-fw fa-trash-alt"></i> Clear Log
 							</button>
 							<div class="float-right">
 									<p class="text-monospace" id="service_info_logfile" style="padding:6px;margin:0px"></p>
@@ -139,11 +137,10 @@
 							</p>
 						</div>
 						<div class="tab-pane fade" id="gamepad_log" role="tabpanel" aria-labelledby="gamepad_log_tab">
-							<br /><button type="button" class="btn btn-secondary btn-default" id="gamepad_log_select_button">
-								<i class="fa fa-fw fa-check-square"></i> Select All
-							</button>
-							<button type="button" class="btn btn-danger btn-default" id="gamepad_log_clear_button">
-								<i class="fa fa-fw fa-trash-alt"></i> Clear
+							<br />
+							<button type="button" class="btn btn-danger btn-default" id="gamepad_log_clear_button"
+								rel="tooltip" data-placement="right" title="Clear log">
+								<i class="fa fa-fw fa-trash-alt"></i> Clear Log
 							</button>
 							<p>
 								<pre><code id="gamepad_log_pre" class="JSON rounded" contenteditable="true"></code></pre>
@@ -193,21 +190,18 @@
 						<div class="tab-pane fade active show" id="config_editor" role="tabpanel" aria-labelledby="config_editor_tab">
 							<br />
 							<div class="row">
-								<div class="col-auto">
-									<button type="button" class="btn btn-secondary btn-default" id="config_editor_select_button">
-										<i class="fa fa-fw fa-check-square"></i> Select All
-									</button>
-								</div>
 								<div class="col">
 									<p class="text-monospace text-center" id="config_filename" style="padding-top:6px;padding-bottom:6px;margin:0px">
 									</p>
 								</div>
 								<div class="col-auto">
 									<div class="float-right">
-										<button type="button" class="btn btn-info btn-default" id="config_editor_reload_button">
+										<button type="button" class="btn btn-info btn-default" id="config_editor_reload_button"
+											rel="tooltip" data-placement="bottom" title="Reload config">
 											<i class="fa fa-fw fa-redo"></i> Reload
 										</button>
-										<button type="button" class="btn btn-success btn-default" id="config_editor_save_button">
+										<button type="button" class="btn btn-success btn-default" id="config_editor_save_button"
+											rel="tooltip" data-placement="bottom" title="Save config">
 											<i class="fa fa-fw fa-save"></i> Save
 										</button>
 									</div>
@@ -420,15 +414,15 @@
 						<div class="card">
 							<ul class="list-group list-group-flush font-weight-light">
 								<li class="list-group-item"><strong>Uptime: </strong><span style="float:right;"
-										id="uptime">0:00:00</span></li>
+										id="uptime" rel="tooltip" data-placement="bottom" title="Time since boot">0:00:00</span></li>
 								<!--li class="list-group-item"><strong>Memory: </strong><span style="float:right;"
 										id="memory"><span id="memory_used">0</span>/<span id="memory_total">0</span>
 										MB</span></li-->
 								<li class="list-group-item">
 									<strong>Service: </strong>
 									<div class="btn-group float-right" role="group">
-										<button type="button" class="btn btn-success btn-sm" id="service_info_statename" 
-											rel="tooltip" data-placement="bottom" title="Service state"></button>
+										<button type="button" class="btn btn-secondary btn-sm" id="service_info_statename" 
+											rel="tooltip" data-placement="bottom" title="Service state">DISCONNECTED</button>
 										<button type="button" class="btn btn-outline-dark btn-sm" id="service_start_button"
 											rel="tooltip" data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i></button>
 										<button type="button" class="btn btn-outline-dark btn-sm" id="servuce_stop_button"
@@ -436,8 +430,7 @@
 										<button type="button" class="btn btn-outline-dark btn-sm" id="service_restart_button"
 											rel="tooltip" data-placement="bottom" title="Restart service"><i class="fa fa-fw fa-undo"></i></button>
 									</div>
-								</li>
-								<li class="list-group-item">
+									<p></p>
 									<div class="input-group input-group-sm">
 										<select rel="tooltip" data-placement="bottom" title="Select active config" class="custom-select custom-select-sm" id="config_selector">
 										</select>
