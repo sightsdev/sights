@@ -18,7 +18,7 @@ Configuration files for camera-streaming software [Motion](https://github.com/Mo
 
 ## Installation
 
-Installation is preferably done to the `/opt/sart` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues.
+Installation is preferably done to the `/opt/sart` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues. [Supervisor](http://supervisord.org/) is used to manage running the SARTRobot software.
 
 ### 1. Setting up the installation directory
 
@@ -62,7 +62,7 @@ nano /opt/sart/SARTRobot/configs/default.json
 
 A web server should be configured to point to the `SARTInterface` directory. I've chosen to use Apache2, but if you wish to use another (perhaps a more lightweight) webserver, you certainly can. Just configure it to point to `/opt/sart/SARTInterface`
 
-1. Install Apache2 with:
+1. Install Apache2, if it's not already installed, with:
 
     ```sh
     sudo apt install apache2
@@ -78,29 +78,20 @@ A web server should be configured to point to the `SARTInterface` directory. I'v
     </Directory>
     ```
 
-3. Either create a new file in `/etc/apache2/sites-available` or edit the existing `000-default.conf` and change the `DocumentRoot` option, so it looks like this:
-
-    ```xml
-    <VirtualHost *:80>
-        ServerAdmin webmaster@localhost
-        DocumentRoot /opt/sart/SARTInterface
-
-        ProxyPass "/RPC2" "http://localhost:9001/RPC2"                                                                                                                                               ProxyPassReverse "/RPC2" "http://localhost:9001/RPC2"
-
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-    </VirtualHost>
-
-    The `ProxyPass` is important as it allows access to Supervisor's XML-RPC API from HTTP port 80.
-
-    ```
-
-    If you created a new file, you will need to enable it (and disable the default) with:
+3. Copy the provided site file to the appropriate directory.
 
     ```sh
-    sudo a2ensite <new_site>.conf
+    sudo cp /opt/sart/SARTRobot/configs/apache/SARTInterface.conf /etc/apache2/sites-available/
+    ```
+
+    And then enable this site, and disable the default one, with
+
+    ```sh
+    sudo a2ensite SARTInterface.conf
     sudo a2dissite 000-default.conf
     ```
+
+    This file contains settings that tell the web server to host the SARTInterface directory on port 80, and it also sets up some proxy paths which are used to redirect any requests to `:80/RPC2` to `:9001/RPC2` instead which is where Supervisor's API listens on.
 
 4. Enable the reverse proxy modules, which we use to access Supervisor from the same origin.
 
@@ -109,7 +100,7 @@ A web server should be configured to point to the `SARTInterface` directory. I'v
     sudo a2enmod proxy_http
     ```
 
-5. Regardless of new file or old, you'll need to restart Apache2 with:
+5. Next, restart Apache2 with:
 
     ```sh
     sudo service apache2 restart
