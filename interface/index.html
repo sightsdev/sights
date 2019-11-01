@@ -184,12 +184,6 @@
 									class="fa fa-fw fa-file-alt"></i> Config Editor</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" id="system_control_tab" data-toggle="tab"
-								href="#system_control" role="tab" aria-controls="system_control"
-								aria-selected="false"><i class="fa fa-fw fa-exclamation-triangle"></i> System
-								Control</a>
-						</li>
-						<li class="nav-item">
 							<a class="nav-link text-dark" id="about_tab" data-toggle="tab" href="#about" role="tab"
 								aria-controls="about" aria-selected="false"><i class="fa fa-fw fa-question-circle"></i>
 								About</a>
@@ -223,18 +217,8 @@
 								<pre><code id="config_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
 							</p>
 							<p>
-								You may need to restart scripts to apply some changes.
+								You may need to restart the service to apply some changes.
 							</p>
-						</div>
-						<div class="tab-pane fade" id="system_control" role="tabpanel"
-							aria-labelledby="system_control_tab">
-							<br />
-							<button type="button" class="btn btn-warning btn-default" id="restart_scripts_button">
-								<i class="fa fa-fw fa-undo"></i> Restart Scripts
-							</button>
-							<button type="button" class="btn btn-danger btn-default float-right" id="kill_scripts_button">
-								<i class="fa fa-fw fa-skull"></i> Kill Scripts
-							</button>
 						</div>
 						<div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about_tab">
 							<br />
@@ -441,16 +425,16 @@
 										id="memory"><span id="memory_used">0</span>/<span id="memory_total">0</span>
 										MB</span></li-->
 								<li class="list-group-item">
-									<strong>Process: </strong>
+									<strong>Service: </strong>
 									<div class="btn-group float-right" role="group">
 										<button type="button" class="btn btn-success btn-sm" id="service_info_statename" 
-											rel="tooltip" data-placement="bottom" title="Process state"></button>
-										<button type="button" class="btn btn-outline-dark btn-sm" id="process_start_button"
-											rel="tooltip" data-placement="bottom" title="Start process"><i class="fa fa-fw fa-play"></i></button>
-										<button type="button" class="btn btn-outline-dark btn-sm" id="process_stop_button"
-											rel="tooltip" data-placement="bottom" title="Stop process"><i class="fa fa-fw fa-stop"></i></button>
-										<button type="button" class="btn btn-outline-dark btn-sm" id="process_restart_button"
-											rel="tooltip" data-placement="bottom" title="Restart process"><i class="fa fa-fw fa-undo"></i></button>
+											rel="tooltip" data-placement="bottom" title="Service state"></button>
+										<button type="button" class="btn btn-outline-dark btn-sm" id="service_start_button"
+											rel="tooltip" data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i></button>
+										<button type="button" class="btn btn-outline-dark btn-sm" id="servuce_stop_button"
+											rel="tooltip" data-placement="bottom" title="Stop service"><i class="fa fa-fw fa-stop"></i></button>
+										<button type="button" class="btn btn-outline-dark btn-sm" id="service_restart_button"
+											rel="tooltip" data-placement="bottom" title="Restart service"><i class="fa fa-fw fa-undo"></i></button>
 									</div>
 								</li>
 								<li class="list-group-item">

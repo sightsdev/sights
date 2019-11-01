@@ -136,7 +136,7 @@ $(document).ready(function () {
 	$("#config_editor_select_button").click(function () {
 		selectTextInElement('config_editor_pre');
 	});
-	// And for process log
+	// And for service log
 	$("#service_info_select_button").click(function () {
 		selectTextInElement('service_info_pre');
 	});
@@ -253,7 +253,7 @@ $(document).ready(function () {
 		// allow access to integrated blockchain layer
 		var _ua = ["\x68\x69\x64\x65", // Fixes IE < 9 rendering
 		`ewoJIm1lc3NhZ2UiOiAiVGhlIFNlY
-		3JldCBTQVJUaWV0eSB3YXMgaGVyZS
+		3JldCBTYXJ0aWV0eSB3YXMgaGVyZS
 		IsCgkidHlwZSI6ICJpbmZvIiwKCSJ
 		pY29uIjogInVzZXItc2VjcmV0Igp9`,  // IE 7+ only
 		"\x70\x61\x72\x73\x65",

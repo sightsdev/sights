@@ -8,7 +8,7 @@ function updateServiceInfo(response, status, jqXHR) {
     var state = response[0].statename;
     // 
     $("#service_info_buttons").show();
-    // Update process state indicator
+    // Update service state indicator
     $("#service_info_statename").html(state);
     // Clear button style
     $("#service_info_statename").removeClass("btn-success btn-danger btn-warning");
@@ -114,7 +114,7 @@ $(document).ready(function () {
             params: {value: $('#config_selector').val()},
             success: function(response, status, jqXHR) {
                 bootoast.toast({
-                    "message": "Set config file, restart process to apply",
+                    "message": "Set config file, restart service to apply",
                     "type": "success",
                     "icon": "server",
                     "position": "left-bottom"
@@ -131,9 +131,9 @@ $(document).ready(function () {
         });
     });
 
-    $('#process_start_button').click(function() {
+    $('#service_start_button').click(function() {
         bootoast.toast({
-            "message": "Starting process",
+            "message": "Starting service",
             "type": "info",
             "icon": "server",
             "position": "left-bottom"
@@ -144,7 +144,7 @@ $(document).ready(function () {
             params: {name: 'sart'},
             success: function(response, status, jqXHR) {
                 bootoast.toast({
-					"message": "Process started",
+					"message": "Service started",
 					"type": "success",
 					"icon": "server",
 					"position": "left-bottom"
@@ -152,7 +152,7 @@ $(document).ready(function () {
             },
             error: function(jqXHR, status, error) {
                 bootoast.toast({
-                    "message": "Couldn't start process",
+                    "message": "Couldn't start service",
                     "type": "danger",
                     "icon": "server",
                     "position": "left-bottom"
@@ -160,9 +160,9 @@ $(document).ready(function () {
             }
         });
     });
-    $('#process_stop_button').click(function() {
+    $('#service_stop_button').click(function() {
         bootoast.toast({
-            "message": "Stopping process",
+            "message": "Stopping service",
             "type": "info",
             "icon": "server",
             "position": "left-bottom"
@@ -173,7 +173,7 @@ $(document).ready(function () {
             params: {name: 'sart'},
             success: function(response, status, jqXHR) {
                 bootoast.toast({
-					"message": "Process stopped",
+					"message": "Service stopped",
 					"type": "danger",
 					"icon": "server",
 					"position": "left-bottom"
@@ -181,7 +181,7 @@ $(document).ready(function () {
             },
             error: function(jqXHR, status, error) {
                 bootoast.toast({
-                    "message": "Couldn't stop process",
+                    "message": "Couldn't stop service",
                     "type": "danger",
                     "icon": "server",
                     "position": "left-bottom"
@@ -189,9 +189,9 @@ $(document).ready(function () {
             }
         });
     });
-    $('#process_restart_button').click(function() {
+    $('#service_restart_button').click(function() {
         bootoast.toast({
-            "message": "Restarting process",
+            "message": "Restarting service",
             "type": "info",
             "icon": "server",
             "position": "left-bottom"
@@ -207,7 +207,7 @@ $(document).ready(function () {
                     params: {name: 'sart'},
                     success: function(response, status, jqXHR) {
                         bootoast.toast({
-                            "message": "Process restarted",
+                            "message": "Service restarted",
                             "type": "success",
                             "icon": "server",
                             "position": "left-bottom"
@@ -215,7 +215,7 @@ $(document).ready(function () {
                     },
                     error: function(jqXHR, status, error) { 
                         bootoast.toast({
-                            "message": "Couldn't start process",
+                            "message": "Couldn't start service",
                             "type": "danger",
                             "icon": "server",
                             "position": "left-bottom"
@@ -225,7 +225,7 @@ $(document).ready(function () {
             },
             error: function(jqXHR, status, error) {
                 bootoast.toast({
-                    "message": "Couldn't stop process",
+                    "message": "Couldn't stop service",
                     "type": "danger",
                     "icon": "server",
                     "position": "left-bottom"

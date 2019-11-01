@@ -292,7 +292,7 @@ $(document).ready(function () {
 	// Config editor button actions
 	$("#config_editor_save_button").click(function () {
 		// Get contents of config editor
-		var contents = $("#config_editor_pre")[0].innerText
+		var contents = $("#config_editor_pre")[0].innerText;
 		try {
 			// Parse from YAML into JS
 			var yml = jsyaml.safeLoad(contents);
@@ -331,34 +331,6 @@ $(document).ready(function () {
 			"message": "Requested config file",
 			"type": "info",
 			"icon": "file-alt",
-			"position": "left-bottom"
-		});
-	});
-
-	// Script control buttons
-	$("#restart_scripts_button").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "RESTART_SCRIPTS"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "Requested a script restart. Refresh the page",
-			"type": "info",
-			"icon": "terminal",
-			"position": "left-bottom"
-		});
-	});
-	$("#kill_scripts_button").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "KILL_SCRIPTS"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "All scripts will be t̵͔̞e̷̦̜r̝̝m̰̱̠̕inḁ̱̕te̪̕ḍ͕. Goodbye.",
-			"type": "danger",
-			"icon": "skull",
 			"position": "left-bottom"
 		});
 	});
