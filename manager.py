@@ -15,6 +15,7 @@ class Manager:
         self.logger.info("Starting manager process")
         # Store config file name
         self.config_file = args.config_file
+        self.logger.info("Using config file: " + self.config_file)
         # Get the directory that this script exists in, in typical ugly Python fashion
         self.path = os.path.dirname(os.path.realpath(__file__))
 
@@ -78,6 +79,14 @@ if __name__ == '__main__':
     # Get the directory that this script exists in, in typical ugly Python fashion
     path = os.path.dirname(os.path.realpath(__file__))
 
+    # Get active config from ACTIVE_CONFIG file
+    try:
+        with open(path+"/configs/ACTIVE_CONFIG", 'r') as f:
+            default_config = path + "/configs/" + f.read()
+    # Otherwise fallback to default.json
+    except FileNotFoundError:
+        default_config = path + "/configs/default.json"
+    
     # Setup argument parser for config file loading
     parser = ArgumentParser()
     # Create argument for config file
@@ -85,7 +94,7 @@ if __name__ == '__main__':
                         dest="config_file", 
                         help="load specified configuration file", 
                         metavar="<file>", 
-                        default=path+"/configs/default.json")
+                        default=default_config)
     # Actually parse the arguments
     args = parser.parse_args()
     
