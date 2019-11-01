@@ -193,6 +193,15 @@ And then copy the provided configuration file to the relevant directory with:
 sudo cp /opt/sart/SARTRobot/configs/supervisor/supervisord.conf /etc/
 ```
 
+Install the SART configuration file management Supervisor extension. This allows Supervisor to get and set the active config file and get a list of available config files.
+
+```sh
+cd /opt/sart/
+git clone https://github.com/SFXRescue/supervisor_sart_config
+cd supervisor_sart_config
+python3 -m pip install .
+```
+
 The Supervisor daemon can now be run with
 
 ```sh
