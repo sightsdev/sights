@@ -136,6 +136,10 @@ $(document).ready(function () {
 	$("#config_editor_select_button").click(function () {
 		selectTextInElement('config_editor_pre');
 	});
+	// And for process log
+	$("#service_info_select_button").click(function () {
+		selectTextInElement('service_info_pre');
+	});
 
 	// If the camera stream doesn't load, default to fallback image
 	$('.stream-image').error(function () {

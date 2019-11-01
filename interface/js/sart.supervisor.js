@@ -114,7 +114,7 @@ $(document).ready(function () {
             params: {value: $('#config_selector').val()},
             success: function(response, status, jqXHR) {
                 bootoast.toast({
-                    "message": "Set new active config file",
+                    "message": "Set config file, restart process to apply",
                     "type": "success",
                     "icon": "server",
                     "position": "left-bottom"
