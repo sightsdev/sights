@@ -1,2 +1,3 @@
-# supervisor_setfile
-An extension for Supervisor that implements a basic interface to manages data storage to a single file
+# supervisor_sart_config
+
+An extension for Supervisor that implements config file handling for the SART project. This allows Supervisor to get and set the active config file and get a list of available config files.
