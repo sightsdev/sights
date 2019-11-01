@@ -437,11 +437,11 @@
 							<ul class="list-group list-group-flush font-weight-light">
 								<li class="list-group-item"><strong>Uptime: </strong><span style="float:right;"
 										id="uptime">0:00:00</span></li>
-								<li class="list-group-item"><strong>Memory: </strong><span style="float:right;"
+								<!--li class="list-group-item"><strong>Memory: </strong><span style="float:right;"
 										id="memory"><span id="memory_used">0</span>/<span id="memory_total">0</span>
-										MB</span></li>
+										MB</span></li-->
 								<li class="list-group-item">
-										<strong>Process: </strong>
+									<strong>Process: </strong>
 									<div class="btn-group float-right" role="group">
 										<button type="button" class="btn btn-success btn-sm" id="service_info_statename" 
 											rel="tooltip" data-placement="bottom" title="Process state"></button>
@@ -451,6 +451,22 @@
 											rel="tooltip" data-placement="bottom" title="Stop process"><i class="fa fa-fw fa-stop"></i></button>
 										<button type="button" class="btn btn-outline-dark btn-sm" id="process_restart_button"
 											rel="tooltip" data-placement="bottom" title="Restart process"><i class="fa fa-fw fa-undo"></i></button>
+									</div>
+								</li>
+								<li class="list-group-item">
+									<div class="input-group input-group-sm">
+										<select rel="tooltip" data-placement="bottom" title="Select active config" class="custom-select custom-select-sm" id="config_selector">
+										</select>
+										<div class="input-group-append">
+											<button type="button" class="btn btn-outline-dark btn-sm" id="config_save_button" rel="tooltip"
+												data-placement="bottom" title="Set active config">
+												<i class="fa fa-fw fa-save"></i>
+											</button>
+											<button type="button" class="btn btn-outline-dark btn-sm" id="config_refresh_button" rel="tooltip"
+												data-placement="bottom" title="Refresh">
+												<i class="fa fa-fw fa-redo"></i>
+											</button>
+										</div>
 									</div>
 								</li>
 							</ul>

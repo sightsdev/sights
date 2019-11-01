@@ -52,8 +52,84 @@ function updateService() {
     });
 }
 
+function updateConfigSelector() {
+    $.xmlrpc({
+        url: '/RPC2',
+        methodName: 'sart_config.getConfigs',
+        params: {},
+        success: function(response, status, jqXHR) {
+            $('#config_selector').html("");
+            // Populate config selector
+            var option = '';
+            for (var i = 0; i < response[0].length; i++){
+                option += '<option value="'+ response[0][i] + '">' + response[0][i] + '</option>';
+            }
+            // Add to config selector
+            $('#config_selector').append(option);
+            // Get the active config and make it the currently selected config
+            $.xmlrpc({
+                url: '/RPC2',
+                methodName: 'sart_config.getActiveConfig',
+                params: {},
+                success: function(response, status, jqXHR) {
+                    // Also remove any line breaks from the string.
+                    // And set it to be the active select element
+                    $("#config_selector").val(response[0].replace(/(\r\n|\n|\r)/gm, "")).change();
+                },
+                error: function(jqXHR, status, error) {
+                    bootoast.toast({
+                        "message": "Couldn't get active config file",
+                        "type": "danger",
+                        "icon": "server",
+                        "position": "left-bottom"
+                    });
+                }
+            });
+        },
+        error: function(jqXHR, status, error) {
+            bootoast.toast({
+                "message": "Couldn't get available config files",
+                "type": "danger",
+                "icon": "server",
+                "position": "left-bottom"
+            });
+        }
+    });
+}
+
 $(document).ready(function () {
     setInterval(updateService, 500);
+
+    // Populate config file selector
+    updateConfigSelector();
+
+    $('#config_refresh_button').click(function() {
+        updateConfigSelector();
+    });
+
+    $('#config_save_button').click(function() {
+        $.xmlrpc({
+            url: '/RPC2',
+            methodName: 'sart_config.setActiveConfig',
+            params: {value: $('#config_selector').val()},
+            success: function(response, status, jqXHR) {
+                bootoast.toast({
+                    "message": "Set new active config file",
+                    "type": "success",
+                    "icon": "server",
+                    "position": "left-bottom"
+                });
+            },
+            error: function(jqXHR, status, error) {
+                bootoast.toast({
+                    "message": "Couldn't set config file",
+                    "type": "danger",
+                    "icon": "server",
+                    "position": "left-bottom"
+                });
+            }
+        });
+    });
 
     $('#process_start_button').click(function() {
         bootoast.toast({
