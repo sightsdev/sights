@@ -3,8 +3,8 @@
   "$schema": "",
   "$id": "http://example.com/root.json",
   "type": "object",
-  "title": "Config",
-  "description": "Configuration file for a S.A.R.T. based robot",
+  "title": "S.A.R.T. Robot Config",
+  "description": "Configuration file for a S.A.R.T. based robot.",
   "required": [
     "network",
     "control",
@@ -18,8 +18,8 @@
     "network": {
       "$id": "#/properties/network",
       "type": "object",
-      "title": "Network",
-      "description": "Network information",
+      "title": "Network Settings",
+      "description": "Configure the network settings the robot and interface.",
       "required": [
         "ip"
       ],
@@ -40,8 +40,8 @@
     "control": {
       "$id": "#/properties/control",
       "type": "object",
-      "title": "Control Information",
-      "description": "Set defaults for control settings",
+      "title": "Control Settings",
+      "description": "Default settings for controllers.",
       "required": [
         "default_gamepad_speed",
         "default_keyboard_speed"
@@ -77,7 +77,7 @@
       "$id": "#/properties/servo",
       "type": "object",
       "title": "Servo Settings",
-      "description": "Set the type and configuration of motors used in the robot",
+      "description": "Set the type and configuration of motors used in the robot.",
       "required": [
         "type",
         "port",
@@ -107,7 +107,7 @@
           "$id": "#/properties/servo/properties/port",
           "type": "string",
           "title": "Servo Port",
-          "description": "The location of the serial device",
+          "description": "The location of the serial device.",
           "default": "/dev/serial/by-id/",
           "examples": [
             "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00"
@@ -130,7 +130,7 @@
           "$id": "#/properties/servo/properties/ids",
           "type": "object",
           "title": "Servo IDs",
-          "description": "Set the IDs assigned to servos on the left and right sides of the robot",
+          "description": "Set the IDs assigned to servos on the left and right sides of the robot.",
           "required": [
             "left",
             "right"
@@ -140,12 +140,12 @@
               "$id": "#/properties/servo/properties/ids/properties/left",
               "type": "array",
               "title": "Left Servo IDs Array",
-              "description": "The IDs assigned to servos on the left of the robot",
+              "description": "The IDs assigned to servos on the left of the robot.",
               "items": {
                 "$id": "#/properties/servo/properties/ids/properties/left/items",
                 "type": "integer",
                 "title": "Left Servo ID",
-                "description": "An integer representing a servo ID on the left side of the robot",
+                "description": "An integer representing a servo ID on the left side of the robot.",
                 "examples": [
                   1,
                   3
@@ -156,12 +156,12 @@
               "$id": "#/properties/servo/properties/ids/properties/right",
               "type": "array",
               "title": "Right Servo IDs Array",
-              "description": "The IDs assigned to servos on the right of the robot",
+              "description": "The IDs assigned to servos on the right of the robot.",
               "items": {
                 "$id": "#/properties/servo/properties/ids/properties/right/items",
                 "type": "integer",
                 "title": "Right Servo ID",
-                "description": "An integer representing a servo ID on the right side of the robot",
+                "description": "An integer representing a servo ID on the right side of the robot.",
                 "examples": [
                   2,
                   4
@@ -176,7 +176,7 @@
       "$id": "#/properties/arduino",
       "type": "object",
       "title": "Arduino Settings",
-      "description": "Enable and configure the location of the robot's Arduino for extended sensor capability",
+      "description": "Enable and configure the location of the robot's Arduino for extended sensor capability.",
       "required": [
         "enabled",
         "port",
@@ -187,7 +187,7 @@
           "$id": "#/properties/arduino/properties/enabled",
           "type": "boolean",
           "title": "Enable Arduino",
-          "description": "Whether the Arduino is enabled",
+          "description": "Whether the Arduino is enabled.",
           "default": false,
           "examples": [
             true,
@@ -198,7 +198,7 @@
           "$id": "#/properties/arduino/properties/port",
           "type": "string",
           "title": "Arduino Port",
-          "description": "The location of the serial device",
+          "description": "The location of the Arduino serial device.",
           "default": "/dev/serial/by-id/",
           "examples": [
             "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00"
@@ -221,7 +221,7 @@
       "$id": "#/properties/cameras",
       "type": "object",
       "title": "Camera Settings",
-      "description": "Enable and configure the ID and location of up to 4 camera streams",
+      "description": "Enable and configure the ID and location of up to 4 camera streams.",
       "required": [
         "front",
         "back",
@@ -233,7 +233,7 @@
           "$id": "#/properties/cameras/properties/front",
           "type": "object",
           "title": "Front Camera",
-          "description": "Enable and configure the ID of the front camera",
+          "description": "Enable and configure the ID of the front camera.",
           "required": [
             "enabled",
             "id"
@@ -254,7 +254,7 @@
               "$id": "#/properties/cameras/properties/front/properties/id",
               "type": "integer",
               "title": "Front Camera ID",
-              "description": "The ID of the front camera, also set in the Motion config",
+              "description": "The ID of the front camera, also set in the Motion config.",
               "default": 1,
               "examples": [
                 1
@@ -266,7 +266,7 @@
           "$id": "#/properties/cameras/properties/back",
           "type": "object",
           "title": "Back Camera",
-          "description": "Enable and configure the ID of the back camera",
+          "description": "Enable and configure the ID of the back camera.",
           "required": [
             "enabled",
             "id"
@@ -276,7 +276,7 @@
               "$id": "#/properties/cameras/properties/back/properties/enabled",
               "type": "boolean",
               "title": "Enable Back Camera",
-              "description": "Whether the back camera is enabled",
+              "description": "Whether the back camera is enabled.",
               "default": false,
               "examples": [
                 true,
@@ -287,7 +287,7 @@
               "$id": "#/properties/cameras/properties/back/properties/id",
               "type": "integer",
               "title": "Back Camera ID",
-              "description": "The ID of the back camera, also set in the Motion config",
+              "description": "The ID of the back camera, also set in the Motion config.",
               "default": 2,
               "examples": [
                 2
@@ -299,7 +299,7 @@
           "$id": "#/properties/cameras/properties/left",
           "type": "object",
           "title": "Left Camera",
-          "description": "Enable and configure the ID of the left camera",
+          "description": "Enable and configure the ID of the left camera.",
           "required": [
             "enabled",
             "id"
@@ -309,7 +309,7 @@
               "$id": "#/properties/cameras/properties/left/properties/enabled",
               "type": "boolean",
               "title": "Enable Left Camera",
-              "description": "Whether the left camera is enabled",
+              "description": "Whether the left camera is enabled.",
               "default": false,
               "examples": [
                 true,
@@ -320,7 +320,7 @@
               "$id": "#/properties/cameras/properties/left/properties/id",
               "type": "integer",
               "title": "Left Camera ID",
-              "description": "The ID of the left camera, also set in the Motion config",
+              "description": "The ID of the left camera, also set in the Motion config.",
               "default": 3,
               "examples": [
                 3
@@ -367,7 +367,7 @@
       "$id": "#/properties/sensors",
       "type": "object",
       "title": "Sensor Settings",
-      "description": "Enable and configure individual sensor streams",
+      "description": "Enable and configure individual sensor streams.",
       "required": [
         "memory",
         "cpu_temp",
@@ -381,8 +381,7 @@
           "$id": "#/properties/sensors/properties/memory",
           "type": "object",
           "title": "System Memory Reporting",
-          "description": "Collects and displays system memory usage information on the interface",
-          "default": null,
+          "description": "Collects and displays system memory usage information on the interface.",
           "required": [
             "enabled",
             "frequency"
@@ -392,7 +391,7 @@
               "$id": "#/properties/sensors/properties/memory/properties/enabled",
               "type": "boolean",
               "title": "Enable Memory Reporting",
-              "description": "Whether system memory usage information is reported",
+              "description": "Whether system memory usage information is reported.",
               "default": true,
               "examples": [
                 true,
@@ -403,7 +402,7 @@
               "$id": "#/properties/sensors/properties/memory/properties/frequency",
               "type": "integer",
               "title": "Memory Reporting Update Frequency",
-              "description": "How often, in seconds, memory usage statistics are collected and updated",
+              "description": "How often, in seconds, memory usage statistics are collected and updated.",
               "default": 3,
               "examples": [
                 3
@@ -415,7 +414,7 @@
           "$id": "#/properties/sensors/properties/cpu_temp",
           "type": "object",
           "title": "CPU Temperature Reporting",
-          "description": "Collects and displays system CPU temperature information on the interface",
+          "description": "Collects and displays system CPU temperature information on the interface.",
           "required": [
             "enabled",
             "frequency"
@@ -436,7 +435,7 @@
               "$id": "#/properties/sensors/properties/cpu_temp/properties/frequency",
               "type": "integer",
               "title": "CPU Temperature Reporting Update Frequency",
-              "description": "How often, in seconds, CPU temperature statistics are collected and updated",
+              "description": "How often, in seconds, CPU temperature statistics are collected and updated.",
               "default": 5,
               "examples": [
                 5
@@ -448,7 +447,7 @@
           "$id": "#/properties/sensors/properties/thermal_camera",
           "type": "object",
           "title": "Thermal Camera Settings",
-          "description": "Enable and configure the thermal camera stream",
+          "description": "Enable and configure the thermal camera stream.",
           "required": [
             "enabled",
             "frequency",
@@ -460,7 +459,7 @@
               "$id": "#/properties/sensors/properties/thermal_camera/properties/enabled",
               "type": "boolean",
               "title": "Enable Thermal Camera",
-              "description": "Whether the thermal camera is enabled",
+              "description": "Whether the thermal camera is enabled.",
               "default": false,
               "examples": [
                 true,
@@ -470,8 +469,9 @@
             "frequency": {
               "$id": "#/properties/sensors/properties/thermal_camera/properties/frequency",
               "type": "number",
-              "title": "The Frequency Schema",
-              "default": 0,
+              "title": "Thermal Camera Update Frequency",
+              "description": "How often, in seconds, thermal camera frames are sent.",
+              "default": 0.5,
               "examples": [
                 0.5
               ]
@@ -479,8 +479,8 @@
             "width": {
               "$id": "#/properties/sensors/properties/thermal_camera/properties/width",
               "type": "integer",
-              "title": "The Width Schema",
-              "default": 0,
+              "title": "Thermal Camera Width",
+              "description": "The width, in pixels, of the thermal camera.",
               "examples": [
                 32
               ]
@@ -488,8 +488,8 @@
             "height": {
               "$id": "#/properties/sensors/properties/thermal_camera/properties/height",
               "type": "integer",
-              "title": "The Height Schema",
-              "default": 0,
+              "title": "Thermal Camera Height",
+              "description": "The height, in pixels, of the thermal camera.",
               "examples": [
                 24
               ]
@@ -499,7 +499,8 @@
         "temperature": {
           "$id": "#/properties/sensors/properties/temperature",
           "type": "object",
-          "title": "The Temperature Schema",
+          "title": "Ambient Temperature Settings",
+          "description": "Enable and configure the ambient temperature sensor.",
           "required": [
             "enabled",
             "frequency",
@@ -509,17 +510,20 @@
             "enabled": {
               "$id": "#/properties/sensors/properties/temperature/properties/enabled",
               "type": "boolean",
-              "title": "The Enabled Schema",
+              "title": "Enable Ambient Temperature Sensor",
+              "description": "Whether the ambient temperature sensor is enabled.",
               "default": false,
               "examples": [
-                true
+                true,
+                false
               ]
             },
             "frequency": {
               "$id": "#/properties/sensors/properties/temperature/properties/frequency",
               "type": "integer",
-              "title": "The Frequency Schema",
-              "default": 0,
+              "title": "Ambient Temperature Sensor Update Frequency",
+              "description": "How often, in seconds, ambient temperature is recorded and updated.",
+              "default": 2,
               "examples": [
                 2
               ]
@@ -527,8 +531,8 @@
             "address": {
               "$id": "#/properties/sensors/properties/temperature/properties/address",
               "type": "string",
-              "title": "The Address Schema",
-              "default": "",
+              "title": "Ambient Temperature Address",
+              "description": "I2C device address of the ambient temperature sensor.",
               "examples": [
                 "0x5A"
               ],
@@ -539,7 +543,8 @@
         "distance": {
           "$id": "#/properties/sensors/properties/distance",
           "type": "object",
-          "title": "The Distance Schema",
+          "title": "Distance Sensor Array Settings",
+          "description": "Enable and configure the distance sensor array",
           "required": [
             "enabled",
             "frequency"
@@ -548,17 +553,20 @@
             "enabled": {
               "$id": "#/properties/sensors/properties/distance/properties/enabled",
               "type": "boolean",
-              "title": "The Enabled Schema",
+              "title": "Enable Distance Sensor Array",
+              "description": "Whether the distance sensor array is enabled.",
               "default": false,
               "examples": [
-                true
+                true,
+                false
               ]
             },
             "frequency": {
               "$id": "#/properties/sensors/properties/distance/properties/frequency",
               "type": "integer",
-              "title": "The Frequency Schema",
-              "default": 0,
+              "title": "Distance Sensor Array Update Frequency",
+              "description": "How often, in seconds, distance is recorded and updated.",
+              "default": 2,
               "examples": [
                 2
               ]
@@ -568,7 +576,8 @@
         "gas": {
           "$id": "#/properties/sensors/properties/gas",
           "type": "object",
-          "title": "The Gas Schema",
+          "title": "Gas Sensor Settings",
+          "description": "Enable and configure the CO2/VOC sensor.",
           "required": [
             "enabled",
             "frequency"
@@ -577,17 +586,20 @@
             "enabled": {
               "$id": "#/properties/sensors/properties/gas/properties/enabled",
               "type": "boolean",
-              "title": "The Enabled Schema",
+              "title": "Enable Gas Sensor",
+              "description": "Whether the CO2/VOC sensor is enabled.",
               "default": false,
               "examples": [
-                true
+                true,
+                false
               ]
             },
             "frequency": {
               "$id": "#/properties/sensors/properties/gas/properties/frequency",
               "type": "integer",
-              "title": "The Frequency Schema",
-              "default": 0,
+              "title": "Gas Sensor Update Frequency",
+              "description": "How often, in seconds, the CO2 and VOC concentrations are recorded and updated.",
+              "default": 2,
               "examples": [
                 2
               ]
@@ -599,7 +611,8 @@
     "debug": {
       "$id": "#/properties/debug",
       "type": "object",
-      "title": "The Debug Schema",
+      "title": "Debug Settings",
+      "description": "Settings useful for developers.",
       "required": [
         "print_messages"
       ],
@@ -607,9 +620,11 @@
         "print_messages": {
           "$id": "#/properties/debug/properties/print_messages",
           "type": "boolean",
-          "title": "The Print_messages Schema",
+          "title": "Enable Debug Messages",
+          "description": "Log additional debug messages.",
           "default": false,
           "examples": [
+            true,
             false
           ]
         }
