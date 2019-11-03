@@ -12,15 +12,21 @@ class WebSocketProcess (multiprocessing.Process):
         self.mpid = mpid
          # Communication port to other processes
         self.pipe = pipe
-        # Load config file
+        # Store config filename
         self.config_file = config_file
+        # Load config file
         self.config = json.load(open(self.config_file))
         # WebSocket port
         self.port = port
+        # IP address to bind to
+        if 'network' in self.config:
+            self.ip = self.config['network']['ip'] 
+        else:
+            self.ip = '*'
 
     def run(self):
-        self.logger.info("Starting " + self.name + " process at " + self.config['network']['ip'] + ":" + str(self.port))
-        start_server = websockets.serve(self.main, self.config['network']['ip'], self.port)
+        self.logger.info("Starting " + self.name + " process at " + self.ip + ":" + str(self.port))
+        start_server = websockets.serve(self.main, self.ip, self.port)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
         self.logger.info("Exiting " + self.name + " process")
