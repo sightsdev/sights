@@ -81,7 +81,7 @@ install_motion () {
     apt install -y ./${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
     rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
-    echo -e "\nCopying Motion config file to /etc/motion..."
+    echo -e "\nCopying Motion configuration file to /etc/motion..."
     cp SARTRobot/configs/motion/motion.conf /etc/motion/
 
     echo -e "\nEnabling Motion daemon flag..."
@@ -111,17 +111,22 @@ install_supervisor () {
     echo -e "\nInstalling Supervisor..."
     python3 -m pip install supervisor
 
-    echo -e "\nCopying configuration file..."
+    echo -e "\nCopying Supervisor configuration file..."
     cp SARTRobot/configs/supervisor/supervisord.conf /etc/
 
-    echo -e "\nDownloading SART extension..."
+    echo -e "\nDownloading Supervisor SART extension..."
     git clone https://github.com/SFXRescue/supervisor_sart_config
 
-    echo -e "\nInstalling SART extension..."
+    echo -e "\nInstalling Supervisor SART extension..."
     python3 -m pip install ./supervisor_sart_config
 
     echo -e "\nAdding supervisord to /etc/rc.local..."
-    sed -i -e '$i \supervisord\n' /etc/rc.local
+    if grep -Fxq "supervisord &" /etc/rc.local
+    then
+        echo -e "Already done..."
+    else
+        sed -i -e '$i \supervisord &\n' /etc/rc.local
+    fi
     echo
 }
 
@@ -139,6 +144,15 @@ update () {
     cd SARTInterface
     git pull
     cd ..
+
+    echo -e "\nCopying Motion configuration file..."
+    cp SARTRobot/configs/motion/motion.conf /etc/motion/
+
+    echo -e "\nCopying Supervisor configuration file..."
+    cp SARTRobot/configs/supervisor/supervisord.conf /etc/
+
+    echo -e "Update complete!"
+
     echo
 }
 
