@@ -114,10 +114,10 @@ sudo apt install ./bionic_motion_4.2.2-1_amd64.deb
 The provided `motion.conf` file should be copied into the `/etc/motion/` directory.
 
 ```sh
-sudo cp /opt/sart/SARTRobot/motion/motion.conf /etc/motion/
+sudo cp /opt/sart/SARTRobot/configs/motion/motion.conf /etc/motion/
 ```
 
-Keep in mind that this file points to the individual camera config files in `/opt/sart/SARTRobot/motion`.
+Keep in mind that this file points to the individual camera config files in `/opt/sart/SARTRobot/configs/motion`.
 
 Next, allow Motion to be run as a service by editing `/etc/default/motion` and changing `start_motion_daemon=no` to `start_motion_daemon=yes`.
 
