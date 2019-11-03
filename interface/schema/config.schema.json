@@ -8,7 +8,7 @@
   "required": [
     "network",
     "control",
-    "servo",
+    "motors",
     "arduino",
     "cameras",
     "sensors",
@@ -51,7 +51,7 @@
           "$id": "#/properties/control/properties/default_gamepad_speed",
           "type": "integer",
           "title": "Default Gamepad Speed",
-          "description": "The default servo speed used by the Gamepad controller.",
+          "description": "The default motor speed used by the Gamepad controller.",
           "default": 3,
           "examples": [
             3
@@ -63,7 +63,7 @@
           "$id": "#/properties/control/properties/default_keyboard_speed",
           "type": "integer",
           "title": "Default Keyboard Speed",
-          "description": "The default servo speed used by the keyboard controller.",
+          "description": "The default motor speed used by the keyboard controller.",
           "default": 3,
           "examples": [
             3
@@ -73,10 +73,10 @@
         }
       }
     },
-    "servo": {
-      "$id": "#/properties/servo",
+    "motors": {
+      "$id": "#/properties/motors",
       "type": "object",
-      "title": "Servo Settings",
+      "title": "Motor Settings",
       "description": "Set the type and configuration of motors used in the robot.",
       "required": [
         "type",
@@ -86,14 +86,14 @@
       ],
       "properties": {
         "type": {
-          "$id": "#/properties/servo/properties/type",
+          "$id": "#/properties/motors/properties/type",
           "type": "string",
           "enum": [
             "dynamixel",
             "serial",
             "virtual"
           ],
-          "title": "Servo Type",
+          "title": "Motor Type",
           "description": "Different types of motor may require additional fields.",
           "default": "dynamixel",
           "examples": [
@@ -104,9 +104,9 @@
           "pattern": "^(.*)$"
         },
         "port": {
-          "$id": "#/properties/servo/properties/port",
+          "$id": "#/properties/motors/properties/port",
           "type": "string",
-          "title": "Servo Port",
+          "title": "Serial Port",
           "description": "The location of the serial device.",
           "default": "/dev/serial/by-id/",
           "examples": [
@@ -115,9 +115,9 @@
           "pattern": "^(.*)$"
         },
         "baudrate": {
-          "$id": "#/properties/servo/properties/baudrate",
+          "$id": "#/properties/motors/properties/baudrate",
           "type": "integer",
-          "title": "Servo Baud Rate",
+          "title": "Serial Baud Rate",
           "description": "Baud rate of the serial port. Some common values are listed in the examples.",
           "default": 1000000,
           "examples": [
@@ -127,7 +127,7 @@
           ]
         },
         "ids": {
-          "$id": "#/properties/servo/properties/ids",
+          "$id": "#/properties/motors/properties/ids",
           "type": "object",
           "title": "Servo IDs",
           "description": "Set the IDs assigned to servos on the left and right sides of the robot.",
@@ -137,12 +137,12 @@
           ],
           "properties": {
             "left": {
-              "$id": "#/properties/servo/properties/ids/properties/left",
+              "$id": "#/properties/motors/properties/ids/properties/left",
               "type": "array",
               "title": "Left Servo IDs Array",
               "description": "The IDs assigned to servos on the left of the robot.",
               "items": {
-                "$id": "#/properties/servo/properties/ids/properties/left/items",
+                "$id": "#/properties/motors/properties/ids/properties/left/items",
                 "type": "integer",
                 "title": "Left Servo ID",
                 "description": "An integer representing a servo ID on the left side of the robot.",
@@ -153,12 +153,12 @@
               }
             },
             "right": {
-              "$id": "#/properties/servo/properties/ids/properties/right",
+              "$id": "#/properties/motors/properties/ids/properties/right",
               "type": "array",
               "title": "Right Servo IDs Array",
               "description": "The IDs assigned to servos on the right of the robot.",
               "items": {
-                "$id": "#/properties/servo/properties/ids/properties/right/items",
+                "$id": "#/properties/motors/properties/ids/properties/right/items",
                 "type": "integer",
                 "title": "Right Servo ID",
                 "description": "An integer representing a servo ID on the right side of the robot.",
