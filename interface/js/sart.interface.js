@@ -240,6 +240,14 @@ $(document).ready(function () {
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
 	});
 
+    // Switch between config editors
+    $(".editor-toggle").click(function () {
+        $('#visual_editor').toggleClass("active");
+        $('#visual_editor').toggleClass("show");
+        $('#json_editor').toggleClass("active");
+        $('#json_editor').toggleClass("show");
+    });
+
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").click(function () {
 		// allow access to integrated blockchain layer

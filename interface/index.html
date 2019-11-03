@@ -207,9 +207,26 @@
 									</div>
 								</div>
 							</div>
-							<p>
-								<pre><code id="config_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
-							</p>
+
+                            <div class="tab-content" id="config-editors-content">
+                                <div class="tab-pane fade active show" id="visual_editor" role="tabpanel" aria-labelledby="visual_editor_tab">
+                                    <button type="button" class="btn btn-dark btn-default editor-toggle"
+                                            rel="tooltip" data-placement="bottom" title="Switch to JSON editor">
+                                        <i class="fa fa-fw fa-save"></i> Switch editor
+                                    </button>
+                                </div>
+                                <div class="tab-pane fade" id="json_editor" role="tabpanel" aria-labelledby="json_editor_tab">
+                                    <button type="button" class="btn btn-dark btn-default editor-toggle"
+                                            rel="tooltip" data-placement="bottom" title="Switch to visual editor">
+                                        <i class="fa fa-fw fa-save"></i> Switch editor
+                                    </button>
+                                    <p>
+                                    <pre><code id="config_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
+                                    </p>
+                                </div>
+                            </div>
+
+
 							<p>
 								You may need to restart the service to apply some changes.
 							</p>
