@@ -1,6 +1,6 @@
 {
 	"network": {
-		"ip": "10.0.0.3"
+		"ip": "*"
 	},
 	"control": {
 		"default_gamepad_speed": 3,

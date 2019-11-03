@@ -46,18 +46,6 @@ cd /opt/sart/SARTRobot
 python3 -m pip install -r requirements.txt
 ```
 
-Edit `default.json` and change the value of `ip` to the robot's IP address:
-
-```sh
-nano /opt/sart/SARTRobot/configs/default.json
-```
-
-```json
-    "network": {
-        "ip": "<robot_ip>"
-    },
-```
-
 ### 3. Setting up Apache2
 
 A web server should be configured to point to the `SARTInterface` directory. I've chosen to use Apache2, but if you wish to use another (perhaps a more lightweight) webserver, you certainly can. Just configure it to point to `/opt/sart/SARTInterface`
@@ -286,6 +274,8 @@ Configuration files contain the following options:
 `ip`
 
 The ip address of the robot (e.g. 10.0.0.3). The WebSocket server and client will attempt to bind to this address.
+
+It can be set to '*' to bind to any available address.
 
 ### `control`
 
