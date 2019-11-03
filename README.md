@@ -297,17 +297,15 @@ Default gamepad speed option between 1 and 8.
 
 Default keyboard speed option between 1 and 8.
 
-### `servo`
-
->_Note: This may be renamed in the future to `motors`._
+### `motors`
 
 `type`
 
-Type of servo connection to use. Available options:
+Type of motor connection to use. Available options:
 
 - `dynamixel` for Dynamixel AX-series servos
 - `serial` for Sabertooth motor controllers
-- `virtual` for a virtual servo connection (for testing)
+- `virtual` for a virtual motor connection (for testing)
 
 `port`
 

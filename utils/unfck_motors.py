@@ -20,7 +20,7 @@ args = parser.parse_args()
 config = json.load(open(args.config_file))
 
 # Open connection
-sc = Connection(port=config['servo']['port'], baudrate=config['servo']['baudrate'])
+sc = Connection(port=config['motors']['port'], baudrate=config['motors']['baudrate'])
 
 # Clear overheating errors and renable torque or something like that
 sc.write_data(4, 0x18, 0)

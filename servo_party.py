@@ -108,10 +108,10 @@ class ServoParty:
         # Setup logger
         self.logger = logging.getLogger(__name__)
         # Load values from configuration file
-        self.type = config['servo']['type'].lower()
+        self.type = config['motors']['type'].lower()
         if (self.type != 'virtual'):
-            self.port = config['servo']['port']
-            self.baudrate = config['servo']['baudrate']
+            self.port = config['motors']['port']
+            self.baudrate = config['motors']['baudrate']
         self.gamepad_speed = config['control']['default_gamepad_speed'] * 128 - 1
         self.keyboard_speed = config['control']['default_keyboard_speed'] * 128 - 1
         self.last_left = 0
@@ -123,7 +123,7 @@ class ServoParty:
             self.connection = SerialConnection(self.port, self.baudrate)
         elif (self.type == 'dynamixel'):
             self.connection = DynamixelConnection(self.port, self.baudrate)
-            self.connection.ids = config['servo']['ids']
+            self.connection.ids = config['motors']['ids']
             self.connection.logger = self.logger
         else:
             self.logger.warn("Could not determine motor connection type")

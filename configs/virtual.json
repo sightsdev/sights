@@ -6,7 +6,7 @@
 		"default_gamepad_speed": 3,
 		"default_keyboard_speed": 3
 	},
-	"servo": {
+	"motors": {
 		"type": "virtual"
 	},
 	"arduino": {
@@ -24,7 +24,7 @@
 			"id": 1
 		},
 		"back": {
-			"enabled": true,
+			"enabled": false,
 			"id": 2
 		},
 		"left": {
