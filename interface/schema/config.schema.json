@@ -6,7 +6,6 @@
   "title": "S.A.R.T. Robot Config",
   "description": "Configuration file for a S.A.R.T. based robot.",
   "required": [
-    "network",
     "control",
     "motors",
     "arduino",
