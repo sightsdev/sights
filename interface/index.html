@@ -176,9 +176,14 @@
 				<div class="modal-body">
 					<ul class="nav nav-tabs" id="settings_tab" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link text-dark active" id="config_editor_tab" data-toggle="tab"
-								href="#config_editor" role="tab" aria-controls="config_editor" aria-selected="true"><i
-									class="fa fa-fw fa-file-alt"></i> Config Editor</a>
+							<a class="nav-link text-dark active" id="visual_editor_tab" data-toggle="tab"
+								href="#visual_editor" role="tab" aria-controls="visual_editor" aria-selected="true"><i
+									class="fa fa-fw fa-cog"></i> Configuration</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="advanced_editor_tab" data-toggle="tab"
+								href="#advanced_editor" role="tab" aria-controls="advanced_editor" aria-selected="true"><i
+									class="fa fa-fw fa-file-alt"></i> Advanced Editor</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link text-dark" id="about_tab" data-toggle="tab" href="#about" role="tab"
@@ -187,46 +192,54 @@
 						</li>
 					</ul>
 					<div class="tab-content" id="settings_tab_content">
-						<div class="tab-pane fade active show" id="config_editor" role="tabpanel" aria-labelledby="config_editor_tab">
+						<div class="tab-pane fade active show" id="visual_editor" role="tabpanel" aria-labelledby="visual_editor_tab">
 							<br />
 							<div class="row">
 								<div class="col">
-									<p class="text-monospace text-center" id="config_filename" style="padding-top:6px;padding-bottom:6px;margin:0px">
+									<p class="text-monospace text-center" id="visual_editor_filename"
+										style="padding-top:6px;padding-bottom:6px;margin:0px">
 									</p>
 								</div>
 								<div class="col-auto">
 									<div class="float-right">
-										<button type="button" class="btn btn-info btn-default" id="config_editor_reload_button"
+										<button type="button" class="btn btn-info btn-default" id="visual_editor_reload_button"
 											rel="tooltip" data-placement="bottom" title="Reload config">
 											<i class="fa fa-fw fa-redo"></i> Reload
 										</button>
-										<button type="button" class="btn btn-success btn-default" id="config_editor_save_button"
+										<button type="button" class="btn btn-success btn-default" id="visual_editor_save_button"
 											rel="tooltip" data-placement="bottom" title="Save config">
 											<i class="fa fa-fw fa-save"></i> Save
 										</button>
 									</div>
 								</div>
 							</div>
-
-                            <div class="tab-content" id="config-editors-content">
-                                <div class="tab-pane fade active show" id="visual_editor" role="tabpanel" aria-labelledby="visual_editor_tab">
-                                    <button type="button" class="btn btn-dark btn-default editor-toggle"
-                                            rel="tooltip" data-placement="bottom" title="Switch to JSON editor">
-                                        <i class="fa fa-fw fa-save"></i> Switch editor
-                                    </button>
-                                </div>
-                                <div class="tab-pane fade" id="json_editor" role="tabpanel" aria-labelledby="json_editor_tab">
-                                    <button type="button" class="btn btn-dark btn-default editor-toggle"
-                                            rel="tooltip" data-placement="bottom" title="Switch to visual editor">
-                                        <i class="fa fa-fw fa-save"></i> Switch editor
-                                    </button>
-                                    <p>
-                                    <pre><code id="config_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
-                                    </p>
-                                </div>
-                            </div>
-
-
+							<p>
+								You may need to restart the service to apply some changes.
+							</p>
+						</div>
+						<div class="tab-pane fade" id="advanced_editor" role="tabpanel" aria-labelledby="advanced_editor_tab">
+							<br />
+							<div class="row">
+								<div class="col">
+									<p class="text-monospace text-center" id="advanced_editor_filename" style="padding-top:6px;padding-bottom:6px;margin:0px">
+									</p>
+								</div>
+								<div class="col-auto">
+									<div class="float-right">
+										<button type="button" class="btn btn-info btn-default" id="advanced_editor_reload_button"
+											rel="tooltip" data-placement="bottom" title="Reload config">
+											<i class="fa fa-fw fa-redo"></i> Reload
+										</button>
+										<button type="button" class="btn btn-success btn-default" id="advanced_editor_save_button"
+											rel="tooltip" data-placement="bottom" title="Save config">
+											<i class="fa fa-fw fa-save"></i> Save
+										</button>
+									</div>
+								</div>
+							</div>
+							<p>
+								<pre><code id="advanced_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
+							</p>
 							<p>
 								You may need to restart the service to apply some changes.
 							</p>

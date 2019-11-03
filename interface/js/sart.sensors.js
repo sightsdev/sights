@@ -177,7 +177,7 @@ function sensorConnection() {
 			// Load config file into config editor window
 			if ("config" in obj) {
 				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
-				$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
+				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
 				// Now handle loading stuff from the config file
 
@@ -189,7 +189,8 @@ function sensorConnection() {
 
 			// Current config file name
 			if ("config_file" in obj) {
-				$("#config_filename").html(obj["config_file"]);
+				$("#advanced_editor_filename").html(obj["config_file"]);
+				$("#visual_editor_filename").html(obj["config_file"]);
 			}
 
 			// Get distance data and create radial graph

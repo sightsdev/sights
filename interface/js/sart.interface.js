@@ -128,11 +128,6 @@ $(document).ready(function () {
 		$("#gamepad_log_pre").html("");
 	});
 
-	// Setup button to select the contents of the config editor
-	$("#config_editor_select_button").click(function () {
-		selectTextInElement('config_editor_pre');
-	});
-
 	// If the camera stream doesn't load, default to fallback image
 	$('.stream-image').error(function () {
 		if (this.src != 'images/no-feed-small.png') {
@@ -239,14 +234,6 @@ $(document).ready(function () {
 		let xscale = $('#thermal_overlay_xscale').val();
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
 	});
-
-    // Switch between config editors
-    $(".editor-toggle").click(function () {
-        $('#visual_editor').toggleClass("active");
-        $('#visual_editor').toggleClass("show");
-        $('#json_editor').toggleClass("active");
-        $('#json_editor').toggleClass("show");
-    });
 
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").click(function () {

@@ -289,10 +289,10 @@ $(document).ready(function () {
 		});
 	});
 
-	// Config editor button actions
-	$("#config_editor_save_button").click(function () {
-		// Get contents of config editor
-		var contents = $("#config_editor_pre")[0].innerText;
+	// Advanced config editor button actions
+	$("#advanced_editor_save_button").click(function () {
+		// Get contents of advanced editor
+		var contents = $("#advanced_editor_pre")[0].innerText;
 		try {
 			// Parse from YAML into JS
 			var yml = jsyaml.safeLoad(contents);
@@ -321,7 +321,20 @@ $(document).ready(function () {
 		}
 
 	});
-	$("#config_editor_reload_button").click(function () {
+	$("#advanced_editor_reload_button").click(function () {
+		var c_event = {
+			type: "SYSTEM",
+			control: "REQUEST_CONFIG"
+		};
+		safeSend(c_event);
+		bootoast.toast({
+			"message": "Requested config file",
+			"type": "info",
+			"icon": "file-alt",
+			"position": "left-bottom"
+		});
+	});
+	$("#visual_editor_reload_button").click(function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "REQUEST_CONFIG"
