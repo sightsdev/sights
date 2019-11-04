@@ -293,11 +293,14 @@ $(document).ready(function () {
 	$(".editor_save_button").click(function () {
 		// Get contents of advanced editor
 		var contents = $("#advanced_editor_pre")[0].innerText;
+		var tempSavedConfig = savedConfig;
 		try {
 			// Parse from YAML into JS
 			var yml = jsyaml.safeLoad(contents);
 			// And then turn that into a JSON string
 			var val = JSON.stringify(yml, null, '\t');
+			// Update visual editor
+			configEditor.setValue(JSON.parse(val, indent = 4));
 			// Create message event
 			var c_event = {
 				type: "SYSTEM",
@@ -311,6 +314,7 @@ $(document).ready(function () {
 				"icon": "file-alt",
 				"position": "left-bottom"
 			});
+			savedConfig = JSON.stringify(configEditor.getValue());
 		} catch (e) {
 			bootoast.toast({
 				"message": "Could not validate config file",
@@ -318,20 +322,23 @@ $(document).ready(function () {
 				"icon": "file-alt",
 				"position": "left-bottom"
 			});
+			savedConfig = tempSavedConfig;
 		}
-
+		updateConfigAlerts();
 	});
 	$(".editor_reload_button").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "REQUEST_CONFIG"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "Requested config file",
-			"type": "info",
-			"icon": "file-alt",
-			"position": "left-bottom"
-		});
+		if(!$(".editor_reload_button").hasClass("disabled")) {
+			var c_event = {
+				type: "SYSTEM",
+				control: "REQUEST_CONFIG"
+			};
+			safeSend(c_event);
+			bootoast.toast({
+				"message": "Requested config file",
+				"type": "info",
+				"icon": "file-alt",
+				"position": "left-bottom"
+			});
+		}
 	});
 });

@@ -197,6 +197,14 @@
 					<div class="tab-content" id="settings_tab_content">
 						<div class="tab-pane fade active show" id="visual_editor" role="tabpanel" aria-labelledby="visual_editor_tab">
 							<br />
+							<div class="alert alert-warning fade show save-alert" style="display:none" role="alert">
+								<span><b>You have unsaved configuration changes.</b></span>
+								<br>
+								<span>Don't forget to click save before exiting.</span>
+							</div>
+							<div class="alert alert-warning fade show restart-service-alert" style="display:none" role="alert">
+								<span><b>Restart the service for changes to take effect.</b></span>
+							</div>
 							<div class="row">
 								<div class="col">
 									<p class="text-monospace text-center" id="visual_editor_filename"
@@ -223,6 +231,19 @@
 						</div>
 						<div class="tab-pane fade" id="advanced_editor" role="tabpanel" aria-labelledby="advanced_editor_tab">
 							<br />
+							<div class="alert alert-warning fade show save-alert" style="display:none" role="alert">
+								<span><b>You have unsaved configuration changes.</b></span>
+								<br>
+								<span>Don't forget to click save before exiting.</span>
+							</div>
+							<div class="alert alert-warning fade show" style="display:none" role="alert" id="config_update_alert">
+								<span><b>Changes made in the advanced editor are not automatically reflected in the visual editor.</b></span>
+								<br>
+								<span>Don't forget to click save before switching back.</span>
+							</div>
+							<div class="alert alert-warning fade show restart-service-alert" style="display:none" role="alert">
+								<span><b>Restart the service for changes to take effect.</b></span>
+							</div>
 							<div class="row">
 								<div class="col">
 									<p class="text-monospace text-center" id="advanced_editor_filename" style="padding-top:6px;padding-bottom:6px;margin:0px">

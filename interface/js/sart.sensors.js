@@ -178,6 +178,11 @@ function sensorConnection() {
 			if ("config" in obj) {
 				// Populate visual editor
 				configEditor.setValue(obj['config']);
+				// Keep a copy to track changes
+				baseConfig = JSON.stringify(configEditor.getValue());
+				savedConfig = baseConfig;
+				updateConfigAlerts();
+
 				// Populate advanced editor
 				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
 				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
