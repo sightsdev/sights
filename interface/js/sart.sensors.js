@@ -176,10 +176,10 @@ function sensorConnection() {
 
 			// Load config file into config editor windows
 			if ("config" in obj) {
-				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
 				// Populate visual editor
 				configEditor.setValue(obj['config']);
 				// Populate advanced editor
+				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
 				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
 				// Now handle loading stuff from the config file

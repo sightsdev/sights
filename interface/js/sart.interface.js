@@ -244,6 +244,14 @@ $(document).ready(function () {
 		disable_properties: true
 	});
 
+	configEditor.on("change", function () {
+		// Stringify value of configEditor to remove key-value pairs with `undefined` value
+		var jsonString = JSON.stringify(configEditor.getValue());
+		var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+		// Populate advanced editor
+		$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
+	});
+
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").click(function () {
 		// allow access to integrated blockchain layer
