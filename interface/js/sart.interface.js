@@ -235,9 +235,11 @@ $(document).ready(function () {
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
 	});
 
-	JSONEditor.defaults.options.theme = 'bootstrap4';
 	var editor = new JSONEditor($('#visual_editor_container')[0], {
-		schema: schema
+		schema: schema,
+		theme: "bootstrap4",
+		disable_edit_json: true,
+		disable_properties: true
 	});
 
 	// Minor compatibility fix for incompatibility fixes

@@ -152,7 +152,3 @@ blink, .blink {
 .btn-border-outside:not(:first-child):not(:last-child) {
   border-right: none;
 }
-
-.json-editor-btntype-editjson {
-  display: none;
-}
