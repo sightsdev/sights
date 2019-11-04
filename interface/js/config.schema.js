@@ -87,10 +87,7 @@ const schema = {
             "title": "Motor Settings",
             "description": "Set the type, configuration and number of motors used in the robot.",
             "required": [
-                "type",
-                "port",
-                "baudrate",
-                "ids"
+                "type"
             ],
             "properties": {
                 "type": {
@@ -120,7 +117,12 @@ const schema = {
                     "examples": [
                         "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00"
                     ],
-                    "pattern": "^(.*)$"
+                    "pattern": "^(.*)$",
+                    "options": {
+                        "dependencies": {
+                            "type": ["dynamixel", "serial"]
+                        }
+                    }
                 },
                 "baudrate": {
                     "$id": "#/properties/motors/properties/baudrate",
@@ -132,13 +134,23 @@ const schema = {
                         1000000,
                         9600,
                         115200
-                    ]
+                    ],
+                    "options": {
+                        "dependencies": {
+                            "type": ["dynamixel", "serial"]
+                        }
+                    }
                 },
                 "ids": {
                     "$id": "#/properties/motors/properties/ids",
                     "type": "object",
                     "title": "Servo IDs",
                     "description": "Set the IDs assigned to servos on the left and right sides of the robot.",
+                    "options": {
+                        "dependencies": {
+                            "type": "dynamixel"
+                        }
+                    },
                     "required": [
                         "left",
                         "right"
@@ -189,9 +201,7 @@ const schema = {
             "title": "Arduino Settings",
             "description": "Enable and configure the location of the robot's Arduino for extended sensor capability.",
             "required": [
-                "enabled",
-                "port",
-                "baudrate"
+                "enabled"
             ],
             "properties": {
                 "enabled": {
@@ -214,7 +224,12 @@ const schema = {
                     "examples": [
                         "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00"
                     ],
-                    "pattern": "^(.*)$"
+                    "pattern": "^(.*)$",
+                    "options": {
+                        "dependencies": {
+                            "enabled": true
+                        }
+                    }
                 },
                 "baudrate": {
                     "$id": "#/properties/arduino/properties/baudrate",
@@ -224,7 +239,12 @@ const schema = {
                     "default": 115200,
                     "examples": [
                         115200
-                    ]
+                    ],
+                    "options": {
+                         "dependencies": {
+                             "enabled": true
+                         }
+                    }
                 }
             }
         },
@@ -249,8 +269,7 @@ const schema = {
                     "title": "Front Camera",
                     "description": "Enable and configure the ID of the front camera.",
                     "required": [
-                        "enabled",
-                        "id"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -272,7 +291,12 @@ const schema = {
                             "default": 1,
                             "examples": [
                                 1
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 },
@@ -282,8 +306,7 @@ const schema = {
                     "title": "Back Camera",
                     "description": "Enable and configure the ID of the back camera.",
                     "required": [
-                        "enabled",
-                        "id"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -305,7 +328,12 @@ const schema = {
                             "default": 2,
                             "examples": [
                                 2
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 },
@@ -315,8 +343,7 @@ const schema = {
                     "title": "Left Camera",
                     "description": "Enable and configure the ID of the left camera.",
                     "required": [
-                        "enabled",
-                        "id"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -338,7 +365,12 @@ const schema = {
                             "default": 3,
                             "examples": [
                                 3
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 },
@@ -348,8 +380,7 @@ const schema = {
                     "title": "Right Camera",
                     "description": "Enable and configure the ID of the right camera",
                     "required": [
-                        "enabled",
-                        "id"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -371,7 +402,12 @@ const schema = {
                             "default": 4,
                             "examples": [
                                 4
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 }
@@ -400,8 +436,7 @@ const schema = {
                     "title": "System Memory Reporting",
                     "description": "Collects and displays system memory usage information on the interface.",
                     "required": [
-                        "enabled",
-                        "frequency"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -423,7 +458,12 @@ const schema = {
                             "default": 3,
                             "examples": [
                                 3
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 },
@@ -433,8 +473,7 @@ const schema = {
                     "title": "CPU Temperature Reporting",
                     "description": "Collects and displays system CPU temperature information on the interface.",
                     "required": [
-                        "enabled",
-                        "frequency"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -456,7 +495,12 @@ const schema = {
                             "default": 5,
                             "examples": [
                                 5
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 },
@@ -466,10 +510,7 @@ const schema = {
                     "title": "Thermal Camera Settings",
                     "description": "Enable and configure the thermal camera stream.",
                     "required": [
-                        "enabled",
-                        "frequency",
-                        "width",
-                        "height"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -491,7 +532,12 @@ const schema = {
                             "default": 0.5,
                             "examples": [
                                 0.5
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         },
                         "width": {
                             "$id": "#/properties/sensors/properties/thermal_camera/properties/width",
@@ -500,7 +546,12 @@ const schema = {
                             "description": "The width, in pixels, of the thermal camera.",
                             "examples": [
                                 32
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         },
                         "height": {
                             "$id": "#/properties/sensors/properties/thermal_camera/properties/height",
@@ -509,7 +560,12 @@ const schema = {
                             "description": "The height, in pixels, of the thermal camera.",
                             "examples": [
                                 24
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 },
@@ -519,9 +575,7 @@ const schema = {
                     "title": "Ambient Temperature Settings",
                     "description": "Enable and configure the ambient temperature sensor.",
                     "required": [
-                        "enabled",
-                        "frequency",
-                        "address"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -543,7 +597,12 @@ const schema = {
                             "default": 2,
                             "examples": [
                                 2
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         },
                         "address": {
                             "$id": "#/properties/sensors/properties/temperature/properties/address",
@@ -553,7 +612,12 @@ const schema = {
                             "examples": [
                                 "0x5A"
                             ],
-                            "pattern": "^(.*)$"
+                            "pattern": "^(.*)$",
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                               }
+                             }
                         }
                     }
                 },
@@ -563,8 +627,7 @@ const schema = {
                     "title": "Distance Sensor Array Settings",
                     "description": "Enable and configure the distance sensor array",
                     "required": [
-                        "enabled",
-                        "frequency"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -586,7 +649,12 @@ const schema = {
                             "default": 2,
                             "examples": [
                                 2
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 },
@@ -596,8 +664,7 @@ const schema = {
                     "title": "Gas Sensor Settings",
                     "description": "Enable and configure the CO2/VOC sensor.",
                     "required": [
-                        "enabled",
-                        "frequency"
+                        "enabled"
                     ],
                     "properties": {
                         "enabled": {
@@ -619,7 +686,12 @@ const schema = {
                             "default": 2,
                             "examples": [
                                 2
-                            ]
+                            ],
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
                         }
                     }
                 }
