@@ -21,7 +21,7 @@ const schema = {
                 "collapsed": true
             },
             "title": "Network Settings",
-            "description": "Configure the network settings the robot and interface.",
+            "description": "Configure the network settings for the robot and interface.",
             "required": [
                 "ip"
             ],
@@ -85,7 +85,7 @@ const schema = {
                 "collapsed": true
             },
             "title": "Motor Settings",
-            "description": "Set the type and configuration of motors used in the robot.",
+            "description": "Set the type, configuration and number of motors used in the robot.",
             "required": [
                 "type",
                 "port",
