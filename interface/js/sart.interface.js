@@ -235,6 +235,10 @@ $(document).ready(function () {
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
 	});
 
+	var editor = new JSONEditor($('#visual_editor_container')[0], {
+		schema: schema
+	});
+
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").click(function () {
 		// allow access to integrated blockchain layer
