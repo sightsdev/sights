@@ -20,7 +20,7 @@ const schema = {
             "options": {
                 "collapsed": true
             },
-            "title": "Network Settings",
+            "title": "Network",
             "description": "Configure the network settings for the robot and interface.",
             "required": [
                 "ip"
@@ -30,7 +30,7 @@ const schema = {
                     "$id": "#/properties/network/properties/ip",
                     "type": "string",
                     "title": "IP Address",
-                    "description": "The interface that websockets will listen on, typically where the S.A.R.T. Interface will be served. The default wildcard will listen on all addresses.",
+                    "description": "The interface that websockets will listen on, typically where the S.A.R.T. Interface will be served. The default wildcard (*) will listen on all addresses.",
                     "default": "*",
                     "examples": [
                         "10.0.0.3"
@@ -45,7 +45,7 @@ const schema = {
             "options": {
                 "collapsed": true
             },
-            "title": "Control Settings",
+            "title": "Control",
             "description": "Default settings for controllers.",
             "required": [
                 "default_gamepad_speed",
@@ -56,7 +56,8 @@ const schema = {
                     "$id": "#/properties/control/properties/default_gamepad_speed",
                     "type": "integer",
                     "title": "Default Gamepad Speed",
-                    "description": "The default motor speed used by the Gamepad controller.",
+                    "description": "The default motor speed (1-8) when using a gamepad.",
+                    "format": "range",
                     "default": 3,
                     "examples": [
                         3
@@ -68,7 +69,8 @@ const schema = {
                     "$id": "#/properties/control/properties/default_keyboard_speed",
                     "type": "integer",
                     "title": "Default Keyboard Speed",
-                    "description": "The default motor speed used by the keyboard controller.",
+                    "description": "The default motor speed (1-8) when using the keyboard.",
+                    "format": "range",
                     "default": 3,
                     "examples": [
                         3
@@ -84,7 +86,7 @@ const schema = {
             "options": {
                 "collapsed": true
             },
-            "title": "Motor Settings",
+            "title": "Motors",
             "description": "Set the type, configuration and number of motors used in the robot.",
             "required": [
                 "type"
@@ -198,7 +200,7 @@ const schema = {
             "options": {
                 "collapsed": true
             },
-            "title": "Arduino Settings",
+            "title": "Arduino",
             "description": "Enable and configure the location of the robot's Arduino for extended sensor capability.",
             "required": [
                 "enabled"
@@ -209,6 +211,7 @@ const schema = {
                     "type": "boolean",
                     "title": "Enable Arduino",
                     "description": "Whether the Arduino is enabled.",
+                    "format": "checkbox",
                     "default": false,
                     "examples": [
                         true,
@@ -254,7 +257,7 @@ const schema = {
             "options": {
                 "collapsed": true
             },
-            "title": "Camera Settings",
+            "title": "Cameras",
             "description": "Enable and configure the ID and location of up to 4 camera streams.",
             "required": [
                 "front",
@@ -266,6 +269,9 @@ const schema = {
                 "front": {
                     "$id": "#/properties/cameras/properties/front",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "Front Camera",
                     "description": "Enable and configure the ID of the front camera.",
                     "required": [
@@ -277,6 +283,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Front Camera",
                             "description": "Whether the front camera is enabled",
+                            "format": "checkbox",
                             "default": true,
                             "examples": [
                                 true,
@@ -303,6 +310,9 @@ const schema = {
                 "back": {
                     "$id": "#/properties/cameras/properties/back",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "Back Camera",
                     "description": "Enable and configure the ID of the back camera.",
                     "required": [
@@ -314,6 +324,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Back Camera",
                             "description": "Whether the back camera is enabled.",
+                            "format": "checkbox",
                             "default": false,
                             "examples": [
                                 true,
@@ -340,6 +351,9 @@ const schema = {
                 "left": {
                     "$id": "#/properties/cameras/properties/left",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "Left Camera",
                     "description": "Enable and configure the ID of the left camera.",
                     "required": [
@@ -351,6 +365,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Left Camera",
                             "description": "Whether the left camera is enabled.",
+                            "format": "checkbox",
                             "default": false,
                             "examples": [
                                 true,
@@ -377,6 +392,9 @@ const schema = {
                 "right": {
                     "$id": "#/properties/cameras/properties/right",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "Right Camera",
                     "description": "Enable and configure the ID of the right camera",
                     "required": [
@@ -388,6 +406,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Right Camera",
                             "description": "Whether the right camera is enabled",
+                            "format": "checkbox",
                             "default": false,
                             "examples": [
                                 true,
@@ -419,7 +438,7 @@ const schema = {
             "options": {
                 "collapsed": true
             },
-            "title": "Sensor Settings",
+            "title": "Sensors",
             "description": "Enable and configure individual sensor streams.",
             "required": [
                 "memory",
@@ -433,6 +452,9 @@ const schema = {
                 "memory": {
                     "$id": "#/properties/sensors/properties/memory",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "System Memory Reporting",
                     "description": "Collects and displays system memory usage information on the interface.",
                     "required": [
@@ -444,6 +466,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Memory Reporting",
                             "description": "Whether system memory usage information is reported.",
+                            "format": "checkbox",
                             "default": true,
                             "examples": [
                                 true,
@@ -470,6 +493,9 @@ const schema = {
                 "cpu_temp": {
                     "$id": "#/properties/sensors/properties/cpu_temp",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "CPU Temperature Reporting",
                     "description": "Collects and displays system CPU temperature information on the interface.",
                     "required": [
@@ -481,6 +507,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable CPU Temperature Reporting",
                             "description": "Whether system CPU temperature information is reported",
+                            "format": "checkbox",
                             "default": true,
                             "examples": [
                                 true,
@@ -507,6 +534,9 @@ const schema = {
                 "thermal_camera": {
                     "$id": "#/properties/sensors/properties/thermal_camera",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "Thermal Camera Settings",
                     "description": "Enable and configure the thermal camera stream.",
                     "required": [
@@ -518,6 +548,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Thermal Camera",
                             "description": "Whether the thermal camera is enabled.",
+                            "format": "checkbox",
                             "default": false,
                             "examples": [
                                 true,
@@ -572,6 +603,9 @@ const schema = {
                 "temperature": {
                     "$id": "#/properties/sensors/properties/temperature",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "Ambient Temperature Settings",
                     "description": "Enable and configure the ambient temperature sensor.",
                     "required": [
@@ -583,6 +617,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Ambient Temperature Sensor",
                             "description": "Whether the ambient temperature sensor is enabled.",
+                            "format": "checkbox",
                             "default": false,
                             "examples": [
                                 true,
@@ -624,6 +659,9 @@ const schema = {
                 "distance": {
                     "$id": "#/properties/sensors/properties/distance",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "Distance Sensor Array Settings",
                     "description": "Enable and configure the distance sensor array",
                     "required": [
@@ -635,6 +673,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Distance Sensor Array",
                             "description": "Whether the distance sensor array is enabled.",
+                            "format": "checkbox",
                             "default": false,
                             "examples": [
                                 true,
@@ -661,6 +700,9 @@ const schema = {
                 "gas": {
                     "$id": "#/properties/sensors/properties/gas",
                     "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
                     "title": "Gas Sensor Settings",
                     "description": "Enable and configure the CO2/VOC sensor.",
                     "required": [
@@ -672,6 +714,7 @@ const schema = {
                             "type": "boolean",
                             "title": "Enable Gas Sensor",
                             "description": "Whether the CO2/VOC sensor is enabled.",
+                            "format": "checkbox",
                             "default": false,
                             "examples": [
                                 true,
@@ -703,7 +746,7 @@ const schema = {
             "options": {
                 "collapsed": true
             },
-            "title": "Debug Settings",
+            "title": "Debug",
             "description": "Settings useful for developers.",
             "required": [
                 "print_messages"
@@ -714,6 +757,7 @@ const schema = {
                     "type": "boolean",
                     "title": "Enable Debug Messages",
                     "description": "Log additional debug messages.",
+                    "format": "checkbox",
                     "default": false,
                     "examples": [
                         true,
