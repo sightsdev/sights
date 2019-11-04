@@ -17,6 +17,9 @@ const schema = {
         "network": {
             "$id": "#/properties/network",
             "type": "object",
+            "options": {
+                "collapsed": true
+            },
             "title": "Network Settings",
             "description": "Configure the network settings the robot and interface.",
             "required": [
@@ -39,6 +42,9 @@ const schema = {
         "control": {
             "$id": "#/properties/control",
             "type": "object",
+            "options": {
+                "collapsed": true
+            },
             "title": "Control Settings",
             "description": "Default settings for controllers.",
             "required": [
@@ -75,6 +81,9 @@ const schema = {
         "motors": {
             "$id": "#/properties/motors",
             "type": "object",
+            "options": {
+                "collapsed": true
+            },
             "title": "Motor Settings",
             "description": "Set the type and configuration of motors used in the robot.",
             "required": [
@@ -174,6 +183,9 @@ const schema = {
         "arduino": {
             "$id": "#/properties/arduino",
             "type": "object",
+            "options": {
+                "collapsed": true
+            },
             "title": "Arduino Settings",
             "description": "Enable and configure the location of the robot's Arduino for extended sensor capability.",
             "required": [
@@ -219,6 +231,9 @@ const schema = {
         "cameras": {
             "$id": "#/properties/cameras",
             "type": "object",
+            "options": {
+                "collapsed": true
+            },
             "title": "Camera Settings",
             "description": "Enable and configure the ID and location of up to 4 camera streams.",
             "required": [
@@ -365,6 +380,9 @@ const schema = {
         "sensors": {
             "$id": "#/properties/sensors",
             "type": "object",
+            "options": {
+                "collapsed": true
+            },
             "title": "Sensor Settings",
             "description": "Enable and configure individual sensor streams.",
             "required": [
@@ -610,6 +628,9 @@ const schema = {
         "debug": {
             "$id": "#/properties/debug",
             "type": "object",
+            "options": {
+                "collapsed": true
+            },
             "title": "Debug Settings",
             "description": "Settings useful for developers.",
             "required": [
