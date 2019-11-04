@@ -290,7 +290,7 @@ $(document).ready(function () {
 	});
 
 	// Advanced config editor button actions
-	$("#advanced_editor_save_button").click(function () {
+	$(".editor_save_button").click(function () {
 		// Get contents of advanced editor
 		var contents = $("#advanced_editor_pre")[0].innerText;
 		try {
@@ -321,20 +321,7 @@ $(document).ready(function () {
 		}
 
 	});
-	$("#advanced_editor_reload_button").click(function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "REQUEST_CONFIG"
-		};
-		safeSend(c_event);
-		bootoast.toast({
-			"message": "Requested config file",
-			"type": "info",
-			"icon": "file-alt",
-			"position": "left-bottom"
-		});
-	});
-	$("#visual_editor_reload_button").click(function () {
+	$(".editor_reload_button").click(function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "REQUEST_CONFIG"
