@@ -174,9 +174,12 @@ function sensorConnection() {
 			// Update sensor monitor (in log modal)
 			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
-			// Load config file into config editor window
+			// Load config file into config editor windows
 			if ("config" in obj) {
 				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
+				// Populate visual editor
+				configEditor.setValue(obj['config']);
+				// Populate advanced editor
 				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
 				// Now handle loading stuff from the config file
