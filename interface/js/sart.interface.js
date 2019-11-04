@@ -240,8 +240,10 @@ $(document).ready(function () {
 	configEditor = new JSONEditor($('#visual_editor_container')[0], {
 		schema: schema,
 		theme: "bootstrap4",
+		iconlib: "fontawesome5",
 		disable_edit_json: true,
-		disable_properties: true
+		disable_properties: true,
+		remove_button_labels: true
 	});
 
 	configEditor.on("change", function () {
