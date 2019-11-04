@@ -27,7 +27,7 @@ $(document).ready(function() {
 		
 		// Create the tab and terminal
 		$('#ssh_new_tab').before('<li class="nav-item ssh-tab" id="ssh_tab_'+ ssh_count +'"><a class="nav-link text-dark active" href="#ssh_term_' + ssh_count + '" role="tab" data-toggle="tab" aria-selected="true">' + ssh_tab_icon + ssh_count + '</a></li>');
-        $('#ssh_term_content').append($('<div class="tab-pane fade active show" id="ssh_term_' + ssh_count + '"><iframe id="ssh_iframe_'+ ssh_count +'" src="'+ iframe_url +'" width="100%" height="400px" onload="focusCurrentSsh()" class="rounded-bottom"></iframe></div>'));
+        $('#ssh_term_content').append($('<div class="tab-pane fade active show" id="ssh_term_' + ssh_count + '"><iframe id="ssh_iframe_'+ ssh_count +'" src="'+ iframe_url +'" width="100%" height="400px" onload="focusCurrentSsh()" class="rounded-bottom ssh-iframe"></iframe></div>'));
     });
 	
 	$("#ssh_modal").on('shown.bs.modal', function () {
