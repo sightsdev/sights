@@ -161,6 +161,7 @@ const schema = {
                         "left": {
                             "$id": "#/properties/motors/properties/ids/properties/left",
                             "type": "array",
+                            "format": "table",
                             "title": "Left Servo IDs Array",
                             "description": "The IDs assigned to servos on the left of the robot.",
                             "items": {
@@ -177,6 +178,7 @@ const schema = {
                         "right": {
                             "$id": "#/properties/motors/properties/ids/properties/right",
                             "type": "array",
+                            "format": "table",
                             "title": "Right Servo IDs Array",
                             "description": "The IDs assigned to servos on the right of the robot.",
                             "items": {
