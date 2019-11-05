@@ -12,7 +12,32 @@ All configuration for these scripts are done in the `.json` files within the `co
 
 Python 3.6 or greater is required due to the use of `asyncio`.
 
+Supported operating systems include Ubuntu and Debian.
+
 Sensors are handled through a modular sensor management wrapper class, and are individually in the `Sensors/` directory. Arduino code for sensor data can be found in the `Arduino/` directory.
+
+## Semi-Autonomous Installation
+
+To install on a robot, just download and run the installer as root:
+
+```sh
+wget https://raw.githubusercontent.com/SFXRescue/SARTRobot/master/install.sh
+sudo ./install.sh
+```
+
+Through the installer you can do a complete install, or just install and setup parts of the software suite.
+
+```sh
+S.A.R.T. software installer
+
+Detected OS: ubuntu bionic
+Using a supported OS
+
+1) Complete Install       4) Setup Apache           7) Setup Supervisor
+2) Install Dependencies   5) Setup Motion           8) Update
+3) Install SART Software  6) Setup ShellInABox
+Enter a number (1-8) or q to quit:
+```
 
 ## Manual Installation
 
