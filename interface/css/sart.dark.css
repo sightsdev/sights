@@ -116,3 +116,7 @@
 [data-theme="dark"] .table {
   color: #d8d8d8 !important;
 }
+/* Fix SSH iframe grey background issues */
+[data-theme="dark"] .ssh-iframe {
+  background-color: #ffffff !important;
+}
