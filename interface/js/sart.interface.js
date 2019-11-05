@@ -268,8 +268,9 @@ $(document).ready(function () {
 		theme: "bootstrap4",
 		iconlib: "fontawesome5",
 		disable_edit_json: true,
-		disable_properties: true,
-		remove_button_labels: true
+		disable_properties: false,
+		remove_button_labels: true,
+		no_additional_properties: true
 	});
 
 	configEditor.on("change", function () {
