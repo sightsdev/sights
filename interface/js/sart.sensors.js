@@ -174,10 +174,18 @@ function sensorConnection() {
 			// Update sensor monitor (in log modal)
 			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
-			// Load config file into config editor window
+			// Load config file into config editor windows
 			if ("config" in obj) {
+				// Populate visual editor
+				configEditor.setValue(obj['config']);
+				// Keep a copy to track changes
+				baseConfig = JSON.stringify(configEditor.getValue());
+				savedConfig = baseConfig;
+				updateConfigAlerts();
+
+				// Populate advanced editor
 				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
-				$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
+				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
 				// Now handle loading stuff from the config file
 
@@ -189,7 +197,8 @@ function sensorConnection() {
 
 			// Current config file name
 			if ("config_file" in obj) {
-				$("#config_filename").html(obj["config_file"]);
+				$("#advanced_editor_filename").html(obj["config_file"]);
+				$("#visual_editor_filename").html(obj["config_file"]);
 			}
 
 			// Get distance data and create radial graph

@@ -40,6 +40,9 @@
 	<!-- Font Awesome -->
 	<script defer src="js/fontawesome/fontawesome.js"></script>
 	<script defer src="js/fontawesome/solid.js"></script>
+	<!-- JSON Editor -->
+	<script src = "js/jsoneditor.js"></script>
+	<script src = "js/sart.config.schema.js"></script>
 	<!-- S.A.R.T. Scripts -->
 	<script src="js/sart.charts.config.js"></script>
 	<script src="js/sart.interface.js"></script>
@@ -176,9 +179,14 @@
 				<div class="modal-body">
 					<ul class="nav nav-tabs" id="settings_tab" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link text-dark active" id="config_editor_tab" data-toggle="tab"
-								href="#config_editor" role="tab" aria-controls="config_editor" aria-selected="true"><i
-									class="fa fa-fw fa-file-alt"></i> Config Editor</a>
+							<a class="nav-link text-dark active" id="visual_editor_tab" data-toggle="tab"
+								href="#visual_editor" role="tab" aria-controls="visual_editor" aria-selected="true"><i
+									class="fa fa-fw fa-cog"></i> Configuration</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="advanced_editor_tab" data-toggle="tab"
+								href="#advanced_editor" role="tab" aria-controls="advanced_editor" aria-selected="true"><i
+									class="fa fa-fw fa-file-alt"></i> Advanced Editor</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link text-dark" id="about_tab" data-toggle="tab" href="#about" role="tab"
@@ -186,21 +194,68 @@
 								About</a>
 						</li>
 					</ul>
-					<div class="tab-content" id="log_tab_content">
-						<div class="tab-pane fade active show" id="config_editor" role="tabpanel" aria-labelledby="config_editor_tab">
+					<div class="tab-content" id="settings_tab_content">
+						<div class="tab-pane fade active show" id="visual_editor" role="tabpanel" aria-labelledby="visual_editor_tab">
 							<br />
+							<div class="alert alert-warning fade show save-alert" style="display:none" role="alert">
+								<span><b>You have unsaved configuration changes.</b></span>
+								<br>
+								<span>Don't forget to click save before exiting.</span>
+							</div>
+							<div class="alert alert-warning fade show restart-service-alert" style="display:none" role="alert">
+								<span><b>Restart the service for changes to take effect.</b></span>
+							</div>
 							<div class="row">
 								<div class="col">
-									<p class="text-monospace text-center" id="config_filename" style="padding-top:6px;padding-bottom:6px;margin:0px">
+									<p class="text-monospace text-center" id="visual_editor_filename"
+										style="padding-top:6px;padding-bottom:6px;margin:0px">
 									</p>
 								</div>
 								<div class="col-auto">
 									<div class="float-right">
-										<button type="button" class="btn btn-info btn-default" id="config_editor_reload_button"
+										<button type="button" class="btn btn-info btn-default editor_reload_button"
 											rel="tooltip" data-placement="bottom" title="Reload config">
 											<i class="fa fa-fw fa-redo"></i> Reload
 										</button>
-										<button type="button" class="btn btn-success btn-default" id="config_editor_save_button"
+										<button type="button" class="btn btn-success btn-default editor_save_button"
+											rel="tooltip" data-placement="bottom" title="Save config">
+											<i class="fa fa-fw fa-save"></i> Save
+										</button>
+									</div>
+								</div>
+							</div>
+							<div id="visual_editor_container"></div>
+							<p>
+								You may need to restart the service to apply some changes.
+							</p>
+						</div>
+						<div class="tab-pane fade" id="advanced_editor" role="tabpanel" aria-labelledby="advanced_editor_tab">
+							<br />
+							<div class="alert alert-warning fade show save-alert" style="display:none" role="alert">
+								<span><b>You have unsaved configuration changes.</b></span>
+								<br>
+								<span>Don't forget to click save before exiting.</span>
+							</div>
+							<div class="alert alert-warning fade show" style="display:none" role="alert" id="config_update_alert">
+								<span><b>Changes made in the advanced editor are not automatically reflected in the visual editor.</b></span>
+								<br>
+								<span>Don't forget to click save before switching back.</span>
+							</div>
+							<div class="alert alert-warning fade show restart-service-alert" style="display:none" role="alert">
+								<span><b>Restart the service for changes to take effect.</b></span>
+							</div>
+							<div class="row">
+								<div class="col">
+									<p class="text-monospace text-center" id="advanced_editor_filename" style="padding-top:6px;padding-bottom:6px;margin:0px">
+									</p>
+								</div>
+								<div class="col-auto">
+									<div class="float-right">
+										<button type="button" class="btn btn-info btn-default editor_reload_button"
+											rel="tooltip" data-placement="bottom" title="Reload config">
+											<i class="fa fa-fw fa-redo"></i> Reload
+										</button>
+										<button type="button" class="btn btn-success btn-default editor_save_button"
 											rel="tooltip" data-placement="bottom" title="Save config">
 											<i class="fa fa-fw fa-save"></i> Save
 										</button>
@@ -208,7 +263,7 @@
 								</div>
 							</div>
 							<p>
-								<pre><code id="config_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
+								<pre><code id="advanced_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
 							</p>
 							<p>
 								You may need to restart the service to apply some changes.
@@ -257,6 +312,11 @@
 									<strong>highlight.js</strong>
 									&lt;<a href="https://highlightjs.org/">https://highlightjs.org/</a>&gt;<br/>
 									Released under the BSD license
+								</li>
+								<li>
+									<strong>JSON Editor</strong>
+									&lt;<a href="https://github.com/json-editor/json-editor">https://github.com/json-editor/json-editor</a>&gt;<br/>
+									Released under the MIT license
 								</li>
 								<li>
 									<strong>jQuery</strong>
