@@ -152,3 +152,8 @@ blink, .blink {
 .table td, .table th, .table thead th{
   border: none;
 }
+
+#uptime {
+  float: right;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}

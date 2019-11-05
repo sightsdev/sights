@@ -151,7 +151,7 @@ function DemoMode() {
 		distChart.update();
 
 		// Uptime
-		$("#uptime").html("4:18:22");
+		$("#uptime").html("00:04:18:22");
 		// Memory
 		$("#memory").css('color', getColorForPercentage(0.3));
 		$("#memory_used").html(1273);

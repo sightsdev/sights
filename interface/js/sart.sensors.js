@@ -274,12 +274,21 @@ function sensorConnection() {
 			// System uptime
 			if ("uptime" in obj) {
 				// Calculate time of boot
-				start_time = Date.now() - (obj["uptime"] * 1000);
+				var startTime = Date.now() - (obj["uptime"] * 1000);
+				var daySecs = 60*60*24;
+				var hourSecs = 60*60;
+				var minSecs = 60; // minSecs rhymes with insects
 				setInterval(() => {
 					// Calculate uptime based on time elapsed since reported time of boot
-					var upt = new Date(Date.now() - start_time).toISOString().substr(11, 8);
+					let upSeconds = (Date.now() - startTime) / 1000;
+
+					let days = (Math.floor(upSeconds / daySecs) + "").padStart(2, '0');
+					let hours = (Math.floor((upSeconds % daySecs) / hourSecs) + "").padStart(2, '0');
+					let minutes = (Math.floor(((upSeconds % daySecs) % hourSecs) / minSecs) + "").padStart(2, '0');
+					let seconds = (Math.floor(((upSeconds % daySecs) % hourSecs) % minSecs) + "").padStart(2, '0');
+
 					// Format nicely
-					$("#uptime").html(upt);
+					$("#uptime").html(days + ":" + hours + ":" + minutes + ":" + seconds);
 				}, 1000);
 			}
 
