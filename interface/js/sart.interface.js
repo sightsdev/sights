@@ -9,8 +9,36 @@ var ip = window.location.hostname;
 // Whether interface is in sensor or camera view
 var sensorMode = false;
 
+var configEditor;
+var baseConfig;
+var savedConfig;
+
 // Load syntax highlighting
 hljs.initHighlightingOnLoad();
+
+function updateConfigAlerts() {
+	var currentConfig = JSON.stringify(configEditor.getValue());
+
+	if(baseConfig == currentConfig && currentConfig == savedConfig) {
+		// There are no changes. Hide all alerts.
+		$(".save-alert").slideUp();
+		$("#config_update_alert").slideUp();
+		$(".restart-service-alert").slideUp();
+		$(".editor_reload_button").removeClass("disabled");
+	}
+	else if(currentConfig == savedConfig) {
+		// There are saved changes that need a restart.
+		$(".save-alert").slideUp();
+		$("#config_update_alert").slideUp();
+		$(".restart-service-alert").slideDown();
+		$(".editor_reload_button").addClass("disabled");
+	}
+	else {
+		// There are unsaved changes.
+		$(".save-alert").slideDown();
+		$(".restart-service-alert").slideUp();
+	}
+}
 
 // Function that appends a port to the IP address
 function portString(port) {
@@ -128,11 +156,6 @@ $(document).ready(function () {
 		$("#gamepad_log_pre").html("");
 	});
 
-	// Setup button to select the contents of the config editor
-	$("#config_editor_select_button").click(function () {
-		selectTextInElement('config_editor_pre');
-	});
-
 	// If the camera stream doesn't load, default to fallback image
 	$('.stream-image').error(function () {
 		if (this.src != 'images/no-feed-small.png') {
@@ -238,6 +261,30 @@ $(document).ready(function () {
 		$('#thermal_overlay_yscale').val('1');
 		let xscale = $('#thermal_overlay_xscale').val();
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
+	});
+
+	configEditor = new JSONEditor($('#visual_editor_container')[0], {
+		schema: schema,
+		theme: "bootstrap4",
+		iconlib: "fontawesome5",
+		disable_edit_json: true,
+		disable_properties: true,
+		remove_button_labels: true,
+		no_additional_properties: true
+	});
+
+	configEditor.on("change", function () {
+		// Stringify value of configEditor to remove key-value pairs with `undefined` value
+		var jsonString = JSON.stringify(configEditor.getValue());
+		var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+		// Populate advanced editor
+		$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
+
+		updateConfigAlerts();
+	});
+
+	$("#advanced_editor_pre").on("click", function () {
+		$("#config_update_alert").slideDown();
 	});
 
 	// Minor compatibility fix for incompatibility fixes
