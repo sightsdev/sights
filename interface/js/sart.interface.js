@@ -268,7 +268,7 @@ $(document).ready(function () {
 		theme: "bootstrap4",
 		iconlib: "fontawesome5",
 		disable_edit_json: true,
-		disable_properties: false,
+		disable_properties: true,
 		remove_button_labels: true,
 		no_additional_properties: true
 	});
