@@ -283,6 +283,13 @@ $(document).ready(function () {
 		updateConfigAlerts();
 	});
 
+	/*configEditor.on("ready", function () {
+		for(var key in configEditor.editors) {
+			//configEditor.addObjectProperty(key);
+			console.log(key);
+		}
+	});*/
+
 	$("#advanced_editor_pre").on("click", function () {
 		$("#config_update_alert").slideDown();
 	});

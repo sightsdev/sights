@@ -95,6 +95,7 @@ const schema = {
                 "type": {
                     "$id": "#/properties/motors/properties/type",
                     "type": "string",
+                    "format": "radio",
                     "enum": [
                         "dynamixel",
                         "serial",
@@ -271,6 +272,7 @@ const schema = {
                 "front": {
                     "$id": "#/properties/cameras/properties/front",
                     "type": "object",
+                    "format": "grid",
                     "options": {
                         "collapsed": true
                     },
@@ -312,6 +314,7 @@ const schema = {
                 "back": {
                     "$id": "#/properties/cameras/properties/back",
                     "type": "object",
+                    "format": "grid",
                     "options": {
                         "collapsed": true
                     },
@@ -353,6 +356,7 @@ const schema = {
                 "left": {
                     "$id": "#/properties/cameras/properties/left",
                     "type": "object",
+                    "format": "grid",
                     "options": {
                         "collapsed": true
                     },
@@ -394,6 +398,7 @@ const schema = {
                 "right": {
                     "$id": "#/properties/cameras/properties/right",
                     "type": "object",
+                    "format": "grid",
                     "options": {
                         "collapsed": true
                     },
