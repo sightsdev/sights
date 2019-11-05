@@ -16,23 +16,24 @@ class SensorWrapper:
         try:
             # Whether or not sensor is enabled
             self.enabled = config[self._key]['enabled']
-            if self.enabled:
-                try:
-                    # How often to get data from this sensor
-                    self.frequency = config[self._key]['frequency']
-                except KeyError:
-                    # Failed to get frequency; warn the user and set a reasonable default value
-                    self.logger.warning(f"Frequency for {self._key} sensor not set! Check your config.")
-                    self.frequency = 1
-                    self.logger.info(f"Set frequency for {self._key} sensor to default: {self.frequency}.")
-            else:
-                # Sensor is disabled. Frequency is still required.
-                self.frequency = -1
         except KeyError:
             # Encountered an error getting values from config
             self.logger.warning(f"Config block for {self._key} does not exist or is malformed! Check your config.")
             self.enabled = False
             self.frequency = -1
+
+        if self.enabled:
+            try:
+                # How often to get data from this sensor
+                self.frequency = config[self._key]['frequency']
+            except KeyError:
+                # Failed to get frequency; warn the user and set a reasonable default value
+                self.logger.warning(f"Frequency for {self._key} sensor not set! Check your config.")
+                self.frequency = 1
+                self.logger.info(f"Set frequency for {self._key} sensor to default: {self.frequency}.")
+            else:
+                # Sensor is disabled. Frequency is still required.
+                self.frequency = -1
 
     def get_data(self):
         return None
