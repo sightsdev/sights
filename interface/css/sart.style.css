@@ -16,22 +16,17 @@
   }
 }
 
-table {
+#thermal_camera table {
   width: 100%;
 }
 
-td .tc-pixel {
-  width: 3.125%;
-  position: relative;
-}
-
-td:after {
+#thermal_camera td:after {
   content: '';
   display: block;
   margin-top: 100%;
 }
 
-td .content {
+#thermal_camera td .content {
   position: absolute;
   top: 0;
   bottom: 0;
