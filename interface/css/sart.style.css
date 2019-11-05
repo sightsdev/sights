@@ -147,3 +147,8 @@ blink, .blink {
 .btn-border-outside:not(:first-child):not(:last-child) {
   border-right: none;
 }
+
+/* No borders on json-editor tables */
+.table td, .table th, .table thead th{
+  border: none;
+}
