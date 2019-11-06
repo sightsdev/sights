@@ -336,9 +336,29 @@
 		</div>
 	</div>
 	<!-- NAVIGATION BAR -->
-	<nav class="navbar navbar-toggleable-sm navbar-fixed-top navbar-light bg-light main-nav">
-		<div class="container-fluid">
-			<ul class="nav navbar-nav">
+	<nav class="navbar navbar-expand-xl navbar-light bg-light">
+		<!-- Absolute centre -->
+		<div class="navbar-brand abs">
+			<div class="btn-group mr-2" role="group">
+				<button type="button" class="btn btn-light" id="nav_title" data-toggle="tooltip"
+						data-placement="bottom" title="Reload page">
+					<span style="color: #FF5A00">S.A.R.T.</span> Control Interface
+					<div class="float-right banner ugly" id="demo_mode_indicator"><blink>Demo Mode</blink></div>
+				</button>
+			</div>
+		</div>
+
+		<!-- Expand button -->
+		<div class="btn-group mr-2" role="group"
+			 rel="tooltip" data-placement="bottom" title="More">
+		<button class="navbar-toggler btn-light" type="button" data-toggle="collapse" data-target="#collapsing_navbar">
+			<i class="fa fa-fw fa-bars"></i>
+		</button>
+		</div>
+
+		<!-- Left -->
+		<div class="navbar-collapse collapse" id="collapsing_navbar">
+			<ul class="navbar-nav">
 				<li class="nav-item">
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 						<div id="controller_status_disconnected" class="btn-group mr-2" role="group"
@@ -352,79 +372,95 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<button rel="tooltip" data-placement="bottom" title="Gamepad connection status"
-										class="btn btn-success btn-border-outside" type="button">
+											class="btn btn-success btn-border-outside" type="button">
 										<i class='fa fa-fw fa-gamepad'></i>
 									</button>
 								</div>
 								<select class='custom-select btn-border-outside' id='gamepad_select'></select>
 							</div>
 						</div>
+					</div>
+				</li>
+				<li class="nav-item">
+					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 						<div class="btn-group mr-2" role="group">
 							<button type="button" class="btn btn-border-outside" rel="tooltip" data-placement="bottom"
 									title="Websocket connection status">
 								<i class="fa fa-fw fa-link"></i> Connection</button>
 							<button id="control_status" type="button" class="btn btn-border-outside btn-danger"
 									rel="tooltip" data-placement="bottom" title="Uplink (control)">
-									<i class="fa fa-fw fa-arrow-up"></i>
+								<i class="fa fa-fw fa-arrow-up"></i>
 							</button>
 							<button id="sensor_status" type="button" class="btn btn-border-outside btn-danger"
 									rel="tooltip" data-placement="bottom" title="Downlink (sensors)">
-									<i class="fa fa-fw fa-arrow-down"></i>
+								<i class="fa fa-fw fa-arrow-down"></i>
 							</button>
 						</div>
 					</div>
 				</li>
 			</ul>
-			<ul class="nav navbar-nav abs-center-x">
+			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<button type="button" class="btn btn-light" id="nav_title" data-toggle="tooltip"
-						data-placement="bottom" title="Reload page">
-						<span style="color: #FF5A00">S.A.R.T.</span> Control Interface 
-						<div class="float-right banner" id="demo_mode_indicator"><blink class="ugly">Demo Mode</blink></div>
-					</button>
+					<div class="btn-group mr-2" role="group">
+						<button type="button" class="btn btn-outline-dark" id="sensor_toggle" data-toggle="tooltip"
+								data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
+							<i class="fa fa-fw fa-chart-area"></i> Show Sensors
+						</button>
+					</div>
 				</li>
-			</ul>
-			<div class="inline">	
-				<button type="button" class="btn btn-outline-dark" id="sensor_toggle" data-toggle="tooltip"
-					data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
-					<i class="fa fa-fw fa-chart-area"></i> Show Sensors
-				</button>
-				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ssh_modal"
-					rel="tooltip" data-placement="bottom" title="Open SSH window">
-					<i class="fa fa-fw fa-terminal"></i> SSH
-				</button>
-				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#log_modal"
-					rel="tooltip" data-placement="bottom" title="Open log window">
-					<i class="fa fa-fw fa-clipboard-list"></i> Logs
-				</button>
-				<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#settings_modal"
-					rel="tooltip" data-placement="bottom" title="Open settings">
-					<i class="fa fa-fw fa-cog"></i>
-				</button>
-				<span class="btn-group-toggle" data-toggle="buttons">
-					<label class="btn btn-outline-dark" rel="tooltip" data-placement="bottom" title="Toggle dark mode">
-					  <input type="checkbox" autocomplete="off" id="darkmode_toggle"><i class="fa fa-fw fa-cloud-moon"></i>
-					</label>
-				  </span>
-				<div class="btn-group dropdown" role="group">
+				<li class="nav-item">
+					<div class="btn-group mr-2" role="group">
+						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ssh_modal"
+								rel="tooltip" data-placement="bottom" title="Open SSH window">
+							<i class="fa fa-fw fa-terminal"></i> SSH
+						</button>
+					</div>
+				</li>
+				<li class="nav-item">
+					<div class="btn-group mr-2" role="group">
+						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#log_modal"
+								rel="tooltip" data-placement="bottom" title="Open log window">
+							<i class="fa fa-fw fa-clipboard-list"></i> Logs
+						</button>
+					</div>
+				</li>
+				<li class="nav-item">
+					<div class="btn-group mr-2" role="group">
+						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#settings_modal"
+								rel="tooltip" data-placement="bottom" title="Open settings">
+							<i class="fa fa-fw fa-cog"></i>
+						</button>
+					</div>
+				</li>
+				<li class="nav-item">
+					<div class="btn-group mr-2" role="group">
+						<span class="btn-group-toggle" data-toggle="buttons">
+							<label class="btn btn-outline-dark" rel="tooltip" data-placement="bottom" title="Toggle dark mode">
+								<input type="checkbox" autocomplete="off" id="darkmode_toggle"><i class="fa fa-fw fa-cloud-moon"></i>
+							</label>
+						</span>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
 					<button id="power_button_dropdown" type="button" class="btn btn-outline-danger dropdown-toggle"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="fa fa-fw fa-power-off"></i> Power
 					</button>
-					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+					<div class="dropdown-menu" aria-labelledby="power_button_dropdown">
 						<h6 class="dropdown-header">Power options</h6>
 						<a class="dropdown-item" href="#" id="shutdown_button" rel="tooltip" data-placement="left"
-							title="Safely power off the robot"><i class="fa fa-fw fa-power-off"></i> Shutdown</a>
+						   title="Safely power off the robot"><i class="fa fa-fw fa-power-off"></i> Shutdown</a>
 						<a class="dropdown-item" href="#" id="reboot_button" rel="tooltip" data-placement="left"
-							title="Safely reboot the robot"><i class="fa fa-fw fa-undo"></i> Reboot</a>
+						   title="Safely reboot the robot"><i class="fa fa-fw fa-undo"></i> Reboot</a>
 						<div class="dropdown-divider" id="power_options_divider"></div>
 						<a class="dropdown-item" href="#" onclick="DemoMode()" rel="tooltip" data-placement="left"
-							title="Load demo mode" id="demo_mode_button"><i class="fa fa-fw fa-object-group"></i> Demo Mode</a>
+						   title="Load demo mode" id="demo_mode_button"><i class="fa fa-fw fa-object-group"></i> Demo Mode</a>
 					</div>
-				</div>
-			</div>
+				</li>
+			</ul>
 		</div>
 	</nav>
+
 	<!-- CONTENT -->
 	<div class="container-fluid" style="padding-top: 10px">
 		<div class="row justify-content-md-center">

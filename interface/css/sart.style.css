@@ -8,11 +8,19 @@
 # Licensed under GNU General Public License 3.0				#
 ###########################################################*/
 
-@media (min-width: 768px) {
-  .abs-center-x {
+li.nav-item {
+  padding-bottom: 5px;
+}
+
+@media (min-width: 1200px) {
+  .navbar-brand.abs {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 100%;
+    left: 0;
+    text-align: center;
+  }
+  li.nav-item {
+    padding-bottom: 0px;
   }
 }
 
@@ -53,7 +61,7 @@
 
 .loading-spinner {
   position: absolute;
-  width: 3rem; 
+  width: 3rem;
   height: 3rem;
   top: 120px;
 }
@@ -90,13 +98,14 @@ blink, .blink {
 }
 
 .ugly {
-  font-family: "Comic Sans MS", cursive, sans-serif; 
-  color: green; 
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  color: green;
+  z-index: 1;
 }
 
 .banner {
-  transform: rotate(-15deg); 
-  position:absolute; 
+  transform: rotate(-15deg);
+  position:absolute;
   right:-20px;
   top:20px;
 }
