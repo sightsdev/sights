@@ -1,4 +1,4 @@
-# SIGHTS Interface
+# SART Integrated GUI and Host Teleoperation Service (SIGHTS) Interface
 
 ![Screenshot](images/demo_screenshot_light.png "Screenshot of the interface")
 
@@ -17,7 +17,7 @@ Users never have to access the S.A.R.T hardware directly – everything can be d
 
 ## Installation
 
-For installation, please refer to [the SARTRobot repository](https://github.com/SFXRescue/SARTRobot) which provides a detailed installation guide to the entire SIGHTS software package.
+For installation, please refer to [the SIGHTSRobot repository](https://github.com/SFXRescue/SIGHTSRobot) which provides a detailed installation guide to the entire SIGHTS software package.
 
 ## Demo
 
