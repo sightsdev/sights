@@ -13,6 +13,9 @@
 INSTALL_DIR=/opt/sights
 
 install_dependencies () {
+    echo -e "Transfering ownership of directory to user: $SUDO_USER"
+    chown $SUDO_USER:$SUDO_USER -R $INSTALL_DIR
+    
     echo -e "\nInstalling dependencies..."
     apt update
     apt install -y git apache2 python3 python3-pip wget
@@ -126,6 +129,9 @@ install_supervisor () {
     else
         sed -i -e '$i \supervisord &\n' /etc/rc.local
     fi
+
+    echo -e "\nRunning Supervisor"
+    supervisord
     echo
 }
 
@@ -175,9 +181,6 @@ fi
 if [ ! -d "$INSTALL_DIR" ]; then
     echo -e "Creating installation directory at $INSTALL_DIR"
     mkdir $INSTALL_DIR
-
-    echo -e "Transfering ownership of directory to user: $SUDO_USER"
-    chown $SUDO_USER:$SUDO_USER $INSTALL_DIR
 fi
 
 # Go to directory

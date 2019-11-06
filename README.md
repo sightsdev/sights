@@ -30,6 +30,7 @@ To install on a robot, just download and run the installer as root:
 
 ```sh
 wget https://raw.githubusercontent.com/SFXRescue/SIGHTSRobot/master/install.sh
+chmod +x install.sh
 sudo ./install.sh
 ```
 
