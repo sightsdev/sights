@@ -111,7 +111,7 @@ if __name__ == '__main__':
         config_dir = os.path.dirname(default_config)
         name = os.path.basename(default_config)
         # Keep a copy of the invalid config for the user to review
-        os.rename(dir + "/" + name, dir + "/last_invalid_config.json")
+        os.rename(config_dir + "/" + name, config_dir + "/last_invalid_config.json")
         logger.warning("Config error! Review your last_invalid_config.json")
         # Find existing backups for this config file
         for file in sorted(os.listdir(dir)):
@@ -120,11 +120,11 @@ if __name__ == '__main__':
                 id = int(file[-1])
                 if id == 0:
                     # Replace invalid config with most recent backup
-                    os.rename(dir + "/" + name + ".backup.0", dir + "/" + name)
+                    os.rename(config_dir + "/" + name + ".backup.0", config_dir + "/" + name)
                     logger.warning(f"Restored {name} config from backup.")
                 else:
                     # Subtract 1 from the rest of the backup IDs
                     new_id = str(id - 1)
-                    os.rename(dir + "/" + file, dir + "/" + name + ".backup." + new_id)
+                    os.rename(config_dir + "/" + file, config_dir + "/" + name + ".backup." + new_id)
     else:
         logger.info("All processes ended")
