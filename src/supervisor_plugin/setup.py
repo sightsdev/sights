@@ -2,11 +2,11 @@
 import setuptools
 
 setuptools.setup(
-    name = 'supervisor_sart_config',
+    name = 'supervisor_sights_config',
     version = '0.0.1',
     license = 'License :: OSI Approved :: MIT License',
-    url = 'https://github.com/SFXRescue/supervisor_sart_config',
-    description = "supervisor_sart_config RPC extension for supervisor. Config file management for SART software",
+    url = 'https://github.com/SFXRescue/supervisor_sights_config',
+    description = "supervisor_sights_config RPC extension for supervisor. Config file management for SIGHTS software",
     classifiers = [
 		'Environment :: No Input/Output (Daemon)',
 		'Intended Audience :: System Administrators',
@@ -27,5 +27,5 @@ setuptools.setup(
     author_email='connor@sfxrescue.com',
     packages = setuptools.find_packages(),
     install_requires = ['supervisor >= 3.0a6'],
-    namespace_packages = ['supervisor_sart_config']
+    namespace_packages = ['supervisor_sights_config']
 )
