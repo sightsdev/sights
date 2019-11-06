@@ -5,11 +5,11 @@ from os import listdir
 from os.path import isfile, join
 
 API_VERSION = '0.2'
-ACTIVE_CONFIG_FILE = '/opt/sart/SARTRobot/configs/ACTIVE_CONFIG'
-CONFIG_DIR = '/opt/sart/SARTRobot/configs'
+ACTIVE_CONFIG_FILE = '/opt/sights/SIGHTSRobot/configs/ACTIVE_CONFIG'
+CONFIG_DIR = '/opt/sights/SIGHTSRobot/configs'
 CONFIG_EXT = '.json'
 
-class SARTConfigNamespaceRPCInterface:
+class SIGHTSConfigNamespaceRPCInterface:
     """ An extension for Supervisor that implements a basic 
         configuration file handling thing
     """
@@ -49,5 +49,5 @@ class SARTConfigNamespaceRPCInterface:
             read_data = ""
         return read_data
 
-def make_sart_config_rpcinterface(supervisord, **config):
-    return SARTConfigNamespaceRPCInterface(supervisord)
+def make_sights_config_rpcinterface(supervisord, **config):
+    return SIGHTSConfigNamespaceRPCInterface(supervisord)
