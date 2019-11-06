@@ -12,7 +12,7 @@ li.nav-item {
   padding-bottom: 5px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
   .mobile-hidden {
     display: none;
   }
