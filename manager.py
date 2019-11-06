@@ -111,20 +111,23 @@ if __name__ == '__main__':
         config_dir = os.path.dirname(default_config)
         name = os.path.basename(default_config)
         # Keep a copy of the invalid config for the user to review
-        os.rename(config_dir + "/" + name, config_dir + "/last_invalid_config.json")
+        if os.path.isfile(config_dir + "/" + name):
+            os.rename(config_dir + "/" + name, config_dir + "/last_invalid_config.json")
         logger.warning("Config error! Review your last_invalid_config.json")
-        # Find existing backups for this config file
-        for file in sorted(os.listdir(dir)):
-            if file.startswith(f"{name}.backup."):
-                # Get backup ID
-                id = int(file[-1])
-                if id == 0:
-                    # Replace invalid config with most recent backup
-                    os.rename(config_dir + "/" + name + ".backup.0", config_dir + "/" + name)
-                    logger.warning(f"Restored {name} config from backup.")
-                else:
-                    # Subtract 1 from the rest of the backup IDs
-                    new_id = str(id - 1)
-                    os.rename(config_dir + "/" + file, config_dir + "/" + name + ".backup." + new_id)
+        # Keep trying until a backup is restored or there are no backups available (handles missing backups)
+        while (not os.path.isfile(config_dir + "/" + name)) and any(name in file for file in os.listdir(config_dir)):
+            # Find existing backups for this config file
+            for file in sorted(os.listdir(config_dir)):
+                if file.startswith(f"{name}.backup."):
+                    # Get backup ID
+                    id = int(file[-1])
+                    if id == 0:
+                        # Replace invalid config with most recent backup
+                        os.rename(config_dir + "/" + name + ".backup.0", config_dir + "/" + name)
+                        logger.warning(f"Restored {name} config from backup.")
+                    else:
+                        # Subtract 1 from the rest of the backup IDs
+                        new_id = str(id - 1)
+                        os.rename(config_dir + "/" + file, config_dir + "/" + name + ".backup." + new_id)
     else:
         logger.info("All processes ended")
