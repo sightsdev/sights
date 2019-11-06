@@ -343,104 +343,94 @@
 			</div>
 		</div>
 	</div>
+
 	<!-- NAVIGATION BAR -->
-	<nav class="navbar navbar-expand-xl navbar-light bg-light">
-		<!-- Absolute centre -->
-		<div class="navbar-brand abs">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<!-- Left, always display -->
+		<div class="navbar-brand" style="z-index:1">
+			<div class="btn-group mr-2" role="group">
+				<button type="button" class="btn btn-border-outside" data-toggle="tooltip" data-placement="bottom"
+						title="Websocket connection status">
+					<i class="fa fa-fw fa-link"></i><span class="mobile-hidden"> Connection</span></button>
+				<button id="control_status" type="button" class="btn btn-border-outside btn-danger"
+						data-toggle="tooltip" data-placement="bottom" title="Uplink (control)">
+					<i class="fa fa-fw fa-arrow-up"></i>
+				</button>
+				<button id="sensor_status" type="button" class="btn btn-border-outside btn-danger"
+						data-toggle="tooltip" data-placement="bottom" title="Downlink (sensors)">
+					<i class="fa fa-fw fa-arrow-down"></i>
+				</button>
+			</div>
+		</div>
+		<div class="navbar-brand" style="z-index:1">
+			<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+				<div id="controller_status_disconnected" class="btn-group mr-2" role="group"
+					 rel="tooltip" data-placement="bottom" title="Gamepad connection status">
+					<button type="button" id="controller_status" class="btn btn-danger btn-border-outside">
+						<i class="fa fa-fw fa-gamepad"></i>
+					</button>
+						<button type="button" class="btn btn-border-outside mobile-hidden"> Press a button to connect</button>
+				</div>
+				<div id="controller_status_connected" class="btn-group mr-2" role="group">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<button rel="tooltip" data-placement="bottom" title="Gamepad connection status"
+									class="btn btn-success btn-border-outside" type="button">
+								<i class='fa fa-fw fa-gamepad'></i>
+							</button>
+						</div>
+						<select class='custom-select btn-border-outside' id='gamepad_select'></select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Absolute centre, always display -->
+		<div class="navbar-text abs">
 			<div class="btn-group mr-2" role="group">
 				<button type="button" class="btn btn-light" id="nav_title" data-toggle="tooltip"
 						data-placement="bottom" title="Reload page">
-					<span style="color: #FF5A00">SIGHTS</span> Control Interface
+					<span style="color: #FF5A00">SIGHTS</span> Interface
 					<div class="float-right banner ugly" id="demo_mode_indicator"><blink>Demo Mode</blink></div>
 				</button>
 			</div>
 		</div>
 
 		<!-- Expand button -->
-		<div class="btn-group mr-2" role="group"
-			 rel="tooltip" data-placement="bottom" title="More">
-		<button class="navbar-toggler btn-light" type="button" data-toggle="collapse" data-target="#collapsing_navbar">
-			<i class="fa fa-fw fa-bars"></i>
-		</button>
+		<div class="btn-group mr-2" role="group" rel="tooltip" data-placement="bottom" title="More">
+			<button class="navbar-toggler btn-light" type="button" data-toggle="collapse" data-target="#collapsing_navbar">
+				<i class="fa fa-fw fa-bars"></i>
+			</button>
 		</div>
 
 		<!-- Left -->
 		<div class="navbar-collapse collapse" id="collapsing_navbar">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-						<div id="controller_status_disconnected" class="btn-group mr-2" role="group"
-							 rel="tooltip" data-placement="bottom" title="Gamepad connection status">
-							<button type="button" id="controller_status" class="btn btn-danger btn-border-outside">
-								<i class="fa fa-fw fa-gamepad"></i>
-							</button>
-							<button type="button" class="btn btn-border-outside">Press a button to connect</button>
-						</div>
-						<div id="controller_status_connected" class="btn-group mr-2" role="group">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<button rel="tooltip" data-placement="bottom" title="Gamepad connection status"
-											class="btn btn-success btn-border-outside" type="button">
-										<i class='fa fa-fw fa-gamepad'></i>
-									</button>
-								</div>
-								<select class='custom-select btn-border-outside' id='gamepad_select'></select>
-							</div>
-						</div>
-					</div>
-				</li>
-				<li class="nav-item">
-					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-						<div class="btn-group mr-2" role="group">
-							<button type="button" class="btn btn-border-outside" rel="tooltip" data-placement="bottom"
-									title="Websocket connection status">
-								<i class="fa fa-fw fa-link"></i> Connection</button>
-							<button id="control_status" type="button" class="btn btn-border-outside btn-danger"
-									rel="tooltip" data-placement="bottom" title="Uplink (control)">
-								<i class="fa fa-fw fa-arrow-up"></i>
-							</button>
-							<button id="sensor_status" type="button" class="btn btn-border-outside btn-danger"
-									rel="tooltip" data-placement="bottom" title="Downlink (sensors)">
-								<i class="fa fa-fw fa-arrow-down"></i>
-							</button>
-						</div>
-					</div>
-				</li>
-			</ul>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
 					<div class="btn-group mr-2" role="group">
 						<button type="button" class="btn btn-outline-dark" id="sensor_toggle" data-toggle="tooltip"
 								data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
-							<i class="fa fa-fw fa-chart-area"></i> Show Sensors
+							<i class="fa fa-fw fa-chart-area"></i> <span class="mobile-hidden">Show </span>Sensors
 						</button>
 					</div>
-				</li>
-				<li class="nav-item">
 					<div class="btn-group mr-2" role="group">
 						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ssh_modal"
 								rel="tooltip" data-placement="bottom" title="Open SSH window">
 							<i class="fa fa-fw fa-terminal"></i> SSH
 						</button>
 					</div>
-				</li>
-				<li class="nav-item">
 					<div class="btn-group mr-2" role="group">
 						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#log_modal"
 								rel="tooltip" data-placement="bottom" title="Open log window">
 							<i class="fa fa-fw fa-clipboard-list"></i> Logs
 						</button>
 					</div>
-				</li>
-				<li class="nav-item">
 					<div class="btn-group mr-2" role="group">
 						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#settings_modal"
 								rel="tooltip" data-placement="bottom" title="Open settings">
 							<i class="fa fa-fw fa-cog"></i>
 						</button>
 					</div>
-				</li>
-				<li class="nav-item">
 					<div class="btn-group mr-2" role="group">
 						<span class="btn-group-toggle" data-toggle="buttons">
 							<label class="btn btn-outline-dark" rel="tooltip" data-placement="bottom" title="Toggle dark mode">
