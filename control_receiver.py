@@ -111,7 +111,7 @@ class ControlReceiver (WebSocketProcess):
                     new_id = str(id+1)
                     os.rename(dir+"/"+file, dir+"/"+name+".backup."+new_id)
         # Save the previous config as a new backup
-        os.rename(dir + "/" + name, dir + "/" + name + ".backup." + str(0))
+        os.rename(dir + "/" + name, dir + "/" + name + ".backup.0")
 
         # Save new config to file
         with open(self.config_file, 'w') as f:
