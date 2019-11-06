@@ -11,7 +11,6 @@
 
 
 INSTALL_DIR=/opt/sights
-INSTALL_USER=sart
 
 install_dependencies () {
     echo -e "\nInstalling dependencies..."
@@ -177,8 +176,8 @@ if [ ! -d "$INSTALL_DIR" ]; then
     echo -e "Creating installation directory at $INSTALL_DIR"
     mkdir $INSTALL_DIR
 
-    echo -e "Transfering ownership of directory to user: $INSTALL_USER"
-    chown $INSTALL_USER:$INSTALL_USER $INSTALL_DIR
+    echo -e "Transfering ownership of directory to user: $SUDO_USER"
+    chown $SUDO_USER:$SUDO_USER $INSTALL_DIR
 fi
 
 # Go to directory
@@ -197,6 +196,7 @@ then
 else
     echo -e "Using an unsupported OS"
 fi
+echo -e "Installing as $SUDO_USER"
 echo
 
 options=(
