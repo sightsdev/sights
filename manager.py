@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 from multiprocessing import Pipe
 from argparse import ArgumentParser
 from control_receiver import ControlReceiver
@@ -106,7 +107,7 @@ if __name__ == '__main__':
     try:
         while(manager.run()):
             logger.info("Going to restart")
-    except KeyError:
+    except (KeyError, json.decoder.JSONDecodeError):
         # Restore rolling backups when there is a config error
         config_dir = os.path.dirname(default_config)
         name = os.path.basename(default_config)
