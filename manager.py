@@ -36,7 +36,7 @@ class Manager:
     def run(self):
         # Save process ID to file
         self.pid = str(os.getpid())
-        with open(path + '/../sart.pid', 'w') as f:
+        with open(path + '/../sights.pid', 'w') as f:
             f.write(self.pid)
         self.logger.info("PID {}".format(self.pid))
         # Create pipe. sensor_pipe receives, and control_pipe sends
@@ -72,7 +72,7 @@ class Manager:
 
 if __name__ == '__main__':
     # Setup logger
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s') #filename='/opt/sart/sart_robot.log', 
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
     multiprocessing_logging.install_mp_handler()
     logger = logging.getLogger(__name__)
     
