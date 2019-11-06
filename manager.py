@@ -129,5 +129,9 @@ if __name__ == '__main__':
                         # Subtract 1 from the rest of the backup IDs
                         new_id = str(id - 1)
                         os.rename(config_dir + "/" + file, config_dir + "/" + name + ".backup." + new_id)
+        # If all else fails enter "safe mode" with a minimal known valid config
+        if not any(name in file for file in os.listdir(config_dir)):
+            logger.warning("No backups to restore, entering safe mode with minimal config.")
+            os.popen(f"cp {config_dir}/internal/minimal.json {config_dir}/{name}")
     else:
         logger.info("All processes ended")

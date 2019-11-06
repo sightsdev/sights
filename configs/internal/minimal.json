@@ -1,0 +1,62 @@
+{
+	"network": {
+		"ip": "*"
+	},
+	"control": {
+		"default_gamepad_speed": 3,
+		"default_keyboard_speed": 3
+	},
+	"motors": {
+		"type": "virtual"
+	},
+	"arduino": {
+		"enabled": false
+	},
+	"cameras": {
+		"front": {
+			"enabled": true,
+			"id": 1
+		},
+		"back": {
+			"enabled": false
+		},
+		"left": {
+			"enabled": false
+		},
+		"right": {
+			"enabled": false
+		}
+	},
+	"sensors": {
+		"memory": {
+			"enabled": true,
+			"frequency": 3
+		},
+		"cpu_temp": {
+			"enabled": true,
+			"frequency": 5
+		},
+		"thermal_camera": {
+			"enabled": true,
+			"frequency": 0.5,
+			"width": 32,
+			"height": 24
+		},
+		"temperature": {
+			"enabled": true,
+			"frequency": 2,
+			"address": "0x5A"
+		},
+		"distance": {
+			"enabled": true,
+			"frequency": 2
+		},
+		"gas": {
+			"enabled": true,
+			"frequency": 2
+		}
+	},
+	"debug": {
+		"print_messages": true
+	}
+}
