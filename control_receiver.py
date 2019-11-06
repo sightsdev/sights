@@ -96,7 +96,7 @@ class ControlReceiver (WebSocketProcess):
 
     def save_config(self, cfg):
         # Rolling backups
-        dir = os.path.dirname(self.config_file)
+        config_dir = os.path.dirname(self.config_file)
         name = os.path.basename(self.config_file)
         # Find existing backups for this config file
         for file in sorted(os.listdir(dir), reverse=True):

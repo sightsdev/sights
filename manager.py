@@ -108,8 +108,11 @@ if __name__ == '__main__':
             logger.info("Going to restart")
     except KeyError:
         # Restore rolling backups when there is a config error
-        dir = os.path.dirname(default_config)
+        config_dir = os.path.dirname(default_config)
         name = os.path.basename(default_config)
+        # Keep a copy of the invalid config for the user to review
+        os.rename(dir + "/" + name, dir + "/last_invalid_config.json")
+        logger.warning("Config error! Review your last_invalid_config.json")
         # Find existing backups for this config file
         for file in sorted(os.listdir(dir)):
             if file.startswith(f"{name}.backup."):
@@ -118,10 +121,10 @@ if __name__ == '__main__':
                 if id == 0:
                     # Replace invalid config with most recent backup
                     os.rename(dir + "/" + name + ".backup.0", dir + "/" + name)
+                    logger.warning(f"Restored {name} config from backup.")
                 else:
                     # Subtract 1 from the rest of the backup IDs
                     new_id = str(id - 1)
                     os.rename(dir + "/" + file, dir + "/" + name + ".backup." + new_id)
-
     else:
         logger.info("All processes ended")
