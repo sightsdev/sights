@@ -348,21 +348,6 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<!-- Left, always display -->
 		<div class="navbar-brand" style="z-index:1">
-			<div class="btn-group mr-2" role="group">
-				<button type="button" class="btn btn-border-outside" data-toggle="tooltip" data-placement="bottom"
-						title="Websocket connection status">
-					<i class="fa fa-fw fa-link"></i><span class="mobile-hidden"> Connection</span></button>
-				<button id="control_status" type="button" class="btn btn-border-outside btn-danger"
-						data-toggle="tooltip" data-placement="bottom" title="Uplink (control)">
-					<i class="fa fa-fw fa-arrow-up"></i>
-				</button>
-				<button id="sensor_status" type="button" class="btn btn-border-outside btn-danger"
-						data-toggle="tooltip" data-placement="bottom" title="Downlink (sensors)">
-					<i class="fa fa-fw fa-arrow-down"></i>
-				</button>
-			</div>
-		</div>
-		<div class="navbar-brand" style="z-index:1">
 			<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 				<div id="controller_status_disconnected" class="btn-group mr-2" role="group"
 					 rel="tooltip" data-placement="bottom" title="Gamepad connection status">
@@ -382,6 +367,21 @@
 						<select class='custom-select btn-border-outside' id='gamepad_select'></select>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="navbar-brand" style="z-index:1">
+			<div class="btn-group mr-2" role="group">
+				<button type="button" class="btn btn-border-outside" data-toggle="tooltip" data-placement="bottom"
+						title="Websocket connection status">
+					<i class="fa fa-fw fa-link"></i><span class="mobile-hidden"> Connection</span></button>
+				<button id="control_status" type="button" class="btn btn-border-outside btn-danger"
+						data-toggle="tooltip" data-placement="bottom" title="Uplink (control)">
+					<i class="fa fa-fw fa-arrow-up"></i>
+				</button>
+				<button id="sensor_status" type="button" class="btn btn-border-outside btn-danger"
+						data-toggle="tooltip" data-placement="bottom" title="Downlink (sensors)">
+					<i class="fa fa-fw fa-arrow-down"></i>
+				</button>
 			</div>
 		</div>
 
