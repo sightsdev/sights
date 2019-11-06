@@ -34,14 +34,14 @@ function updateService() {
     $.xmlrpc({
         url: '/RPC2',
         methodName: 'supervisor.getProcessInfo',
-        params: {name: 'sart'},
+        params: {name: 'sights'},
         success: updateServiceInfo,
         error: function(jqXHR, status, error) { }
     });
     $.xmlrpc({
         url: '/RPC2',
         methodName: 'supervisor.tailProcessStdoutLog',
-        params: {name: 'sart', offset: '0', length: '1500'},
+        params: {name: 'sights', offset: '0', length: '1500'},
         success: function(response, status, jqXHR) {
             $("#service_info_pre").html(hljs.highlight("YAML", response[0][0]).value);
         },
@@ -55,7 +55,7 @@ function updateService() {
 function updateConfigSelector() {
     $.xmlrpc({
         url: '/RPC2',
-        methodName: 'sart_config.getConfigs',
+        methodName: 'sights_config.getConfigs',
         params: {},
         success: function(response, status, jqXHR) {
             $('#config_selector').html("");
@@ -69,7 +69,7 @@ function updateConfigSelector() {
             // Get the active config and make it the currently selected config
             $.xmlrpc({
                 url: '/RPC2',
-                methodName: 'sart_config.getActiveConfig',
+                methodName: 'sights_config.getActiveConfig',
                 params: {},
                 success: function(response, status, jqXHR) {
                     // Also remove any line breaks from the string.
@@ -110,7 +110,7 @@ $(document).ready(function () {
     $('#config_save_button').click(function() {
         $.xmlrpc({
             url: '/RPC2',
-            methodName: 'sart_config.setActiveConfig',
+            methodName: 'sights_config.setActiveConfig',
             params: {value: $('#config_selector').val()},
             success: function(response, status, jqXHR) {
                 bootoast.toast({
@@ -141,7 +141,7 @@ $(document).ready(function () {
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.startProcess',
-            params: {name: 'sart'},
+            params: {name: 'sights'},
             success: function(response, status, jqXHR) {
                 bootoast.toast({
 					"message": "Service started",
@@ -170,7 +170,7 @@ $(document).ready(function () {
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.stopProcess',
-            params: {name: 'sart'},
+            params: {name: 'sights'},
             success: function(response, status, jqXHR) {
                 bootoast.toast({
 					"message": "Service stopped",
@@ -194,7 +194,7 @@ $(document).ready(function () {
         $.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.clearProcessLog',
-            params: {name: 'sart'},
+            params: {name: 'sights'},
             success: function(response, status, jqXHR) {
                 bootoast.toast({
                     "message": "Cleared service logs",
@@ -225,12 +225,12 @@ $(document).ready(function () {
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.stopProcess',
-            params: {name: 'sart'},
+            params: {name: 'sights'},
             success: function(response, status, jqXHR) {
                 $.xmlrpc({
                     url: '/RPC2',
                     methodName: 'supervisor.startProcess',
-                    params: {name: 'sart'},
+                    params: {name: 'sights'},
                     success: function(response, status, jqXHR) {
                         bootoast.toast({
                             "message": "Service restarted",

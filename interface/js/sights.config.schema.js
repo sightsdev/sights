@@ -3,8 +3,8 @@ const schema = {
     "$schema": "",
     "$id": "http://example.com/root.json",
     "type": "object",
-    "title": "S.A.R.T. Robot Config",
-    "description": "Configuration file for a S.A.R.T. based robot.",
+    "title": "SIGHTS Robot Config",
+    "description": "Configuration file for a S.A.R.T. SIGHTS-based robot.",
     "required": [
         "control",
         "motors",
