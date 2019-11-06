@@ -100,3 +100,11 @@ ENV/
 # mypy
 .mypy_cache/
 .vscode/
+
+#IntelliJ IDEs/PyCharm
+/.idea/.gitignore
+/.idea/SARTRobot.iml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml

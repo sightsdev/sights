@@ -12,7 +12,7 @@ parser.add_argument("-c", "--config",
                     dest="config_file", 
                     help="load specified configuration file", 
                     metavar="<file>", 
-                    default=path+"/opt/sart/SARTRobot/configs/default.json")
+                    default=path+"configs/default.json")
 # Actually parse the arguments
 args = parser.parse_args()
 

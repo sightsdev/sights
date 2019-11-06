@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# SARTRobot installer
-# Handles installing the SART service and related software
+# SIGHTS installer
+# Handles installing SIGHTS
 # 
 # Created by the Semi-Autonomous Rescue Team
-# This file is part of the SART project
+# This file is part of the SIGHTS project
 #
 # https://www.sfxrescue.com
 # https://www.github.com/SFXRescue
 
 
-INSTALL_DIR=/opt/sart
+INSTALL_DIR=/opt/sights
 INSTALL_USER=sart
 
 install_dependencies () {
@@ -20,18 +20,18 @@ install_dependencies () {
     echo
 }
 
-install_sart_repositories () {
-    echo -e "\nDownloading SART repositories..."
+install_sights_repositories () {
+    echo -e "\nDownloading SIGHTS repositories..."
 
-    # Get SARTRobot
-    git clone https://github.com/SFXRescue/SARTRobot
+    # Get SIGHTSRobot
+    git clone https://github.com/SFXRescue/SIGHTSRobot
 
-    # Get SARTInterface
-    git clone https://github.com/SFXRescue/SARTInterface
+    # Get SIGHTSInterface
+    git clone https://github.com/SFXRescue/SIGHTSInterface
 
-    # Install all Python packages required by SARTRobot
+    # Install all Python packages required by SIGHTSRobot
     echo -e "\nInstalling required Python packages..."
-    python3 -m pip install -r SARTRobot/requirements.txt
+    python3 -m pip install -r SIGHTSRobot/requirements.txt
     echo
 }
 
@@ -40,11 +40,11 @@ install_apache () {
 
     # This is the site file that defines where the interface is hosted from
     # It also sets up a reverse proxy for Supervisor to work correctly
-    echo -e "\nCopying SARTInterface site config..."
-    cp SARTRobot/configs/apache/SARTInterface.conf /etc/apache2/sites-available/
+    echo -e "\nCopying SIGHTSInterface site config..."
+    cp SIGHTSRobot/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
 
     # This is the required option to allow Apache to host from $INSTALL_DIR
-    echo -e "\nAllowing Apache to host the SARTInterface directory..."
+    echo -e "\nAllowing Apache to host the SIGHTSInterface directory..."
     # Only append this to the file if it does not already exist
     if grep -Fxq "<Directory ${INSTALL_DIR}/>" /etc/apache2/apache2.conf
     then
@@ -57,9 +57,9 @@ install_apache () {
 </Directory>" >> /etc/apache2/apache2.conf
     fi
 
-    echo -e "\nDisabling Apache default site and enabling SARTInterface..."
+    echo -e "\nDisabling Apache default site and enabling SIGHTSInterface..."
     a2dissite 000-default.conf
-    a2ensite SARTInterface.conf
+    a2ensite SIGHTSInterface.conf
 
     echo -e "\nEnabling Apache proxy modules..."
     a2enmod proxy
@@ -82,7 +82,7 @@ install_motion () {
     rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
     echo -e "\nCopying Motion configuration file to /etc/motion..."
-    cp SARTRobot/configs/motion/motion.conf /etc/motion/
+    cp SIGHTSRobot/configs/motion/motion.conf /etc/motion/
 
     echo -e "\nEnabling Motion daemon flag..."
     echo "# set to 'yes' to enable the motion daemon
@@ -112,13 +112,13 @@ install_supervisor () {
     python3 -m pip install supervisor
 
     echo -e "\nCopying Supervisor configuration file..."
-    cp SARTRobot/configs/supervisor/supervisord.conf /etc/
+    cp SIGHTSRobot/configs/supervisor/supervisord.conf /etc/
 
-    echo -e "\nDownloading Supervisor SART extension..."
-    git clone https://github.com/SFXRescue/supervisor_sart_config
+    echo -e "\nDownloading Supervisor SIGHTS extension..."
+    git clone https://github.com/SFXRescue/supervisor_sights_config
 
-    echo -e "\nInstalling Supervisor SART extension..."
-    python3 -m pip install ./supervisor_sart_config
+    echo -e "\nInstalling Supervisor SIGHTS extension..."
+    python3 -m pip install ./supervisor_sights_config
 
     echo -e "\nAdding supervisord to /etc/rc.local..."
     if grep -Fxq "supervisord &" /etc/rc.local
@@ -135,21 +135,21 @@ update () {
     apt update
     apt upgrade
 
-    echo -e "\nUpdating SARTRobot"
-    cd SARTRobot
+    echo -e "\nUpdating SIGHTSRobot"
+    cd SIGHTSRobot
     git pull
     cd ..
 
-    echo -e "\nUpdating SARTInterface"
-    cd SARTInterface
+    echo -e "\nUpdating SIGHTSInterface"
+    cd SIGHTSInterface
     git pull
     cd ..
 
     echo -e "\nCopying Motion configuration file..."
-    cp SARTRobot/configs/motion/motion.conf /etc/motion/
+    cp SIGHTSRobot/configs/motion/motion.conf /etc/motion/
 
     echo -e "\nCopying Supervisor configuration file..."
-    cp SARTRobot/configs/supervisor/supervisord.conf /etc/
+    cp SIGHTSRobot/configs/supervisor/supervisord.conf /etc/
 
     echo -e "Update complete!"
 
@@ -158,7 +158,7 @@ update () {
 
 complete_install () { 
     install_dependencies
-    install_sart_repositories
+    install_sights_repositories
     install_apache
     install_motion
     install_shellinabox
@@ -202,7 +202,7 @@ echo
 options=(
     "Complete Install" 
     "Install Dependencies" 
-    "Install SART Software"
+    "Install SIGHTS Software"
     "Setup Apache" 
     "Setup Motion" 
     "Setup ShellInABox" 
@@ -215,7 +215,7 @@ select option in "${options[@]}"; do
     case "$REPLY" in 
         1) complete_install ;;
         2) install_dependencies ;;
-        3) install_sart_repositories ;;
+        3) install_sights_repositories ;;
         4) install_apache ;;
         5) install_motion ;;
         6) install_shellinabox ;;
