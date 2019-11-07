@@ -191,7 +191,7 @@ fi
 cd $INSTALL_DIR
 
 # Print welcome message
-echo -e "\nS.A.R.T. software installer"
+echo -e "\nSIGHTS installer"
 
 DETECTED_OS=$(cat /etc/*-release | grep -E "\bID=" | sed 's/ID=//g')
 DETECTED_CODENAME=$(cat /etc/*-release | grep "VERSION_CODENAME" | sed 's/VERSION_CODENAME=//g')

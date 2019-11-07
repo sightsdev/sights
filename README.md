@@ -63,7 +63,7 @@ sudo ./install.sh
 Through the installer you can do a complete install, or just install and setup parts of the software suite.
 
 ```sh
-SIGHTS software installer
+SIGHTS installer
 
 Detected OS: ubuntu bionic
 Using a supported OS
