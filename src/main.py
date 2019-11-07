@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import json
 from multiprocessing import Pipe
-from argparse import ArgumentParser
 from control_receiver import ControlReceiver
 from sensor_stream import SensorStream
 import signal
@@ -11,14 +10,12 @@ import logging
 import multiprocessing_logging
 
 class Manager:
-    def __init__(self, args, logger):
+    def __init__(self, config_file, logger):
         self.logger = logger
         self.logger.info("Starting manager process")
         # Store config file name
-        self.config_file = args.config_file
+        self.config_file = config_file
         self.logger.info("Using config file: " + self.config_file)
-        # Get the directory that this script exists in, in typical ugly Python fashion
-        self.path = os.path.dirname(os.path.realpath(__file__))
 
     def terminate(self):
         # Terminate the two processes we spawn
@@ -76,31 +73,17 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
     multiprocessing_logging.install_mp_handler()
     logger = logging.getLogger(__name__)
-    
-    # Get the directory that this script exists in, in typical ugly Python fashion
-    path = os.path.dirname(os.path.realpath(__file__))
 
     # Get active config from ACTIVE_CONFIG file
     try:
-        with open(path+"/configs/ACTIVE_CONFIG", 'r') as f:
-            default_config = path + "/configs/" + f.read()
+        with open("configs/ACTIVE_CONFIG", 'r') as f:
+            config_file = "configs/" + f.read()
     # Otherwise fallback to default.json
     except FileNotFoundError:
-        default_config = path + "/configs/default.json"
-    
-    # Setup argument parser for config file loading
-    parser = ArgumentParser()
-    # Create argument for config file
-    parser.add_argument("-c", "--config", 
-                        dest="config_file", 
-                        help="load specified configuration file", 
-                        metavar="<file>", 
-                        default=default_config)
-    # Actually parse the arguments
-    args = parser.parse_args()
+        config_file = "src/configs/sights/minimal.json"
     
     # Create manager object
-    manager = Manager(args, logger)
+    manager = Manager(config_file, logger)
     
     # Main program loop
     # If the restart flag is enabled we want to run the main function
@@ -109,30 +92,31 @@ if __name__ == '__main__':
             logger.info("Going to restart")
     except (KeyError, json.decoder.JSONDecodeError):
         # Restore rolling backups when there is a config error
-        config_dir = os.path.dirname(default_config)
-        name = os.path.basename(default_config)
+        backup_dir = "src/configs/sights/backup/"
+        # Just the name of the config
+        name = os.path.basename(config_file)
         # Keep a copy of the invalid config for the user to review
-        if os.path.isfile(config_dir + "/" + name):
-            os.rename(config_dir + "/" + name, config_dir + "/last_invalid_config.json")
+        if os.path.isfile(config_file):
+            os.rename(config_file, "configs/last_invalid_config.json")
         logger.warning("Config error! Review your last_invalid_config.json")
         # Keep trying until a backup is restored or there are no backups available (handles missing backups)
-        while (not os.path.isfile(config_dir + "/" + name)) and any(name in file for file in os.listdir(config_dir)):
+        while (not os.path.isfile(config_file)) and any(name in file for file in os.listdir(backup_dir)):
             # Find existing backups for this config file
-            for file in sorted(os.listdir(config_dir)):
+            for file in sorted(os.listdir(backup_dir)):
                 if file.startswith(f"{name}.backup."):
                     # Get backup ID
                     id = int(file[-1])
                     if id == 0:
                         # Replace invalid config with most recent backup
-                        os.rename(config_dir + "/" + name + ".backup.0", config_dir + "/" + name)
+                        os.rename(f"{backup_dir}/{name}.backup.0", config_file)
                         logger.warning(f"Restored {name} config from backup.")
                     else:
                         # Subtract 1 from the rest of the backup IDs
                         new_id = str(id - 1)
-                        os.rename(config_dir + "/" + file, config_dir + "/" + name + ".backup." + new_id)
+                        os.rename(backup_dir + file, f"{backup_dir}/{name}.backup.{new_id}")
         # If all else fails enter "safe mode" with a minimal known valid config
-        if not any(name in file for file in os.listdir(config_dir)):
+        if not any(name in file for file in os.listdir("configs/")):
             logger.warning("No backups to restore, entering safe mode with minimal config.")
-            os.popen(f"cp {config_dir}/internal/minimal.json {config_dir}/{name}")
+            os.popen(f"cp src/configs/sights/minimal.json {config_file}")
     else:
         logger.info("All processes ended")
