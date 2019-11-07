@@ -32,9 +32,6 @@ const schema = {
                     "title": "IP Address",
                     "description": "The interface that websockets will listen on, typically where the S.A.R.T. Interface will be served. The default wildcard (*) will listen on all addresses.",
                     "default": "*",
-                    "examples": [
-                        "10.0.0.3"
-                    ],
                     "pattern": "^(.*)$"
                 }
             }
@@ -59,9 +56,6 @@ const schema = {
                     "description": "The default motor speed (1-8) when using a gamepad.",
                     "format": "range",
                     "default": 3,
-                    "examples": [
-                        3
-                    ],
                     "minimum": 1.0,
                     "maximum": 8.0
                 },
@@ -72,9 +66,6 @@ const schema = {
                     "description": "The default motor speed (1-8) when using the keyboard.",
                     "format": "range",
                     "default": 3,
-                    "examples": [
-                        3
-                    ],
                     "minimum": 1.0,
                     "maximum": 8.0
                 }
@@ -102,13 +93,8 @@ const schema = {
                         "virtual"
                     ],
                     "title": "Motor Type",
-                    "description": "Different types of motor may require additional fields.",
+                    "description": "dynamixel (Dynamixel AX-series servos), serial (Sabertooth motor controllers), virtual (virtual motor connection for testing without motors).",
                     "default": "dynamixel",
-                    "examples": [
-                        "dynamixel",
-                        "serial",
-                        "virtual"
-                    ],
                     "pattern": "^(.*)$"
                 },
                 "port": {
@@ -117,9 +103,6 @@ const schema = {
                     "title": "Serial Port",
                     "description": "The location of the serial device.",
                     "default": "/dev/serial/by-id/",
-                    "examples": [
-                        "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00"
-                    ],
                     "pattern": "^(.*)$",
                     "options": {
                         "dependencies": {
@@ -131,13 +114,8 @@ const schema = {
                     "$id": "#/properties/motors/properties/baudrate",
                     "type": "integer",
                     "title": "Serial Baud Rate",
-                    "description": "Baud rate of the serial port. Some common values are listed in the examples.",
+                    "description": "Baud rate of the serial port. Some common values include 1000000 for dynamixel or 9600 for serial.",
                     "default": 1000000,
-                    "examples": [
-                        1000000,
-                        9600,
-                        115200
-                    ],
                     "options": {
                         "dependencies": {
                             "type": ["dynamixel", "serial"]
@@ -148,7 +126,7 @@ const schema = {
                     "$id": "#/properties/motors/properties/ids",
                     "type": "object",
                     "title": "Servo IDs",
-                    "description": "Set the IDs assigned to servos on the left and right sides of the robot.",
+                    "description": "Configure Dynamixel ID assignment for each motor group. 'Left' and 'right' groups define which servos are on the left and right side. Multiple servos can be added to each group.",
                     "options": {
                         "dependencies": {
                             "type": "dynamixel"
@@ -169,11 +147,7 @@ const schema = {
                                 "$id": "#/properties/motors/properties/ids/properties/left/items",
                                 "type": "integer",
                                 "title": "Left Servo ID",
-                                "description": "An integer representing a servo ID on the left side of the robot.",
-                                "examples": [
-                                    1,
-                                    3
-                                ]
+                                "description": "An integer representing a servo ID on the left side of the robot."
                             }
                         },
                         "right": {
@@ -186,11 +160,7 @@ const schema = {
                                 "$id": "#/properties/motors/properties/ids/properties/right/items",
                                 "type": "integer",
                                 "title": "Right Servo ID",
-                                "description": "An integer representing a servo ID on the right side of the robot.",
-                                "examples": [
-                                    2,
-                                    4
-                                ]
+                                "description": "An integer representing a servo ID on the right side of the robot."
                             }
                         }
                     }
@@ -215,11 +185,7 @@ const schema = {
                     "title": "Enable Arduino",
                     "description": "Whether the Arduino is enabled.",
                     "format": "checkbox",
-                    "default": false,
-                    "examples": [
-                        true,
-                        false
-                    ]
+                    "default": false
                 },
                 "port": {
                     "$id": "#/properties/arduino/properties/port",
@@ -227,9 +193,6 @@ const schema = {
                     "title": "Arduino Port",
                     "description": "The location of the Arduino serial device.",
                     "default": "/dev/serial/by-id/",
-                    "examples": [
-                        "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00"
-                    ],
                     "pattern": "^(.*)$",
                     "options": {
                         "dependencies": {
@@ -241,11 +204,8 @@ const schema = {
                     "$id": "#/properties/arduino/properties/baudrate",
                     "type": "integer",
                     "title": "Arduino Baud Rate",
-                    "description": "Baud rate of the serial port. Some common values are listed in the examples.",
+                    "description": "Baud rate of the serial port. Commonly set to 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600 or 115200.",
                     "default": 115200,
-                    "examples": [
-                        115200
-                    ],
                     "options": {
                          "dependencies": {
                              "enabled": true
@@ -277,7 +237,7 @@ const schema = {
                         "collapsed": true
                     },
                     "title": "Front Camera",
-                    "description": "Enable and configure the ID of the front camera.",
+                    "description": "Enable and configure the front camera.",
                     "required": [
                         "enabled"
                     ],
@@ -286,23 +246,16 @@ const schema = {
                             "$id": "#/properties/cameras/properties/front/properties/enabled",
                             "type": "boolean",
                             "title": "Enable Front Camera",
-                            "description": "Whether the front camera is enabled",
+                            "description": "Whether the front camera is enabled.",
                             "format": "checkbox",
-                            "default": true,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": true
                         },
                         "id": {
                             "$id": "#/properties/cameras/properties/front/properties/id",
                             "type": "integer",
                             "title": "Front Camera ID",
-                            "description": "The ID of the front camera, also set in the Motion config.",
+                            "description": "The ID of the front camera. This should be the same as the ID set in the motion config for this camera.",
                             "default": 1,
-                            "examples": [
-                                1
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -319,7 +272,7 @@ const schema = {
                         "collapsed": true
                     },
                     "title": "Back Camera",
-                    "description": "Enable and configure the ID of the back camera.",
+                    "description": "Enable and configure the back camera.",
                     "required": [
                         "enabled"
                     ],
@@ -330,21 +283,14 @@ const schema = {
                             "title": "Enable Back Camera",
                             "description": "Whether the back camera is enabled.",
                             "format": "checkbox",
-                            "default": false,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": false
                         },
                         "id": {
                             "$id": "#/properties/cameras/properties/back/properties/id",
                             "type": "integer",
                             "title": "Back Camera ID",
-                            "description": "The ID of the back camera, also set in the Motion config.",
+                            "description": "The ID of the back camera. This should be the same as the ID set in the motion config for this camera.",
                             "default": 2,
-                            "examples": [
-                                2
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -361,7 +307,7 @@ const schema = {
                         "collapsed": true
                     },
                     "title": "Left Camera",
-                    "description": "Enable and configure the ID of the left camera.",
+                    "description": "Enable and configure the left camera.",
                     "required": [
                         "enabled"
                     ],
@@ -372,21 +318,14 @@ const schema = {
                             "title": "Enable Left Camera",
                             "description": "Whether the left camera is enabled.",
                             "format": "checkbox",
-                            "default": false,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": false
                         },
                         "id": {
                             "$id": "#/properties/cameras/properties/left/properties/id",
                             "type": "integer",
                             "title": "Left Camera ID",
-                            "description": "The ID of the left camera, also set in the Motion config.",
+                            "description": "The ID of the left camera. This should be the same as the ID set in the motion config for this camera.",
                             "default": 3,
-                            "examples": [
-                                3
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -403,7 +342,7 @@ const schema = {
                         "collapsed": true
                     },
                     "title": "Right Camera",
-                    "description": "Enable and configure the ID of the right camera",
+                    "description": "Enable and configure the right camera.",
                     "required": [
                         "enabled"
                     ],
@@ -412,23 +351,16 @@ const schema = {
                             "$id": "#/properties/cameras/properties/right/properties/enabled",
                             "type": "boolean",
                             "title": "Enable Right Camera",
-                            "description": "Whether the right camera is enabled",
+                            "description": "Whether the right camera is enabled.",
                             "format": "checkbox",
-                            "default": false,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": false
                         },
                         "id": {
                             "$id": "#/properties/cameras/properties/right/properties/id",
                             "type": "integer",
                             "title": "Right Camera ID",
-                            "description": "The ID of the right camera, also set in the Motion config",
+                            "description": "The ID of the right camera. This should be the same as the ID set in the motion config for this camera.",
                             "default": 4,
-                            "examples": [
-                                4
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -474,11 +406,7 @@ const schema = {
                             "title": "Enable Memory Reporting",
                             "description": "Whether system memory usage information is reported.",
                             "format": "checkbox",
-                            "default": true,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": true
                         },
                         "frequency": {
                             "$id": "#/properties/sensors/properties/memory/properties/frequency",
@@ -486,9 +414,6 @@ const schema = {
                             "title": "Memory Reporting Update Frequency",
                             "description": "How often, in seconds, memory usage statistics are collected and updated.",
                             "default": 3,
-                            "examples": [
-                                3
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -513,13 +438,9 @@ const schema = {
                             "$id": "#/properties/sensors/properties/cpu_temp/properties/enabled",
                             "type": "boolean",
                             "title": "Enable CPU Temperature Reporting",
-                            "description": "Whether system CPU temperature information is reported",
+                            "description": "Whether system CPU temperature information is reported.",
                             "format": "checkbox",
-                            "default": true,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": true
                         },
                         "frequency": {
                             "$id": "#/properties/sensors/properties/cpu_temp/properties/frequency",
@@ -527,9 +448,6 @@ const schema = {
                             "title": "CPU Temperature Reporting Update Frequency",
                             "description": "How often, in seconds, CPU temperature statistics are collected and updated.",
                             "default": 5,
-                            "examples": [
-                                5
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -556,11 +474,7 @@ const schema = {
                             "title": "Enable Thermal Camera",
                             "description": "Whether the thermal camera is enabled.",
                             "format": "checkbox",
-                            "default": false,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": false
                         },
                         "frequency": {
                             "$id": "#/properties/sensors/properties/thermal_camera/properties/frequency",
@@ -568,9 +482,6 @@ const schema = {
                             "title": "Thermal Camera Update Frequency",
                             "description": "How often, in seconds, thermal camera frames are sent.",
                             "default": 0.5,
-                            "examples": [
-                                0.5
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -582,9 +493,6 @@ const schema = {
                             "type": "integer",
                             "title": "Thermal Camera Width",
                             "description": "The width, in pixels, of the thermal camera.",
-                            "examples": [
-                                32
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -596,9 +504,6 @@ const schema = {
                             "type": "integer",
                             "title": "Thermal Camera Height",
                             "description": "The height, in pixels, of the thermal camera.",
-                            "examples": [
-                                24
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -625,11 +530,7 @@ const schema = {
                             "title": "Enable Ambient Temperature Sensor",
                             "description": "Whether the ambient temperature sensor is enabled.",
                             "format": "checkbox",
-                            "default": false,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": false
                         },
                         "frequency": {
                             "$id": "#/properties/sensors/properties/temperature/properties/frequency",
@@ -637,9 +538,6 @@ const schema = {
                             "title": "Ambient Temperature Sensor Update Frequency",
                             "description": "How often, in seconds, ambient temperature is recorded and updated.",
                             "default": 2,
-                            "examples": [
-                                2
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -651,9 +549,6 @@ const schema = {
                             "type": "string",
                             "title": "Ambient Temperature Address",
                             "description": "I2C device address of the ambient temperature sensor.",
-                            "examples": [
-                                "0x5A"
-                            ],
                             "pattern": "^(.*)$",
                             "options": {
                                 "dependencies": {
@@ -670,7 +565,7 @@ const schema = {
                         "collapsed": true
                     },
                     "title": "Distance Sensor Array Settings",
-                    "description": "Enable and configure the distance sensor array",
+                    "description": "Enable and configure the distance sensor array.",
                     "required": [
                         "enabled"
                     ],
@@ -681,11 +576,7 @@ const schema = {
                             "title": "Enable Distance Sensor Array",
                             "description": "Whether the distance sensor array is enabled.",
                             "format": "checkbox",
-                            "default": false,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": false
                         },
                         "frequency": {
                             "$id": "#/properties/sensors/properties/distance/properties/frequency",
@@ -693,9 +584,6 @@ const schema = {
                             "title": "Distance Sensor Array Update Frequency",
                             "description": "How often, in seconds, distance is recorded and updated.",
                             "default": 2,
-                            "examples": [
-                                2
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -722,11 +610,7 @@ const schema = {
                             "title": "Enable Gas Sensor",
                             "description": "Whether the CO2/VOC sensor is enabled.",
                             "format": "checkbox",
-                            "default": false,
-                            "examples": [
-                                true,
-                                false
-                            ]
+                            "default": false
                         },
                         "frequency": {
                             "$id": "#/properties/sensors/properties/gas/properties/frequency",
@@ -734,9 +618,6 @@ const schema = {
                             "title": "Gas Sensor Update Frequency",
                             "description": "How often, in seconds, the CO2 and VOC concentrations are recorded and updated.",
                             "default": 2,
-                            "examples": [
-                                2
-                            ],
                             "options": {
                                 "dependencies": {
                                     "enabled": true
@@ -762,14 +643,10 @@ const schema = {
                 "print_messages": {
                     "$id": "#/properties/debug/properties/print_messages",
                     "type": "boolean",
-                    "title": "Enable Debug Messages",
-                    "description": "Log additional debug messages.",
+                    "title": "Enable Message Logging",
+                    "description": "Log messages received from the interface.",
                     "format": "checkbox",
-                    "default": false,
-                    "examples": [
-                        true,
-                        false
-                    ]
+                    "default": false
                 }
             }
         }
