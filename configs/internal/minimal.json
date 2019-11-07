@@ -14,8 +14,7 @@
 	},
 	"cameras": {
 		"front": {
-			"enabled": true,
-			"id": 1
+			"enabled": false
 		},
 		"back": {
 			"enabled": false
@@ -29,31 +28,22 @@
 	},
 	"sensors": {
 		"memory": {
-			"enabled": true,
-			"frequency": 3
+			"enabled": false
 		},
 		"cpu_temp": {
-			"enabled": true,
-			"frequency": 5
+			"enabled": false
 		},
 		"thermal_camera": {
-			"enabled": true,
-			"frequency": 0.5,
-			"width": 32,
-			"height": 24
+			"enabled": false
 		},
 		"temperature": {
-			"enabled": true,
-			"frequency": 2,
-			"address": "0x5A"
+			"enabled": false
 		},
 		"distance": {
-			"enabled": true,
-			"frequency": 2
+			"enabled": false
 		},
 		"gas": {
-			"enabled": true,
-			"frequency": 2
+			"enabled": false
 		}
 	},
 	"debug": {
