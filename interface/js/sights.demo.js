@@ -16,16 +16,7 @@ function DemoMode() {
 	// SSH modal needs some content
 	$(".ssh-container iframe").attr('src', 'https://gitsuppository.net/');	// Set src for currently open terminals
 
-	// Controller status indicator
-	$("#controller_status_connected").show();
-	$("#controller_status_disconnected").hide();
-	// Create corresponding toast
-	bootoast.toast({
-		"message": "Controller connected",
-		"icon": "gamepad",
-		"type": "success",
-		"position": "left-bottom"
-	});
+	gamepadConnectedAlert();
 	// Active gamepad dropdown menu
 	$('#gamepad_select').html('<option value="0" id="gamepad">Xbox 360 Controller</option>');
 
@@ -115,21 +106,8 @@ function DemoMode() {
 
 	// After the sensor socket has connected
 	setTimeout(function(){
-		$("#sensor_status").attr("class", "btn btn-border-outside btn-success");
-
-		bootoast.toast({
-			"message": "Sensor socket connected",
-			"type": "success",
-			"icon": "link",
-			"position": "left-bottom"
-		});
-
-		bootoast.toast({
-			"message": "Received config file",
-			"type": "success",
-			"icon": "file-alt",
-			"position": "left-bottom"
-		});
+		sensorsConnectedAlert();
+		configReceivedAlert();
 
 		// CPU temp graph
 		$("#cputemp_level").html("45&degC");
@@ -194,14 +172,7 @@ function DemoMode() {
 
 	// After the control socket has connected
 	setTimeout(function(){
-		$("#control_status").attr("class", "btn btn-border-outside btn-success");
-
-		bootoast.toast({
-			"message": "Control socket connected",
-			"type": "success",
-			"icon": "link",
-			"position": "left-bottom"
-		});
+		controlConnectedAlert();
 	},Math.ceil(Math.random()*2000));
 
 	// Hide 'Demo Mode' button and the seperator near it

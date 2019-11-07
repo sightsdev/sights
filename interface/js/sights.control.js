@@ -81,29 +81,14 @@ function controlConnection() {
 	if(!demo) {
 		// Create WebSocket
 		controlSocket = new WebSocket("ws://" + ip + ":5555");
-
 		controlSocket.onopen = function (event) {
 			controlConnected = true;
-			$("#control_status").attr("class", "btn btn-border-outside btn-success");
-
-			bootoast.toast({
-				"message": "Control socket connected",
-				"type": "success",
-				"icon": "link",
-				"position": "left-bottom"
-			});
-		}
+			controlConnectedAlert();
+		};
 
 		controlSocket.onclose = function (event) {
 			if (controlConnected) {
-				$("#control_status").attr("class", "btn btn-border-outside btn-danger");
-
-				bootoast.toast({
-					"message": "Control socket disconnected",
-					"type": "danger",
-					"icon": "unlink",
-					"position": "left-bottom"
-				});
+				controlDisconnectedAlert();
 				controlConnected = false;
 			}
 			setTimeout(function () {
@@ -129,16 +114,7 @@ $(document).ready(function () {
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
 		console.log('Controller connected:', device.id);
-
-		$("#controller_status_connected").show();
-		$("#controller_status_disconnected").hide();
-
-		bootoast.toast({
-			"message": "Controller connected",
-			"type": "success",
-			"icon": "gamepad",
-			"position": "left-bottom"
-		});
+		gamepadConnectedAlert()
 
 		$('#gamepad_select').append('<option value="' + device.index + '" id="gamepad-' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") + '</option>');
 		$('#gamepad_select').val(device.index);
@@ -154,12 +130,7 @@ $(document).ready(function () {
 			$("#controller_status_connected").hide();
 			$("#controller_status_disconnected").show();
 		}
-		bootoast.toast({
-			"message": "Controller disconnected",
-			"type": "danger",
-			"icon": "gamepad",
-			"position": "left-bottom"
-		});
+		gamepadDisconnectedAlert();
 	});
 
 	gamepad.bind(Gamepad.Event.BUTTON_DOWN, function (e) {
@@ -268,12 +239,7 @@ $(document).ready(function () {
 			control: "SHUTDOWN"
 		};
 		safeSend(c_event);
-		bootoast.toast({
-			"message": "Shutting down",
-			"type": "warning",
-			"icon": "power-off",
-			"position": "left-bottom"
-		});
+		shutdownAlert();
 	});
 	$("#reboot_button").click(function () {
 		var c_event = {
@@ -281,12 +247,7 @@ $(document).ready(function () {
 			control: "REBOOT"
 		};
 		safeSend(c_event);
-		bootoast.toast({
-			"message": "Rebooting",
-			"type": "warning",
-			"icon": "undo",
-			"position": "left-bottom"
-		});
+		rebootAlert();
 	});
 
 	// Advanced config editor button actions
@@ -308,20 +269,10 @@ $(document).ready(function () {
 				value: val
 			};
 			safeSend(c_event);
-			bootoast.toast({
-				"message": "Sent config file",
-				"type": "success",
-				"icon": "file-alt",
-				"position": "left-bottom"
-			});
+			configSentAlert();
 			savedConfig = JSON.stringify(configEditor.getValue());
 		} catch (e) {
-			bootoast.toast({
-				"message": "Could not validate config file",
-				"type": "danger",
-				"icon": "file-alt",
-				"position": "left-bottom"
-			});
+			configInvalidAlert();
 			savedConfig = tempSavedConfig;
 		}
 		updateConfigAlerts();
@@ -333,12 +284,7 @@ $(document).ready(function () {
 				control: "REQUEST_CONFIG"
 			};
 			safeSend(c_event);
-			bootoast.toast({
-				"message": "Requested config file",
-				"type": "info",
-				"icon": "file-alt",
-				"position": "left-bottom"
-			});
+			configRequestedAlert();
 		}
 	});
 });

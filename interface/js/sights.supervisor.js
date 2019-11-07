@@ -46,7 +46,7 @@ function updateService() {
             $("#service_info_pre").html(hljs.highlight("YAML", response[0][0]).value);
         },
         error: function(jqXHR, status, error) {
-            $("#service_info_logfile").html("Could not get service information");
+            $("#service_info_logfile").html("Couldn't get service information");
             $("#service_info_buttons").hide();
         }
     });
@@ -77,22 +77,12 @@ function updateConfigSelector() {
                     $("#config_selector").val(response[0].replace(/(\r\n|\n|\r)/gm, "")).change();
                 },
                 error: function(jqXHR, status, error) {
-                    bootoast.toast({
-                        "message": "Couldn't get active config file",
-                        "type": "danger",
-                        "icon": "server",
-                        "position": "left-bottom"
-                    });
+                    serviceAlert("danger", "Couldn't get active config file");
                 }
             });
         },
         error: function(jqXHR, status, error) {
-            bootoast.toast({
-                "message": "Couldn't get available config files",
-                "type": "danger",
-                "icon": "server",
-                "position": "left-bottom"
-            });
+            serviceAlert("danger", "Couldn't get available config files");
         }
     });
 }
@@ -113,79 +103,39 @@ $(document).ready(function () {
             methodName: 'sights_config.setActiveConfig',
             params: {value: $('#config_selector').val()},
             success: function(response, status, jqXHR) {
-                bootoast.toast({
-                    "message": "Set config file, restart service to apply",
-                    "type": "success",
-                    "icon": "server",
-                    "position": "left-bottom"
-                });
+                serviceAlert("success", "Set config file, restart service to apply");
             },
             error: function(jqXHR, status, error) {
-                bootoast.toast({
-                    "message": "Couldn't set config file",
-                    "type": "danger",
-                    "icon": "server",
-                    "position": "left-bottom"
-                });
+                serviceAlert("danger", "Couldn't set config file");
             }
         });
     });
 
     $('#service_start_button').click(function() {
-        bootoast.toast({
-            "message": "Starting service",
-            "type": "info",
-            "icon": "server",
-            "position": "left-bottom"
-        });
+        serviceAlert("info", "Starting service");
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.startProcess',
             params: {name: 'sights'},
             success: function(response, status, jqXHR) {
-                bootoast.toast({
-					"message": "Service started",
-					"type": "success",
-					"icon": "server",
-					"position": "left-bottom"
-				});
+                serviceAlert("success", "Service started");
             },
             error: function(jqXHR, status, error) {
-                bootoast.toast({
-                    "message": "Couldn't start service",
-                    "type": "danger",
-                    "icon": "server",
-                    "position": "left-bottom"
-                });
+                serviceAlert("danger", "Couldn't start service");
             }
         });
     });
     $('#service_stop_button').click(function() {
-        bootoast.toast({
-            "message": "Stopping service",
-            "type": "info",
-            "icon": "server",
-            "position": "left-bottom"
-        });
+        serviceAlert("info", "Stopping service");
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.stopProcess',
             params: {name: 'sights'},
             success: function(response, status, jqXHR) {
-                bootoast.toast({
-					"message": "Service stopped",
-					"type": "danger",
-					"icon": "server",
-					"position": "left-bottom"
-				});
+                serviceAlert("danger", "Service stopped");
             },
             error: function(jqXHR, status, error) {
-                bootoast.toast({
-                    "message": "Couldn't stop service",
-                    "type": "danger",
-                    "icon": "server",
-                    "position": "left-bottom"
-                });
+                serviceAlert("danger", "Couldn't stop service");
             }
         });
     });
@@ -196,32 +146,17 @@ $(document).ready(function () {
             methodName: 'supervisor.clearProcessLog',
             params: {name: 'sights'},
             success: function(response, status, jqXHR) {
-                bootoast.toast({
-                    "message": "Cleared service logs",
-                    "type": "info",
-                    "icon": "server",
-                    "position": "left-bottom"
-                });
+                serviceAlert("info", "Cleared service logs");
             },
             error: function(jqXHR, status, error) {
-                bootoast.toast({
-                    "message": "Could not clear service logs",
-                    "type": "info",
-                    "icon": "server",
-                    "position": "left-bottom"
-                });
+                serviceAlert("info", "Couldn't clear service logs");
             }
         });
     });
 
 
     $('#service_restart_button').click(function() {
-        bootoast.toast({
-            "message": "Restarting service",
-            "type": "info",
-            "icon": "server",
-            "position": "left-bottom"
-        });
+        serviceAlert("info", "Restarting service");
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.stopProcess',
@@ -232,30 +167,15 @@ $(document).ready(function () {
                     methodName: 'supervisor.startProcess',
                     params: {name: 'sights'},
                     success: function(response, status, jqXHR) {
-                        bootoast.toast({
-                            "message": "Service restarted",
-                            "type": "success",
-                            "icon": "server",
-                            "position": "left-bottom"
-                        });
+                        serviceAlert("success", "Service restarted");
                     },
-                    error: function(jqXHR, status, error) { 
-                        bootoast.toast({
-                            "message": "Couldn't start service",
-                            "type": "danger",
-                            "icon": "server",
-                            "position": "left-bottom"
-                        });
+                    error: function(jqXHR, status, error) {
+                        serviceAlert("danger", "Couldn't start service");
                     }
                 });
             },
             error: function(jqXHR, status, error) {
-                bootoast.toast({
-                    "message": "Couldn't stop service",
-                    "type": "danger",
-                    "icon": "server",
-                    "position": "left-bottom"
-                });
+                serviceAlert("danger", "Couldn't stop service");
             }
         });
 	});

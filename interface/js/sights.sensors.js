@@ -138,28 +138,13 @@ function sensorConnection() {
 	if(!demo) {
 		// Start WebSocket receiver
 		sensorSocket = new WebSocket("ws://" + ip + ":5556");
-
 		sensorSocket.onopen = function (event) {
 			sensorConnected = true;
-			$("#sensor_status").attr("class", "btn btn-border-outside btn-success");
-
-			bootoast.toast({
-				"message": "Sensor socket connected",
-				"type": "success",
-				"icon": "link",
-				"position": "left-bottom"
-			});
+			sensorsConnectedAlert();
 		};
 		sensorSocket.onclose = function (event) {
 			if (sensorConnected) {
-				$("#sensor_status").attr("class", "btn btn-border-outside btn-danger");
-
-				bootoast.toast({
-					"message": "Sensor socket disconnected",
-					"type": "danger",
-					"icon": "unlink",
-					"position": "left-bottom"
-				});
+				sensorsDisconnectedAlert();
 				sensorConnected = false;
 			}
 
@@ -176,6 +161,8 @@ function sensorConnection() {
 
 			// Load config file into config editor windows
 			if ("config" in obj) {
+				configReceivedAlert();
+
 				// Populate visual editor
 				configEditor.setValue(obj['config']);
 				// Keep a copy to track changes
