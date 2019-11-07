@@ -8,21 +8,47 @@
 
 SART Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete service and control interface written by the Semi-Autonomous Rescue Team for the S.A.R.T. Mark III / IV rescue robots.
 
+![Screenshot](https://github.com/SFXRescue/SIGHTSInterface/blob/master/images/demo_screenshot_dark.png?raw=true "Screenshot of the interface")
+
 Features:
 
-- Complete movement control with support for both Dynamixel servos and DC motors using a Sabertooth motor controller
-- An extremely powerful web interface that allows the operator to control every aspect of the robot.
-- TBC
+- Complete motor control with support for both Dynamixel servos and DC motors using a Sabertooth motor controller.
+  - Control the robot with a gamepad or keyboard from the interface
+  - Assign different Dynamixel IDs to different parts of the robot (such as left and right drive servos)
+  - Variable speed control
+- All configuation is done through a single configuration file which can be edited, and swapped from the interface.
+- Up to four video camera streams through [Motion](https://github.com/Motion-Project/motion).
+- An extremely powerful [web interface](https://github.com/SFXRescue/SIGHTSInterface) that allows the operator to control every aspect of the robot.
+  - Support for up to four video camera streams
+  - Sensor graphs and displays for
+    - Thermal camera
+    - IR temperature sensor
+    - Distance (Time of Flight) sensors
+    - CO2 and TVOC sensor
+    - System memory usage and core temperature
+    - System uptime
+  - Integrated tabbed SSH console
+  - Full gamepad and keyboard support
+  - Full visual configuration file editor and an advanced text-based editor
+  - Configuration file management allowing you to swap the active configuration file at runtime
+  - Light and dark theme modes
+  - Allows the operator to shut down or restart the robot through the interface
+- Sensor wrapper classes that can use existing Python libraries to access sensors over I2C.
+- Built entirely using open protocols and open-source software.
 
-All configuration for SIGHTS is done in the `.json` files within the `configs/` directory, which can be edited through the web interface. By default, the robot  will load the `default.json` config file but this can be changed through the interface. 
+All configuration for SIGHTS is done in the `.json` files within the `configs/` directory, which can be edited through the web interface. By default, the robot  will load the `default.json` config file but this can be changed through the interface.
 
 Configuration files for other software that SIGHTS uses can also be found in the `configs/` directory.
 
-Python 3.6 or greater is required due to the use of `asyncio`.
+## Requirements
 
-Supported operating systems include Ubuntu and Debian.
+Minimum supported operating systems:
 
-Sensors are handled through a modular sensor management wrapper class, and are individually in the `Sensors/` directory. Arduino code for sensor data can be found in the `Arduino/` directory.
+- Debian 10 Buster
+- Ubuntu 18.04 LTS
+- Raspbian 10 Buster
+
+Python >= 3.6 is required. All the supported distributions ship with Python 3.6+.
 
 ## Semi-Autonomous Installation
 
