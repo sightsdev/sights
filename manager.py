@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 from multiprocessing import Pipe
 from argparse import ArgumentParser
 from control_receiver import ControlReceiver
@@ -103,6 +104,35 @@ if __name__ == '__main__':
     
     # Main program loop
     # If the restart flag is enabled we want to run the main function
-    while(manager.run()):
-        logger.info("Going to restart")
-    logger.info("All processes ended")
+    try:
+        while(manager.run()):
+            logger.info("Going to restart")
+    except (KeyError, json.decoder.JSONDecodeError):
+        # Restore rolling backups when there is a config error
+        config_dir = os.path.dirname(default_config)
+        name = os.path.basename(default_config)
+        # Keep a copy of the invalid config for the user to review
+        if os.path.isfile(config_dir + "/" + name):
+            os.rename(config_dir + "/" + name, config_dir + "/last_invalid_config.json")
+        logger.warning("Config error! Review your last_invalid_config.json")
+        # Keep trying until a backup is restored or there are no backups available (handles missing backups)
+        while (not os.path.isfile(config_dir + "/" + name)) and any(name in file for file in os.listdir(config_dir)):
+            # Find existing backups for this config file
+            for file in sorted(os.listdir(config_dir)):
+                if file.startswith(f"{name}.backup."):
+                    # Get backup ID
+                    id = int(file[-1])
+                    if id == 0:
+                        # Replace invalid config with most recent backup
+                        os.rename(config_dir + "/" + name + ".backup.0", config_dir + "/" + name)
+                        logger.warning(f"Restored {name} config from backup.")
+                    else:
+                        # Subtract 1 from the rest of the backup IDs
+                        new_id = str(id - 1)
+                        os.rename(config_dir + "/" + file, config_dir + "/" + name + ".backup." + new_id)
+        # If all else fails enter "safe mode" with a minimal known valid config
+        if not any(name in file for file in os.listdir(config_dir)):
+            logger.warning("No backups to restore, entering safe mode with minimal config.")
+            os.popen(f"cp {config_dir}/internal/minimal.json {config_dir}/{name}")
+    else:
+        logger.info("All processes ended")

@@ -95,6 +95,24 @@ class ControlReceiver (WebSocketProcess):
                 self.pipe.send(["SYNC_SPEED", "kb", self.servo_party.keyboard_speed])
 
     def save_config(self, cfg):
+        # Rolling backups
+        config_dir = os.path.dirname(self.config_file)
+        name = os.path.basename(self.config_file)
+        # Find existing backups for this config file
+        for file in sorted(os.listdir(config_dir), reverse=True):
+            if file.startswith(f"{name}.backup."):
+                # Get backup ID
+                id = int(file[-1])
+                # Remove oldest backup
+                if id == 5:
+                    os.remove(config_dir+"/"+file)
+                else:
+                    # Add 1 to the rest of the backup IDs
+                    new_id = str(id+1)
+                    os.rename(config_dir+"/"+file, config_dir+"/"+name+".backup."+new_id)
+        # Save the previous config as a new backup
+        os.rename(config_dir + "/" + name, config_dir + "/" + name + ".backup.0")
+
         # Save new config to file
         with open(self.config_file, 'w') as f:
             f.write(cfg)
