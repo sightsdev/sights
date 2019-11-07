@@ -18,7 +18,7 @@ install_dependencies () {
     
     echo -e "\nInstalling dependencies..."
     apt update
-    apt install -y git apache2 python3 python3-pip wget
+    apt install -y git apache2 python3 python3-pip wget gdebi 
     echo
 }
 
@@ -75,25 +75,34 @@ install_apache () {
 }
 
 install_motion () {
-    # Attempt to get the correct file by codename
-    # Tested and working on Debian and Ubuntu
-    echo -e "\nDownloading Motion..."
-    wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
+    # Only install prebuilt binaries which are available only on supported OSs
+    if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ]
+    then
+        if [ $DETECTED_CODENAME == "bionic" ] || [ $DETECTED_CODENAME == "cosmic" ] || [ $DETECTED_CODENAME == "buster" ]
+        then
+            echo -e "\nDownloading Motion..."
+            wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
-    echo -e "\nInstalling Motion..."
-    apt install -y ./${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
-    rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
+            echo -e "\nInstalling Motion..."
+            gdebi -n ./${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
+            rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
-    echo -e "\nCreating symlink for Motion configuration files..."
-    ln -sf /opt/sights/SIGHTSRobot/src/configs/motion /etc 
+            echo -e "\nCreating symlink for Motion configuration files..."
+            ln -sf /opt/sights/SIGHTSRobot/src/configs/motion /etc 
 
-    echo -e "\nEnabling Motion daemon flag..."
-    echo "# set to 'yes' to enable the motion daemon
-    start_motion_daemon=yes" > /etc/default/motion
+            echo -e "\nEnabling Motion daemon flag..."
+            echo "# set to 'yes' to enable the motion daemon
+            start_motion_daemon=yes" > /etc/default/motion
 
-    echo -e "\nEnabling Motion service..."
-    systemctl enable motion
-    echo
+            echo -e "\nEnabling Motion service..."
+            systemctl enable motion
+        else
+            echo -e "\n Unsupported release"
+        fi
+    else
+        echo -e "\n Unsupported distribution"
+    fi
+    echo   
 }
 
 install_shellinabox () {
