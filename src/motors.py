@@ -87,13 +87,13 @@ class DynamixelConnection:
         self.motors.close()
 
     def crash(self, left, right):
-        self.logger.error("SERVO_PARTY: Something went wrong sending message to servos:")
+        self.logger.error("Something went wrong sending message to servos:")
         self.logger.error("Left: {} (was: {}) | Right: {} (was: {})".format(left, self.last_left, right, self.last_right))
-        self.logger.info("SERVO_PARTY: Attempting to reopen connection")
+        self.logger.info("Attempting to reopen connection")
         # Reopen connection
         self.motors = pyax12.connection.Connection(
             port=self.port, baudrate=self.baudrate)
-        self.logger.info("SERVO_PARTY: Attempting to stop servos")
+        self.logger.info("Attempting to stop servos")
         self.stop()
 
 
@@ -103,7 +103,7 @@ class DynamixelConnection:
         self.motors.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
 
 
-class ServoParty:
+class Motors:
     def __init__(self, config):
         # Setup logger
         self.logger = logging.getLogger(__name__)

@@ -2,7 +2,7 @@
 from pyax12.connection import Connection
 from serial import Serial
 from enum import IntEnum
-from servo_party import ServoParty
+from motors import Motors
 import json
 import time
 import atexit
@@ -11,7 +11,7 @@ import atexit
 config = json.load(open('robot.json'))
 
 # Servos
-servo_party = ServoParty()
+motors = Motors()
 # Arduino
 sc_arduino = Serial(port=config['arduino']['port'],
                     baudrate=config['arduino']['baudrate'])
@@ -25,7 +25,7 @@ K_d = 0
 speed = 400
 
 # When script exits or is interrupted stop all servos
-atexit.register(servo_party.close)
+atexit.register(motors.close)
 
 
 class Distance(IntEnum):
@@ -69,11 +69,11 @@ def main():
                 right = int(msg["distance"][Distance.RIGHT])
 
             if (not reverse and front < 100):
-                servo_party.move(0, 0)
+                motors.move(0, 0)
                 reverse = True
                 print("Reverse is true")
             elif (reverse and front < 100):
-                servo_party.move(0, 0)
+                motors.move(0, 0)
                 reverse = False
                 print("Reverse is false")
             else:
@@ -104,9 +104,9 @@ def main():
 
                 # Move servos
                 if reverse:
-                    servo_party.move(-speed - pid, -speed + pid)
+                    motors.move(-speed - pid, -speed + pid)
                 else:
-                    servo_party.move(speed - pid, speed + pid)
+                    motors.move(speed - pid, speed + pid)
                 print(pid)
 
                 # Update last_error to the current error
