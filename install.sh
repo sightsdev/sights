@@ -70,6 +70,7 @@ install_apache () {
     echo -e "\nStarting Apache..."
     service apache2 restart
     service apache2 start
+    service apache2 reload
     echo
 }
 
