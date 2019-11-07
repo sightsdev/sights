@@ -96,28 +96,29 @@ class ControlReceiver (WebSocketProcess):
 
     def save_config(self, cfg):
         # Rolling backups
-        config_dir = os.path.dirname(self.config_file)
+        backup_dir = "src/configs/sights/backup/"
         name = os.path.basename(self.config_file)
         # Find existing backups for this config file
-        for file in sorted(os.listdir(config_dir), reverse=True):
+        for file in sorted(os.listdir(backup_dir), reverse=True):
             if file.startswith(f"{name}.backup."):
                 # Get backup ID
                 id = int(file[-1])
                 # Remove oldest backup
                 if id == 5:
-                    os.remove(config_dir+"/"+file)
+                    os.remove(backup_dir + file)
                 else:
                     # Add 1 to the rest of the backup IDs
                     new_id = str(id+1)
-                    os.rename(config_dir+"/"+file, config_dir+"/"+name+".backup."+new_id)
+                    os.rename(backup_dir + file, backup_dir + name + ".backup." + new_id)
         # Save the previous config as a new backup
-        os.rename(config_dir + "/" + name, config_dir + "/" + name + ".backup.0")
+        os.rename(self.config_file, backup_dir + name + ".backup.0")
 
         # Save new config to file
         with open(self.config_file, 'w') as f:
             f.write(cfg)
         # Reload config 
         self.config = json.load(open(self.config_file))
+        self.logger.info("Saved configuration file to " + self.config_file)
 
     def message_handler(self, buf):
         # Load object from JSON
