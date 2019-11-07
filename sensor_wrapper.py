@@ -31,9 +31,9 @@ class SensorWrapper:
                 self.logger.warning(f"Frequency for {self._key} sensor not set! Check your config.")
                 self.frequency = 1
                 self.logger.info(f"Set frequency for {self._key} sensor to default: {self.frequency}.")
-            else:
-                # Sensor is disabled. Frequency is still required.
-                self.frequency = -1
+        else:
+            # Sensor is disabled. Frequency is still required.
+            self.frequency = -1
 
     def get_data(self):
         return None
