@@ -6,7 +6,7 @@ import json
 import math
 import atexit
 import logging
-from servo_party import ServoParty
+from motors import Motors
 from websocket_process import WebSocketProcess
 
 class ControlReceiver (WebSocketProcess):
@@ -14,10 +14,10 @@ class ControlReceiver (WebSocketProcess):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5555)
         # Setup logger
         self.logger = logging.getLogger(__name__)
-        # Create ServoParty to handle servos
-        self.servo_party = ServoParty(self.config)
+        # Create Motors to handle servos
+        self.motors = Motors(self.config)
         # When script exits or is interrupted stop all servos
-        atexit.register(self.servo_party.close)
+        atexit.register(self.motors.close)
         # Controller state object
         self.state = {
             "LEFT_STICK_X": 0.0,
@@ -30,15 +30,15 @@ class ControlReceiver (WebSocketProcess):
 
     def gamepad_movement_handler(self, type="TRIGGER"):
         if (type == "TRIGGER"):
-            left = self.state["LEFT_BOTTOM_SHOULDER"] * self.servo_party.gamepad_speed
-            right = self.state["RIGHT_BOTTOM_SHOULDER"] * self.servo_party.gamepad_speed
+            left = self.state["LEFT_BOTTOM_SHOULDER"] * self.motors.gamepad_speed
+            right = self.state["RIGHT_BOTTOM_SHOULDER"] * self.motors.gamepad_speed
 
             # If modifier pressed, than invert value
             left *= (-1) ** self.state["LEFT_TOP_SHOULDER"]
             right *= (-1) ** self.state["RIGHT_TOP_SHOULDER"]
 
             # Send command to servo handler, independent flag allows the two sides to operate independently
-            self.servo_party.move(left, right, independent=True)
+            self.motors.move(left, right, independent=True)
         else:
             x = self.state["LEFT_STICK_X"] * -1
             y = self.state["LEFT_STICK_Y"] * -1
@@ -57,67 +57,68 @@ class ControlReceiver (WebSocketProcess):
             left = max(-1, min(left, 1))
             right = max(-1, min(right, 1))
             # Multiply by gamepad_speed to get our final speed to be sent to the servos
-            left *= self.servo_party.gamepad_speed
-            right *= self.servo_party.gamepad_speed
+            left *= self.motors.gamepad_speed
+            right *= self.motors.gamepad_speed
             # Send command to servos
-            self.servo_party.move(left, right)
+            self.motors.move(left, right)
 
 
     def keyboard_handler(self, control, value):
-        speed = self.servo_party.keyboard_speed
+        speed = self.motors.keyboard_speed
         if (control == "FORWARD"):
             if value == "UP":
-                self.servo_party.move(0, 0)
+                self.motors.move(0, 0)
             else:
-                self.servo_party.move(speed, speed)
+                self.motors.move(speed, speed)
         elif (control == "BACKWARDS"):
             if value == "UP":
-                self.servo_party.move(0, 0)
+                self.motors.move(0, 0)
             else:
-                self.servo_party.move(-speed, -speed)
+                self.motors.move(-speed, -speed)
         elif (control == "LEFT"):
             if value == "UP":
-                self.servo_party.move(0, 0)
+                self.motors.move(0, 0)
             else:
-                self.servo_party.move(-speed, speed)
+                self.motors.move(-speed, speed)
         elif (control == "RIGHT"):
             if value == "UP":
-                self.servo_party.move(0, 0)
+                self.motors.move(0, 0)
             else:
-                self.servo_party.move(speed, -speed)
+                self.motors.move(speed, -speed)
         elif (control == "SPEED_UP"):
             if value == "DOWN":
-                self.servo_party.keyboard_speed = min(1023, speed + 128)
-                self.pipe.send(["SYNC_SPEED", "kb", self.servo_party.keyboard_speed])
+                self.motors.keyboard_speed = min(1023, speed + 128)
+                self.pipe.send(["SYNC_SPEED", "kb", self.motors.keyboard_speed])
         elif (control == "SPEED_DOWN"):
             if value == "DOWN":
-                self.servo_party.keyboard_speed = max(127, speed - 128)
-                self.pipe.send(["SYNC_SPEED", "kb", self.servo_party.keyboard_speed])
+                self.motors.keyboard_speed = max(127, speed - 128)
+                self.pipe.send(["SYNC_SPEED", "kb", self.motors.keyboard_speed])
 
     def save_config(self, cfg):
         # Rolling backups
-        config_dir = os.path.dirname(self.config_file)
+        backup_dir = "src/configs/sights/backup/"
         name = os.path.basename(self.config_file)
         # Find existing backups for this config file
-        for file in sorted(os.listdir(config_dir), reverse=True):
+        for file in sorted(os.listdir(backup_dir), reverse=True):
             if file.startswith(f"{name}.backup."):
                 # Get backup ID
                 id = int(file[-1])
                 # Remove oldest backup
                 if id == 5:
-                    os.remove(config_dir+"/"+file)
+                    os.remove(backup_dir + file)
                 else:
                     # Add 1 to the rest of the backup IDs
                     new_id = str(id+1)
-                    os.rename(config_dir+"/"+file, config_dir+"/"+name+".backup."+new_id)
+                    os.rename(backup_dir + file, backup_dir + name + ".backup." + new_id)
         # Save the previous config as a new backup
-        os.rename(config_dir + "/" + name, config_dir + "/" + name + ".backup.0")
+        os.rename(self.config_file, backup_dir + name + ".backup.0")
 
         # Save new config to file
         with open(self.config_file, 'w') as f:
             f.write(cfg)
         # Reload config 
         self.config = json.load(open(self.config_file))
+        self.logger.info("Saved configuration file to " + self.config_file)
 
     def message_handler(self, buf):
         # Load object from JSON
@@ -164,12 +165,12 @@ class ControlReceiver (WebSocketProcess):
             # Then handle any button events
             if (control == "DPAD_UP"):
                 if value == "DOWN":
-                    self.servo_party.gamepad_speed = min(1023, self.servo_party.gamepad_speed + 128)
-                    self.pipe.send(["SYNC_SPEED", "gp", self.servo_party.gamepad_speed])
+                    self.motors.gamepad_speed = min(1023, self.motors.gamepad_speed + 128)
+                    self.pipe.send(["SYNC_SPEED", "gp", self.motors.gamepad_speed])
             elif (control == "DPAD_DOWN"):
                 if value == "DOWN":
-                    self.servo_party.gamepad_speed = max(127, self.servo_party.gamepad_speed - 128)
-                    self.pipe.send(["SYNC_SPEED", "gp", self.servo_party.gamepad_speed])
+                    self.motors.gamepad_speed = max(127, self.motors.gamepad_speed - 128)
+                    self.pipe.send(["SYNC_SPEED", "gp", self.motors.gamepad_speed])
         elif (typ == "AXIS"):
             # If axis, store as float
             value = float(msg["value"])

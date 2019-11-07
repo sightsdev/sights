@@ -18,7 +18,7 @@ install_dependencies () {
     
     echo -e "\nInstalling dependencies..."
     apt update
-    apt install -y git apache2 python3 python3-pip wget
+    apt install -y git apache2 python3 python3-pip wget gdebi 
     echo
 }
 
@@ -33,7 +33,7 @@ install_sights_repositories () {
 
     # Install all Python packages required by SIGHTSRobot
     echo -e "\nInstalling required Python packages..."
-    python3 -m pip install -r SIGHTSRobot/requirements.txt
+    python3 -m pip install -r SIGHTSRobot/src/requirements.txt
     echo
 }
 
@@ -43,7 +43,7 @@ install_apache () {
     # This is the site file that defines where the interface is hosted from
     # It also sets up a reverse proxy for Supervisor to work correctly
     echo -e "\nCopying SIGHTSInterface site config..."
-    cp SIGHTSRobot/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
+    cp SIGHTSRobot/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
 
     # This is the required option to allow Apache to host from $INSTALL_DIR
     echo -e "\nAllowing Apache to host the SIGHTSInterface directory..."
@@ -75,25 +75,34 @@ install_apache () {
 }
 
 install_motion () {
-    # Attempt to get the correct file by codename
-    # Tested and working on Debian and Ubuntu
-    echo -e "\nDownloading Motion..."
-    wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
+    # Only install prebuilt binaries which are available only on supported OSs
+    if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ]
+    then
+        if [ $DETECTED_CODENAME == "bionic" ] || [ $DETECTED_CODENAME == "cosmic" ] || [ $DETECTED_CODENAME == "buster" ]
+        then
+            echo -e "\nDownloading Motion..."
+            wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
-    echo -e "\nInstalling Motion..."
-    apt install -y ./${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
-    rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
+            echo -e "\nInstalling Motion..."
+            gdebi -n ./${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
+            rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
-    echo -e "\nCopying Motion configuration file to /etc/motion..."
-    cp SIGHTSRobot/configs/motion/motion.conf /etc/motion/
+            echo -e "\nCreating symlink for Motion configuration files..."
+            ln -sf /opt/sights/SIGHTSRobot/src/configs/motion /etc 
 
-    echo -e "\nEnabling Motion daemon flag..."
-    echo "# set to 'yes' to enable the motion daemon
-    start_motion_daemon=yes" > /etc/default/motion
+            echo -e "\nEnabling Motion daemon flag..."
+            echo "# set to 'yes' to enable the motion daemon
+            start_motion_daemon=yes" > /etc/default/motion
 
-    echo -e "\nEnabling Motion service..."
-    systemctl enable motion
-    echo
+            echo -e "\nEnabling Motion service..."
+            systemctl enable motion
+        else
+            echo -e "\n Unsupported release"
+        fi
+    else
+        echo -e "\n Unsupported distribution"
+    fi
+    echo   
 }
 
 install_shellinabox () {
@@ -114,8 +123,8 @@ install_supervisor () {
     echo -e "\nInstalling Supervisor..."
     python3 -m pip install supervisor
 
-    echo -e "\nCopying Supervisor configuration file..."
-    cp SIGHTSRobot/configs/supervisor/supervisord.conf /etc/
+    echo -e "\nCreating symlink for Supervisor configuration files..."
+    ln -sf /opt/sights/SIGHTSRobot/src/configs/supervisor /etc 
 
     echo -e "\nDownloading Supervisor SIGHTS extension..."
     git clone https://github.com/SFXRescue/supervisor_sights_config
@@ -151,12 +160,6 @@ update () {
     git pull
     cd ..
 
-    echo -e "\nCopying Motion configuration file..."
-    cp SIGHTSRobot/configs/motion/motion.conf /etc/motion/
-
-    echo -e "\nCopying Supervisor configuration file..."
-    cp SIGHTSRobot/configs/supervisor/supervisord.conf /etc/
-
     echo -e "Update complete!"
 
     echo
@@ -188,7 +191,7 @@ fi
 cd $INSTALL_DIR
 
 # Print welcome message
-echo -e "\nS.A.R.T. software installer"
+echo -e "\nSIGHTS installer"
 
 DETECTED_OS=$(cat /etc/*-release | grep -E "\bID=" | sed 's/ID=//g')
 DETECTED_CODENAME=$(cat /etc/*-release | grep "VERSION_CODENAME" | sed 's/VERSION_CODENAME=//g')

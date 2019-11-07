@@ -63,7 +63,7 @@ sudo ./install.sh
 Through the installer you can do a complete install, or just install and setup parts of the software suite.
 
 ```sh
-SIGHTS software installer
+SIGHTS installer
 
 Detected OS: ubuntu bionic
 Using a supported OS
@@ -88,9 +88,9 @@ This is the server part of the software. This script handles getting various sen
 
 ### `control_receiver.py`
 
-This is the receiver part of the software. This script handles receiving information from the SIGHTSInterface. It runs a WebSocket client, which receives a JSON formatted string from the control panel. The string contains all the required data from the interface, including controller information, such as button and axis events. It processes this and using _servo_party.py_, calculates the appropriate speed and power distribution of the servos based on the thumb-stick or trigger values. This script also handles keyboard controls and various other messages from the interface, such as shutdown and reboot requests.
+This is the receiver part of the software. This script handles receiving information from the SIGHTSInterface. It runs a WebSocket client, which receives a JSON formatted string from the control panel. The string contains all the required data from the interface, including controller information, such as button and axis events. It processes this and using _motors.py_, calculates the appropriate speed and power distribution of the servos based on the thumb-stick or trigger values. This script also handles keyboard controls and various other messages from the interface, such as shutdown and reboot requests.
 
-### `servo_party.py`
+### `motors.py`
 
 This script provides a reusable class to control the movement of the robot and is used by the control script and autonomy scripts. It manages connecting to the servos via the _pyax12_ library. It provides convenient functions for setting up and moving the servos as well as an option for virtual servos (useful for testing).
 
