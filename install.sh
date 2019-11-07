@@ -84,8 +84,8 @@ install_motion () {
     apt install -y ./${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
     rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
-    echo -e "\Creating symlink for Motion configuration files..."
-    ln -sf /opt/sights/SIGHTSRobot/configs/motion/ /etc/motion/
+    echo -e "\nCreating symlink for Motion configuration files..."
+    ln -sf /opt/sights/SIGHTSRobot/src/configs/motion /etc 
 
     echo -e "\nEnabling Motion daemon flag..."
     echo "# set to 'yes' to enable the motion daemon
@@ -114,8 +114,8 @@ install_supervisor () {
     echo -e "\nInstalling Supervisor..."
     python3 -m pip install supervisor
 
-    echo -e "\Creating symlink for Supervisor configuration files..."
-    ln -sf /opt/sights/SIGHTSRobot/configs/supervisor/ /etc/supervisor/
+    echo -e "\nCreating symlink for Supervisor configuration files..."
+    ln -sf /opt/sights/SIGHTSRobot/src/configs/supervisor /etc 
 
     echo -e "\nDownloading Supervisor SIGHTS extension..."
     git clone https://github.com/SFXRescue/supervisor_sights_config
@@ -150,12 +150,6 @@ update () {
     cd SIGHTSInterface
     git pull
     cd ..
-
-    echo -e "\Creating symlink for Motion configuration files..."
-    ln -sf /opt/sights/SIGHTSRobot/configs/motion/ /etc/motion/
-
-    echo -e "\Creating symlink for Supervisor configuration files..."
-    ln -sf /opt/sights/SIGHTSRobot/configs/supervisor/ /etc/supervisor/
 
     echo -e "Update complete!"
 

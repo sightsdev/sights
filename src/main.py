@@ -34,7 +34,7 @@ class Manager:
     def run(self):
         # Save process ID to file
         self.pid = str(os.getpid())
-        with open(path + '/../sights.pid', 'w') as f:
+        with open('../sights.pid', 'w') as f:
             f.write(self.pid)
         self.logger.info("PID {}".format(self.pid))
         # Create pipe. sensor_pipe receives, and control_pipe sends
