@@ -33,7 +33,7 @@ install_sights_repositories () {
 
     # Install all Python packages required by SIGHTSRobot
     echo -e "\nInstalling required Python packages..."
-    python3 -m pip install -r SIGHTSRobot/requirements.txt
+    python3 -m pip install -r SIGHTSRobot/src/requirements.txt
     echo
 }
 
@@ -43,7 +43,7 @@ install_apache () {
     # This is the site file that defines where the interface is hosted from
     # It also sets up a reverse proxy for Supervisor to work correctly
     echo -e "\nCopying SIGHTSInterface site config..."
-    cp SIGHTSRobot/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
+    cp SIGHTSRobot/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
 
     # This is the required option to allow Apache to host from $INSTALL_DIR
     echo -e "\nAllowing Apache to host the SIGHTSInterface directory..."
@@ -84,8 +84,8 @@ install_motion () {
     apt install -y ./${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
     rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
-    echo -e "\nCopying Motion configuration file to /etc/motion..."
-    cp SIGHTSRobot/configs/motion/motion.conf /etc/motion/
+    echo -e "\Creating symlink for Motion configuration files..."
+    ln -sf /opt/sights/SIGHTSRobot/configs/motion/ /etc/motion/
 
     echo -e "\nEnabling Motion daemon flag..."
     echo "# set to 'yes' to enable the motion daemon
@@ -114,8 +114,8 @@ install_supervisor () {
     echo -e "\nInstalling Supervisor..."
     python3 -m pip install supervisor
 
-    echo -e "\nCopying Supervisor configuration file..."
-    cp SIGHTSRobot/configs/supervisor/supervisord.conf /etc/
+    echo -e "\Creating symlink for Supervisor configuration files..."
+    ln -sf /opt/sights/SIGHTSRobot/configs/supervisor/ /etc/supervisor/
 
     echo -e "\nDownloading Supervisor SIGHTS extension..."
     git clone https://github.com/SFXRescue/supervisor_sights_config
@@ -151,11 +151,11 @@ update () {
     git pull
     cd ..
 
-    echo -e "\nCopying Motion configuration file..."
-    cp SIGHTSRobot/configs/motion/motion.conf /etc/motion/
+    echo -e "\Creating symlink for Motion configuration files..."
+    ln -sf /opt/sights/SIGHTSRobot/configs/motion/ /etc/motion/
 
-    echo -e "\nCopying Supervisor configuration file..."
-    cp SIGHTSRobot/configs/supervisor/supervisord.conf /etc/
+    echo -e "\Creating symlink for Supervisor configuration files..."
+    ln -sf /opt/sights/SIGHTSRobot/configs/supervisor/ /etc/supervisor/
 
     echo -e "Update complete!"
 
