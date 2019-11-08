@@ -204,7 +204,7 @@ $(document).on("ready", function () {
 		let fileTime = d.getFullYear()+"-"+month+"-"+day+"_"+hour+"."+minute+"."+second;
 		// Create and click the download link
 		let link = document.createElement('a');
-		link.href = demo ? '' : 'http://' + ip + '/stream/' + cameraId + '/current';
+		link.href = demo ? 'images/demo_camera/lastsnap.jpg' : 'http://' + ip + '/stream/' + cameraId + '/current';
 		link.download = 'robot-' + fileTime + '.jpg';
 		link.target = "_blank";
 		document.body.appendChild(link);
