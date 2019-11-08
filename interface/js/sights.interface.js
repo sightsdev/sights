@@ -189,21 +189,27 @@ $(document).on("ready", function () {
 	});
 	
 	$('.camera-screenshot-button').on("click", function() {
+		// Get ID of camera
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
 		let container = $(this).closest('.camera-container');
-		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot';
-		$.get(snapshot_url).done(function(){ // When request is done
-			setTimeout(function() {          // Give it a bit more time after request
-				container.fadeOut(150).fadeIn(150);
-				let link = document.createElement('a');
-				link.href = 'images/downloads/lastsnap.jpg';
-				link.download = 'lastsnap.jpg';
-				link.target = "_blank";
-				document.body.appendChild(link);
-				link.click();
-				document.body.removeChild(link);
-			},500);
-		});
+		// Obligatory flash
+		container.fadeOut(150).fadeIn(150);
+		// Format file time
+		let d = new Date(Date.now());
+		let day = (d.getDate() + "").padStart(2,'0');
+		let month = ((d.getMonth() + 1) + "").padStart(2,'0');
+		let hour = (d.getHours() + "").padStart(2,'0');
+		let minute = (d.getMinutes() + "").padStart(2,'0');
+		let second = (d.getSeconds() + "").padStart(2,'0');
+		let fileTime = d.getFullYear()+"-"+month+"-"+day+"_"+hour+"."+minute+"."+second;
+		// Create and click the download link
+		let link = document.createElement('a');
+		link.href = demo ? '' : 'http://' + ip + '/stream/' + cameraId + '/current';
+		link.download = 'robot-' + fileTime + '.jpg';
+		link.target = "_blank";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 	});
 	
 	// Whether the thermal camera is overlayed on the main camera
