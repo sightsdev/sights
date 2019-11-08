@@ -14,7 +14,7 @@ var last_axis_state = {
 	"LEFT_STICK_Y": 0.0,
 	"RIGHT_STICK_X": 0.0,
 	"RIGHT_STICK_Y": 0.0
-}
+};
 
 // Checks if socket is open, then converts data to JSON and sends it
 function safeSend(data) {
@@ -81,12 +81,12 @@ function controlConnection() {
 	if(!demo) {
 		// Create WebSocket
 		controlSocket = new WebSocket("ws://" + ip + ":5555");
-		controlSocket.onopen = function (event) {
+		controlSocket.onopen = function() {
 			controlConnected = true;
 			controlConnectedAlert();
 		};
 
-		controlSocket.onclose = function (event) {
+		controlSocket.onclose = function() {
 			if (controlConnected) {
 				controlDisconnectedAlert();
 				controlConnected = false;
@@ -98,7 +98,7 @@ function controlConnection() {
 	}
 }
 
-$(document).ready(function () {
+$(document).on("ready", function () {
 	controlConnection();
 
 	// Hide 'Controller Connected' indicator, until connected 
@@ -108,13 +108,13 @@ $(document).ready(function () {
 	window.gamepad = new Gamepad();
 
 	// When the user changes the active gamepad using the dropdown box
-	$('#gamepad_select').on('change', function (e) {
+	$('#gamepad_select').on('change', function() {
 		currentGamepad = this.value;
 	});
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
 		console.log('Controller connected:', device.id);
-		gamepadConnectedAlert()
+		gamepadConnectedAlert();
 
 		$('#gamepad_select').append('<option value="' + device.index + '" id="gamepad-' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") + '</option>');
 		$('#gamepad_select').val(device.index);
@@ -233,7 +233,7 @@ $(document).ready(function () {
 	});
 
 	// Handle shutdown and reboot buttons
-	$("#shutdown_button").click(function () {
+	$("#shutdown_button").on("click", function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "SHUTDOWN"
@@ -241,7 +241,7 @@ $(document).ready(function () {
 		safeSend(c_event);
 		shutdownAlert();
 	});
-	$("#reboot_button").click(function () {
+	$("#reboot_button").on("click", function () {
 		var c_event = {
 			type: "SYSTEM",
 			control: "REBOOT"
@@ -251,7 +251,7 @@ $(document).ready(function () {
 	});
 
 	// Advanced config editor button actions
-	$(".editor_save_button").click(function () {
+	$(".editor_save_button").on("click", function () {
 		// Get contents of advanced editor
 		var contents = $("#advanced_editor_pre")[0].innerText;
 		var tempSavedConfig = savedConfig;
@@ -277,7 +277,7 @@ $(document).ready(function () {
 		}
 		updateConfigAlerts();
 	});
-	$(".editor_reload_button").click(function () {
+	$(".editor_reload_button").on("click", function () {
 		if(!$(".editor_reload_button").hasClass("disabled")) {
 			var c_event = {
 				type: "SYSTEM",

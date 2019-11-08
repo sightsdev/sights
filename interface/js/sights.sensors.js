@@ -18,8 +18,6 @@ var last_sensor_data = {
 	cpu_temp: 0,
 };
 
-// Robot time of boot
-var start_time;
 // Total RAM
 var memory_total;
 
@@ -82,7 +80,7 @@ function update_cameras(config) {
 		config[e]['enabled'] ? card.show() : card.hide();
 		// Set image attributes to the relevant URL
 		let camera = $("#camera_" + e);
-		let id = config[e]['id']
+		let id = config[e]['id'];
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
 		camera.attr("id", config[e]['id']);
 	});
@@ -138,11 +136,11 @@ function sensorConnection() {
 	if(!demo) {
 		// Start WebSocket receiver
 		sensorSocket = new WebSocket("ws://" + ip + ":5556");
-		sensorSocket.onopen = function (event) {
+		sensorSocket.onopen = function() {
 			sensorConnected = true;
 			sensorsConnectedAlert();
 		};
-		sensorSocket.onclose = function (event) {
+		sensorSocket.onclose = function() {
 			if (sensorConnected) {
 				sensorsDisconnectedAlert();
 				sensorConnected = false;
@@ -303,7 +301,7 @@ function sensorConnection() {
 	}
 }
 
-$(document).ready(function () {
+$(document).on("ready",function () {
 	// Get temp chart canvas so we can use it as the canvas for our tempchart
 	try {
 		let tempChartCanvas = $("#temp_chart").get(0).getContext('2d');

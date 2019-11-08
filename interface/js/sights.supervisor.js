@@ -87,17 +87,17 @@ function updateConfigSelector() {
     });
 }
 
-$(document).ready(function () {
+$(document).on("ready",function () {
     setInterval(updateService, 500);
 
     // Populate config file selector
     updateConfigSelector();
 
-    $('#config_refresh_button').click(function() {
+    $('#config_refresh_button').on("click", function() {
         updateConfigSelector();
     });
 
-    $('#config_save_button').click(function() {
+    $('#config_save_button').on("click", function() {
         $.xmlrpc({
             url: '/RPC2',
             methodName: 'sights_config.setActiveConfig',
@@ -111,7 +111,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#service_start_button').click(function() {
+    $('#service_start_button').on("click", function() {
         serviceAlert("info", "Starting service");
 		$.xmlrpc({
             url: '/RPC2',
@@ -125,7 +125,7 @@ $(document).ready(function () {
             }
         });
     });
-    $('#service_stop_button').click(function() {
+    $('#service_stop_button').on("click", function() {
         serviceAlert("info", "Stopping service");
 		$.xmlrpc({
             url: '/RPC2',
@@ -140,7 +140,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#service_info_clear_button').click(function() {
+    $('#service_info_clear_button').on("click", function() {
         $.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.clearProcessLog',
@@ -155,7 +155,7 @@ $(document).ready(function () {
     });
 
 
-    $('#service_restart_button').click(function() {
+    $('#service_restart_button').on("click", function() {
         serviceAlert("info", "Restarting service");
 		$.xmlrpc({
             url: '/RPC2',

@@ -7,7 +7,7 @@ var demo = false;
 function DemoMode() {
 	demo = true;
 	// Camera streams, load dummy images
-	$('.stream-image').each(function (index) {
+	$('.stream-image').each(function() {
 		$(this).attr('src','https://picsum.photos/575/430?' + Math.random());
 		$(this).attr('refresh_src','https://picsum.photos/575/430?' + Math.random());
 		$(this).className = "stream-image";
@@ -21,7 +21,7 @@ function DemoMode() {
 	$('#gamepad_select').html('<option value="0" id="gamepad">Xbox 360 Controller</option>');
 
 	// Gamepad monitor data
-	obj = {
+	let obj = {
 		"FACE_1": 0,
 		"FACE_2": 0,
 		"FACE_3": 0,

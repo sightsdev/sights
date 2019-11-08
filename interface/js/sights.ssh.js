@@ -14,8 +14,8 @@ function focusCurrentSsh() {
 
 var ssh_tab_icon='<i class="fa fa-fw fa-terminal"></i> ';
 
-$(document).ready(function() {
-    $('#ssh_new_tab').click(function() {
+$(document).on("ready", function() {
+    $('#ssh_new_tab').on("click", function() {
 		ssh_count++;
 		let iframe_url = $("#ssh_iframe_1").attr("src"); // We know the correct URL exists in iframe 1 - use it.
 		
@@ -39,17 +39,16 @@ $(document).ready(function() {
 	});
 	
 	// Refresh terminal
-	$("#ssh_refresh_button").click(function () {
+	$("#ssh_refresh_button").on("click", function () {
 		$("#ssh_iframe_" + ssh_current).attr("src", $("#ssh_iframe_" + ssh_current).attr("src"));
 	});
 	
 	// Focus the SSH terminal when the user switches tabs
-	$("#ssh_term_list").click(function(){
+	$("#ssh_term_list").on("click", function(){
 		try {
 			ssh_current = event.target.closest(".ssh-tab").getAttribute("id").replace(/[^0-9\.]/g, '');
 			focusCurrentSsh();
 		} catch (e) {
-			return;
 		}
 	});
 });

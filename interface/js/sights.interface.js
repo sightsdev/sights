@@ -69,10 +69,10 @@ function toggleSensorMode() {
 	}
 } 
 
-$(document).ready(function () {
+$(document).on("ready", function () {
 	
 	// Dark mode toggle handler
-	$("#darkmode_toggle").change(function() {
+	$("#darkmode_toggle").on('change',function() {
 		if (this.checked) {
 			// Enabled dark theme CSS
 			document.body.setAttribute("data-theme", "dark");
@@ -139,7 +139,7 @@ $(document).ready(function () {
 	$('[data-toggle="tooltip"]').tooltip();
 
 	// Reload page when header pressed
-	$("#nav_title").click(function () {
+	$("#nav_title").on("click", function () {
 		location.reload();
 	});
 
@@ -149,15 +149,15 @@ $(document).ready(function () {
 	// Set to camera view by default
 	$("#btm_view_sensors").hide();
 	// Allow button to swap between camera and sensors view
-	$("#sensor_toggle").click(toggleSensorMode);
+	$("#sensor_toggle").on("click", toggleSensorMode);
 
 	// Clear log dump box
-	$("#gamepad_log_clear_button").click(function () {
+	$("#gamepad_log_clear_button").on("click", function () {
 		$("#gamepad_log_pre").html("");
 	});
 
 	// If the camera stream doesn't load, default to fallback image
-	$('.stream-image').error(function () {
+	$('.stream-image').on('error', function () {
 		if (this.src != 'images/no-feed-small.png') {
 			this.src = 'images/no-feed-small.png';
 			$('.stream-image').removeClass("rotated");
@@ -166,13 +166,13 @@ $(document).ready(function () {
 	// Make the image invisible until it has loaded, allowing us to see the loading spinner
 	$('.stream-image').css('opacity', '0');
 	// Once it's loaded, hide the spinner and remove transparency
-	$('.stream-image').load(function () {
+	$('.stream-image').on('load', function () {
 		$("#spinner").hide();
 		$('.stream-image').css('opacity', '1');
 	});
 
 	// Load demo mode if on public webserver
-	$(window).load(function () {
+	$(window).on('load', function () {
 		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com")
 			DemoMode();
 	});
@@ -182,13 +182,13 @@ $(document).ready(function () {
 		$("#" + this.getAttribute("focus")).focus();
 	});
   
-	$('.camera-refresh-button').click(function() {
+	$('.camera-refresh-button').on("click", function() {
 		let stream = $(this).closest('.camera-container').find('.stream-image');
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
 		stream.attr('src', 'http://' + ip + ':8081/' + cameraId + '/stream/' + Math.random());
 	});
 	
-	$('.camera-screenshot-button').click(function() {
+	$('.camera-screenshot-button').on("click", function() {
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
 		let container = $(this).closest('.camera-container');
 		let snapshot_url = demo ? '' : 'http://' + ip + ':8080/' + cameraId + '/action/snapshot';
@@ -209,7 +209,7 @@ $(document).ready(function () {
 	// Whether the thermal camera is overlayed on the main camera
 	var overlayed = false;
 	//Swap thermal overlay on click
-	$('#thermal_overlay_button').click(function() {
+	$('#thermal_overlay_button').on("click", function() {
 		let opacity = $('#thermal_overlay_opacity').val();
 		let xscale = $('#thermal_overlay_xscale').val();
 		let yscale = $('#thermal_overlay_yscale').val();
@@ -240,7 +240,7 @@ $(document).ready(function () {
 		$('#thermal_camera').css({ 'opacity' : $(this).val() });
 	}); 
 	// Opacity slider reset button
-	$('#thermal_overlay_opacity_reset').click(function() {
+	$('#thermal_overlay_opacity_reset').on("click", function() {
 		$('#thermal_overlay_opacity').val('0.25');
 		$('#thermal_camera').css('opacity', '0.25');
 	});
@@ -251,13 +251,13 @@ $(document).ready(function () {
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
 	});
 	// X scale slider reset button
-	$('#thermal_overlay_xscale_reset').click(function() {
+	$('#thermal_overlay_xscale_reset').on("click", function() {
 		$('#thermal_overlay_xscale').val('1');
 		let yscale = $('#thermal_overlay_yscale').val();
 		$('#thermal_camera').css({'transform' : 'scale(1,'+yscale+')'});
 	});
 	// Y scale slider reset button
-	$('#thermal_overlay_yscale_reset').click(function() {
+	$('#thermal_overlay_yscale_reset').on("click", function() {
 		$('#thermal_overlay_yscale').val('1');
 		let xscale = $('#thermal_overlay_xscale').val();
 		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
@@ -288,7 +288,7 @@ $(document).ready(function () {
 	});
 
 	// Minor compatibility fix for incompatibility fixes
-	$("#user_agent").click(function () {
+	$("#user_agent").on("click", function () {
 		// allow access to integrated blockchain layer
 		var _ua = ["\x68\x69\x64\x65", // Fixes IE < 9 rendering
 		`ewoJIm1lc3NhZ2UiOiAiVGhlIFNlY

@@ -3,7 +3,7 @@
 	Licensed under the GNU General Public License 3.0
 */
 
-var tempChartConfig = {
+const tempChartConfig = {
     type: 'line',
     data: {
         labels: [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
@@ -68,7 +68,7 @@ var tempChartConfig = {
     }
 };
 
-var distChartConfig = {
+const distChartConfig = {
     type: 'polarArea',
     data: {
         labels: ['Front', 'Right', 'Back', 'Left'],
