@@ -88,11 +88,11 @@ install_motion () {
             rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
 
             echo -e "\nCreating symlink for Motion configuration files..."
-            ln -sf /opt/sights/SIGHTSRobot/src/configs/motion /etc 
+            rm -r /etc/motion
+            ln -s /opt/sights/SIGHTSRobot/src/configs/motion /etc
 
             echo -e "\nEnabling Motion daemon flag..."
-            echo "# set to 'yes' to enable the motion daemon
-            start_motion_daemon=yes" > /etc/default/motion
+            echo "start_motion_daemon=yes" > /etc/default/motion
 
             echo -e "\nEnabling Motion service..."
             systemctl enable motion
