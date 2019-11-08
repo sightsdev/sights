@@ -7,9 +7,13 @@ var demo = false;
 function DemoMode() {
 	demo = true;
 	// Camera streams, load dummy images
+	let imageSets = 2; // Number of sets of images in images/demo_camera
+	let set = Math.floor(Math.random()*imageSets);
 	$('.stream-image').each(function() {
-		$(this).attr('src','https://picsum.photos/575/430?' + Math.random());
-		$(this).attr('refresh_src','https://picsum.photos/575/430?' + Math.random());
+		let id = $(this).attr("id");
+		let src = "images/demo_camera/set-" + set + "/" + id + ".jpg";
+		$(this).attr('src',src);
+		$(this).attr('refresh_src',src);
 		$(this).className = "stream-image";
 	});
 
