@@ -133,6 +133,8 @@ $(document).on("ready",function () {
             params: {name: 'sights'},
             success: function(response, status, jqXHR) {
                 serviceAlert("danger", "Service stopped");
+                controlSocket.close();
+                sensorSocket.close();
             },
             error: function(jqXHR, status, error) {
                 serviceAlert("danger", "Couldn't stop service");
@@ -162,6 +164,8 @@ $(document).on("ready",function () {
             methodName: 'supervisor.stopProcess',
             params: {name: 'sights'},
             success: function(response, status, jqXHR) {
+                controlSocket.close();
+                sensorSocket.close();
                 $.xmlrpc({
                     url: '/RPC2',
                     methodName: 'supervisor.startProcess',
