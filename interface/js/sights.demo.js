@@ -14,7 +14,7 @@ function getRandomInt(min, max) {
 function DemoMode() {
 	demo = true;
 	// Camera streams, load dummy images
-	let imageSets = 2; // Number of sets of images in images/demo_camera
+	let imageSets = 3; // Number of sets of images in images/demo_camera
 	let set = Math.floor(Math.random()*imageSets);
 	$('.stream-image').each(function() {
 		let id = $(this).attr("id");
