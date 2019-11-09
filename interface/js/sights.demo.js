@@ -155,24 +155,9 @@ function DemoMode() {
 
 		// Uptime
 		// Set boot time to yesterday at 7:59pm
-		var startTime = new Date();
+		startTime = new Date();
 		startTime.setDate(startTime.getDate() - 1);
 		startTime.setHours(19,59);
-		var daySecs = 60*60*24;
-		var hourSecs = 60*60;
-		var minSecs = 60; // minSecs rhymes with insects
-		setInterval(() => {
-			// Calculate uptime based on time elapsed since reported time of boot
-			let upSeconds = (Date.now() - startTime) / 1000;
-
-			let days = (Math.floor(upSeconds / daySecs) + "").padStart(2, '0');
-			let hours = (Math.floor((upSeconds % daySecs) / hourSecs) + "").padStart(2, '0');
-			let minutes = (Math.floor(((upSeconds % daySecs) % hourSecs) / minSecs) + "").padStart(2, '0');
-			let seconds = (Math.floor(((upSeconds % daySecs) % hourSecs) % minSecs) + "").padStart(2, '0');
-
-			// Format nicely
-			$("#uptime").html(days + ":" + hours + ":" + minutes + ":" + seconds);
-		}, 1000);
 		// Memory
 		$("#memory").css('color', getColorForPercentage(0.3));
 		$("#memory_used").html(1273);
