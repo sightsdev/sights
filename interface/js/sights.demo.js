@@ -96,38 +96,24 @@ function DemoMode() {
 		sensorsConnectedAlert();
 		configReceivedAlert();
 
-		// CPU temp graph
-		$("#cputemp_level").html("45&degC");
-		$("#cputemp_graph").attr('class', "c100 med orange center p45");
-		// Charge level
-		$("#charge_level").html("97%");
-		$("#charge_graph").attr('class', "c100 med orange center p97");
-		// CO2 level
-		$("#co2_level").html("250<span style='font-size: 10px'> ppm</span>");
-		$("#co2_graph").attr('class', "c100 med orange center p25");
-		// TVOC level
-		$("#tvoc_level").html("75<span style='font-size: 10px'> ppb</span>");
-		$("#tvoc_graph").attr('class', "c100 med orange center p14");
-		
+		// Set initial values for circles
+        updateCircle("cpu_temp", 45);
+        updateCircle("charge", 97);
+        updateCircle("co2", 250, 10);
+        updateCircle("tvoc", 30, 3);
 		// Randomisers for CPU temp and gas sensor readings
 		setInterval(() => {
 			// CPU temp graph
-			var temp = getRandomInt(40, 45);
-			$("#cputemp_level").html(temp + "&degC");
-			$("#cputemp_graph").attr('class', "c100 med orange center p" + temp);
+            updateCircle("cpu_temp", getRandomInt(40, 45));
 		}, 2000);
 		setInterval(() => {
 			// CO2 level
-			var temp = getRandomInt(200, 230);
-			$("#co2_level").html(temp + "<span style='font-size: 10px'> ppm</span>");
-			$("#co2_graph").attr('class', "c100 med orange center p" + Math.round(temp / 10));
+			updateCircle("co2", getRandomInt(200, 230), 10);
 			// TVOC level
-			var temp = getRandomInt(10, 14);
-			$("#tvoc_level").html(temp * 3 + "<span style='font-size: 10px'> ppb</span>");
-			$("#tvoc_graph").attr('class', "c100 med orange center p" + temp);
+            updateCircle("tvoc", getRandomInt(30, 42), 3);
 		}, 3000);
 
-		// Decrease charge every 21.35 seconds (Unusual number so it doesn't match up with other change events)
+		// Decrease charge
 		setInterval(() => {
 			// Charge level
 			// Get last charge level and subtract one
@@ -136,14 +122,12 @@ function DemoMode() {
 			if (temp <= 0) {
                 let charger = setInterval(function () {
                     temp += 1;
-                    $("#charge_level").html(temp + "%");
-                    $("#charge_graph").attr('class', "c100 med orange center p" + temp);
+                    updateCircle("charge", temp);
                     if(temp == 100) window.clearInterval(charger);
                 }, 10);
 			}
-			$("#charge_level").html(temp + "%");
-			$("#charge_graph").attr('class', "c100 med orange center p" + temp);
-		}, 20000 + Math.ceil(Math.random()*5000));
+			updateCircle("charge", temp);
+		}, 20000 + getRandomInt(0,5000));
 		
 		// Temperature history graph
 		tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];

@@ -212,18 +212,12 @@ function sensorConnection() {
 
 			// Get CO2 levels
 			if ("co2" in obj) {
-				var co2 = obj["co2"];
-				// Update graph
-				$("#co2_level").html(co2 + "<span style='font-size: 10px'> ppm</span>");
-				$("#co2_graph").attr('class', "c100 med orange center p" + Math.round(co2 / 100));
+				updateCircle("co2", obj["co2"]);
 			}
 
 			// Get TVOC levels
 			if ("tvoc" in obj) {
-				var tvoc = obj["tvoc"];
-				// Update graph
-				$("#tvoc_level").html(tvoc + "<span style='font-size: 10px'> ppb</span>");
-				$("#tvoc_graph").attr('class', "c100 med orange center p" + Math.round(tvoc / 100));
+				updateCircle("tvoc", obj["tvoc"])
 			}
 
 			// Get temperature data for line graph
@@ -239,17 +233,12 @@ function sensorConnection() {
 
 			// Get charge level
 			if ("charge" in obj) {
-				var charge_data = obj["charge"];
-				// Update graph
-				$("#charge_level").html(charge_data + "%");
-				$("#charge_graph").attr('class', "c100 med orange center p" + charge_data);
+				updateCircle("charge", obj["charge"]);
 			}
 
 			// Highest CPU core temperature
 			if ("cpu_temp" in obj) {
-				var cpu_temp = Math.round(obj["cpu_temp"]);
-				$("#cputemp_level").html(cpu_temp + "&degC");
-				$("#cputemp_graph").attr('class', "c100 med orange center p" + cpu_temp);
+				updateCircle("cpu_temp", Math.round(obj["cpu_temp"]));
 			}
 
 			// System uptime
