@@ -134,11 +134,16 @@ function DemoMode() {
 			var temp = $("#charge_level").html().slice(0, -1) - 1;
 			// Loop around just in case
 			if (temp <= 0) {
-				temp = 100;
+                let charger = setInterval(function () {
+                    temp += 1;
+                    $("#charge_level").html(temp + "%");
+                    $("#charge_graph").attr('class', "c100 med orange center p" + temp);
+                    if(temp == 100) window.clearInterval(charger);
+                }, 10);
 			}
 			$("#charge_level").html(temp + "%");
 			$("#charge_graph").attr('class', "c100 med orange center p" + temp);
-		}, 21350);
+		}, 20000 + Math.ceil(Math.random()*5000));
 		
 		// Temperature history graph
 		tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
