@@ -161,7 +161,6 @@ function DemoMode() {
 			$("#cputemp_level").html(temp + "&degC");
 			$("#cputemp_graph").attr('class', "c100 med orange center p" + temp);
 		}, 2000);
-
 		setInterval(() => {
 			// CO2 level
 			var temp = getRandomInt(200, 230);
@@ -172,6 +171,19 @@ function DemoMode() {
 			$("#tvoc_level").html(temp * 3 + "<span style='font-size: 10px'> ppb</span>");
 			$("#tvoc_graph").attr('class', "c100 med orange center p" + temp);
 		}, 3000);
+
+		// Decrease charge every 21.35 seconds (Unusual number so it doesn't match up with other change events)
+		setInterval(() => {
+			// Charge level
+			// Get last charge level and subtract one
+			var temp = $("#charge_level").html().slice(0, -1) - 1;
+			// Loop around just in case
+			if (temp <= 0) {
+				temp = 100;
+			}
+			$("#charge_level").html(temp + "%");
+			$("#charge_graph").attr('class', "c100 med orange center p" + temp);
+		}, 21350);
 		
 		// Temperature history graph
 		tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
