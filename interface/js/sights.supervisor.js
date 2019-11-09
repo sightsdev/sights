@@ -5,16 +5,15 @@ function updateServiceInfo(response, status, jqXHR) {
     $("#service_info_status").html("");
 
     // Only runs on first call after connecting
-    if ($("#service_info_statename").html() == "DISCONNECTED") {
+    if ($("#service_info_statename").html() == "Disconnected") {
          // Populate config file selector
         updateConfigSelector();
     }
     
     var state = response[0].statename;
-    // 
-    $("#service_info_buttons").show();
+    var styled = state[0] + state.slice(1).toLowerCase();
     // Update service state indicator
-    $("#service_info_statename").html(state);
+    $("#service_info_statename").html(styled);
     // Clear button style
     $("#service_info_statename").removeClass("btn-success btn-danger btn-warning");
     switch (state) {
@@ -42,22 +41,18 @@ function updateServiceInfo(response, status, jqXHR) {
         },
         error: function(jqXHR, status, error) {
             $("#service_info_logfile").html("Couldn't get service information");
-            $("#service_info_buttons").hide();
         }
     });
 }
 
 function serviceDisconnected(jqXHR, status, error) {
-    var state = "DISCONNECTED";
     // Update service state indicator
-    $("#service_info_statename").html("DISCONNECTED");
+    $("#service_info_statename").html("Disconnected");
     // Swap button style
     $("#service_info_statename").removeClass("btn-success btn-danger btn-warning");
     $("#service_info_statename").addClass("btn-secondary");
-
+    // Update log modal information
     $("#service_info_logfile").html("Couldn't get service information");
-    $("#service_info_buttons").hide();
-
     // Empty config selector
     $('#config_selector').html("");
 }
