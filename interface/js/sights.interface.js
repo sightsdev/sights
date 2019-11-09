@@ -184,13 +184,13 @@ $(document).on("ready", function () {
   
 	$('.camera-refresh-button').on("click", function() {
 		let stream = $(this).closest('.camera-container').find('.stream-image');
-		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
+		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("data-id");
 		stream.attr('src', 'http://' + ip + ':8081/' + cameraId + '/stream/' + Math.random());
 	});
 	
 	$('.camera-screenshot-button').on("click", function() {
 		// Get ID of camera
-		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("id");
+		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("data-id");
 		let container = $(this).closest('.camera-container');
 		// Obligatory flash
 		container.fadeOut(150).fadeIn(150);

@@ -82,7 +82,7 @@ function update_cameras(config) {
 		let camera = $("#camera_" + e);
 		let id = config[e]['id'];
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
-		camera.attr("id", config[e]['id']);
+		camera.attr("data-id", config[e]['id']);
 	});
 	if (config['front']['enabled'] &&
 		!config['back']['enabled'] &&
