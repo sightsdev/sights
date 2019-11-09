@@ -240,6 +240,7 @@ $(document).on("ready", function () {
 		};
 		safeSend(c_event);
 		shutdownAlert();
+		if(demo) location.reload();
 	});
 	$("#reboot_button").on("click", function () {
 		var c_event = {
@@ -248,6 +249,7 @@ $(document).on("ready", function () {
 		};
 		safeSend(c_event);
 		rebootAlert();
+		if(demo) location.reload();
 	});
 
 	// Advanced config editor button actions
