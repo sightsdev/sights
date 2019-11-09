@@ -108,3 +108,7 @@ ENV/
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/vcs.xml
+
+# Config files
+/configs/last_invalid_config.json
+/src/configs/sights/backup/*
