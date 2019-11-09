@@ -78,16 +78,19 @@ $(document).on("ready", function () {
 	var hourSecs = 60*60;
 	var minSecs = 60; // minSecs rhymes with insects
 	setInterval(() => {
-		// Calculate uptime based on time elapsed since reported time of boot
-		let upSeconds = (Date.now() - startTime) / 1000;
+		if(startTime) {
+			// Calculate uptime based on time elapsed since reported time of boot
+			let upSeconds = (Date.now() - startTime) / 1000;
 
-		let days = (Math.floor(upSeconds / daySecs) + "").padStart(2, '0');
-		let hours = (Math.floor((upSeconds % daySecs) / hourSecs) + "").padStart(2, '0');
-		let minutes = (Math.floor(((upSeconds % daySecs) % hourSecs) / minSecs) + "").padStart(2, '0');
-		let seconds = (Math.floor(((upSeconds % daySecs) % hourSecs) % minSecs) + "").padStart(2, '0');
+			let days = (Math.floor(upSeconds / daySecs) + "").padStart(2, '0');
+			let hours = (Math.floor((upSeconds % daySecs) / hourSecs) + "").padStart(2, '0');
+			let minutes = (Math.floor(((upSeconds % daySecs) % hourSecs) / minSecs) + "").padStart(2, '0');
+			let seconds = (Math.floor(((upSeconds % daySecs) % hourSecs) % minSecs) + "").padStart(2, '0');
 
-		// Format nicely
-		$("#uptime").html(days + ":" + hours + ":" + minutes + ":" + seconds);
+			// Format nicely
+			$("#uptime").html(days + ":" + hours + ":" + minutes + ":" + seconds);
+		}
+		else $("#uptime").html("00:00:00:00");
 	}, 1000);
 	
 	// Dark mode toggle handler
