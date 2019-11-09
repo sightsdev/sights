@@ -1,21 +1,20 @@
+// The setInterval that calls updateService
+var serviceUpdater;
 
 function updateServiceInfo(response, status, jqXHR) {
-    $("#service_info_name").html(response[0].name);
-    $("#service_info_logfile").html(response[0].logfile);
-    $("#service_info_status").html("");
-
     // Only runs on first call after connecting
     if ($("#service_info_statename").html() == "Disconnected") {
          // Populate config file selector
         updateConfigSelector();
     }
     
+    // Get state of the SIGHTS service (RUNNING, STOPPED, etc)
     var state = response[0].statename;
-    var styled = state[0] + state.slice(1).toLowerCase();
     // Update service state indicator
-    $("#service_info_statename").html(styled);
+    $("#service_info_statename").html(state[0] + state.slice(1).toLowerCase());
     // Clear button style
-    $("#service_info_statename").removeClass("btn-success btn-danger btn-warning");
+    $("#service_info_statename").removeClass("btn-success btn-danger btn-warning btn-secondary");
+    // Set button style conditionally
     switch (state) {
         case "RUNNING":
             $("#service_info_statename").addClass("btn-success");
@@ -32,6 +31,10 @@ function updateServiceInfo(response, status, jqXHR) {
             $("#service_info_statename").addClass("btn-danger");
             break;
     }
+
+    // Update log filename
+    $("#service_info_logfile").html(response[0].logfile);
+    // Update log
     $.xmlrpc({
         url: '/RPC2',
         methodName: 'supervisor.tailProcessStdoutLog',
@@ -111,7 +114,7 @@ function updateConfigSelector() {
 }
 
 $(document).on("ready",function () {
-    setInterval(updateService, 500);
+    serviceUpdater = setInterval(updateService, 500);
 
     $('#config_refresh_button').on("click", function() {
         updateConfigSelector();

@@ -108,6 +108,27 @@ function DemoMode() {
 	var yaml = jsyaml.safeDump(obj, indent = 4);
 	$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
+	var example_log = `2019-11-09 13:37:04,068 INFO __main__: Starting manager process
+	2019-11-09 13:37:04,069 INFO __main__: Using config file: configs/virtual.json
+	2019-11-09 13:37:04,071 INFO __main__: PID 289
+	2019-11-09 13:37:04,072 INFO motors: Opening motor connection of type: virtual
+	2019-11-09 13:37:04,084 INFO sensor_stream: Starting SensorStream-1 process at *:5556
+	2019-11-09 13:37:04,088 INFO control_receiver: Starting ControlReceiver-2 process at *:5555
+	2019-11-09 13:37:04,320 INFO sensor_stream: Client connected
+	2019-11-09 13:37:04,321 INFO sensor_stream: Sent initial message`.replace(/\t+/g, "");
+
+	// Stop updateService from being run every half second
+	clearInterval(serviceUpdater);
+	// Update service monitor
+	$("#service_info_statename").addClass("btn-success").html("Running");
+	$('#config_selector').html("");
+	// Populate config selector
+	$('#config_selector').append('<option value="demo.json">demo.json</option>');
+
+	// Update log modal
+	$("#service_info_logfile").html("/opt/sights/sights.log");
+	$("#service_info_pre").html(hljs.highlight("YAML", example_log).value);
+
 	// After the sensor socket has connected
 	setTimeout(function(){
 		sensorsConnectedAlert();
@@ -133,7 +154,25 @@ function DemoMode() {
 		distChart.update();
 
 		// Uptime
-		$("#uptime").html("00:04:18:22");
+		// Set boot time to yesterday at 7:59pm
+		var startTime = new Date();
+		startTime.setDate(startTime.getDate() - 1);
+		startTime.setHours(19,59);
+		var daySecs = 60*60*24;
+		var hourSecs = 60*60;
+		var minSecs = 60; // minSecs rhymes with insects
+		setInterval(() => {
+			// Calculate uptime based on time elapsed since reported time of boot
+			let upSeconds = (Date.now() - startTime) / 1000;
+
+			let days = (Math.floor(upSeconds / daySecs) + "").padStart(2, '0');
+			let hours = (Math.floor((upSeconds % daySecs) / hourSecs) + "").padStart(2, '0');
+			let minutes = (Math.floor(((upSeconds % daySecs) % hourSecs) / minSecs) + "").padStart(2, '0');
+			let seconds = (Math.floor(((upSeconds % daySecs) % hourSecs) % minSecs) + "").padStart(2, '0');
+
+			// Format nicely
+			$("#uptime").html(days + ":" + hours + ":" + minutes + ":" + seconds);
+		}, 1000);
 		// Memory
 		$("#memory").css('color', getColorForPercentage(0.3));
 		$("#memory_used").html(1273);
