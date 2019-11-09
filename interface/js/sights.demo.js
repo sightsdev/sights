@@ -3,6 +3,13 @@
 	Licensed under the GNU General Public License 3.0
 */
 var demo = false;
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // Populate interface with dummy data to demonstrate what a functional setup looks like
 function DemoMode() {
 	demo = true;
@@ -146,6 +153,26 @@ function DemoMode() {
 		// TVOC level
 		$("#tvoc_level").html("75<span style='font-size: 10px'> ppb</span>");
 		$("#tvoc_graph").attr('class', "c100 med orange center p14");
+		
+		// Randomisers for CPU temp and gas sensor readings
+		setInterval(() => {
+			// CPU temp graph
+			var temp = getRandomInt(40, 45);
+			$("#cputemp_level").html(temp + "&degC");
+			$("#cputemp_graph").attr('class', "c100 med orange center p" + temp);
+		}, 2000);
+
+		setInterval(() => {
+			// CO2 level
+			var temp = getRandomInt(200, 230);
+			$("#co2_level").html(temp + "<span style='font-size: 10px'> ppm</span>");
+			$("#co2_graph").attr('class', "c100 med orange center p" + Math.round(temp / 10));
+			// TVOC level
+			var temp = getRandomInt(10, 14);
+			$("#tvoc_level").html(temp * 3 + "<span style='font-size: 10px'> ppb</span>");
+			$("#tvoc_graph").attr('class', "c100 med orange center p" + temp);
+		}, 3000);
+		
 		// Temperature history graph
 		tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
 		tempChart.update();
