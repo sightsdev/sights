@@ -212,12 +212,12 @@ function sensorConnection() {
 
 			// Get CO2 levels
 			if ("co2" in obj) {
-				updateCircle("co2", obj["co2"]);
+				updateCircle("co2", obj["co2"], 10);
 			}
 
 			// Get TVOC levels
 			if ("tvoc" in obj) {
-				updateCircle("tvoc", obj["tvoc"])
+				updateCircle("tvoc", obj["tvoc"], 3)
 			}
 
 			// Get temperature data for line graph
