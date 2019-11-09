@@ -4,6 +4,11 @@ function updateServiceInfo(response, status, jqXHR) {
     $("#service_info_logfile").html(response[0].logfile);
     $("#service_info_status").html("");
 
+    // Only runs on first call after connecting
+    if ($("#service_info_statename").html() == "DISCONNECTED") {
+         // Populate config file selector
+        updateConfigSelector();
+    }
     
     var state = response[0].statename;
     // 
@@ -28,16 +33,6 @@ function updateServiceInfo(response, status, jqXHR) {
             $("#service_info_statename").addClass("btn-danger");
             break;
     }
-}
-
-function updateService() {
-    $.xmlrpc({
-        url: '/RPC2',
-        methodName: 'supervisor.getProcessInfo',
-        params: {name: 'sights'},
-        success: updateServiceInfo,
-        error: function(jqXHR, status, error) { }
-    });
     $.xmlrpc({
         url: '/RPC2',
         methodName: 'supervisor.tailProcessStdoutLog',
@@ -48,6 +43,39 @@ function updateService() {
         error: function(jqXHR, status, error) {
             $("#service_info_logfile").html("Couldn't get service information");
             $("#service_info_buttons").hide();
+        }
+    });
+}
+
+function serviceDisconnected(jqXHR, status, error) {
+    var state = "DISCONNECTED";
+    // Update service state indicator
+    $("#service_info_statename").html("DISCONNECTED");
+    // Swap button style
+    $("#service_info_statename").removeClass("btn-success btn-danger btn-warning");
+    $("#service_info_statename").addClass("btn-secondary");
+
+    $("#service_info_logfile").html("Couldn't get service information");
+    $("#service_info_buttons").hide();
+
+    // Empty config selector
+    $('#config_selector').html("");
+}
+
+function updateService() {
+    $.xmlrpc({
+        url: '/RPC2',
+        methodName: 'supervisor.getProcessInfo',
+        params: {name: 'sights'},
+        success: updateServiceInfo,
+        error: serviceDisconnected,
+        statusCode: {
+            404: function (response) {
+                console.log("404: Supervisor is not available. Retrying.");
+            },
+            503: function (response) {
+                console.log("503: Supervisor is not available. Retrying.");
+            }
         }
     });
 }
@@ -89,9 +117,6 @@ function updateConfigSelector() {
 
 $(document).on("ready",function () {
     setInterval(updateService, 500);
-
-    // Populate config file selector
-    updateConfigSelector();
 
     $('#config_refresh_button').on("click", function() {
         updateConfigSelector();
