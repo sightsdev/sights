@@ -162,18 +162,14 @@ function sensorConnection() {
 				configReceivedAlert();
 
 				// Populate visual editor
+				// Populating advanced editor happens on configEditor change, which fires when the inital config is set
 				configEditor.setValue(obj['config']);
 				// Keep a copy to track changes
 				baseConfig = JSON.stringify(configEditor.getValue());
 				savedConfig = baseConfig;
 				updateConfigAlerts();
 
-				// Populate advanced editor
-				var yaml = jsyaml.safeDump(obj['config'], indent = 4);
-				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
-
 				// Now handle loading stuff from the config file
-
 				// Enable / disable cameras and set their ports as defined by the config
 				update_cameras(obj['config']['cameras']);
 				update_sensors(obj['config']['sensors']);

@@ -58,62 +58,17 @@ function DemoMode() {
 	$('#gamepad_monitor_pre').html(hljs.highlight("JSON",JSON.stringify(obj, null, '\t')).value);
 
 	// Config editor box
-	obj = {
-		"network": {
-			"ip": "localhost"
-		},
-		"control": {
-			"default_gamepad_speed": 5,
-			"default_keyboard_speed": 5
-		},
-		"servo": {
-			"port": "/dev/ttyACM0",
-			"baudrate": 1000000
-		},
-		"arduino": {
-			"enabled": false,
-			"port": "/dev/ttyACM1",
-			"baudrate": 115200
-		},
-		"cameras": {
-			"front": {
-				"enabled": true,
-				"port": 8081
-			},
-			"back": {
-				"enabled": true,
-				"port": 8082
-			},
-			"left": {
-				"enabled": false,
-				"port": 8083
-			},
-			"right": {
-				"enabled": false,
-				"port": 8084
-			}
-		},
-		"sensors": {
-			"thermal_camera": {
-				"enabled": true,
-				"width": 32,
-				"height": 24
-			},
-			"temperature": {
-				"enabled": true
-			},
-			"distance_graph": {
-				"enabled": true
-			}
-		},
-		"debug": {
-			"print_messages": false,
-			"use_virtual_servos": true
-		}
-	};
+	obj = {"network":{"ip":"localhost"},"control":{"default_gamepad_speed":5,"default_keyboard_speed":5},"motors":{
+	    "type":"dynamixel","port":"/dev/ttyACM0","baudrate":1000000,"ids":{"left":[],"right":[]}},"arduino":{"enabled":
+                false},"cameras":{"front":{"enabled":true,"id":1},"back":{"enabled":true,"id":2},"left":{"enabled":false
+            },"right":{"enabled":false}},"sensors":{"memory":{"enabled":true,"frequency":3},"cpu_temp":{"enabled":true,
+                "frequency":5},"thermal_camera":{"enabled":true,"frequency":0.5,"width":32,"height":24},"temperature":{
+                "enabled":true,"frequency":2,"address":""},"distance":{"enabled":false},"gas":{"enabled":false}},"debug"
+            :{"print_messages":false}};
 
-	var yaml = jsyaml.safeDump(obj, indent = 4);
-	$("#config_editor_pre").html(hljs.highlight("YAML", yaml).value);
+    configEditor.setValue(obj);
+    baseConfig = savedConfig = JSON.stringify(obj);
+    updateConfigAlerts();
 
 	var example_log = `2019-11-09 13:37:04,068 INFO __main__: Starting manager process
 	2019-11-09 13:37:04,069 INFO __main__: Using config file: configs/virtual.json
