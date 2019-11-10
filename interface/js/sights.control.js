@@ -234,22 +234,30 @@ $(document).on("ready", function () {
 
 	// Handle shutdown and reboot buttons
 	$("#shutdown_button").on("click", function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "SHUTDOWN"
-		};
-		safeSend(c_event);
+		if(demo) {
+			location.reload();
+		}
+		else {
+			var c_event = {
+				type: "SYSTEM",
+				control: "SHUTDOWN"
+			};
+			safeSend(c_event);
+		}
 		shutdownAlert();
-		if(demo) location.reload();
 	});
 	$("#reboot_button").on("click", function () {
-		var c_event = {
-			type: "SYSTEM",
-			control: "REBOOT"
-		};
-		safeSend(c_event);
+		if(demo) {
+			location.reload();
+		}
+		else {
+			var c_event = {
+				type: "SYSTEM",
+				control: "REBOOT"
+			};
+			safeSend(c_event);
+		}
 		rebootAlert();
-		if(demo) location.reload();
 	});
 
 	// Advanced config editor button actions
