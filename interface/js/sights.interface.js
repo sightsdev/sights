@@ -222,7 +222,8 @@ $(document).on("ready", function () {
 	
 	$('.camera-screenshot-button').on("click", function() {
 		// Get ID of camera
-		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("data-id");
+		let streamImage = $(this).closest('.camera-container').find('.stream-image');
+		let cameraId = streamImage.attr("data-id");
 		let container = $(this).closest('.camera-container');
 		// Obligatory flash
 		container.fadeOut(150).fadeIn(150);
@@ -236,7 +237,7 @@ $(document).on("ready", function () {
 		let fileTime = d.getFullYear()+"-"+month+"-"+day+"_"+hour+"."+minute+"."+second;
 		// Create and click the download link
 		let link = document.createElement('a');
-		link.href = demo ? 'images/demo_camera/lastsnap.jpg' : 'http://' + ip + '/stream/' + cameraId + '/current';
+		link.href = demo ? streamImage.attr("src") : 'http://' + ip + '/stream/' + cameraId + '/current';
 		link.download = 'robot-' + fileTime + '.jpg';
 		link.target = "_blank";
 		document.body.appendChild(link);
