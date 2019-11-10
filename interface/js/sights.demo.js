@@ -68,7 +68,22 @@ function DemoMode() {
 
     configEditor.setValue(obj);
     baseConfig = savedConfig = JSON.stringify(obj);
-    updateConfigAlerts();
+	updateConfigAlerts();
+
+	// Setup functionality for keyboard speed indicators
+	var demo_keyboard_speed = obj["control"]["default_keyboard_speed"];
+
+	keyboardJS.bind('-', null, function (e) {
+		// Keep speed at a minimum of 1
+		demo_keyboard_speed = Math.max(1, demo_keyboard_speed - 1);
+		set_speed_indicator("kb", demo_keyboard_speed);
+	});
+
+	keyboardJS.bind('=', null, function (e) {
+		// Keep speed at a max of 8
+		demo_keyboard_speed = Math.min(8, demo_keyboard_speed + 1);
+		set_speed_indicator("kb", demo_keyboard_speed);
+	});
 
 	var example_log = `2019-11-09 13:37:04,068 INFO __main__: Starting manager process
 	2019-11-09 13:37:04,069 INFO __main__: Using config file: configs/virtual.json
