@@ -174,6 +174,10 @@ function sensorConnection() {
 				savedConfig = baseConfig;
 				updateConfigAlerts();
 
+				// Manually set output text of range slider elements
+				$('output', $('#visual_editor_container'))[0].innerText = obj['config']['control']['default_gamepad_speed'];
+				$('output', $('#visual_editor_container'))[1].innerText = obj['config']['control']['default_keyboard_speed'];
+
 				// Now handle loading stuff from the config file
 				// Enable / disable cameras and set their ports as defined by the config
 				update_cameras(obj['config']['cameras']);
