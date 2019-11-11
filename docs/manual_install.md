@@ -2,11 +2,13 @@
 
 > This page is maintained for posterity, however small changes in installation instructions may escape future revisions. The most up-to-date installation instructions can always be inferred by reading the current [install.sh](/install.sh) script.
 
-Installation is preferably done to the `/opt/sights/` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues. [Supervisor](http://supervisord.org/) is used to manage running the SIGHTSRobot software.
+Installation is preferably done to the `/opt/sights/` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues. Installing to other locations will require changes to various config files.
+
+[Supervisor](http://supervisord.org/) is used to manage running the SIGHTSRobot software.
 
 ## 1. Setting up the installation directory
 
-First, you'll want to create that directory, and we'll make it owned by the current user for convenience:
+First, you'll want to create the aforementioned directory, and we'll make it owned by the current user for convenience:
 
 ```sh
 sudo mkdir /opt/sights
@@ -23,10 +25,16 @@ git clone https://github.com/SFXRescue/SIGHTSRobot
 git clone https://github.com/SFXRescue/SIGHTSInterface
 ```
 
-Then install SIGHTSRobot's dependencies with:
+Install the required packages:
 
 ```sh
-cd /opt/sights/SIGHTSRobot
+sudo apt install git apache2 python3 python3-pip wget gdebi
+```
+
+Then install the Python dependencies with:
+
+```sh
+cd /opt/sights/SIGHTSRobot/src
 python3 -m pip install -r requirements.txt
 ```
 
@@ -34,55 +42,49 @@ python3 -m pip install -r requirements.txt
 
 Apache should be configured to point to the `SIGHTSInterface` directory.
 
-1. Install Apache2, if it's not already installed, with:
+Edit `/etc/apache2/apache2.conf` and add the following in the relevant section to allow Apache to access the `/opt/sights/` directory:
 
-    ```sh
-    sudo apt install apache2
-    ```
+```xml
+<Directory /opt/sights/>
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+```
 
-2. Edit `/etc/apache2/apache2.conf` and add the following in the relevant section to allow Apache to access the `/opt/sights/` directory:
+Copy the provided site file to the appropriate directory.
 
-    ```xml
-    <Directory /opt/sights/>
-        Options Indexes FollowSymLinks
-        AllowOverride None
-        Require all granted
-    </Directory>
-    ```
+```sh
+sudo cp /opt/sights/SIGHTSRobot/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
+```
 
-3. Copy the provided site file to the appropriate directory.
+And then enable this site, and disable the default one, with
 
-    ```sh
-    sudo cp /opt/sights/SIGHTSRobot/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
-    ```
+```sh
+sudo a2ensite SIGHTSInterface.conf
+sudo a2dissite 000-default.conf
+```
 
-    And then enable this site, and disable the default one, with
+This file contains settings that tell the web server to host the SIGHTSInterface directory on port 80, and it also sets up some proxy paths which are used to redirect any requests to `:80/RPC2` to `:9001/RPC2` instead which is where Supervisor's API listens on. It does a similar thing for Motion to allow screenshot functionality.
 
-    ```sh
-    sudo a2ensite SIGHTSInterface.conf
-    sudo a2dissite 000-default.conf
-    ```
+Enable the reverse proxy modules, which we use to access Supervisor from the same origin.
 
-    This file contains settings that tell the web server to host the SIGHTSInterface directory on port 80, and it also sets up some proxy paths which are used to redirect any requests to `:80/RPC2` to `:9001/RPC2` instead which is where Supervisor's API listens on.
+```sh
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+```
 
-4. Enable the reverse proxy modules, which we use to access Supervisor from the same origin.
+Next, restart Apache2 with:
 
-    ```sh
-    sudo a2enmod proxy
-    sudo a2enmod proxy_http
-    ```
+```sh
+sudo service apache2 restart
+```
 
-5. Next, restart Apache2 with:
+Or you might need to start the service, if it hasn't been already:
 
-    ```sh
-    sudo service apache2 restart
-    ```
-
-    Or you might need to start the service, if it hasn't been already:
-
-    ```sh
-    sudo service apache2 start
-    ```
+```sh
+sudo service apache2 start
+```
 
 ## 4. Setting up Motion
 
@@ -92,16 +94,15 @@ For example, to download and install the 4.2.2 release for Ubuntu 18.04, do:
 
 ```sh
 wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/bionic_motion_4.2.2-1_amd64.deb
-sudo apt install ./bionic_motion_4.2.2-1_amd64.deb
+sudo gdebi ./bionic_motion_4.2.2-1_amd64.deb
 ```
 
-The provided `motion.conf` file should be copied into the `/etc/motion/` directory.
+Create a symlink from `/etc/motion` to `/opt/sights/SIGHTSRobot/src/configs/motion/` for Motion config files.
 
 ```sh
-sudo cp /opt/sights/SIGHTSRobot/configs/motion/motion.conf /etc/motion/
+rm -r /etc/motion
+sudo ln -s /opt/sights/SIGHTSRobot/src/configs/motion /etc
 ```
-
-Keep in mind that this file points to the individual camera config files in `/opt/sights/SIGHTSRobot/configs/motion`.
 
 Next, allow Motion to be run as a service by editing `/etc/default/motion` and changing `start_motion_daemon=no` to `start_motion_daemon=yes`.
 
@@ -139,6 +140,13 @@ And changing the final line so it reads:
 SHELLINABOX_ARGS="--no-beep --disable-ssl"
 ```
 
+On a Raspberry Pi you might need to enable SSH with:
+
+```sh
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
+
 You can then start the service with:
 
 ```sh
@@ -159,10 +167,10 @@ First install Supervisor with:
 sudo -H python3 -m pip install supervisor
 ```
 
-And then copy the provided configuration file to the relevant directory with:
+Create a symlink for the Supervisor configuration file with:
 
 ```sh
-sudo cp /opt/sights/SIGHTSRobot/configs/supervisor/supervisord.conf /etc/
+sudo ln -sf /opt/sights/SIGHTSRobot/src/configs/supervisor /etc
 ```
 
 Install the SIGHTS configuration file management Supervisor extension. This allows Supervisor to get and set the active config file and get a list of available config files.
