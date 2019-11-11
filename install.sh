@@ -11,6 +11,7 @@
 
 
 INSTALL_DIR=/opt/sights
+MOTION_VER=4.2.2
 
 print_detected_ip () {
   output="Visit http://localhost$1 on the host machine"
@@ -27,6 +28,13 @@ print_detected_ip () {
   fi
   echo "$output"
   echo
+}
+
+enable_ssh () {
+    echo -e "\nEnabling SSH..."
+    systemctl enable ssh
+    echo -e "\nStarting SSH..."
+    systemctl start ssh
 }
 
 install_dependencies () {
@@ -94,16 +102,24 @@ install_apache () {
 
 install_motion () {
     # Only install prebuilt binaries which are available only on supported OSs
-    if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ]
+    if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ] || [ $DETECTED_OS == "raspbian" ]
     then
         if [ $DETECTED_CODENAME == "bionic" ] || [ $DETECTED_CODENAME == "cosmic" ] || [ $DETECTED_CODENAME == "buster" ]
         then
             echo -e "\nDownloading Motion..."
-            wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
+            
+            if [ $DETECTED_OS == "raspbian"]
+            then 
+                # Get the armhf binaries (with the pi prefix) for Raspbian
+                wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/pi_${DETECTED_CODENAME}_motion_${MOTION_VER}-1_armhf.deb -O motion.deb
+            else
+                # For x86 systems, just use the normal amd64 binaries
+                wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/${DETECTED_CODENAME}_motion_${MOTION_VER}-1_amd64.deb -O motion.deb
+            fi
 
             echo -e "\nInstalling Motion..."
-            gdebi -n ./${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
-            rm ${DETECTED_CODENAME}_motion_4.2.2-1_amd64.deb
+            gdebi -n ./motion.deb
+            rm ./motion.deb
 
             echo -e "\nCreating symlink for Motion configuration files..."
             rm -r /etc/motion
@@ -131,6 +147,11 @@ install_shellinabox () {
 
     echo -e "\nDisabling SSL..."
     sed -i 's/SHELLINABOX_ARGS=.*/SHELLINABOX_ARGS="--no-beep --disable-ssl"/' /etc/default/shellinabox
+
+    if [ $DETECTED_OS == "raspbian"]
+    then
+        enable_ssh()
+    fi
 
     echo -e "\nStarting shellinabox service..."
     service shellinabox start
