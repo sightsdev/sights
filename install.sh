@@ -148,9 +148,8 @@ install_shellinabox () {
     echo -e "\nDisabling SSL..."
     sed -i 's/SHELLINABOX_ARGS=.*/SHELLINABOX_ARGS="--no-beep --disable-ssl"/' /etc/default/shellinabox
 
-    if [ $DETECTED_OS == "raspbian"]
-    then
-        enable_ssh()
+    if [ $DETECTED_OS == "raspbian" ]; then
+        enable_ssh
     fi
 
     echo -e "\nStarting shellinabox service..."
