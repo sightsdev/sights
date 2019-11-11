@@ -12,6 +12,23 @@
 
 INSTALL_DIR=/opt/sights
 
+print_detected_ip () {
+  output="Visit http://localhost$1 on the host machine"
+  hostname=$(hostname -I)
+  if [[ $hostname ]]
+  then
+    for ip in $hostname
+    do
+      output="$output or http://$ip$1"
+    done
+    output="$output on any decice on the local network."
+  else
+    output="$output or connect to a network."
+  fi
+  echo "$output"
+  echo
+}
+
 install_dependencies () {
     echo -e "Transfering ownership of directory to user: $SUDO_USER"
     chown $SUDO_USER:$SUDO_USER -R $INSTALL_DIR
@@ -72,6 +89,7 @@ install_apache () {
     service apache2 start
     service apache2 reload
     echo
+    print_detected_ip "/"
 }
 
 install_motion () {
@@ -102,7 +120,8 @@ install_motion () {
     else
         echo -e "\n Unsupported distribution"
     fi
-    echo   
+    echo
+    print_detected_ip ":8080/"
 }
 
 install_shellinabox () {
@@ -116,6 +135,7 @@ install_shellinabox () {
     echo -e "\nStarting shellinabox service..."
     service shellinabox start
     echo
+    print_detected_ip ":4200/"
 }
 
 install_supervisor () {
@@ -143,6 +163,7 @@ install_supervisor () {
     echo -e "\nRunning Supervisor"
     supervisord
     echo
+    print_detected_ip ":9001/"
 }
 
 update () {
@@ -161,8 +182,8 @@ update () {
     cd ..
 
     echo -e "Update complete!"
-
     echo
+    print_detected_ip "/"
 }
 
 complete_install () { 
@@ -173,6 +194,7 @@ complete_install () {
     install_shellinabox
     install_supervisor
     echo -e "\nInstallation complete!"
+    print_detected_ip "/"
 }
 
 # Ensure user is running as root
@@ -215,6 +237,7 @@ options=(
     "Setup ShellInABox" 
     "Setup Supervisor"
     "Update"
+    "Detect IPs"
 )
 PS3="Enter a number (1-${#options[@]}) or q to quit: "
 
@@ -228,6 +251,7 @@ select option in "${options[@]}"; do
         6) install_shellinabox ;;
         7) install_supervisor ;;
         8) update ;;
+        9) print_detected_ip "/" ;;
         q) exit ;;
     esac
 done
