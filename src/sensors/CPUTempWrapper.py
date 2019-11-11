@@ -19,9 +19,13 @@ class CPUTempWrapper(SensorWrapper):
                 if core.current > highest:
                     highest = core.current
             msg['cpu_temp'] = highest
-        # Some systems (e.g. Nvidia Jetson) will report temp differently
+        # Some systems will report temp differently
+        # Nvidia Jetson
         elif 'thermal-fan-est' in temp_data:
             msg['cpu_temp'] = temp_data['thermal-fan-est'][0].current
+        # Raspberry Pi
+        elif 'cpu-thermal' in temp_data:
+            msg['cpu_temp'] = temp_data['cpu-thermal'][0].current
         return msg
 
     def get_info(self):
