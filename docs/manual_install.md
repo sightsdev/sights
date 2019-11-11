@@ -1,5 +1,7 @@
 # Manual Installation
 
+> This page is maintained for posterity, however small changes in installation instructions may escape future revisions. The most up-to-date installation instructions can always be inferred by reading the current [install.sh](/install.sh) script.
+
 Installation is preferably done to the `/opt/sights/` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues. [Supervisor](http://supervisord.org/) is used to manage running the SIGHTSRobot software.
 
 ## 1. Setting up the installation directory
