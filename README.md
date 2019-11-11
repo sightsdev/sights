@@ -70,8 +70,8 @@ Using a supported OS
 
 1) Complete Install         4) Setup Apache           7) Setup Supervisor
 2) Install Dependencies     5) Setup Motion           8) Update
-3) Install SIGHTS Software  6) Setup ShellInABox
-Enter a number (1-8) or q to quit:
+3) Install SIGHTS Software  6) Setup ShellInABox      9) Detect IPs
+Enter a number (1-9) or q to quit:
 ```
 
 For manual installation see [docs/manual_install.md](docs/manual_install.md).
