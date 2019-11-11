@@ -84,8 +84,7 @@ function update_cameras(config) {
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
 		camera.attr("data-id", config[e]['id']);
 	});
-	if (config['front']['enabled'] &&
-		!config['back']['enabled'] &&
+	if (!config['back']['enabled'] &&
 		!config['left']['enabled'] &&
 		!config['right']['enabled']) {
 		$("#sensor_toggle").hide();
