@@ -108,7 +108,7 @@ install_motion () {
         then
             echo -e "\nDownloading Motion..."
             
-            if [ $DETECTED_OS == "raspbian"]
+            if [ $DETECTED_OS == "raspbian" ]
             then 
                 # Get the armhf binaries (with the pi prefix) for Raspbian
                 wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/pi_${DETECTED_CODENAME}_motion_${MOTION_VER}-1_armhf.deb -O motion.deb
@@ -130,6 +130,10 @@ install_motion () {
 
             echo -e "\nEnabling Motion service..."
             systemctl enable motion
+
+            echo -e "\nStarting Motion service..."
+            service motion start
+            service motion restart
         else
             echo -e "\n Unsupported release"
         fi
@@ -213,7 +217,7 @@ complete_install () {
     install_motion
     install_shellinabox
     install_supervisor
-    echo -e "\nInstallation complete!"
+    echo -e "\nInstallation complete! Reboot to ensure proper functionality."
     print_detected_ip "/"
 }
 
