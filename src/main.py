@@ -42,30 +42,15 @@ class Manager:
         # Create server and receiver processes
         self.sensor_process = SensorStream(1, self.sensor_pipe, self.config_file)
         self.control_process = ControlReceiver(2, self.control_pipe, self.config_file)
-        # Create pipe for control_process to manager communication
-        self.manager_pipe, self.super_pipe = Pipe(duplex=False)
-        self.control_process.manager_pipe = self.super_pipe
         # Setup signal handlers
         signal.signal(signal.SIGINT, self.sigint)
         # Start new processes
         self.sensor_process.start()
         self.control_process.start()
-        # Receive any messages sent from control_gamepad
-        message = self.manager_pipe.recv()
-        if message[0] == "RESTART_SCRIPTS":
-            # Restart everything
-            self.logger.info("Restarting processes")
-            # Terminate child processes
-            self.terminate()
-            # Restart
-            return True
-        elif message[0] == "KILL_SCRIPTS":
-            # Kill everyone
-            self.logger.info("Terminating processes")
-            # Terminate child processes
-            self.terminate()
-            # Do not restart
-            return False
+        # Join new processes to prevent early termination
+        self.sensor_process.join()
+        self.control_process.join()
+        # Once both processes have ended, the manager can end too.
         self.logger.info("Exiting manager process")
 
 if __name__ == '__main__':

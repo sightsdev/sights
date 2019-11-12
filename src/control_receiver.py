@@ -143,14 +143,6 @@ class ControlReceiver (WebSocketProcess):
                 self.logger.info("Received request for configuration file")
                 # Send a message to sensor_stream requesting that they send the config file again
                 self.pipe.send(["REQUEST_CONFIG"])
-            elif (control == "RESTART_SCRIPTS"):
-                self.logger.info("Received request to restart scripts")
-                # Send a message to manager requesting a script restart
-                self.manager_pipe.send(["RESTART_SCRIPTS"])
-            elif (control == "KILL_SCRIPTS"):
-                self.logger.info("Received request to kill scripts")
-                # Send a message to manager requesting death
-                self.manager_pipe.send(["KILL_SCRIPTS"])
         elif (typ == "KEYBOARD"):
             value = msg["value"]  # UP, DOWN
             # Handle directional movement etc
