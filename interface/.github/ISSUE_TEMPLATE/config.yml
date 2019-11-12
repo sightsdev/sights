@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Semi Autonomous Rescue Team Website
+    url: https://www.sfxrescue.com/
+    about: For general questions (not bug reports, feature requests or questions directly related to SIGHTS software), feel free to comment on any relevant blog post for a swift response by a team member.
+  - name: The Open Academic Robot Kit
+    url: https://groups.google.com/forum/#!forum/oarkit
+    about: For general questions about OARKit or the Rapidly Manufactured Robot Challange (not directly related to the Semi Autonomous Rescue Team), feel free to join the Google Group.
