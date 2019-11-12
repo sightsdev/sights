@@ -131,10 +131,12 @@ class Motors:
                 self.logger.warning(f"Unable to create {self.type} motor connection")
                 self.logger.info("Falling back to virtual connection")
                 self.connection = VirtualConnection()
+                self.type = 'virtual'
         else:
             self.logger.warning("Could not determine motor connection type")
             self.logger.info("Falling back to virtual connection")
             self.connection = VirtualConnection()
+            self.type = 'virtual'
         self.logger.info("Opening motor connection of type: {}".format(self.type))
 
     def stop(self):
