@@ -73,3 +73,7 @@ Enter a number (1-9) or q to quit:
 For manual installation see [docs/manual_install.md](docs/manual_install.md).
 
 Then visit the robot's IP address in any web browser on the same network.
+
+## Contributing
+
+If you have an idea, suggestion or bug report for **SIGHTSRobot**, or want to make a contribution of your own, we'd love to work with you to make it happen! Take a look at our [contributing page](https://github.com/SFXRescue/.github/blob/master/CONTRIBUTING.md) for more information.
