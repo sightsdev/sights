@@ -22,3 +22,7 @@ For installation, please refer to [the SIGHTSRobot repository](https://github.co
 ## Demo
 
 A live demo is available [here](https://www.sfxrescue.com/interfacedemo).
+
+## Contributing
+
+If you have an idea, suggestion or bug report for **SIGHTSInterface**, or want to make a contribution of your own, we'd love to work with you to make it happen! Take a look at our [contributing page](https://github.com/SFXRescue/.github/blob/master/CONTRIBUTING.md) for more information.
