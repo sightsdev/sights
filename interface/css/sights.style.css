@@ -188,3 +188,8 @@ blink, .blink {
   float: right;
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+
+.internal-scroll {
+  overflow-y: scroll;
+  max-height: 50vh;
+}

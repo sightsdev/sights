@@ -38,7 +38,7 @@ function updateServiceInfo(response, status, jqXHR) {
     $.xmlrpc({
         url: '/RPC2',
         methodName: 'supervisor.tailProcessStdoutLog',
-        params: {name: 'sights', offset: '0', length: '1500'},
+        params: {name: 'sights', offset: '0', length: '10000'},
         success: function(response, status, jqXHR) {
             $("#service_info_pre").html(hljs.highlight("YAML", response[0][0]).value);
         },
