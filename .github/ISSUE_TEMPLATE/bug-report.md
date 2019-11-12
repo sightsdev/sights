@@ -1,13 +1,13 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a bug report to help us improve
 title: ''
 labels: bug
 assignees: ''
 
 ---
 
-**Issues with the interface should be reported [here](https://github.com/SFXRescue/SIGHTSInterface/issues) instead. This issue tracker is only for the service running on the host machine. If you're not sure, you're welcome to create a new issue on either tracker using your best judgement.**
+**Issues with the interface should be reported https://github.com/SFXRescue/SIGHTSInterface/issues instead. This issue tracker is only for the service running on the host machine. If you're not sure, you're welcome to create a new issue on either tracker using your best judgement.**
 
 All information is optional, however, providing less information will delay any potential fix.
 
