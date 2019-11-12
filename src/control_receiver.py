@@ -120,6 +120,13 @@ class ControlReceiver (WebSocketProcess):
         self.config = json.load(open(self.config_file))
         self.logger.info("Saved configuration file to " + self.config_file)
 
+    def save_config_as(self, cfg, filename):
+        # Use same directory
+        dirname = os.path.dirname(self.config_file)
+        # Save new config to file
+        with open(dirname + "/" + filename, 'w') as f:
+            f.write(cfg)
+
     def message_handler(self, buf):
         # Load object from JSON
         msg = json.loads(buf)
@@ -139,6 +146,9 @@ class ControlReceiver (WebSocketProcess):
             elif (control == "UPDATE_CONFIG"):
                 self.logger.info("Received new configuration file")
                 self.save_config(msg["value"])
+            elif (control == "SAVE_AS_CONFIG"):
+                self.logger.info("Received new configuration file (to save as new file)")
+                self.save_config_as(msg["value"][0], msg["value"][1])
             elif (control == "REQUEST_CONFIG"):
                 self.logger.info("Received request for configuration file")
                 # Send a message to sensor_stream requesting that they send the config file again
