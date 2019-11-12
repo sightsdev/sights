@@ -119,14 +119,20 @@ class Motors:
         # Whether to use a virtual or real servo connection
         if (self.type == 'virtual'):
             self.connection = VirtualConnection()
-        elif (self.type == 'serial'):
-            self.connection = SerialConnection(self.port, self.baudrate)
-        elif (self.type == 'dynamixel'):
-            self.connection = DynamixelConnection(self.port, self.baudrate)
-            self.connection.ids = config['motors']['ids']
-            self.connection.logger = self.logger
+        elif (self.type in ['serial', 'dynamixel']):
+            try:
+                if (self.type == 'serial'):
+                    self.connection = SerialConnection(self.port, self.baudrate)
+                elif (self.type == 'dynamixel'):
+                    self.connection = DynamixelConnection(self.port, self.baudrate)
+                    self.connection.ids = config['motors']['ids']
+                    self.connection.logger = self.logger
+            except serial.serialutil.SerialException:
+                self.logger.warning(f"Unable to create {self.type} motor connection")
+                self.logger.info("Falling back to virtual connection")
+                self.connection = VirtualConnection()
         else:
-            self.logger.warn("Could not determine motor connection type")
+            self.logger.warning("Could not determine motor connection type")
             self.logger.info("Falling back to virtual connection")
             self.connection = VirtualConnection()
         self.logger.info("Opening motor connection of type: {}".format(self.type))
