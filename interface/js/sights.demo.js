@@ -13,7 +13,16 @@ function getRandomInt(min, max) {
 // Populate interface with dummy data to demonstrate what a functional setup looks like
 function DemoMode() {
 	demo = true;
-	// Camera streams, load dummy images
+	// Camera streams
+	// First show any hidden cameras
+	['front', 'left', 'right', 'back'].forEach(function (e) {
+		// Enable the div
+		$("#camera_" + e + "_card").show();
+	})
+	$("#sensor_toggle").show();
+	$("#btm_view_camera").show();
+	$("#btm_view_sensors").hide();
+	// Load dummy images
 	let imageSets = 8; // Number of sets of images in images/demo_camera
 	let set = Math.floor(Math.random()*imageSets);
 	$('.stream-image').each(function() {
@@ -110,6 +119,11 @@ function DemoMode() {
 	setTimeout(function(){
 		sensorsConnectedAlert();
 		configReceivedAlert();
+
+		// First show any hidden sensor cards
+		['thermal_camera', 'temperature', 'distance'].forEach(function (e) {
+			$("#" + e + "_card").show();
+		});
 
 		// Set initial values for circles
         updateCircle("cpu_temp", 45);
