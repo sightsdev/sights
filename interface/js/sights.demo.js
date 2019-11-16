@@ -23,7 +23,7 @@ function DemoMode() {
 	$("#btm_view_camera").show();
 	$("#btm_view_sensors").hide();
 	// Load dummy images
-	let imageSets = 8; // Number of sets of images in images/demo_camera
+	let imageSets = 9; // Number of sets of images in images/demo_camera
 	let set = Math.floor(Math.random()*imageSets);
 	$('.stream-image').each(function() {
 		let id = $(this).attr("id");
