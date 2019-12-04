@@ -37,7 +37,7 @@ function saveConfig(name) {
         // Create message event
         var c_event = {
             type: "SYSTEM",
-            control: "UPDATE_CONFIG",
+            control: "SAVE_CONFIG",
             value: [val, name]
         };
         safeSend(c_event);
