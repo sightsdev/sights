@@ -23,6 +23,33 @@ function safeSend(data) {
 		controlSocket.send(JSON.stringify(data));
 }
 
+// Save config file with file name 'name'
+function saveConfig(name) {
+    var contents = $("#advanced_editor_pre")[0].innerText;
+    var tempSavedConfig = savedConfig;
+    try {
+        // Parse from YAML into JS
+        var yml = jsyaml.safeLoad(contents);
+        // And then turn that into a JSON string
+        var val = JSON.stringify(yml, null, '\t');
+        // Update visual editor
+        configEditor.setValue(JSON.parse(val, indent = 4));
+        // Create message event
+        var c_event = {
+            type: "SYSTEM",
+            control: "UPDATE_CONFIG",
+            value: [val, name]
+        };
+        safeSend(c_event);
+        configSentAlert();
+        savedConfig = JSON.stringify(configEditor.getValue());
+    } catch (e) {
+        configInvalidAlert();
+        savedConfig = tempSavedConfig;
+    }
+    updateConfigAlerts();
+}
+
 // Log control to log modal
 function logControl(e) {
 	value = ('value' in e) ? e["value"] : "MESSAGE SENT"
@@ -262,57 +289,11 @@ $(document).on("ready", function () {
 
 	// Advanced config editor button actions
 	$(".editor_save_button").on("click", function () {
-		// Get contents of advanced editor
-		var contents = $("#advanced_editor_pre")[0].innerText;
-		var tempSavedConfig = savedConfig;
-		try {
-			// Parse from YAML into JS
-			var yml = jsyaml.safeLoad(contents);
-			// And then turn that into a JSON string
-			var val = JSON.stringify(yml, null, '\t');
-			// Update visual editor
-			configEditor.setValue(JSON.parse(val, indent = 4));
-			// Create message event
-			var c_event = {
-				type: "SYSTEM",
-				control: "UPDATE_CONFIG",
-				value: val
-			};
-			safeSend(c_event);
-			configSentAlert();
-			savedConfig = JSON.stringify(configEditor.getValue());
-		} catch (e) {
-			configInvalidAlert();
-			savedConfig = tempSavedConfig;
-		}
-		updateConfigAlerts();
-	});
+        saveConfig("");
+    });
 	$(".editor_save_as_button").on("click", function () {
-		// Get contents of advanced editor
-		var contents = $("#advanced_editor_pre")[0].innerText;
-		var tempSavedConfig = savedConfig;
-		try {
-			// Parse from YAML into JS
-			var yml = jsyaml.safeLoad(contents);
-			// And then turn that into a JSON string
-			var val = JSON.stringify(yml, null, '\t');
-			// Update visual editor
-			configEditor.setValue(JSON.parse(val, indent = 4));
-			// Create message event
-			var c_event = {
-				type: "SYSTEM",
-				control: "SAVE_AS_CONFIG",
-				value: [val, "filename.json"]
-			};
-			safeSend(c_event);
-			configSentAlert();
-			savedConfig = JSON.stringify(configEditor.getValue());
-		} catch (e) {
-			configInvalidAlert();
-			savedConfig = tempSavedConfig;
-		}
-		updateConfigAlerts();
-	});
+        saveConfig("filename.json");
+    });
 	$(".editor_reload_button").on("click", function () {
 		if(!$(".editor_reload_button").hasClass("disabled")) {
 			var c_event = {
