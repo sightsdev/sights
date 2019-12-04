@@ -9,6 +9,7 @@ import json
 import serial
 import logging
 import os
+import subprocess
 
 class SensorStream(WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
@@ -110,6 +111,9 @@ class SensorStream(WebSocketProcess):
             msg["uptime"] = round(float(f.readline().split()[0]))
         # Get RAM, add to message, use bit shift operator to represent in MB
         msg["memory_total"] = psutil.virtual_memory().total >> 20
+        # Send software versions
+        msg["version_robot"] = subprocess.check_output(["git", "describe"]).strip().decode('utf-8')
+        msg["version_interface"] = subprocess.check_output(["git", "describe"], cwd="../SIGHTSInterface/").strip().decode('utf-8')
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
         self.logger.info("Sent initial message")
