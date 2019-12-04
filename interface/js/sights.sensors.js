@@ -186,8 +186,9 @@ function sensorConnection() {
 
 			// Current config file name
 			if ("config_file" in obj) {
-				$("#advanced_editor_filename").html(obj["config_file"]);
-				$("#visual_editor_filename").html(obj["config_file"]);
+				let fileName = obj["config_file"];
+				let editable = fileName.slice(0,-5);
+				$(".editor_filename").val(editable);
 			}
 
 			// Get distance data and create radial graph

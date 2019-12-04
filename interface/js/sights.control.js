@@ -262,9 +262,9 @@ $(document).on("ready", function () {
 
 	// Advanced config editor button actions
 	$(".editor_save_button").on("click", function () {
-		// Get contents of advanced editor
 		var contents = $("#advanced_editor_pre")[0].innerText;
 		var tempSavedConfig = savedConfig;
+		var fileName = $(".editor_filename").val() + ".json";
 		try {
 			// Parse from YAML into JS
 			var yml = jsyaml.safeLoad(contents);
@@ -275,8 +275,8 @@ $(document).on("ready", function () {
 			// Create message event
 			var c_event = {
 				type: "SYSTEM",
-				control: "UPDATE_CONFIG",
-				value: val
+				control: "SAVE_CONFIG",
+				value: [val, fileName]
 			};
 			safeSend(c_event);
 			configSentAlert();
@@ -286,7 +286,7 @@ $(document).on("ready", function () {
 			savedConfig = tempSavedConfig;
 		}
 		updateConfigAlerts();
-	});
+    });
 	$(".editor_reload_button").on("click", function () {
 		if(!$(".editor_reload_button").hasClass("disabled")) {
 			var c_event = {

