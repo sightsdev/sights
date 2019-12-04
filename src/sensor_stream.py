@@ -8,6 +8,7 @@ import psutil
 import json
 import serial
 import logging
+import os
 
 class SensorStream(WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
