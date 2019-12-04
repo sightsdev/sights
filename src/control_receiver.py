@@ -147,7 +147,7 @@ class ControlReceiver (WebSocketProcess):
                 self.logger.info("Received reboot signal, rebooting...")
                 os.system('reboot')
             # Handle configuration requests
-            elif (control == "UPDATE_CONFIG"):
+            elif (control == "SAVE_CONFIG"):
                 self.logger.info("Received new configuration file")
                 self.save_config(msg["value"][0], msg["value"][1])
             elif (control == "REQUEST_CONFIG"):
