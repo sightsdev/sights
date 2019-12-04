@@ -99,7 +99,7 @@ class SensorStream(WebSocketProcess):
         msg = {}
         # Send the configuration file and it's filename on startup
         msg["config"] = self.config
-        msg["config_file"] = self.config_file
+        msg["config_file"] = os.path.basename(self.config_file)
         # Even though these are part of the config object, we send them seperately
         # Since we don't want the speed resetting every time we edit the config 
         msg["kb_speed"] = self.config['control']['default_keyboard_speed'] * 128 - 1
