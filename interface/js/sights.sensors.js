@@ -191,6 +191,14 @@ function sensorConnection() {
 				$(".editor_filename").val(editable);
 			}
 
+			// Software versions
+			if ("version_robot" in obj) {
+				$("#version_robot").html(obj["version_robot"]);
+			}
+			if ("version_interface" in obj) {
+				$("#version_interface").html(obj["version_interface"]);
+			}
+
 			// Get distance data and create radial graph
 			if ("distance" in obj) {
 				// Update distance chart
