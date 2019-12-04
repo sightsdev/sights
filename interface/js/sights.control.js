@@ -25,7 +25,6 @@ function safeSend(data) {
 
 // Save config file with file name 'name'
 function saveConfig(name) {
-    console.log("Clicked save, file name is " + name)
     var contents = $("#advanced_editor_pre")[0].innerText;
     var tempSavedConfig = savedConfig;
     try {
