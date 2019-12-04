@@ -193,3 +193,10 @@ blink, .blink {
   overflow-y: scroll;
   max-height: 50vh;
 }
+
+.editor_filename {
+  width: 70%;
+  padding: 3px 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
