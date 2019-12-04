@@ -121,8 +121,6 @@ class ControlReceiver (WebSocketProcess):
             # Save new config to file
             with open(config_path, 'w') as f:
                 f.write(cfg)
-            # Reload config
-            self.config = json.load(open(config_path))
             self.logger.info("Saved existing configuration file " + config_path)
         else:
             # File does not exist, save new config to file
