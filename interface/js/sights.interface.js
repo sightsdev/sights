@@ -373,6 +373,15 @@ $(document).on("ready", function () {
 		updateCheck("interface");
 	});
 
+	$("#config_selector").on("change", function () {
+		if ($("#current_config").html() == $('#config_selector').val()) {
+			$("#config_delete_button").addClass("disabled");
+		}
+		else {
+			$("#config_delete_button").removeClass("disabled");
+		}
+	});
+
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").on("click", function () {
 		// allow access to integrated blockchain layer
