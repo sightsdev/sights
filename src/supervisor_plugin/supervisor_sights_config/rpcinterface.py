@@ -3,8 +3,6 @@ from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
 from os import listdir, remove, path, rename
 from os.path import isfile, join
-from json import dump
-import json
 
 API_VERSION = '0.2'
 ACTIVE_CONFIG_FILE = '/opt/sights/SIGHTSRobot/configs/ACTIVE_CONFIG'
@@ -12,7 +10,6 @@ CONFIG_DIR = '/opt/sights/SIGHTSRobot/configs'
 BACKUP_DIR = '/opt/sights/SIGHTSRobot/src/configs/sights/backup/'
 CONFIG_EXT = '.json'
 MINIMAL_CONFIG = "/opt/sights/SIGHTSRobot/src/configs/sights/minimal.json"
-
 
 class SIGHTSConfigNamespaceRPCInterface:
     """ An extension for Supervisor that implements a basic 
@@ -110,14 +107,13 @@ class SIGHTSConfigNamespaceRPCInterface:
 
             # Save new config to file
             with open(config_path, 'w') as f:
-                dump(value, f)
+                f.write(value)
             # self.logger.info("Saved existing configuration file " + config_path)
         else:
             # File does not exist, save new config to file
             with open(config_path, 'w') as f:
-                dump(value, f)
+                f.write(value)
             # self.logger.info("Saved new configuration file " + config_path)
-
 
 def make_sights_config_rpcinterface(supervisord, **config):
     return SIGHTSConfigNamespaceRPCInterface(supervisord)
