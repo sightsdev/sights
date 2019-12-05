@@ -114,6 +114,7 @@ class SIGHTSConfigNamespaceRPCInterface:
             with open(config_path, 'w') as f:
                 f.write(value)
             # self.logger.info("Saved new configuration file " + config_path)
+        return True
 
 def make_sights_config_rpcinterface(supervisord, **config):
     return SIGHTSConfigNamespaceRPCInterface(supervisord)
