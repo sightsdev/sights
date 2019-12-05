@@ -68,7 +68,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         # Duplicates getActiveConfig().
         try:
             with open(ACTIVE_CONFIG_FILE, 'r') as f:
-                file_path = CONFIG_DIR + f.read()
+                file_path = CONFIG_DIR + "/" + f.read()
                 if not path.isfile(file_path):
                     raise FileNotFoundError()
         except FileNotFoundError:
