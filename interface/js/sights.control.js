@@ -289,11 +289,20 @@ $(document).on("ready", function () {
     });
 	$(".editor_reload_button").on("click", function () {
 		if(!$(".editor_reload_button").hasClass("disabled")) {
-			var c_event = {
-				type: "SYSTEM",
-				control: "REQUEST_CONFIG"
-			};
-			safeSend(c_event);
+            requestConfig(function(response) {
+                configEditor.setValue(response);
+                // Keep a copy to track changes
+                baseConfig = JSON.stringify(configEditor.getValue());
+                savedConfig = baseConfig;
+				// Stringify value of new config to remove key-value pairs with `undefined` value
+				var jsonString = JSON.stringify(response);
+				// Set advanced editor
+				var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+				// Populate advanced editor
+				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
+                updateConfigAlerts();
+                configReceivedAlert();
+            });
 			configRequestedAlert();
 		}
 	});
