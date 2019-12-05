@@ -8,7 +8,7 @@ SSH is enabled on the host to allow access to the underlying OS through the SSH 
 
 This is the port that the main SIGHTS interface is hosted on. This will be the page you will see if you visit the host's IP address.
 
-## `:5555` Control receiver (WebSocket)
+## `:5555` SIGHTS control receiver (WebSocket)
 
 `Interface -> Host`
 
@@ -45,8 +45,7 @@ Finally `VALUE` will be the actual value of the control:
 
 Some system events will not have the `VALUE` parameter passed. For example, the shutdown event is only sent as `SYSTEM SHUTDOWN`. Additionally some events will have multiple values for `value`, using an array. For example, to save a config file, the message `SYSTEM SAVE_CONFIG <json_data> filename.json` is sent.
 
-
-## `:5556` Sensor stream (WebSocket)
+## `:5556` SIGHTS sensor stream (WebSocket)
 
 `Host -> Interface`
 
@@ -62,17 +61,17 @@ Data sent over this port is in the JSON format. Each key in the JSON data is usu
     ...
 ```
 
-## `:8080` Motion port (HTTP)
+## `:8080` Motion web interface (HTTP)
 
 This port is where Motion's main web interface is hosted on. All the active camera streams can be viewed from here, and (if enabled in Motion's config file), settings can be changed.
 
-## `:8081` Motion camera stream (MJPG)
+## `:8081` Motion camera stream (MJPEG)
 
-This port hosts the MJPG streams. The stream for each camera can be visited at `:8081/<camera_index>`.
+This port hosts the MJPEG streams. The stream for each camera can be visited at `:8081/<camera_index>`.
 
 This is proxied to `:80/stream` by Apache. So accessing `<robot_ip>/stream` will actually be `:8081` behind the scenes.
 
-## `:9001` (HTTP/RPC2)
+## `:9001` Supervisor (HTTP/RPC2)
 
 This is the port that the Supervisor web interface runs on. This can be visited and allows the user to manage the SIGHTS service. Most of the functionality here has been implemented into the SIGHTS interface itself.
 
