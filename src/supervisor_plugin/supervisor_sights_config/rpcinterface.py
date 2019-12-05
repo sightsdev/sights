@@ -1,7 +1,7 @@
 from supervisor.states import SupervisorStates
 from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
-from os import listdir
+from os import listdir, remove
 from os.path import isfile, join
 
 API_VERSION = '0.2'
@@ -48,6 +48,13 @@ class SIGHTSConfigNamespaceRPCInterface:
         except FileNotFoundError:
             read_data = ""
         return read_data
+
+    def deleteConfig(self, value):
+        """ Removes the specified config file
+        @return boolean      Always true unless error
+        """
+        remove(CONFIG_DIR + "/" + value)
+        return True
 
 def make_sights_config_rpcinterface(supervisord, **config):
     return SIGHTSConfigNamespaceRPCInterface(supervisord)
