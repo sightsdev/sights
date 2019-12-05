@@ -2,11 +2,11 @@ from supervisor.states import SupervisorStates
 from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
 from os import listdir, remove, path, rename
-from os.path import isfile, join
+from os.path import isfile
 
 API_VERSION = '0.2'
 ACTIVE_CONFIG_FILE = '/opt/sights/SIGHTSRobot/configs/ACTIVE_CONFIG'
-CONFIG_DIR = '/opt/sights/SIGHTSRobot/configs'
+CONFIG_DIR = '/opt/sights/SIGHTSRobot/configs/'
 BACKUP_DIR = '/opt/sights/SIGHTSRobot/src/configs/sights/backup/'
 CONFIG_EXT = '.json'
 MINIMAL_CONFIG = "/opt/sights/SIGHTSRobot/src/configs/sights/minimal.json"
@@ -29,7 +29,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         """ Returns all the available config files
         @return [string]  array of config file names 
         """
-        files = [f for f in listdir(CONFIG_DIR) if isfile(join(CONFIG_DIR, f)) and f.endswith(CONFIG_EXT)]
+        files = [f for f in listdir(CONFIG_DIR) if isfile(CONFIG_DIR + f) and f.endswith(CONFIG_EXT)]
         return files
 
     def setActiveConfig(self, value):
@@ -55,7 +55,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         """ Removes the specified config file
         @return boolean      Always true unless error
         """
-        config = CONFIG_DIR + "/" + value
+        config = CONFIG_DIR + value
         if path.isfile(config):
             remove(config)
         return True
@@ -66,7 +66,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         """
         try:
             with open(ACTIVE_CONFIG_FILE, 'r') as f:
-                file_path = CONFIG_DIR + "/" + f.read()
+                file_path = CONFIG_DIR + f.read()
                 if not path.isfile(file_path):
                     raise FileNotFoundError()
         except FileNotFoundError:
@@ -86,7 +86,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         @return boolean      Always true unless error
         """
         # Rolling backups
-        config_path = CONFIG_DIR + "/" + name
+        config_path = CONFIG_DIR + name
 
         if path.exists(config_path):
             # File exists
