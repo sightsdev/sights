@@ -78,7 +78,7 @@ class SensorStream(WebSocketProcess):
         return json.dumps(msg)
 
     async def pipe_message_handler(self, msg):
-        elif msg[0] == "SYNC_SPEED":
+        if msg[0] == "SYNC_SPEED":
             await self.send_speed_value(msg[1], msg[2])
 
     async def send_speed_value(self, typ, speed):
