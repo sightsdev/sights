@@ -1,14 +1,18 @@
 from supervisor.states import SupervisorStates
 from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
-from os import listdir, remove, path
+from os import listdir, remove, path, rename
 from os.path import isfile, join
+from json import dump
+import json
 
 API_VERSION = '0.2'
 ACTIVE_CONFIG_FILE = '/opt/sights/SIGHTSRobot/configs/ACTIVE_CONFIG'
 CONFIG_DIR = '/opt/sights/SIGHTSRobot/configs'
+BACKUP_DIR = '/opt/sights/SIGHTSRobot/src/configs/sights/backup/'
 CONFIG_EXT = '.json'
 MINIMAL_CONFIG = "/opt/sights/SIGHTSRobot/src/configs/sights/minimal.json"
+
 
 class SIGHTSConfigNamespaceRPCInterface:
     """ An extension for Supervisor that implements a basic 
@@ -23,7 +27,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         @return string  version
         """
         return API_VERSION
-    
+
     def getConfigs(self):
         """ Returns all the available config files
         @return [string]  array of config file names 
@@ -63,9 +67,6 @@ class SIGHTSConfigNamespaceRPCInterface:
         """ Gets the current config
         @return string       Contents of config file
         """
-
-        # What do you suppose is the best way to get the active config file name here?
-        # Duplicates getActiveConfig().
         try:
             with open(ACTIVE_CONFIG_FILE, 'r') as f:
                 file_path = CONFIG_DIR + "/" + f.read()
@@ -82,6 +83,41 @@ class SIGHTSConfigNamespaceRPCInterface:
         except FileNotFoundError:
             read_data = ""
         return read_data
+
+    def saveConfig(self, value, name):
+        """ Saves the received value as a config file
+        @return boolean      Always true unless error
+        """
+        # Rolling backups
+        config_path = CONFIG_DIR + "/" + name
+
+        if path.exists(config_path):
+            # File exists
+            # Find existing backups for this config file
+            for file in sorted(listdir(BACKUP_DIR), reverse=True):
+                if file.startswith(f"{name}.backup."):
+                    # Get backup ID
+                    backup_id = int(file[-1])
+                    # Remove oldest backup
+                    if backup_id == 5:
+                        remove(BACKUP_DIR + file)
+                    else:
+                        # Add 1 to the rest of the backup IDs
+                        new_id = str(backup_id + 1)
+                        rename(BACKUP_DIR + file, BACKUP_DIR + name + ".backup." + new_id)
+            # Save the previous config as a new backup
+            rename(config_path, BACKUP_DIR + name + ".backup.0")
+
+            # Save new config to file
+            with open(config_path, 'w') as f:
+                dump(value, f)
+            # self.logger.info("Saved existing configuration file " + config_path)
+        else:
+            # File does not exist, save new config to file
+            with open(config_path, 'w') as f:
+                dump(value, f)
+            # self.logger.info("Saved new configuration file " + config_path)
+
 
 def make_sights_config_rpcinterface(supervisord, **config):
     return SIGHTSConfigNamespaceRPCInterface(supervisord)
