@@ -333,6 +333,46 @@ $(document).on("ready", function () {
 		$("#config_update_alert").slideDown();
 	});
 
+	// Update the file name in both editors when one is changed
+	$(".editor_filename").on('change', function() {
+		$(".editor_filename").val(this.value);
+	});
+
+	function updateCheck(type) {
+		let update_field = $("#update_" + type);
+		let version_field = $("#version_" + type);
+		update_field.html("Checking for update");
+		update_field.css("color", "#28a745");
+		update_field.css("opacity", "20%");
+		$.ajax({
+			url: "https://api.github.com/repos/SFXRescue/sights" + type + "/tags",
+			type: 'GET',
+			success: function (result) {
+				let current_version = version_field.html();
+				let current_version_tag = current_version.split("-")[0];
+				let latest_obj = result[0];
+				let latest_version = latest_obj['name'];
+				let latest_version_tag = latest_version.split("-")[0];
+				update_field.css("opacity", "100%");
+				if (current_version_tag == latest_version_tag) {
+					update_field.html("You are running the latest version");
+				} else {
+					update_field.html("Update available: " + latest_version);
+				}
+			},
+			error: function () {
+				update_field.css("opacity", "100%");
+				update_field.css("color", "#dc3545");
+				update_field.html("Could not check for updates");
+			}
+		});
+	}
+
+	$("#update_check").on('click', function() {
+		updateCheck("robot");
+		updateCheck("interface");
+	});
+
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").on("click", function () {
 		// allow access to integrated blockchain layer
@@ -347,10 +387,5 @@ $(document).on("ready", function () {
 		$(this)[_ua[0]]();
 		// reimplemented thread-safe agent management using neural networks
 		bootoast[_ua[3]](JSON[_ua[2]](atob(_ua[1])));
-	});
-
-	// Update the file name in both editors when one is changed
-	$(".editor_filename").on('change', function() {
-		$(".editor_filename").val(this.value);
 	});
 });
