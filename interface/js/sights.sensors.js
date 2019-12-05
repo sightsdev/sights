@@ -161,6 +161,10 @@ function sensorConnection() {
 			// Update sensor monitor (in log modal)
 			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
+			if("initial_message" in obj) {
+				requestConfig();
+			}
+
 			// Load config file into config editor windows
 			if ("config" in obj) {
 				configReceivedAlert();

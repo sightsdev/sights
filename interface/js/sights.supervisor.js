@@ -116,6 +116,20 @@ function updateConfigSelector() {
     });
 }
 
+function requestConfig() {
+    $.xmlrpc({
+        url: '/RPC2',
+        methodName: 'sights_config.requestConfig',
+        params: {},
+        success: function(response, status, jqXHR) {
+            console.log(response);
+        },
+        error: function(jqXHR, status, error) {
+            serviceAlert("danger", "Couldn't get active config file");
+        }
+    });
+}
+
 $(document).on("ready",function () {
     serviceUpdater = setInterval(updateService, 500);
 
