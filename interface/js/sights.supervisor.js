@@ -104,6 +104,8 @@ function updateConfigSelector() {
                     $("#config_selector").val(config).change();
                     $("#current_config").html(config);
                     $("#config_delete_button").addClass("disabled");
+                    // Set config editor file name
+                    $(".editor_filename").val(config.slice(0,-5));
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Couldn't get active config file");

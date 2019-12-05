@@ -184,13 +184,6 @@ function sensorConnection() {
 				});
 			}
 
-			// Current config file name
-			if ("config_file" in obj) {
-				let fileName = obj["config_file"];
-				let editable = fileName.slice(0,-5);
-				$(".editor_filename").val(editable);
-			}
-
 			// Software versions
 			if ("version_robot" in obj) {
 				$("#version_robot").html(obj["version_robot"]);
