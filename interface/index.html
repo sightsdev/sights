@@ -516,7 +516,7 @@
 										id="memory"><span id="memory_used">0</span>/<span id="memory_total">0</span>
 										MB</span></li-->
 								<li class="list-group-item">
-									<strong>Service: </strong>
+									<strong id="current_config"></strong>
 									<div class="btn-group float-right" role="group">
 										<button type="button" class="btn btn-secondary btn-sm" id="service_info_statename" 
 											rel="tooltip" data-placement="bottom" title="Service state">Disconnected</button>
@@ -532,12 +532,16 @@
 										<select rel="tooltip" data-placement="bottom" title="Select active config" class="custom-select custom-select-sm" id="config_selector">
 										</select>
 										<div class="input-group-append">
-											<button type="button" class="btn btn-outline-dark btn-sm" id="config_save_button" rel="tooltip"
-												data-placement="bottom" title="Set active config">
+											<button type="button" class="btn btn-outline-dark btn-sm" id="config_enable_button" rel="tooltip"
+												data-placement="bottom" title="Enable">
 												<i class="fa fa-fw fa-save"></i>
 											</button>
+											<button type="button" class="btn btn-outline-dark btn-sm" id="config_delete_button" rel="tooltip"
+													data-placement="bottom" title="Delete">
+												<i class="fa fa-fw fa-trash-alt"></i>
+											</button>
 											<button type="button" class="btn btn-outline-dark btn-sm" id="config_refresh_button" rel="tooltip"
-												data-placement="bottom" title="Refresh">
+												data-placement="bottom" title="Refresh list">
 												<i class="fa fa-fw fa-redo"></i>
 											</button>
 										</div>

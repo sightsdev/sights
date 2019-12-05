@@ -99,8 +99,11 @@ function updateConfigSelector() {
                 params: {},
                 success: function(response, status, jqXHR) {
                     // Also remove any line breaks from the string.
+                    let config = response[0].replace(/(\r\n|\n|\r)/gm, "");
                     // And set it to be the active select element
-                    $("#config_selector").val(response[0].replace(/(\r\n|\n|\r)/gm, "")).change();
+                    $("#config_selector").val(config).change();
+                    $("#current_config").html(config);
+                    $("#config_delete_button").addClass("disabled");
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Couldn't get active config file");
@@ -120,18 +123,39 @@ $(document).on("ready",function () {
         updateConfigSelector();
     });
 
-    $('#config_save_button').on("click", function() {
+    $('#config_enable_button').on("click", function() {
         $.xmlrpc({
             url: '/RPC2',
             methodName: 'sights_config.setActiveConfig',
             params: {value: $('#config_selector').val()},
             success: function(response, status, jqXHR) {
                 serviceAlert("success", "Set config file, restart service to apply");
+                $("#config_delete_button").addClass("disabled");
             },
             error: function(jqXHR, status, error) {
                 serviceAlert("danger", "Couldn't set config file");
             }
         });
+    });
+
+    $('#config_delete_button').on("click", function() {
+        if ($("#current_config").html() == $('#config_selector').val()) {
+            serviceAlert("danger", "You cannot delete the current active config")
+        }
+        else {
+            $.xmlrpc({
+                url: '/RPC2',
+                methodName: 'sights_config.deleteConfig',
+                params: {value: $('#config_selector').val()},
+                success: function(response, status, jqXHR) {
+                    serviceAlert("success", "Deleted config");
+                    updateConfigSelector();
+                },
+                error: function(jqXHR, status, error) {
+                    serviceAlert("danger", "Couldn't delete config file");
+                }
+            });
+        }
     });
 
     $('#service_start_button').on("click", function() {
@@ -142,6 +166,7 @@ $(document).on("ready",function () {
             params: {name: 'sights'},
             success: function(response, status, jqXHR) {
                 serviceAlert("success", "Service started");
+                updateConfigSelector();
             },
             error: function(jqXHR, status, error) {
                 serviceAlert("danger", "Couldn't start service");
@@ -195,6 +220,7 @@ $(document).on("ready",function () {
                     params: {name: 'sights'},
                     success: function(response, status, jqXHR) {
                         serviceAlert("success", "Service restarted");
+                        updateConfigSelector();
                     },
                     error: function(jqXHR, status, error) {
                         serviceAlert("danger", "Couldn't start service");
