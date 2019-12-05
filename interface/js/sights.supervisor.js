@@ -116,13 +116,13 @@ function updateConfigSelector() {
     });
 }
 
-function requestConfig() {
+function requestConfig(callback) {
     $.xmlrpc({
         url: '/RPC2',
         methodName: 'sights_config.requestConfig',
         params: {},
         success: function(response, status, jqXHR) {
-            console.log(response);
+            callback(response);
         },
         error: function(jqXHR, status, error) {
             serviceAlert("danger", "Couldn't get active config file");

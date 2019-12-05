@@ -162,7 +162,9 @@ function sensorConnection() {
 			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
 			if("initial_message" in obj) {
-				requestConfig();
+				requestConfig(function(response) {
+					console.log(response);
+				});
 			}
 
 			// Load config file into config editor windows
