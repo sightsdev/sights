@@ -205,6 +205,12 @@ update () {
     git pull
     cd ..
 
+    echo -e "\nUpdating Supervisor SIGHTS extension"
+    cd supervisor_sights_config
+    git pull
+    cd ..
+    python3 -m pip install ./supervisor_sights_config
+
     echo -e "Update complete!"
     echo
     print_detected_ip "/"
