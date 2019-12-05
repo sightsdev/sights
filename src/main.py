@@ -76,32 +76,7 @@ if __name__ == '__main__':
         while(manager.run()):
             logger.info("Going to restart")
     except (KeyError, json.decoder.JSONDecodeError):
-        # Restore rolling backups when there is a config error
-        backup_dir = "src/configs/sights/backup/"
-        # Just the name of the config
-        name = os.path.basename(config_file)
-        # Keep a copy of the invalid config for the user to review
-        if os.path.isfile(config_file):
-            os.rename(config_file, "configs/last_invalid_config.json")
-        logger.warning("Config error! Review your last_invalid_config.json")
-        # Keep trying until a backup is restored or there are no backups available (handles missing backups)
-        while (not os.path.isfile(config_file)) and any(name in file for file in os.listdir(backup_dir)):
-            # Find existing backups for this config file
-            for file in sorted(os.listdir(backup_dir)):
-                if file.startswith(f"{name}.backup."):
-                    # Get backup ID
-                    id = int(file[-1])
-                    if id == 0:
-                        # Replace invalid config with most recent backup
-                        os.rename(f"{backup_dir}/{name}.backup.0", config_file)
-                        logger.warning(f"Restored {name} config from backup.")
-                    else:
-                        # Subtract 1 from the rest of the backup IDs
-                        new_id = str(id - 1)
-                        os.rename(backup_dir + file, f"{backup_dir}/{name}.backup.{new_id}")
-        # If all else fails enter "safe mode" with a minimal known valid config
-        if not any(name in file for file in os.listdir("configs/")):
-            logger.warning("No backups to restore, entering safe mode with minimal config.")
-            os.popen(f"cp src/configs/sights/minimal.json {config_file}")
+        logger.warning("Config error! SIGHTS will now terminate.")
+        logger.info("Review your config file or restore a backup.")
     else:
         logger.info("All processes ended")
