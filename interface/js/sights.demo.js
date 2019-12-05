@@ -110,6 +110,7 @@ function DemoMode() {
 	$('#config_selector').html("");
 	// Populate config selector
 	$('#config_selector').append('<option value="demo.json">demo.json</option>');
+	$("#current_config").html("demo.json");
 
 	// Update log modal
 	$("#service_info_logfile").html("/opt/sights/sights.log");
