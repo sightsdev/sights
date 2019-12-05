@@ -144,14 +144,6 @@ class ControlReceiver (WebSocketProcess):
             elif (control == "REBOOT"):
                 self.logger.info("Received reboot signal, rebooting...")
                 os.system('reboot')
-            # Handle configuration requests
-            elif (control == "SAVE_CONFIG"):
-                self.logger.info("Received new configuration file")
-                self.save_config(msg["value"][0], msg["value"][1])
-            elif (control == "REQUEST_CONFIG"):
-                self.logger.info("Received request for configuration file")
-                # Send a message to sensor_stream requesting that they send the config file again
-                self.pipe.send(["REQUEST_CONFIG"])
         elif (typ == "KEYBOARD"):
             value = msg["value"]  # UP, DOWN
             # Handle directional movement etc
