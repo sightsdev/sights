@@ -193,7 +193,7 @@ install_supervisor () {
 update () {
     echo -e "\nPerforming a basic update"
     apt update
-    apt upgrade
+    apt upgrade -y
 
     echo -e "\nUpdating SIGHTSRobot"
     cd SIGHTSRobot
