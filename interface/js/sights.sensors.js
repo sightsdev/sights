@@ -189,7 +189,7 @@ function sensorConnection() {
 				// Set running config
 				running_config = obj["running_config"]
 				$("#current_config").html(running_config);
-				$(".editor_filename").val(running_config);
+				$(".editor_filename").val(running_config.slice(0,-5));
 
 				// Software versions
 				if ("version_robot" in obj) {
