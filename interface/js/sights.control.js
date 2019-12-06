@@ -232,34 +232,6 @@ $(document).on("ready", function () {
 			toggleSensorMode();
 	});
 
-	// Handle shutdown and reboot buttons
-	$("#shutdown_button").on("click", function () {
-		if(demo) {
-			location.reload();
-		}
-		else {
-			var c_event = {
-				type: "SYSTEM",
-				control: "SHUTDOWN"
-			};
-			safeSend(c_event);
-		}
-		shutdownAlert();
-	});
-	$("#reboot_button").on("click", function () {
-		if(demo) {
-			location.reload();
-		}
-		else {
-			var c_event = {
-				type: "SYSTEM",
-				control: "REBOOT"
-			};
-			safeSend(c_event);
-		}
-		rebootAlert();
-	});
-
 	// Advanced config editor button actions
 	$(".editor_save_button").on("click", function () {
 		saveConfig();

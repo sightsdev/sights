@@ -163,6 +163,48 @@ function saveConfig() {
 }
 
 $(document).on("ready",function () {
+    // Handle shutdown and reboot buttons
+    $("#shutdown_button").on("click", function () {
+        if(demo) {
+            location.reload();
+        }
+        else {
+            $.xmlrpc({
+                url: '/RPC2',
+                methodName: 'sights_config.poweroff',
+                params: {},
+                success: function (response, status, jqXHR) {
+                    shutdownAlert();
+                },
+                error: function (jqXHR, status, error) {
+                    serviceAlert("danger", "Couldn't shut down");
+                }
+            });
+            shutdownAlert();
+        }
+    });
+
+    $("#reboot_button").on("click", function () {
+        if(demo) {
+            location.reload();
+        }
+        else {
+            $.xmlrpc({
+                url: '/RPC2',
+                methodName: 'sights_config.reboot',
+                params: {},
+                success: function (response, status, jqXHR) {
+                    rebootAlert();
+                },
+                error: function (jqXHR, status, error) {
+                    serviceAlert("danger", "Couldn't reboot");
+                }
+            });
+            rebootAlert();
+        }
+    });
+
+
     serviceUpdater = setInterval(updateService, 500);
 
     $('#config_refresh_button').on("click", function() {
