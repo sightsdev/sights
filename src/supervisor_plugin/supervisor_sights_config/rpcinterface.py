@@ -1,7 +1,7 @@
 from supervisor.states import SupervisorStates
 from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
-from os import listdir, remove, path, rename
+from os import listdir, remove, path, rename, system
 from os.path import isfile
 
 API_VERSION = '0.2'
@@ -114,6 +114,15 @@ class SIGHTSConfigNamespaceRPCInterface:
             with open(config_path, 'w') as f:
                 f.write(value)
             # self.logger.info("Saved new configuration file " + config_path)
+        return True
+
+    # Handle power commands
+    def reboot(self):
+        system('reboot')
+        return True
+
+    def poweroff(self):
+        system('poweroff')
         return True
 
 def make_sights_config_rpcinterface(supervisord, **config):
