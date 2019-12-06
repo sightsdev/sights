@@ -102,15 +102,7 @@ class ControlReceiver (WebSocketProcess):
         typ = msg["type"]  # system, axis, button
         control = msg["control"]  # FACE_0, LEFT_STICK_Y, etc.
 
-        if (typ == "SYSTEM"):
-            # Handle power commands
-            if (control == "SHUTDOWN"):
-                self.logger.info("Received shutdown signal, shutting down...")
-                os.system('poweroff')
-            elif (control == "REBOOT"):
-                self.logger.info("Received reboot signal, rebooting...")
-                os.system('reboot')
-        elif (typ == "KEYBOARD"):
+        if (typ == "KEYBOARD"):
             value = msg["value"]  # UP, DOWN
             # Handle directional movement etc
             self.keyboard_handler(control, value)
