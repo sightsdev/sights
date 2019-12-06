@@ -70,6 +70,31 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
 
     This will be done automatically in a nearby future update.
 
+5. Add the interface side code.
+
+    This is naturally very dependent on the type of sensor you are including. Essenitally, add the HTML code and then add an additional `if` statement for your sensor into the `SIGHTSInterface/js/sights.sensors.js` file. It should look something like this:
+
+    ```js
+    // Get temperature data for line graph
+    if ("bme280" in obj) {
+        var data = obj["bme280"];
+        // Remove oldest element
+        tempChartConfig.data.datasets[0].data.shift();
+        // Push new element
+        tempChartConfig.data.datasets[0].data.push(data[0]);
+        // Update chart to display new data
+        tempChart.update();
+    }
+    ```
+
+6. Test it!
+
+7. Submit a pull request so we can include your sensor wrapper in the upstream branch!
+
+    We're always happy to merge pull requests that add features. Just make sure your code follows our guidelines!
+
+    Check out our [contributing guidelines](https://github.com/SFXRescue/.github/blob/master/CONTRIBUTING.md) for more information about contributing to the SIGHTS project.
+
 ### Adding additional configuration options
 
 You can add additional configuration options by overiding the `load_config` method in the sensor wrapper.
