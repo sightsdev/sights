@@ -26,7 +26,6 @@ The ControlReceiver class on the host listens on this port for messages in the f
 
 Where `TYPE` can be one of the following, depending on the type of message:
 
-- `SYSTEM`
 - `KEYBOARD`
 - `BUTTON`
 - `AXIS`
@@ -36,14 +35,11 @@ Typically `CONTROL` will be the name of the control moved (on gamepad or keyboar
 - `DPAD_UP` (a button event)
 - `LEFT_STICK_X` (an axis event)
 - `FORWARD` (a keyboard event)
-- `SHUTDOWN` (a system event)
 
 Finally `VALUE` will be the actual value of the control:
 
 - `UP` or `DOWN` for button and keyboard event
 - A numerical float value for an axis event
-
-Some system events will not have the `VALUE` parameter passed. For example, the shutdown event is only sent as `SYSTEM SHUTDOWN`. Additionally some events will have multiple values for `value`, using an array. For example, to save a config file, the message `SYSTEM SAVE_CONFIG <json_data> filename.json` is sent.
 
 ## `:5556` SIGHTS sensor stream (WebSocket)
 

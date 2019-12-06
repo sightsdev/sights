@@ -46,7 +46,7 @@ Minimum supported operating systems:
 
 Python >= 3.6 is required. All the supported distributions ship with Python 3.6+.
 
-## Semi-Autonomous Installation
+## Installation
 
 To install on a robot, just download and run the installer as root:
 
