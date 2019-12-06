@@ -338,14 +338,15 @@ $(document).on("ready", function () {
 		$(".editor_filename").val(this.value);
 	});
 
-	function updateCheck(type) {
+	function updateCheck(type, altRepo) {
 		let update_field = $("#update_" + type);
 		let version_field = $("#version_" + type);
+		let repo = altRepo == undefined ? "SFXRescue/sights" + type : altRepo;
 		update_field.html("Checking for update");
 		update_field.css("color", "#28a745");
 		update_field.css("opacity", "20%");
 		$.ajax({
-			url: "https://api.github.com/repos/SFXRescue/sights" + type + "/tags",
+			url: "https://api.github.com/repos/" + repo + "/tags",
 			type: 'GET',
 			success: function (result) {
 				let current_version = version_field.html();
@@ -371,6 +372,7 @@ $(document).on("ready", function () {
 	$("#update_check").on('click', function() {
 		updateCheck("robot");
 		updateCheck("interface");
+		updateCheck("supervisorext", "SFXRescue/supervisor_sights_config");
 	});
 
 	$("#config_selector").on("change", function () {
