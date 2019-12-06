@@ -94,40 +94,6 @@ class ControlReceiver (WebSocketProcess):
                 self.motors.keyboard_speed = max(127, speed - 128)
                 self.pipe.send(["SYNC_SPEED", "kb", self.motors.keyboard_speed])
 
-    def save_config(self, cfg, filename):
-        # Rolling backups
-        backup_dir = "src/configs/sights/backup/"
-        # Use current config name if no new name is provided
-        name = os.path.basename(self.config_file) if filename == "" else filename
-        config_path = os.path.dirname(self.config_file) + "/" + name
-
-        if os.path.exists(config_path):
-            # File exists
-            # Find existing backups for this config file
-            for file in sorted(os.listdir(backup_dir), reverse=True):
-                if file.startswith(f"{name}.backup."):
-                    # Get backup ID
-                    id = int(file[-1])
-                    # Remove oldest backup
-                    if id == 5:
-                        os.remove(backup_dir + file)
-                    else:
-                        # Add 1 to the rest of the backup IDs
-                        new_id = str(id + 1)
-                        os.rename(backup_dir + file, backup_dir + name + ".backup." + new_id)
-            # Save the previous config as a new backup
-            os.rename(config_path, backup_dir + name + ".backup.0")
-
-            # Save new config to file
-            with open(config_path, 'w') as f:
-                f.write(cfg)
-            self.logger.info("Saved existing configuration file " + config_path)
-        else:
-            # File does not exist, save new config to file
-            with open(config_path, 'w') as f:
-                f.write(cfg)
-            self.logger.info("Saved new configuration file " + config_path)
-
 
     def message_handler(self, buf):
         # Load object from JSON
@@ -144,14 +110,6 @@ class ControlReceiver (WebSocketProcess):
             elif (control == "REBOOT"):
                 self.logger.info("Received reboot signal, rebooting...")
                 os.system('reboot')
-            # Handle configuration requests
-            elif (control == "SAVE_CONFIG"):
-                self.logger.info("Received new configuration file")
-                self.save_config(msg["value"][0], msg["value"][1])
-            elif (control == "REQUEST_CONFIG"):
-                self.logger.info("Received request for configuration file")
-                # Send a message to sensor_stream requesting that they send the config file again
-                self.pipe.send(["REQUEST_CONFIG"])
         elif (typ == "KEYBOARD"):
             value = msg["value"]  # UP, DOWN
             # Handle directional movement etc

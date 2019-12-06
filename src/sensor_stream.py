@@ -78,17 +78,8 @@ class SensorStream(WebSocketProcess):
         return json.dumps(msg)
 
     async def pipe_message_handler(self, msg):
-        if msg[0] == "REQUEST_CONFIG":
-            await self.send_config()
-        elif msg[0] == "SYNC_SPEED":
+        if msg[0] == "SYNC_SPEED":
             await self.send_speed_value(msg[1], msg[2])
-            
-    async def send_config(self):
-        # Prepare config file to be sent to client
-        self.config = json.load(open(self.config_file))
-        msg = {"config": self.config}
-        await self.websocket.send(json.dumps(msg))
-        self.logger.info("Sent configuration file")
 
     async def send_speed_value(self, typ, speed):
         msg = {}
@@ -99,9 +90,7 @@ class SensorStream(WebSocketProcess):
 
     async def send_init_info(self):
         msg = {}
-        # Send the configuration file and it's filename on startup
-        msg["config"] = self.config
-        msg["config_file"] = os.path.basename(self.config_file)
+        msg["initial_message"] = True
         # Even though these are part of the config object, we send them seperately
         # Since we don't want the speed resetting every time we edit the config 
         msg["kb_speed"] = self.config['control']['default_keyboard_speed'] * 128 - 1
@@ -122,7 +111,7 @@ class SensorStream(WebSocketProcess):
         self.logger.info("Client connected")
         # Store websocket
         self.websocket = websocket
-        # Send the configuration file, default speeds, etc.
+        # Send the initial info to notify interface that the service is ready.
         await self.send_init_info()
         # Enter runtime loop
         while True:
