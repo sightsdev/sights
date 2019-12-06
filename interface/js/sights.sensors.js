@@ -167,11 +167,6 @@ function sensorConnection() {
 				requestConfig(function(response) {
 					configReceivedAlert();
 
-					// Set running config
-					running_config = obj["running_config"]
-					$("#current_config").html(running_config);
-					$(".editor_filename").val(running_config);
-
 					// Populate visual editor
 					// Populating advanced editor happens on configEditor change, which fires when the inital config is set
 					configEditor.setValue(response);
@@ -189,14 +184,23 @@ function sensorConnection() {
 					update_cameras(response['cameras']);
 					update_sensors(response['sensors']);
 				});
-			}
 
-			// Software versions
-			if ("version_robot" in obj) {
-				$("#version_robot").html(obj["version_robot"]);
-			}
-			if ("version_interface" in obj) {
-				$("#version_interface").html(obj["version_interface"]);
+				// Other items in the initial message
+				// Set running config
+				running_config = obj["running_config"]
+				$("#current_config").html(running_config);
+				$(".editor_filename").val(running_config);
+
+				// Software versions
+				if ("version_robot" in obj) {
+					$("#version_robot").html(obj["version_robot"]);
+				}
+				if ("version_interface" in obj) {
+					$("#version_interface").html(obj["version_interface"]);
+				}
+				if ("version_supervisorext" in obj) {
+					$("#version_supervisorext").html(obj["version_supervisorext"]);
+				}
 			}
 
 			// Get distance data and create radial graph
