@@ -1,5 +1,6 @@
 // The setInterval that calls updateService
 var serviceUpdater;
+var active_config;
 
 function updateServiceInfo(response, status, jqXHR) {
     // Only runs on first call after connecting
@@ -99,13 +100,10 @@ function updateConfigSelector() {
                 params: {},
                 success: function(response, status, jqXHR) {
                     // Also remove any line breaks from the string.
-                    let config = response[0].replace(/(\r\n|\n|\r)/gm, "");
+                    active_config = response[0].replace(/(\r\n|\n|\r)/gm, "");
                     // And set it to be the active select element
-                    $("#config_selector").val(config).change();
-                    $("#current_config").html(config);
+                    $("#config_selector").val(active_config).change();
                     $("#config_delete_button").addClass("disabled");
-                    // Set config editor file name
-                    $(".editor_filename").val(config.slice(0,-5));
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Couldn't get active config file");
@@ -179,6 +177,7 @@ $(document).on("ready",function () {
             success: function(response, status, jqXHR) {
                 serviceAlert("success", "Set config file, restart service to apply");
                 $("#config_delete_button").addClass("disabled");
+                active_config = $('#config_selector').val();
             },
             error: function(jqXHR, status, error) {
                 serviceAlert("danger", "Couldn't set config file");
@@ -187,8 +186,11 @@ $(document).on("ready",function () {
     });
 
     $('#config_delete_button').on("click", function() {
-        if ($("#current_config").html() == $('#config_selector').val()) {
-            serviceAlert("danger", "You cannot delete the current active config")
+        if (running_config == $('#config_selector').val()) {
+            serviceAlert("danger", "You cannot delete the current running config")
+        }
+        else if (active_config == $('#config_selector').val()) {
+            serviceAlert("danger", "You cannot delete the next enabled config")
         }
         else {
             $.xmlrpc({

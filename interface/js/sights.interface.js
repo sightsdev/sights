@@ -374,7 +374,8 @@ $(document).on("ready", function () {
 	});
 
 	$("#config_selector").on("change", function () {
-		if ($("#current_config").html() == $('#config_selector').val()) {
+		let selected = $('#config_selector').val();
+		if (running_config == selected || active_config == selected) {
 			$("#config_delete_button").addClass("disabled");
 		}
 		else {

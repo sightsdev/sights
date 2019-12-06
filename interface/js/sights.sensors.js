@@ -21,6 +21,8 @@ var last_sensor_data = {
 // Total RAM
 var memory_total;
 
+var running_config;
+
 // Rainbow
 function rainbow(n) {
 	return 'hsl(' + n * 15 + ', 100%, 50%)';
@@ -164,6 +166,11 @@ function sensorConnection() {
 			if("initial_message" in obj) {
 				requestConfig(function(response) {
 					configReceivedAlert();
+
+					// Set running config
+					running_config = obj["running_config"]
+					$("#current_config").html(running_config);
+					$(".editor_filename").val(running_config);
 
 					// Populate visual editor
 					// Populating advanced editor happens on configEditor change, which fires when the inital config is set
