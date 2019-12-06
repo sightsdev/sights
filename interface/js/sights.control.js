@@ -262,38 +262,25 @@ $(document).on("ready", function () {
 
 	// Advanced config editor button actions
 	$(".editor_save_button").on("click", function () {
-		var contents = $("#advanced_editor_pre")[0].innerText;
-		var tempSavedConfig = savedConfig;
-		var fileName = $(".editor_filename").val() + ".json";
-		try {
-			// Parse from YAML into JS
-			var yml = jsyaml.safeLoad(contents);
-			// And then turn that into a JSON string
-			var val = JSON.stringify(yml, null, '\t');
-			// Update visual editor
-			configEditor.setValue(JSON.parse(val, indent = 4));
-			// Create message event
-			var c_event = {
-				type: "SYSTEM",
-				control: "SAVE_CONFIG",
-				value: [val, fileName]
-			};
-			safeSend(c_event);
-			configSentAlert();
-			savedConfig = JSON.stringify(configEditor.getValue());
-		} catch (e) {
-			configInvalidAlert();
-			savedConfig = tempSavedConfig;
-		}
-		updateConfigAlerts();
+		saveConfig();
     });
+
 	$(".editor_reload_button").on("click", function () {
 		if(!$(".editor_reload_button").hasClass("disabled")) {
-			var c_event = {
-				type: "SYSTEM",
-				control: "REQUEST_CONFIG"
-			};
-			safeSend(c_event);
+            requestConfig(function(response) {
+                configEditor.setValue(response);
+                // Keep a copy to track changes
+                baseConfig = JSON.stringify(configEditor.getValue());
+                savedConfig = baseConfig;
+				// Stringify value of new config to remove key-value pairs with `undefined` value
+				var jsonString = JSON.stringify(response);
+				// Set advanced editor
+				var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+				// Populate advanced editor
+				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
+                updateConfigAlerts();
+                configReceivedAlert();
+            });
 			configRequestedAlert();
 		}
 	});

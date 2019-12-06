@@ -161,34 +161,27 @@ function sensorConnection() {
 			// Update sensor monitor (in log modal)
 			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
-			// Load config file into config editor windows
-			if ("config" in obj) {
-				configReceivedAlert();
+			if("initial_message" in obj) {
+				requestConfig(function(response) {
+					configReceivedAlert();
 
-				// Populate visual editor
-				// Populating advanced editor happens on configEditor change, which fires when the inital config is set
-				configEditor.setValue(obj['config']);
-				// Keep a copy to track changes
-				baseConfig = JSON.stringify(configEditor.getValue());
-				savedConfig = baseConfig;
-				updateConfigAlerts();
+					// Populate visual editor
+					// Populating advanced editor happens on configEditor change, which fires when the inital config is set
+					configEditor.setValue(response);
+					// Keep a copy to track changes
+					baseConfig = JSON.stringify(configEditor.getValue());
+					savedConfig = baseConfig;
+					updateConfigAlerts();
 
-				// Manually set output text of range slider elements
-				$('output', $('#visual_editor_container'))[0].innerText = obj['config']['control']['default_gamepad_speed'];
-				$('output', $('#visual_editor_container'))[1].innerText = obj['config']['control']['default_keyboard_speed'];
+					// Manually set output text of range slider elements
+					$('output', $('#visual_editor_container'))[0].innerText = response['control']['default_gamepad_speed'];
+					$('output', $('#visual_editor_container'))[1].innerText = response['control']['default_keyboard_speed'];
 
-				// Now handle loading stuff from the config file
-				// Enable / disable cameras and set their ports as defined by the config
-				update_cameras(obj['config']['cameras']);
-				update_sensors(obj['config']['sensors']);
-
-			}
-
-			// Current config file name
-			if ("config_file" in obj) {
-				let fileName = obj["config_file"];
-				let editable = fileName.slice(0,-5);
-				$(".editor_filename").val(editable);
+					// Now handle loading stuff from the config file
+					// Enable / disable cameras and set their ports as defined by the config
+					update_cameras(response['cameras']);
+					update_sensors(response['sensors']);
+				});
 			}
 
 			// Software versions

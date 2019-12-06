@@ -104,6 +104,8 @@ function updateConfigSelector() {
                     $("#config_selector").val(config).change();
                     $("#current_config").html(config);
                     $("#config_delete_button").addClass("disabled");
+                    // Set config editor file name
+                    $(".editor_filename").val(config.slice(0,-5));
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Couldn't get active config file");
@@ -114,6 +116,52 @@ function updateConfigSelector() {
             serviceAlert("danger", "Couldn't get available config files");
         }
     });
+}
+
+function requestConfig(callback) {
+    $.xmlrpc({
+        url: '/RPC2',
+        methodName: 'sights_config.requestConfig',
+        params: {},
+        success: function(response, status, jqXHR) {
+            callback(JSON.parse(response));
+        },
+        error: function(jqXHR, status, error) {
+            serviceAlert("danger", "Couldn't get active config file");
+        }
+    });
+}
+
+function saveConfig() {
+    let contents = $("#advanced_editor_pre")[0].innerText;
+    let tempSavedConfig = savedConfig;
+    let fileName = $(".editor_filename").val() + ".json";
+    try {
+        // Parse from YAML into JS
+        let yml = jsyaml.safeLoad(contents);
+        // And then turn that into a JSON string
+        let val = JSON.stringify(yml, null, '\t');
+        // Update visual editor
+        configEditor.setValue(JSON.parse(val, indent = 4));
+        $.xmlrpc({
+            url: '/RPC2',
+            methodName: 'sights_config.saveConfig',
+            params: {value: val, name: fileName},
+            success: function(response, status, jqXHR) {
+                serviceAlert("success", "Saved config file");
+                updateConfigSelector();
+            },
+            error: function(jqXHR, status, error) {
+                serviceAlert("danger", "Couldn't save config file");
+            }
+        });
+        configSentAlert();
+        savedConfig = JSON.stringify(configEditor.getValue());
+    } catch (e) {
+        configInvalidAlert();
+        savedConfig = tempSavedConfig;
+    }
+    updateConfigAlerts();
 }
 
 $(document).on("ready",function () {
