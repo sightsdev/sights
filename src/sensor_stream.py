@@ -103,7 +103,10 @@ class SensorStream(WebSocketProcess):
         msg["memory_total"] = psutil.virtual_memory().total >> 20
         # Send software versions
         msg["version_robot"] = subprocess.check_output(["git", "describe"]).strip().decode('utf-8')
-        msg["version_interface"] = subprocess.check_output(["git", "describe"], cwd="../SIGHTSInterface/").strip().decode('utf-8')
+        msg["version_interface"] = subprocess.check_output(["git", "describe"],
+                                                           cwd="../SIGHTSInterface/").strip().decode('utf-8')
+        msg["version_supervisorext"] = subprocess.check_output(["git", "describe"],
+                                                           cwd="../supervisor_sights_config/").strip().decode('utf-8')
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
         self.logger.info("Sent initial message")
