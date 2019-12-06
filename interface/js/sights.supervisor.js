@@ -180,7 +180,6 @@ $(document).on("ready",function () {
                     serviceAlert("danger", "Couldn't shut down");
                 }
             });
-            shutdownAlert();
         }
     });
 
@@ -200,7 +199,6 @@ $(document).on("ready",function () {
                     serviceAlert("danger", "Couldn't reboot");
                 }
             });
-            rebootAlert();
         }
     });
 
