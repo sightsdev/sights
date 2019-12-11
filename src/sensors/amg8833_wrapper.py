@@ -3,7 +3,7 @@ import Adafruit_AMG88xx.Adafruit_AMG88xx as AMG88xx
 
 class AMG8833Wrapper(SensorWrapper):
     # What type of sensor this wrapper handles
-    _type = 'thermal_camera'
+    _type = 'amg8833'
 
     def __init__(self, config):
         SensorWrapper.__init__(self, config)

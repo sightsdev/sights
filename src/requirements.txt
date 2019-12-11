@@ -4,5 +4,6 @@ websockets>=7.0
 pyserial>=3.4
 PySGP30
 PyMLX90614
+Adafruit_AMG88xx
 smbus2
 multiprocessing-logging
