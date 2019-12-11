@@ -2,15 +2,15 @@ from sensor_wrapper import SensorWrapper
 import psutil
 
 class MemoryWrapper(SensorWrapper):
-    _key = 'memory'
+    # What type of sensor this wrapper handles
+    _type = 'memory'
 
-    def __init__(self):
-        SensorWrapper.__init__(self)
+    def __init__(self, config):
+        SensorWrapper.__init__(self, config)
 
     def get_data(self):
-        msg = {}
         # Get memory in use and add to msg, using bit shift operator to represent in MB
-        msg["memory_used"] = psutil.virtual_memory().used >> 20
+        msg = { "memory": psutil.virtual_memory().used >> 20 }
         return msg
 
     def get_info(self):

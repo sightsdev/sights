@@ -1,14 +1,14 @@
 from sensor_wrapper import SensorWrapper
 import Adafruit_AMG88xx.Adafruit_AMG88xx as AMG88xx
 
-# Using deprecated library:
-# https://github.com/adafruit/Adafruit_AMG88xx_python
-
 class AMG8833Wrapper(SensorWrapper):
-    _key = 'thermal_camera'
+    # What type of sensor this wrapper handles
+    _type = 'thermal_camera'
 
-    def __init__(self):
-        SensorWrapper.__init__(self)
+    def __init__(self, config):
+        SensorWrapper.__init__(self, config)
+
+        # Create sensor object
         self.sensor = AMG88xx()
 
     def get_data(self):

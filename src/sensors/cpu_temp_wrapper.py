@@ -2,10 +2,11 @@ from sensor_wrapper import SensorWrapper
 import psutil
 
 class CPUTempWrapper(SensorWrapper):
-    _key = 'cpu_temp'
+    # What type of sensor this wrapper handles
+    _type = 'cpu_temp'
     
-    def __init__(self):
-        SensorWrapper.__init__(self)
+    def __init__(self, config):
+        SensorWrapper.__init__(self, config)
 
     def get_data(self):
         msg = {}

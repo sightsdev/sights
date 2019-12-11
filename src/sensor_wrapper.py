@@ -2,38 +2,26 @@ import time
 import logging
 
 class SensorWrapper:
-    def __init__(self, bus=None):
+    def __init__(self, config, bus=None):
         # Setup logger
         self.logger = logging.getLogger(__name__)
         # i2c bus, if required
         self.bus = bus
         # Last time data get_data was called
         self.last_run = time.time()
-        # Disabled by default
-        self.enabled = False
 
-    def load_config(self, config):
-        try:
-            # Whether or not sensor is enabled
-            self.enabled = config[self._key]['enabled']
-        except KeyError:
-            # Encountered an error getting values from config
-            self.logger.warning(f"Config block for {self._key} does not exist or is malformed! Check your config.")
-            self.enabled = False
-            self.frequency = -1
+        # Attempt to load the sensor's configuration
+        
+        # If any of these required values do not exist, display a warning
+        if {'enabled', 'type', 'frequency', 'name'} > set(config):
+            self.logger.warning(f"Sensor config entry: {config} is malformed! Check your config.")
 
-        if self.enabled:
-            try:
-                # How often to get data from this sensor
-                self.frequency = config[self._key]['frequency']
-            except KeyError:
-                # Failed to get frequency; warn the user and set a reasonable default value
-                self.logger.warning(f"Frequency for {self._key} sensor not set! Check your config.")
-                self.frequency = 1
-                self.logger.info(f"Set frequency for {self._key} sensor to default: {self.frequency}.")
-        else:
-            # Sensor is disabled. Frequency is still required.
-            self.frequency = -1
+        # This will always work since we already accessed config["type"] to create this instance
+        self.type = config.get('type')
+        # Load essential configuration options
+        self.enabled = config.get('enabled', False)
+        self.frequency = config.get('frequency', -1)
+        self.name = config.get('name', self.type)
 
     def get_data(self):
         return None
