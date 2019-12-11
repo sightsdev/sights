@@ -1,6 +1,7 @@
 const schema = {
-    "definitions": {},
-    "$schema": "",
+    "definitions": {
+    },
+    "$schema": "http://json-schema.org/schema#",
     "$id": "http://example.com/root.json",
     "type": "object",
     "title": "SIGHTS Robot Config",
@@ -106,7 +107,10 @@ const schema = {
                     "pattern": "^(.*)$",
                     "options": {
                         "dependencies": {
-                            "type": ["dynamixel", "serial"]
+                            "type": [
+                                "dynamixel",
+                                "serial"
+                            ]
                         }
                     }
                 },
@@ -118,7 +122,10 @@ const schema = {
                     "default": 1000000,
                     "options": {
                         "dependencies": {
-                            "type": ["dynamixel", "serial"]
+                            "type": [
+                                "dynamixel",
+                                "serial"
+                            ]
                         }
                     }
                 },
@@ -207,9 +214,9 @@ const schema = {
                     "description": "Baud rate of the serial port. Commonly set to 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600 or 115200.",
                     "default": 115200,
                     "options": {
-                         "dependencies": {
-                             "enabled": true
-                         }
+                        "dependencies": {
+                            "enabled": true
+                        }
                     }
                 }
             }
@@ -373,259 +380,213 @@ const schema = {
         },
         "sensors": {
             "$id": "#/properties/sensors",
-            "type": "object",
+            "type": "array",
+            "format": "table",
             "options": {
                 "collapsed": true
             },
             "title": "Sensors",
             "description": "Enable and configure individual sensor streams.",
-            "required": [
-                "memory",
-                "cpu_temp",
-                "thermal_camera",
-                "temperature",
-                "distance",
-                "gas"
-            ],
-            "properties": {
-                "memory": {
-                    "$id": "#/properties/sensors/properties/memory",
-                    "type": "object",
-                    "options": {
-                        "collapsed": true
+            "items": {
+                "anyOf": [
+                    {
+                        "type": "object",
+                        "title": "Temperature Sensor",
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable Sensor",
+                                "description": "Whether the temperature sensor is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Sensor Type",
+                                "description": "The type of temperature sensor wrapper to use when polling the sensor.",
+                                "enum": [
+                                    "mlx90614"
+                                ],
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Sensor Name",
+                                "description": "The pretty name for the temperature sensor.",
+                                "default": "New Sensor"
+                            },
+                            "address": {
+                                "type": "string",
+                                "title": "Sensor Address",
+                                "description": "I2C (or similar) device address of the temperature sensor, if required by the sensor wrapper."
+                            },
+                            "frequency": {
+                                "type": "integer",
+                                "title": "Sensor Update Frequency",
+                                "description": "How often, in seconds, the temperature sensor is polled.",
+                                "default": 3
+                            }
+                        }
                     },
-                    "title": "System Memory Reporting",
-                    "description": "Collects and displays system memory usage information on the interface.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/sensors/properties/memory/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Memory Reporting",
-                            "description": "Whether system memory usage information is reported.",
-                            "format": "checkbox",
-                            "default": true
-                        },
-                        "frequency": {
-                            "$id": "#/properties/sensors/properties/memory/properties/frequency",
-                            "type": "integer",
-                            "title": "Memory Reporting Update Frequency",
-                            "description": "How often, in seconds, memory usage statistics are collected and updated.",
-                            "default": 3,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
+                    {
+                        "type": "object",
+                        "title": "Host System Performance Sensor",
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable Sensor",
+                                "description": "Whether the sensor is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Sensor Type",
+                                "description": "The type of host system performance sensor wrapper to use when polling the sensor.",
+                                "enum": [
+                                    "memory",
+                                    "cpu_temp"
+                                ],
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Sensor Name",
+                                "description": "The pretty name for the host system performance sensor.",
+                                "default": "New Sensor"
+                            },
+                            "frequency": {
+                                "type": "integer",
+                                "title": "Sensor Update Frequency",
+                                "description": "How often, in seconds, the host system performance sensor is polled.",
+                                "default": 3
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "title": "Thermal Camera",
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable Sensor",
+                                "description": "Whether the thermal camera is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Sensor Type",
+                                "description": "The type of thermal camera sensor wrapper to use when polling the thermal camera.",
+                                "enum": [
+                                    "amg8833"
+                                ],
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Sensor Name",
+                                "description": "The pretty name for the thermal camera.",
+                                "default": "New Sensor"
+                            },
+                            "address": {
+                                "type": "string",
+                                "title": "Sensor Address",
+                                "description": "I2C (or similar) device address of the thermal camera, if required by the sensor wrapper."
+                            },
+                            "frequency": {
+                                "type": "integer",
+                                "title": "Sensor Update Frequency",
+                                "description": "How often, in seconds, frames are pulled from the thermal camera.",
+                                "default": 3
+                            },
+                            "width": {
+                                "type": "integer",
+                                "title": "Thermal Camera Sensor Width",
+                                "description": "The width, in pixels, of the thermal camera."
+                            },
+                            "height": {
+                                "type": "integer",
+                                "title": "Thermal Camera Sensor Height",
+                                "description": "The height, in pixels, of the thermal camera."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "title": "Gas Sensor",
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable Sensor",
+                                "description": "Whether the gas sensor is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Sensor Type",
+                                "description": "The type of gas sensor wrapper to use when polling the sensor.",
+                                "enum": [
+                                    "sgp30"
+                                ],
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Sensor Name",
+                                "description": "The pretty name for the gas sensor.",
+                                "default": "New Sensor"
+                            },
+                            "address": {
+                                "type": "string",
+                                "title": "Sensor Address",
+                                "description": "I2C (or similar) device address of the gas sensor, if required by the sensor wrapper."
+                            },
+                            "frequency": {
+                                "type": "integer",
+                                "title": "Sensor Update Frequency",
+                                "description": "How often, in seconds, the gas sensor is polled.",
+                                "default": 3
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "title": "Custom Sensor",
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable Sensor",
+                                "description": "Whether the custom sensor is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Sensor Type",
+                                "description": "The type of custom sensor wrapper to use when polling the sensor."
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Sensor Name",
+                                "description": "The pretty name for the custom sensor.",
+                                "default": "New Sensor"
+                            },
+                            "address": {
+                                "type": "string",
+                                "title": "Sensor Address",
+                                "description": "I2C (or similar) device address of the custom sensor, if required by your custom sensor wrapper."
+                            },
+                            "frequency": {
+                                "type": "integer",
+                                "title": "Sensor Update Frequency",
+                                "description": "How often, in seconds, the custom sensor is polled.",
+                                "default": 3
                             }
                         }
                     }
-                },
-                "cpu_temp": {
-                    "$id": "#/properties/sensors/properties/cpu_temp",
-                    "type": "object",
-                    "options": {
-                        "collapsed": true
-                    },
-                    "title": "CPU Temperature Reporting",
-                    "description": "Collects and displays system CPU temperature information on the interface.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/sensors/properties/cpu_temp/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable CPU Temperature Reporting",
-                            "description": "Whether system CPU temperature information is reported.",
-                            "format": "checkbox",
-                            "default": true
-                        },
-                        "frequency": {
-                            "$id": "#/properties/sensors/properties/cpu_temp/properties/frequency",
-                            "type": "integer",
-                            "title": "CPU Temperature Reporting Update Frequency",
-                            "description": "How often, in seconds, CPU temperature statistics are collected and updated.",
-                            "default": 5,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        }
-                    }
-                },
-                "thermal_camera": {
-                    "$id": "#/properties/sensors/properties/thermal_camera",
-                    "type": "object",
-                    "options": {
-                        "collapsed": true
-                    },
-                    "title": "Thermal Camera Settings",
-                    "description": "Enable and configure the thermal camera stream.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/sensors/properties/thermal_camera/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Thermal Camera",
-                            "description": "Whether the thermal camera is enabled.",
-                            "format": "checkbox",
-                            "default": false
-                        },
-                        "frequency": {
-                            "$id": "#/properties/sensors/properties/thermal_camera/properties/frequency",
-                            "type": "number",
-                            "title": "Thermal Camera Update Frequency",
-                            "description": "How often, in seconds, thermal camera frames are sent.",
-                            "default": 0.5,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        },
-                        "width": {
-                            "$id": "#/properties/sensors/properties/thermal_camera/properties/width",
-                            "type": "integer",
-                            "title": "Thermal Camera Width",
-                            "description": "The width, in pixels, of the thermal camera.",
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        },
-                        "height": {
-                            "$id": "#/properties/sensors/properties/thermal_camera/properties/height",
-                            "type": "integer",
-                            "title": "Thermal Camera Height",
-                            "description": "The height, in pixels, of the thermal camera.",
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        }
-                    }
-                },
-                "temperature": {
-                    "$id": "#/properties/sensors/properties/temperature",
-                    "type": "object",
-                    "options": {
-                        "collapsed": true
-                    },
-                    "title": "Ambient Temperature Settings",
-                    "description": "Enable and configure the ambient temperature sensor.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/sensors/properties/temperature/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Ambient Temperature Sensor",
-                            "description": "Whether the ambient temperature sensor is enabled.",
-                            "format": "checkbox",
-                            "default": false
-                        },
-                        "frequency": {
-                            "$id": "#/properties/sensors/properties/temperature/properties/frequency",
-                            "type": "integer",
-                            "title": "Ambient Temperature Sensor Update Frequency",
-                            "description": "How often, in seconds, ambient temperature is recorded and updated.",
-                            "default": 2,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        },
-                        "address": {
-                            "$id": "#/properties/sensors/properties/temperature/properties/address",
-                            "type": "string",
-                            "title": "Ambient Temperature Address",
-                            "description": "I2C device address of the ambient temperature sensor.",
-                            "pattern": "^(.*)$",
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                               }
-                             }
-                        }
-                    }
-                },
-                "distance": {
-                    "$id": "#/properties/sensors/properties/distance",
-                    "type": "object",
-                    "options": {
-                        "collapsed": true
-                    },
-                    "title": "Distance Sensor Array Settings",
-                    "description": "Enable and configure the distance sensor array.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/sensors/properties/distance/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Distance Sensor Array",
-                            "description": "Whether the distance sensor array is enabled.",
-                            "format": "checkbox",
-                            "default": false
-                        },
-                        "frequency": {
-                            "$id": "#/properties/sensors/properties/distance/properties/frequency",
-                            "type": "integer",
-                            "title": "Distance Sensor Array Update Frequency",
-                            "description": "How often, in seconds, distance is recorded and updated.",
-                            "default": 2,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        }
-                    }
-                },
-                "gas": {
-                    "$id": "#/properties/sensors/properties/gas",
-                    "type": "object",
-                    "options": {
-                        "collapsed": true
-                    },
-                    "title": "Gas Sensor Settings",
-                    "description": "Enable and configure the CO2/VOC sensor.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/sensors/properties/gas/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Gas Sensor",
-                            "description": "Whether the CO2/VOC sensor is enabled.",
-                            "format": "checkbox",
-                            "default": false
-                        },
-                        "frequency": {
-                            "$id": "#/properties/sensors/properties/gas/properties/frequency",
-                            "type": "integer",
-                            "title": "Gas Sensor Update Frequency",
-                            "description": "How often, in seconds, the CO2 and VOC concentrations are recorded and updated.",
-                            "default": 2,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        }
-                    }
-                }
+                ]
             }
         },
         "debug": {
