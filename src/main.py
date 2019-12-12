@@ -15,7 +15,7 @@ class Manager:
         self.logger.info("Starting manager process")
         # Store config file name
         self.config_file = config_file
-        self.logger.info("Using config file: " + self.config_file)
+        self.logger.info(f"Using config file: '{self.config_file}'")
 
     def terminate(self):
         # Terminate the two processes we spawn
@@ -25,18 +25,15 @@ class Manager:
         self.control_process.join()
 
     def sigint(self, signal, frame):
-        self.logger.info("Received INT signal. Terminating.")
+        self.logger.info("Received interrupt signal. Terminating.")
         # Make sure we terminate the child processes to prevent a zombie uprising
         self.terminate()
         # Also kill this process too
         sys.exit(0)
 
     def run(self):
-        # Save process ID to file
-        self.pid = str(os.getpid())
-        with open('../sights.pid', 'w') as f:
-            f.write(self.pid)
-        self.logger.info("PID {}".format(self.pid))
+        # Log process ID to file
+        self.logger.info(f"Process ID (PID): {os.getpid()}")
         # Create pipe. sensor_pipe receives, and control_pipe sends
         self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
         # Create server and receiver processes
@@ -54,11 +51,6 @@ class Manager:
         self.logger.info("Exiting manager process")
 
 if __name__ == '__main__':
-    # Setup logger
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
-    multiprocessing_logging.install_mp_handler()
-    logger = logging.getLogger(__name__)
-
     # Get active config from ACTIVE_CONFIG file
     try:
         with open("configs/ACTIVE_CONFIG", 'r') as f:
@@ -66,6 +58,11 @@ if __name__ == '__main__':
     # Otherwise fallback to default.json
     except FileNotFoundError:
         config_file = "src/configs/sights/minimal.json"
+
+    # Setup logger
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
+    multiprocessing_logging.install_mp_handler()
+    logger = logging.getLogger(__name__)
     
     # Create manager object
     manager = Manager(config_file, logger)
@@ -73,8 +70,7 @@ if __name__ == '__main__':
     # Main program loop
     # If the restart flag is enabled we want to run the main function
     try:
-        while(manager.run()):
-            logger.info("Going to restart")
+        manager.run()
     except (KeyError, json.decoder.JSONDecodeError):
         logger.warning("Config error! SIGHTS will now terminate.")
         logger.info("Review your config file or restore a backup.")

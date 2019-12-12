@@ -195,7 +195,7 @@ class SensorStream(WebSocketProcess):
                                                            cwd="../supervisor_sights_config/").strip().decode('utf-8')
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
-        self.logger.info("Sent initial message")
+        self.logger.debug("Sent initial message")
 
     async def main(self, websocket, path):
         self.logger.info(f"New client connected ({websocket.remote_address[0]})")
