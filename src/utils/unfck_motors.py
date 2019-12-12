@@ -5,22 +5,28 @@ from pyax12.connection import Connection
 from argparse import ArgumentParser
 import json
 
+port = "/dev/ttyACM0"
+baudrate = 1000000
+
 # Setup argument parser for config file loading
 parser = ArgumentParser()
 # Create argument for config file
-parser.add_argument("-c", "--config", 
-                    dest="config_file", 
-                    help="load specified configuration file", 
-                    metavar="<file>", 
-                    default=path+"configs/default.json")
+parser.add_argument("-p", "--port", 
+                    dest="port", 
+                    help="serial port for Dynamixel interface", 
+                    metavar="<port>", 
+                    default=port)
+parser.add_argument("-b", "--baudrate", 
+                    dest="baudrate", 
+                    help="baudrate to connect at", 
+                    metavar="<baudrate>", 
+                    default=baudrate)
 # Actually parse the arguments
 args = parser.parse_args()
 
-# Load config file
-config = json.load(open(args.config_file))
-
 # Open connection
-sc = Connection(port=config['motors']['port'], baudrate=config['motors']['baudrate'])
+print(f"Opening connection at {port} with baudrate of {baudrate}")
+sc = Connection(port=port, baudrate=baudrate)
 
 # Clear overheating errors and renable torque or something like that
 sc.write_data(4, 0x18, 0)
