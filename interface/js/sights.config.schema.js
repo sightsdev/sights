@@ -392,6 +392,9 @@ const schema = {
                     {
                         "type": "object",
                         "title": "MLX90614 (Temperature)",
+                        "options": {
+                            "collapsed": true
+                        },
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
@@ -431,6 +434,9 @@ const schema = {
                     {
                         "type": "object",
                         "title": "SGP30 (Gas)",
+                        "options": {
+                            "collapsed": true
+                        },
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
@@ -465,6 +471,9 @@ const schema = {
                     {
                         "type": "object",
                         "title": "AMG8833 (Thermal Camera)",
+                        "options": {
+                            "collapsed": true
+                        },
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
@@ -509,6 +518,9 @@ const schema = {
                     {
                         "type": "object",
                         "title": "Host Memory Usage Monitor",
+                        "options": {
+                            "collapsed": true
+                        },
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
@@ -543,6 +555,9 @@ const schema = {
                     {
                         "type": "object",
                         "title": "Host CPU Temperature Monitor",
+                        "options": {
+                            "collapsed": true
+                        },
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
@@ -577,6 +592,9 @@ const schema = {
                     {
                         "type": "object",
                         "title": "Custom Sensor",
+                        "options": {
+                            "collapsed": true
+                        },
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
