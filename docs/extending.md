@@ -24,8 +24,8 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
 
     # Unique name for the wrapper
     class BME280Wrapper(SensorWrapper):
-        # The key for this sensor that configuation files use
-        _key = 'bme280'
+        # The type of sensor this wrapper handles
+        type_ = 'bme280'
 
         def __init__(self):
             SensorWrapper.__init__(self, bus)
@@ -36,7 +36,7 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
 
             # Temperature in degrees celcius
             temperature = self.sensor.read_temperature()
-            msg["temp"][0] = round(temperature, 2)
+            msg["temperature"][0] = round(temperature, 2)
 
             # Pressure in hectopascals
             pressure = self.sensor.read_pressure() / 100
@@ -49,28 +49,24 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
             return msg
     ```
 
+    A more basic sensor could just return a single string or number value.
+
 3. Add a section to your configuration files for your new sensor
 
     The only required options are whether the sensor is enabled, and how often to poll it. This would be sufficient for the above example.
 
     ```json
-    "bme280": {
+    {
+        "type": "bme280",
+        "name": "BME280 multi-sensor (front)",
         "enabled": true,
-        "frequency": 3
+        "frequnecy": 3
     },
     ```
 
-4. Enable the sensor manually in `sensor_stream.py` until we fix that.
+4. Add the interface side code.
 
-    At the moment, you need to add this to the init function of SensorStream. This will be fixed very soon, I promise.
-
-    ```python
-    self.sensors.append(BME280Wrapper())
-    ```
-
-    This will be done automatically in a nearby future update.
-
-5. Add the interface side code.
+    > This section is outdated, will be fixed shortly
 
     This is naturally very dependent on the type of sensor you are including. Essenitally, add the HTML code and then add an additional `if` statement for your sensor into the `SIGHTSInterface/js/sights.sensors.js` file. It should look something like this:
 
@@ -87,9 +83,9 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
     }
     ```
 
-6. Test it!
+5. Test it!
 
-7. Submit a pull request so we can include your sensor wrapper in the upstream branch!
+6. Submit a pull request so we can include your sensor wrapper in the upstream branch!
 
     We're always happy to merge pull requests that add features. Just make sure your code follows our guidelines!
 
@@ -106,11 +102,11 @@ This is done in the included MLX90614 wrapper. For example to add an `address` o
 def load_config(self, config):
     SensorWrapper.load_config(config)
     # i2c address
-    self.address = config[self._key]['address']
+    self.address = config['address']
 ```
 
 You could do the same to add an `accuracy` option (for example), as long as you have the corresponding key in the config file.
 
 ```python
-self.accuracy = config[self._key]['accuracy']
+self.accuracy = config['accuracy']
 ```
