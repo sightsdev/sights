@@ -89,22 +89,20 @@ class SensorStream(WebSocketProcess):
 
     def get_plugins(self):
         """Adds plugins to sys.path and returns them as a list"""
-        
         registered_plugins = []
         # Check to see if a plugins directory exists and add any found plugins
         if os.path.exists(self.plugin_dir):
             plugins = os.listdir(self.plugin_dir)
+            # Plugins are .py files
             pattern = ".py$"
             for plugin in plugins:
                 plugin_path = os.path.join(self.plugin_dir, plugin)
-                if os.path.splitext(plugin)[1] == ".zip":
-                    sys.path.append(plugin_path)
-                    (plugin, ext) = os.path.splitext(plugin) # Get rid of the .zip extension
-                    registered_plugins.append(plugin)
-                elif plugin != "__init__.py":
+                # Don't load __init__.py as plugin
+                if plugin != "__init__.py":
                     if re.search(pattern, plugin):
                         (shortname, ext) = os.path.splitext(plugin)
                         registered_plugins.append(shortname)
+                # Search in subdirectories too (one level deep)
                 if os.path.isdir(plugin_path):
                     plugins = os.listdir(plugin_path)
                     for plugin in plugins:
@@ -113,6 +111,8 @@ class SensorStream(WebSocketProcess):
                                 (shortname, ext) = os.path.splitext(plugin)
                                 sys.path.append(plugin_path)
                                 registered_plugins.append(shortname)
+        else:
+            self.logger.error("Couldn't find sensor plugin directory. SIGTHS is possibly running in wrong working directory.")
         return registered_plugins
 
     def get_data(self):
@@ -126,11 +126,16 @@ class SensorStream(WebSocketProcess):
         for sensor in self.sensors:
             # Ensure time elapsed is greater than frequency
             if (sensor.is_ready(now)):
-                if sensor.type_ not in msg:
-                    msg[sensor.type_] = {}
-                msg[sensor.type_][sensor.index] = {}
-                msg[sensor.type_][sensor.index]["name"] = sensor.name 
-                msg[sensor.type_][sensor.index]["data"] = sensor.get_data()
+                data = sensor.get_data()
+                # Make sure we actually got data from the sensor
+                if data is not None:
+                    if sensor.type_ not in msg:
+                        msg[sensor.type_] = {}
+                    # Create message
+                    msg[sensor.type_][sensor.index] = {
+                        "name": sensor.name
+                        "data": data
+                    }
 
         # Get data from Arduino. This is only here for backwards compatibility
         if self.arduino_enabled:
