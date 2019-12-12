@@ -31,7 +31,7 @@ class SensorStream(WebSocketProcess):
                                     baudrate=self.config['arduino']['baudrate'])
             except serial.serialutil.SerialException:
                 self.logger.error("Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
-                self.logger.info("Continuing without Arduino connection\n")
+                self.logger.warning("Continuing without Arduino connection\n")
                 self.arduino_enabled = False
         # Setup i2c stuff
         #self.i2cbus = SMBus(1)
@@ -113,7 +113,7 @@ class SensorStream(WebSocketProcess):
                                 sys.path.append(plugin_path)
                                 registered_plugins.append(shortname)
         else:
-            self.logger.error("Couldn't find sensor plugin directory. SIGTHS is possibly running in wrong working directory.")
+            self.logger.error("Couldn't find sensor plugin directory. SIGHTS is possibly running in wrong working directory.")
         return registered_plugins
 
     def get_data(self):
@@ -172,7 +172,7 @@ class SensorStream(WebSocketProcess):
         # Create message with type and value of the speed
         msg[typ + "_speed"] = speed
         await self.websocket.send(json.dumps(msg))
-        self.logger.info("Syncronized speed setting")
+        self.logger.debug("Syncronized speed setting")
 
     async def send_init_info(self):
         msg = {}
@@ -198,7 +198,7 @@ class SensorStream(WebSocketProcess):
         self.logger.info("Sent initial message")
 
     async def main(self, websocket, path):
-        self.logger.info("Client connected")
+        self.logger.info(f"New client connected ({websocket.remote_address[0]})")
         # Store websocket
         self.websocket = websocket
         # Send the initial info to notify interface that the service is ready.
@@ -218,5 +218,5 @@ class SensorStream(WebSocketProcess):
                 # Short sleep to prevent issues
                 await asyncio.sleep(0.05)
             except websockets.exceptions.ConnectionClosed:
-                self.logger.info("Client disconnected")
+                self.logger.info(f"Client disconnected ({websocket.remote_address[0]})")
                 break
