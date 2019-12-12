@@ -184,34 +184,37 @@ install_supervisor () {
         sed -i -e '$i \supervisord &\n' /etc/rc.local
     fi
 
-    echo -e "\nRunning Supervisor"
+    echo -e "\nRunning Supervisor..."
     supervisord
     echo
     print_detected_ip ":9001/"
 }
 
 update () {
-    echo -e "\nPerforming a basic update"
-    apt update
-    apt upgrade -y
+    #echo -e "\nPerforming a system update"
+    #apt update
+    #apt upgrade -y
 
-    echo -e "\nUpdating SIGHTSRobot"
+    echo -e "\nUpdating SIGHTSRobot..."
     cd SIGHTSRobot
     git pull
     cd ..
 
-    echo -e "\nUpdating SIGHTSInterface"
+    echo -e "\nUpdating SIGHTSInterface..."
     cd SIGHTSInterface
     git pull
     cd ..
 
-    echo -e "\nUpdating Supervisor SIGHTS extension"
+    echo -e "\nUpdating Supervisor SIGHTS extension..."
     cd supervisor_sights_config
     git pull
     cd ..
     python3 -m pip install ./supervisor_sights_config
 
-    echo -e "Update complete!"
+    echo -e "\nRestarting SIGHTS..."
+    supervisorctl restart sights
+
+    echo -e "\nUpdate complete!"
     echo
     print_detected_ip "/"
 }
