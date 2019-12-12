@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-import pyax12.connection
 from pyax12.status_packet import RangeError
+import pyax12.connection
 import serial
 import logging
 

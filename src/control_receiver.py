@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from motors import Motors
+from websocket_process import WebSocketProcess
 import websockets
 import asyncio
 import os
@@ -6,8 +8,6 @@ import json
 import math
 import atexit
 import logging
-from motors import Motors
-from websocket_process import WebSocketProcess
 
 class ControlReceiver (WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):

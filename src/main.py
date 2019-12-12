@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-import json
 from multiprocessing import Pipe
 from control_receiver import ControlReceiver
 from sensor_stream import SensorStream
 import signal
 import sys
 import os
+import json
 import logging
 import multiprocessing_logging
 
