@@ -23,6 +23,8 @@ class WebSocketProcess (multiprocessing.Process):
             self.ip = self.config['network']['ip'] 
         else:
             self.ip = '*'
+        # Set name
+        self.name = self.__class__.__name__
 
     def run(self):
         self.logger.info("Starting " + self.name + " process at " + self.ip + ":" + str(self.port))
