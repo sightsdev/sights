@@ -31,10 +31,15 @@
   border-color:#505050;
 }
 
-[data-theme="dark"] .custom-select {
+[data-theme="dark"] select {
   background-color: transparent;
   color: #d8d8d8;
   border-color: #505050;
+}
+
+[data-theme="dark"] select option {
+  background-color: #1A1A1A;
+  color: #d8d8d8;
 }
 
 
