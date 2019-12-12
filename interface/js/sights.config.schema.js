@@ -391,162 +391,185 @@ const schema = {
                 "anyOf": [
                     {
                         "type": "object",
-                        "title": "Temperature Sensor",
+                        "title": "MLX90614 (Temperature)",
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
-                                "title": "Enable Sensor",
-                                "description": "Whether the temperature sensor is enabled",
+                                "title": "Enable",
+                                "description": "Whether the MLX90614 sensor is enabled",
                                 "format": "checkbox",
                                 "default": true
                             },
                             "type": {
                                 "type": "string",
-                                "title": "Sensor Type",
-                                "description": "The type of temperature sensor wrapper to use when polling the sensor.",
+                                "title": "Type",
                                 "enum": [
                                     "mlx90614"
                                 ],
+                                "default": "mlx90614",
                                 "format": "radio"
                             },
                             "name": {
                                 "type": "string",
-                                "title": "Sensor Name",
-                                "description": "The pretty name for the temperature sensor.",
+                                "title": "Name",
+                                "description": "The pretty name for the MLX90614 sensor.",
                                 "default": "New Sensor"
                             },
                             "address": {
                                 "type": "string",
-                                "title": "Sensor Address",
-                                "description": "I2C (or similar) device address of the temperature sensor, if required by the sensor wrapper."
+                                "title": "Address",
+                                "description": "I2C device address of the MLX90614 sensor."
                             },
                             "frequency": {
                                 "type": "integer",
-                                "title": "Sensor Update Frequency",
-                                "description": "How often, in seconds, the temperature sensor is polled.",
+                                "title": "Update Frequency",
+                                "description": "How often, in seconds, the MLX90614 sensor is polled.",
                                 "default": 3
                             }
                         }
                     },
                     {
                         "type": "object",
-                        "title": "Host System Performance Sensor",
+                        "title": "SGP30 (Gas)",
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
-                                "title": "Enable Sensor",
-                                "description": "Whether the sensor is enabled",
+                                "title": "Enable",
+                                "description": "Whether the SGP30 sensor is enabled",
                                 "format": "checkbox",
                                 "default": true
                             },
                             "type": {
                                 "type": "string",
-                                "title": "Sensor Type",
-                                "description": "The type of host system performance sensor wrapper to use when polling the sensor.",
+                                "title": "Type",
                                 "enum": [
-                                    "memory",
-                                    "cpu_temp"
+                                    "sgp30"
                                 ],
+                                "default": "sgp30",
                                 "format": "radio"
                             },
                             "name": {
                                 "type": "string",
-                                "title": "Sensor Name",
-                                "description": "The pretty name for the host system performance sensor.",
+                                "title": "Name",
+                                "description": "The pretty name for the SGP30 sensor.",
                                 "default": "New Sensor"
                             },
                             "frequency": {
                                 "type": "integer",
-                                "title": "Sensor Update Frequency",
-                                "description": "How often, in seconds, the host system performance sensor is polled.",
+                                "title": "Update Frequency",
+                                "description": "How often, in seconds, the SGP30 sensor is polled.",
                                 "default": 3
                             }
                         }
                     },
                     {
                         "type": "object",
-                        "title": "Thermal Camera",
+                        "title": "AMG8833 (Thermal Camera)",
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
-                                "title": "Enable Sensor",
-                                "description": "Whether the thermal camera is enabled",
+                                "title": "Enable",
+                                "description": "Whether the AMG8833 thermal camera is enabled",
                                 "format": "checkbox",
                                 "default": true
                             },
                             "type": {
                                 "type": "string",
-                                "title": "Sensor Type",
-                                "description": "The type of thermal camera sensor wrapper to use when polling the thermal camera.",
+                                "title": "Type",
                                 "enum": [
                                     "amg8833"
                                 ],
+                                "default": "amg8833",
                                 "format": "radio"
                             },
                             "name": {
                                 "type": "string",
-                                "title": "Sensor Name",
-                                "description": "The pretty name for the thermal camera.",
+                                "title": "Name",
+                                "description": "The pretty name for the AMG8833 thermal camera.",
                                 "default": "New Sensor"
-                            },
-                            "address": {
-                                "type": "string",
-                                "title": "Sensor Address",
-                                "description": "I2C (or similar) device address of the thermal camera, if required by the sensor wrapper."
                             },
                             "frequency": {
                                 "type": "integer",
-                                "title": "Sensor Update Frequency",
-                                "description": "How often, in seconds, frames are pulled from the thermal camera.",
+                                "title": "Update Frequency",
+                                "description": "How often, in seconds, frames are pulled from the AMG8833 thermal camera.",
                                 "default": 3
                             },
                             "width": {
                                 "type": "integer",
-                                "title": "Thermal Camera Sensor Width",
+                                "title": "Thermal Camera Width",
                                 "description": "The width, in pixels, of the thermal camera."
                             },
                             "height": {
                                 "type": "integer",
-                                "title": "Thermal Camera Sensor Height",
+                                "title": "Thermal Camera Height",
                                 "description": "The height, in pixels, of the thermal camera."
                             }
                         }
                     },
                     {
                         "type": "object",
-                        "title": "Gas Sensor",
+                        "title": "Host Memory Usage Monitor",
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
-                                "title": "Enable Sensor",
-                                "description": "Whether the gas sensor is enabled",
+                                "title": "Enable",
+                                "description": "Whether the memory monitor is enabled",
                                 "format": "checkbox",
                                 "default": true
                             },
                             "type": {
                                 "type": "string",
-                                "title": "Sensor Type",
-                                "description": "The type of gas sensor wrapper to use when polling the sensor.",
+                                "title": "Type",
                                 "enum": [
-                                    "sgp30"
+                                    "memory"
                                 ],
+                                "default": "memory",
                                 "format": "radio"
                             },
                             "name": {
                                 "type": "string",
-                                "title": "Sensor Name",
-                                "description": "The pretty name for the gas sensor.",
+                                "title": "Name",
+                                "description": "The pretty name for the memory monitor.",
                                 "default": "New Sensor"
-                            },
-                            "address": {
-                                "type": "string",
-                                "title": "Sensor Address",
-                                "description": "I2C (or similar) device address of the gas sensor, if required by the sensor wrapper."
                             },
                             "frequency": {
                                 "type": "integer",
-                                "title": "Sensor Update Frequency",
-                                "description": "How often, in seconds, the gas sensor is polled.",
+                                "title": "Update Frequency",
+                                "description": "How often, in seconds, the memory monitor updates.",
+                                "default": 3
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "title": "Host CPU Temperature Monitor",
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable",
+                                "description": "Whether the CPU temperature monitor is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Type",
+                                "enum": [
+                                    "cpu_temp"
+                                ],
+                                "default": "cpu_temp",
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Name",
+                                "description": "The pretty name for the CPU temperature monitor.",
+                                "default": "New Sensor"
+                            },
+                            "frequency": {
+                                "type": "integer",
+                                "title": "Update Frequency",
+                                "description": "How often, in seconds, the CPU temperature monitor updates.",
                                 "default": 3
                             }
                         }
