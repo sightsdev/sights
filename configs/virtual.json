@@ -43,7 +43,7 @@
 		},
 		{
 			"type": "mlx90614",
-			"name": "Temperature Sensor (front)",
+			"name": "Temperature Sensor",
 			"enabled": false,
 			"frequency": 2,
 			"address": "0x5A"
@@ -56,13 +56,7 @@
 		},
 		{
 			"type": "memory",
-			"name": "System Memory 1",
-			"enabled": true,
-			"frequency": 2
-		},
-		{
-			"type": "memory",
-			"name": "System Memory 2",
+			"name": "System Memory",
 			"enabled": true,
 			"frequency": 2
 		},

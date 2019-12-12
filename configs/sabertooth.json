@@ -34,35 +34,41 @@
 			"id": 3
 		}
 	},
-	"sensors": {
-		"temperature": {
-			"address": "0x5A",
-			"frequency": 2,
-			"enabled": false
-		},
-		"gas": {
-			"frequency": 2,
-			"enabled": false
-		},
-		"distance": {
-			"frequency": 2,
-			"enabled": false
-		},
-		"memory": {
-			"frequency": 3,
-			"enabled": true
-		},
-		"cpu_temp": {
-			"frequency": 5,
-			"enabled": false
-		},
-		"thermal_camera": {
-			"width": 32,
-			"height": 24,
+	"sensors": [
+		{
+			"type": "amg8833",
+			"name": "Thermal Camera",
+			"enabled": false,
 			"frequency": 0.5,
-			"enabled": false
+			"width": 32,
+			"height": 24
+		},
+		{
+			"type": "mlx90614",
+			"name": "Temperature Sensor",
+			"enabled": false,
+			"frequency": 2,
+			"address": "0x5A"
+		},
+		{
+			"type": "sgp30",
+			"name": "Gas Sensor",
+			"enabled": false,
+			"frequency": 2
+		},
+		{
+			"type": "memory",
+			"name": "System Memory",
+			"enabled": true,
+			"frequency": 2
+		},
+		{
+			"type": "cpu_temp",
+			"name": "CPU Temperature",
+			"enabled": true,
+			"frequency": 5
 		}
-	},
+	],
 	"debug": {
 		"print_messages": false
 	}
