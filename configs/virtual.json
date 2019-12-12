@@ -69,7 +69,7 @@
 		{
 			"type": "cpu_temp",
 			"name": "CPU Temperature",
-			"enabled": false,
+			"enabled": true,
 			"frequency": 5
 		}
 	],

@@ -14,7 +14,7 @@ class SensorWrapper:
         # Load essential configuration options
         self.enabled = config.get('enabled', False)
         self.frequency = config.get('frequency', -1)
-        self.name = config.get('name', self.type)
+        self.name = config.get('name', self.type_)
 
     def get_data(self):
         return None   

@@ -133,7 +133,7 @@ class SensorStream(WebSocketProcess):
                         msg[sensor.type_] = {}
                     # Create message
                     msg[sensor.type_][sensor.index] = {
-                        "name": sensor.name
+                        "name": sensor.name,
                         "data": data
                     }
 
