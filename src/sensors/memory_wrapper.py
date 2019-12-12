@@ -11,6 +11,3 @@ class MemoryWrapper(SensorWrapper):
     def get_data(self):
         # Get memory in use and add to msg, using bit shift operator to represent in MB
         return psutil.virtual_memory().used >> 20
-
-    def get_info(self):
-        return psutil.virtual_memory()

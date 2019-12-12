@@ -7,7 +7,6 @@ class AMG8833Wrapper(SensorWrapper):
 
     def __init__(self, config):
         SensorWrapper.__init__(self, config)
-
         # Create sensor object
         self.sensor = AMG88xx()
 

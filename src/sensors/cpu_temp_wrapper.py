@@ -28,6 +28,3 @@ class CPUTempWrapper(SensorWrapper):
         elif 'cpu-thermal' in temp_data:
             temperature = temp_data['cpu-thermal'][0].current
         return temperature
-
-    def get_info(self):
-        return psutil.sensors_temperatures()

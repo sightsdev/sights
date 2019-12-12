@@ -7,7 +7,6 @@ class SGP30Wrapper(SensorWrapper):
 
     def __init__(self, config, bus):
         SensorWrapper.__init__(self, config, bus)
-
         # Create sensor object
         self.sensor = SGP30(self.bus)
         self.sensor.init_sgp()
@@ -19,6 +18,3 @@ class SGP30Wrapper(SensorWrapper):
             "tvoc": data[0][1]
         }
         return msg
-
-    def get_info(self):
-        return self.sensor.read_features() + self.sensor.read_serial()
