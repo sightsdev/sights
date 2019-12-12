@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from smbus2 import SMBus
 from websocket_process import WebSocketProcess
+from sensor_wrapper import SensorWrapper
 import importlib
 import websockets
 import asyncio
@@ -56,11 +57,11 @@ class SensorStream(WebSocketProcess):
             classes = inspect.getmembers(plugin, inspect.isclass)
             class_ = None
             for c in classes:
-                # 'type_' is a variable that is (hopefully) only on the sensor wrapper class
-                if 'type_' in dir(c[1]):
+                # To find the correct class, we check if it's a subclass of SensorWrapper (and is not SensorWrapper itself)
+                if c[1] != SensorWrapper and issubclass(c[1], SensorWrapper):
                     # We've found the sensor wrapper class
                     class_ = c[1]
-            # Assign the discovered class tot he appropriate key (eg. assign MLX90614Wrapper to sensors of type 'mlx90614')
+            # Assign the discovered class to the appropriate key (eg. assign MLX90614Wrapper class to sensors of type 'mlx90614')
             self.wrappers[class_.type_] = class_
             # Log information about enabled plugin
             self.logger.info(f"Enabling plugin '{plugin_name}' for '{class_.type_}' using class: {class_}")
