@@ -3,7 +3,7 @@ from sgp30 import SGP30
 
 class SGP30Wrapper(SensorWrapper):
     # What type of sensor this wrapper handles
-    _type = 'sgp30'
+    type_ = 'sgp30'
 
     def __init__(self, config, bus):
         SensorWrapper.__init__(self, config, bus)

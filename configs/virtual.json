@@ -56,20 +56,20 @@
 		},
 		{
 			"type": "memory",
-			"name": "System Memory",
+			"name": "System Memory 1",
 			"enabled": true,
-			"frequency": 1
+			"frequency": 2
 		},
 		{
 			"type": "memory",
 			"name": "System Memory 2",
 			"enabled": true,
-			"frequency": 1
+			"frequency": 2
 		},
 		{
 			"type": "cpu_temp",
 			"name": "CPU Temperature",
-			"enabled": true,
+			"enabled": false,
 			"frequency": 5
 		}
 	],

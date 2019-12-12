@@ -13,6 +13,7 @@ import subprocess
 import re
 import sys
 import inspect
+import time
 
 class SensorStream(WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
@@ -40,6 +41,8 @@ class SensorStream(WebSocketProcess):
         self.plugins = self.get_plugins()
         # Create sensor name -> appropriate class lookup table
         self.wrappers = {}
+        # Create dict to store the number of each type of sensor
+        self.sensor_count = {}
 
         # Add plugin directory to path to ensure we can import modules from there
         if not self.plugin_dir in sys.path:
@@ -53,12 +56,14 @@ class SensorStream(WebSocketProcess):
             classes = inspect.getmembers(plugin, inspect.isclass)
             class_ = None
             for c in classes:
-                if '_type' in dir(c[1]):
+                # 'type_' is a variable that is (hopefully) only on the sensor wrapper class
+                if 'type_' in dir(c[1]):
+                    # We've found the sensor wrapper class
                     class_ = c[1]
-            # Log information about enabled plugin
-            self.logger.info(f"Enabling plugin '{plugin_name}' for '{class_._type}' using class: {class_}")
             # Assign the discovered class tot he appropriate key (eg. assign MLX90614Wrapper to sensors of type 'mlx90614')
-            self.wrappers[class_._type] = class_
+            self.wrappers[class_.type_] = class_
+            # Log information about enabled plugin
+            self.logger.info(f"Enabling plugin '{plugin_name}' for '{class_.type_}' using class: {class_}")
 
         # Create list of sensors
         self.sensors = []
@@ -67,9 +72,19 @@ class SensorStream(WebSocketProcess):
         for sensor_config in self.config['sensors']:
             if sensor_config.get('enabled', False):
                 # Find the appropriate wrapper class and create the sensor object
-                sensor = self.wrappers[sensor_config['type']](sensor_config)
+                type_ = sensor_config['type']
+                sensor = self.wrappers[type_](sensor_config)
+                # Count the number of times we create a sensor of this type, to assign a unique id
+                if not type_ in self.sensor_count:
+                    self.sensor_count[type_] = 1
+                else:
+                    self.sensor_count[type_] += 1
+                # Assign index
+                sensor.index = self.sensor_count[type_]
                 # Add to list of sensors
                 self.sensors.append(sensor)
+                self.logger.info(f"Created sensor of type '{type_}' (#{sensor.index})")
+        self.logger.info(f"Loaded {len(self.sensors)} sensors")
         
 
     def get_plugins(self):
@@ -104,11 +119,18 @@ class SensorStream(WebSocketProcess):
         # Create empty message
         msg = {}
 
+        # Ensure that the time is the same across sensors
+        now = time.time()
+
         # Get data from each Sensor
         for sensor in self.sensors:
             # Ensure time elapsed is greater than frequency
-            if (sensor.is_ready()):
-                msg.update(sensor.get_data())
+            if (sensor.is_ready(now)):
+                if sensor.type_ not in msg:
+                    msg[sensor.type_] = {}
+                msg[sensor.type_][sensor.index] = {}
+                msg[sensor.type_][sensor.index]["name"] = sensor.name 
+                msg[sensor.type_][sensor.index]["data"] = sensor.get_data()
 
         # Get data from Arduino. This is only here for backwards compatibility
         if self.arduino_enabled:
