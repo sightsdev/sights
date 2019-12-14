@@ -193,6 +193,7 @@ class SensorStream(WebSocketProcess):
                                                            cwd="../SIGHTSInterface/").strip().decode('utf-8')
         msg["version_supervisorext"] = subprocess.check_output(["git", "describe"],
                                                            cwd="../supervisor_sights_config/").strip().decode('utf-8')
+        msg["available_plugins"] = self.plugins
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
         self.logger.debug("Sent initial message")
