@@ -206,6 +206,7 @@ enable_i2c () {
         if grep -q 'i2c-dev' /etc/modules; then
             echo -e 'i2c-dev module already enabled.'
         else
+            modprobe i2c-dev
             echo 'i2c-dev' >> /etc/modules
             echo -e 'Enabled i2c-dev module.'
         fi
