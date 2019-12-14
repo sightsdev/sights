@@ -190,6 +190,48 @@ install_supervisor () {
     print_detected_ip ":9001/"
 }
 
+enable_i2c () {
+    if [ $DETECTED_OS == "raspbian" ]
+    then 
+        echo -e '\nEnabling i2c-bcm2708 module...'
+        if grep -q 'i2c-bcm2708' /etc/modules; then
+            echo 'i2c-bcm2708 module already enabled.'
+        else
+            modprobe i2c-bcm2708
+            echo 'i2c-bcm2708' >> /etc/modules
+            echo -e '\nEnabled i2c-bcm2708 module.'
+        fi
+
+        echo -e '\nEnabling i2c-dev module...'
+        if grep -q 'i2c-dev' /etc/modules; then
+            echo -e 'i2c-dev module already enabled.'
+        else
+            echo 'i2c-dev' >> /etc/modules
+            echo -e 'Enabled i2c-dev module.'
+        fi
+
+        echo -e '\nSetting i2c_arm parameter boot config option...'
+        if grep -q 'dtparam=i2c_arm=on' /boot/config.txt; then
+            echo -e 'i2c_arm parameter already set.'
+        else
+            echo 'dtparam=i2c_arm=on' >> /boot/config.txt
+            echo -e '\nSet i2c_arm parameter boot config option...'
+        fi
+
+        echo -e '\nRemoving i2c from blacklists...'
+        if [ -f /etc/modprobe.d/raspi-blacklist.conf ]; then
+            sed -i 's/^blacklist spi-bcm2708/#blacklist spi-bcm2708/' /etc/modprobe.d/raspi-blacklist.conf
+            sed -i 's/^blacklist i2c-bcm2708/#blacklist i2c-bcm2708/' /etc/modprobe.d/raspi-blacklist.conf
+        else
+            echo 'File raspi-blacklist.conf does not exist, skip this step.'
+        fi
+    else
+        echo -e '\nThis option can only be used on a Raspberry Pi (running Raspbian).'
+        echo -e '\nFor other devices or operating systems, consult the manufacturers documentation for enabling I2C.'
+    fi
+
+}
+
 update () {
     #echo -e "\nPerforming a system update"
     #apt update
@@ -269,6 +311,7 @@ options=(
     "Setup Motion" 
     "Setup ShellInABox" 
     "Setup Supervisor"
+    "Enable I2C"
     "Update"
     "Detect IPs"
 )
@@ -283,8 +326,9 @@ select option in "${options[@]}"; do
         5) install_motion ;;
         6) install_shellinabox ;;
         7) install_supervisor ;;
-        8) update ;;
-        9) print_detected_ip "/" ;;
+        8) enable_i2c
+        9) update ;;
+        10) print_detected_ip "/" ;;
         q) exit ;;
     esac
 done
