@@ -44,9 +44,9 @@
 		{
 			"type": "mlx90614",
 			"name": "Temperature Sensor",
-			"enabled": false,
+			"enabled": true,
 			"frequency": 2,
-			"address": "0x5A"
+			"address": "0x5B"
 		},
 		{
 			"type": "sgp30",

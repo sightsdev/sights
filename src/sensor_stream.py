@@ -137,6 +137,8 @@ class SensorStream(WebSocketProcess):
                         "name": sensor.name,
                         "data": data
                     }
+        if bool(msg):
+            self.logger.info(msg)
 
         # Get data from Arduino. This is only here for backwards compatibility
         if self.arduino_enabled:
