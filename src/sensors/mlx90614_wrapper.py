@@ -1,6 +1,6 @@
 from sensor_wrapper import SensorWrapper
 from mlx90614 import MLX90614
-import smbus2
+from smbus2 import SMBus
 
 class MLX90614Wrapper(SensorWrapper):
     # What type of sensor this wrapper handles
@@ -9,12 +9,13 @@ class MLX90614Wrapper(SensorWrapper):
     def __init__(self, config):
         SensorWrapper.__init__(self, config)
         # Additional config option for i2c address
-        self.address = config['address']
-        self.bus = smbus2.SMBus(1)
+        self.address = int(config['address'], 16)
+        # I2C bus
+        self.bus = SMBus(1)
         # Create sensor object
-        self.sensor = MLX90614(self.bus, address=0x5B)
+        self.sensor = MLX90614(self.bus, address=self.address)
         
 
     def get_data(self):
         # Get data and round to 1 dp
-        return round(self.sensor.get_object_1(), 1)
+        return round(self.sensor.get_object_1(), 2)

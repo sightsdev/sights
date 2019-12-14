@@ -1,11 +1,9 @@
 import logging
 
 class SensorWrapper:
-    def __init__(self, config, bus=None):
+    def __init__(self, config):
         # Setup logger
         self.logger = logging.getLogger(__name__)
-        # i2c bus, if required
-        self.bus = bus
         # Last time data get_data was called
         self.last_run = 0
         # If any of these required values do not exist in the config, display a warning

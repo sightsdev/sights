@@ -33,9 +33,7 @@ class SensorStream(WebSocketProcess):
                 self.logger.error("Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
                 self.logger.warning("Continuing without Arduino connection\n")
                 self.arduino_enabled = False
-        # Setup i2c stuff
-        #self.i2cbus = SMBus(1)
-        
+
         # Directory of sensor plugins
         self.plugin_dir = os.getcwd() + "/src/sensors"
         # Get list of available plugins
@@ -137,7 +135,8 @@ class SensorStream(WebSocketProcess):
                         "name": sensor.name,
                         "data": data
                     }
-        if bool(msg):
+
+        if self.config["debug"]["print_messages"] and bool(msg):
             self.logger.info(msg)
 
         # Get data from Arduino. This is only here for backwards compatibility
