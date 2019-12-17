@@ -1,12 +1,15 @@
 from sensor_wrapper import SensorWrapper
 from sgp30 import SGP30
+from smbus2 import SMBus
 
 class SGP30Wrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'sgp30'
 
-    def __init__(self, config, bus):
-        SensorWrapper.__init__(self, config, bus)
+    def __init__(self, config):
+        SensorWrapper.__init__(self, config)
+        # I2C bus
+        self.bus = SMBus(1)
         # Create sensor object
         self.sensor = SGP30(self.bus)
         self.sensor.init_sgp()
