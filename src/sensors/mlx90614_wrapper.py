@@ -8,8 +8,8 @@ class MLX90614Wrapper(SensorWrapper):
 
     def __init__(self, config):
         SensorWrapper.__init__(self, config)
-        # Additional config option for i2c address
-        self.address = int(config['address'], 16)
+        # Additional config option for i2c address, default to 0x5A
+        self.address = int(config.get('address', "0x5A"), 16)
         # I2C bus
         self.bus = SMBus(1)
         # Create sensor object
