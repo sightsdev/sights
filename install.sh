@@ -176,16 +176,14 @@ install_supervisor () {
     echo -e "\nInstalling Supervisor SIGHTS extension..."
     python3 -m pip install ./supervisor_sights_config
 
-    echo -e "\nAdding supervisord to /etc/rc.local..."
-    if grep -Fxq "supervisord &" /etc/rc.local
-    then
-        echo -e "Already done..."
-    else
-        sed -i -e '$i \supervisord &\n' /etc/rc.local
-    fi
+    echo -e "\nInstalling Supervisor init script"
+    cp SIGHTSRobot/src/configs/systemd/supervisord /etc/init.d/
+    chmod 755 /etc/init.d/supervisord
+    chown root:root /etc/init.d/supervisord
 
     echo -e "\nRunning Supervisor"
-    supervisord
+    /etc/init.d/supervisord start
+    
     echo
     print_detected_ip ":9001/"
 }
