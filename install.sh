@@ -180,6 +180,7 @@ install_supervisor () {
     cp SIGHTSRobot/src/configs/systemd/supervisord /etc/init.d/
     chmod 755 /etc/init.d/supervisord
     chown root:root /etc/init.d/supervisord
+    update-rc.d supervisord defaults
 
     echo -e "\nRunning Supervisor"
     /etc/init.d/supervisord start
