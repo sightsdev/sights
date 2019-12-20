@@ -62,7 +62,7 @@ class SensorStream(WebSocketProcess):
             # Assign the discovered class to the appropriate key (eg. assign MLX90614Wrapper class to sensors of type 'mlx90614')
             self.wrappers[class_.type_] = class_
             # Log information about enabled plugin
-            self.logger.info(f"Enabling plugin '{plugin_name}' for '{class_.type_}' using class: {class_}")
+            self.logger.debug(f"Enabling plugin '{plugin_name}' for '{class_.type_}' using class: {class_}")
 
         # Create list of sensors
         self.sensors = []
@@ -135,8 +135,8 @@ class SensorStream(WebSocketProcess):
                         "name": sensor.name,
                         "data": data
                     }
-
-        if self.config["debug"]["print_messages"] and bool(msg):
+        # Print out each message if print_messages is enabled
+        if self.config['debug']['print_messages'] and bool(msg): 
             self.logger.info(msg)
 
         # Get data from Arduino. This is only here for backwards compatibility
@@ -165,6 +165,7 @@ class SensorStream(WebSocketProcess):
         return json.dumps(msg)
 
     async def pipe_message_handler(self, msg):
+        # If we receive a message from ControLReceiver with a new speed, set that to our speed
         if msg[0] == "SYNC_SPEED":
             await self.send_speed_value(msg[1], msg[2])
 
@@ -172,6 +173,7 @@ class SensorStream(WebSocketProcess):
         msg = {}
         # Create message with type and value of the speed
         msg[typ + "_speed"] = speed
+        # Send current speed to be displayed on the interface
         await self.websocket.send(json.dumps(msg))
         self.logger.debug("Syncronized speed setting")
 

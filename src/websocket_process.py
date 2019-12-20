@@ -10,20 +10,20 @@ class WebSocketProcess (multiprocessing.Process):
         self.logger = logging.getLogger(__name__)
         # Process ID
         self.mpid = mpid
-         # Communication port to other processes
+         # Communication port to allow for communication with other WebSocketProcess
         self.pipe = pipe
         # Store config filename
         self.config_file = config_file
-        # Load config file
+        # Load config file to dictionary object
         self.config = json.load(open(self.config_file))
-        # WebSocket port
+        # WebSocket port (e.g. 5555)
         self.port = port
-        # IP address to bind to
+        # Bind to specified IP address, if provided, otherwise bind to any address
         if 'network' in self.config:
             self.ip = self.config['network']['ip'] 
         else:
             self.ip = '*'
-        # Set name
+        # Get nice name (e.g. "SensorStream")
         self.name = self.__class__.__name__
 
     def run(self):
