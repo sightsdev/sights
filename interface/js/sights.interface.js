@@ -30,15 +30,13 @@ function updateCheck(type, altRepo) {
 		type: 'GET',
 		success: function (result) {
 			let current_version = version_field.html();
-			let current_version_tag = current_version.split("-")[0];
-			let latest_obj = result[0];
-			let latest_version = latest_obj['name'];
-			let latest_version_tag = latest_version.split("-")[0];
+			let current_release = current_version.split("-")[0];
+			let latest_release = result[0]['name'];
 			update_field.css("opacity", "100%");
-			if (current_version_tag == latest_version_tag) {
-				update_field.html("You are running the latest version");
+			if (current_release == latest_release) {
+				update_field.html("You are running the latest release");
 			} else {
-				update_field.html("Update available: " + latest_version);
+				update_field.html("Update available: " + latest_release);
 			}
 		},
 		error: function () {
