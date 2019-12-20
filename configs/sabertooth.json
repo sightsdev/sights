@@ -70,6 +70,7 @@
 		}
 	],
 	"debug": {
+		"log_level": "info",
 		"print_messages": false
 	}
 }

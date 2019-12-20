@@ -44,7 +44,7 @@
 		{
 			"type": "mlx90614",
 			"name": "Temperature Sensor",
-			"enabled": true,
+			"enabled": false,
 			"frequency": 2,
 			"address": "0x5B"
 		},
@@ -68,6 +68,7 @@
 		}
 	],
 	"debug": {
+		"log_level": "info",
 		"print_messages": true
 	}
 }

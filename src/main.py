@@ -12,10 +12,10 @@ import multiprocessing_logging
 class Manager:
     def __init__(self, config_file, logger):
         self.logger = logger
-        self.logger.info("Starting manager process")
+        self.logger.info("Starting manager process...")
         # Store config file name
         self.config_file = config_file
-        self.logger.info(f"Using config file: '{self.config_file}'")
+        self.logger.info(f"Loading config file: '{self.config_file}'...")
 
     def terminate(self):
         # Terminate the two processes we spawn
@@ -25,7 +25,7 @@ class Manager:
         self.control_process.join()
 
     def sigint(self, signal, frame):
-        self.logger.info("Received interrupt signal. Terminating.")
+        self.logger.info("Received interrupt signal. Terminating...")
         # Make sure we terminate the child processes to prevent a zombie uprising
         self.terminate()
         # Also kill this process too
@@ -33,7 +33,7 @@ class Manager:
 
     def run(self):
         # Log process ID to file
-        self.logger.info(f"Process ID (PID): {os.getpid()}")
+        self.logger.debug(f"Process ID (PID): {os.getpid()}")
         # Create pipe. sensor_pipe receives, and control_pipe sends
         self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
         # Create server and receiver processes
@@ -48,7 +48,7 @@ class Manager:
         self.sensor_process.join()
         self.control_process.join()
         # Once both processes have ended, the manager can end too.
-        self.logger.info("Exiting manager process")
+        self.logger.info("Exiting manager process...")
 
 if __name__ == '__main__':
     # Get active config from ACTIVE_CONFIG file
@@ -59,8 +59,23 @@ if __name__ == '__main__':
     except FileNotFoundError:
         config_file = "src/configs/sights/minimal.json"
 
+    # Log levels
+    levels = {
+        'critical': logging.CRITICAL,
+        'error': logging.ERROR,
+        'warning': logging.WARNING,
+        'info': logging.INFO,
+        'debug': logging.DEBUG
+    }
+
+    # Load config file
+    config = json.load(open(config_file))
+
+    # Get the log level from the config. Default to INFO
+    log_level = levels.get(config["debug"]["log_level"].lower(), logging.INFO)
+
     # Setup logger
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
+    logging.basicConfig(level=log_level, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
     multiprocessing_logging.install_mp_handler()
     logger = logging.getLogger(__name__)
     
@@ -72,7 +87,7 @@ if __name__ == '__main__':
     try:
         manager.run()
     except (KeyError, json.decoder.JSONDecodeError):
-        logger.warning("Config error! SIGHTS will now terminate.")
-        logger.info("Review your config file or restore a backup.")
+        logger.error("Config error! SIGHTS will now terminate.")
+        logger.error("Review your config file or restore a backup.")
     else:
         logger.info("All processes ended")
