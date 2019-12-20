@@ -210,7 +210,11 @@ update () {
     cd ..
     python3 -m pip install ./supervisor_sights_config
 
-    echo -e "Update complete!"
+    echo -e "\nRestarting Supervisord and SIGHTS..."
+    service supervisord restart
+    #supervisord restart sights
+
+    echo -e "\nUpdate complete!"
     echo
     print_detected_ip "/"
 }
