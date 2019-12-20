@@ -639,9 +639,24 @@ const schema = {
             "title": "Debug",
             "description": "Settings useful for developers.",
             "required": [
+                "log_level",
                 "print_messages"
             ],
             "properties": {
+                "log_level": {
+                    "$id": "#/properties/debug/properties/log_level",
+                    "type": "string",
+                    "title": "Log Level",
+                    "description": "Set the level of logs to output. All lower levels are logged, meaning, for example, if the 'info' level is selected, then warnings, errors and critical messages are also logged.",
+                    "enum": [
+                        "critcal",
+                        "error",
+                        "warning",
+                        "info",
+                        "debug"
+                    ],
+                    "default": "info"
+                },
                 "print_messages": {
                     "$id": "#/properties/debug/properties/print_messages",
                     "type": "boolean",
