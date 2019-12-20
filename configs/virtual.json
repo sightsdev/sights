@@ -69,6 +69,6 @@
 	],
 	"debug": {
 		"log_level": "info",
-		"print_messages": true
+		"print_messages": false
 	}
 }

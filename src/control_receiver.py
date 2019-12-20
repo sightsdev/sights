@@ -141,7 +141,6 @@ class ControlReceiver (WebSocketProcess):
             try:
                 buf = await websocket.recv()
             except websockets.exceptions.ConnectionClosed:
-                self.logger.info("Control server connection lost")
                 break
             if len(buf) > 0:
                 if self.config['debug']['print_messages']:
