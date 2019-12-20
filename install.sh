@@ -255,8 +255,7 @@ update () {
     python3 -m pip install ./supervisor_sights_config
 
     echo -e "\nRestarting Supervisord and SIGHTS..."
-    service supervisord restart
-    #supervisorctl restart sights
+    supervisorctl restart sights
 
     echo -e "\nUpdate complete!"
     echo
