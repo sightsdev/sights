@@ -6,7 +6,7 @@ Installation is preferably done to the `/opt/sights/` directory. This was chosen
 
 [Supervisor](http://supervisord.org/) is used to manage running the SIGHTSRobot software.
 
-## 1. Setting up the installation directory
+## Preparing the installation directory
 
 First, you'll want to create the aforementioned directory, and we'll make it owned by the current user for convenience:
 
@@ -15,7 +15,7 @@ sudo mkdir /opt/sights
 sudo chown $USER:$USER /opt/sights
 ```
 
-## 2. Downloading the software
+## Downloading the software
 
 Next clone this repository, as well as [`SIGHTSInterface`](https://github.com/SFXRescue/SIGHTSInterface).
 
@@ -38,7 +38,7 @@ cd /opt/sights/SIGHTSRobot/src
 python3 -m pip install -r requirements.txt
 ```
 
-## 3. Setting up Apache
+## Setting up Apache
 
 Apache should be configured to point to the `SIGHTSInterface` directory.
 
@@ -86,7 +86,7 @@ Or you might need to start the service, if it hasn't been already:
 sudo service apache2 start
 ```
 
-## 4. Setting up Motion
+## Setting up Motion
 
 Motion version 4.2 or greater is required. Install the latest version of Motion from the [official repository](https://github.com/Motion-Project/motion).
 
@@ -118,7 +118,7 @@ Reboot and ensure it is running with the command:
 sudo service motion status
 ```
 
-## 5. Setting up ShellInABox
+## Setting up ShellInABox
 
 [ShellInABox](https://github.com/shellinabox/shellinabox) is a web-based terminal emulator that is integrated into the interface to provide easy access to the underlying OS.
 
@@ -155,7 +155,7 @@ sudo service shellinabox start
 
 To test it out, navigate to `http://<robot_ip>:4200`
 
-## 6. Running as a managed service with Supervisor
+## Running as a managed service with Supervisor
 
 All we need to do now is ensure that `SIGHTSRobot`'s `manager.py` is run on boot as a managed service so we can start, stop and restart it at will.
 
@@ -173,7 +173,7 @@ Create a symlink for the Supervisor configuration file with:
 sudo ln -sf /opt/sights/SIGHTSRobot/src/configs/supervisor /etc
 ```
 
-Install the SIGHTS configuration file management Supervisor extension. This allows Supervisor to get and set the active config file and get a list of available config files.
+Install the SIGHTS Supervisor extension. This allows Supervisor to manage configuration files, even when SIGHTS is not running.
 
 ```sh
 cd /opt/sights/
@@ -182,43 +182,31 @@ cd supervisor_sights_config
 python3 -m pip install .
 ```
 
-The Supervisor daemon can now be run with
+Supervisor is now installed and set up.
+
+To ensure that `supervisord` is run at boot, we will install a provided init script for Supervisor:
 
 ```sh
-supervisord
+sudo cp SIGHTSRobot/src/configs/systemd/supervisord /etc/init.d/
+sudo chmod 755 /etc/init.d/supervisord
+sudo chown root:root /etc/init.d/supervisord
+sudo update-rc.d supervisord defaults
 ```
 
-This will automatically run the SIGHTSRobot process. You can manage this in a similar fashion to most unix services (such as Apache or Motion) with:
+## Usage
+
+You can manage Supervisor with the usual service commands like:
 
 ```sh
-supervisorctl {start|stop|restart|status} sights
+sudo service supervisord {start|stop|restart|status}
+```
+
+You can manage the SIGHTS service in a similar fashion with:
+
+```sh
+sudo supervisorctl {start|stop|restart|status} sights
 ```
 
 `supervisorctl` can also be run in interactive mode by running the command with no arguments.
 
-Additionally, supervisor provides a web interface, which can be accessed at `http://<robot_ip>:9001`. It provides complete management of processes as well as an interface to view their logs.
-
-To ensure that `supervisord` is run at boot, edit `/etc/rc.local` and add the following line _before_ the final line which should read `exit 0`:
-
-```sh
-supervisord
-```
-
-Note that `sudo` is not required, as `rc.local` is executed as the root user.
-
-## Usage
-
-If you don't wish to run it under supervisor, or simply wish to run it manually, you can do so with:
-
-```sh
-sudo python3 /opt/sights/SIGHTSRobot/manager.py
-```
-
-Other config files (default is `robot.json` in the `configs/` directory) can be loaded with the `-c` flag:
-
-```sh
-cd /opt/sights/SIGHTSRobot
-sudo python3 manager.py -c configs/sabertooth.json
-```
-
-It will attempt to load the configuration file from the working directory.
+Additionally, supervisor provides a web interface, which can be accessed at `http://<robot_ip>:9001`. It provides complete management of processes as well as an interface to view their logs, although most of this functionality has been integrated into the SIGHTS interface.
