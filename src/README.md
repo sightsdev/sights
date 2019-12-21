@@ -12,7 +12,7 @@ Internal configs used by the installer and SIGHTS. Not intended to be modified b
 
 ### `sensors/`
 
-Sensor wrappers for each I2C sensor class. Additional sensor wrappers can be added here.
+Sensor plugins for each I2C sensor class. Additional sensor plguins can be added here.
 
 ### `utils/`
 
@@ -26,7 +26,7 @@ This is the main script that handles running the server and receiver. It essenti
 
 ### `sensor_stream.py`
 
-This is the server part of the software. This script handles getting various sensor data from the robot and connected Arduino or I²C devices, and then streaming it to the control panel via the WebSocket server. This includes all the data from the distance, temperature and gas sensors. It uses the Python module psutil to get the CPU usage, highest CPU core temperature, total RAM and current RAM usage from the board itself.
+This is the server part of the software. This script handles getting various sensor data from the robot and I²C devices via the sensor plugins found in the `sensors/` directory. It handles streaming it to the control panel via the WebSocket server.
 
 ### `control_receiver.py`
 
@@ -46,7 +46,7 @@ This script allows the robot to run in autonomous mode. It's in very early stage
 
 ### `sensor_wrapper.py`
 
-This is a class that the files in the `sensors/` directory are inherited from. It provides a standard set of methods that each 'wrapper' will use. A wrapper is created for each sensor connected to the robot. This is to provide a simple and modular way to handle the variety of ways in which all the different sensor libraries work.
+This is a class that the files in the `sensors/` directory are inherited from. It provides a standard set of methods that each plugin will use. A wrapper is created for each sensor connected to the robot. This is to provide a simple and modular way to handle the variety of ways in which all the different sensor libraries work.
 
 ### `websocket_process.py`
 
