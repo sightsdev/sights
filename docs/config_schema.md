@@ -59,12 +59,22 @@ Array of sensors. Each sensor can have a number of different configuration optio
 - `type`: the type of sensor (i.e. the model name)
 - `enabled`: whether or not the sensor is enabled
 - `name`: fancy display name
-- `frequency`: how often the sensor is polled (in seconds) 
+- `frequency`: how often the sensor is polled (in seconds)
 
 Some sensors will have an additional options such as an `address` option to set the I²C address.
 
 ## `debug`
 
+`log_level`
+
+Takes one of the following string values, to specify the log types that are shown in the log file and log window. Anything lower than the specified level is not logged.
+
+- `critical`
+- `error`
+- `warning`
+- `info` (_default_)
+- `debug`
+
 `print_messages`
 
-Print any messages received from the interface to the console.
+Log any messages received from the interface, and any data received from the sensors to be sent to the interface.
