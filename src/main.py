@@ -12,7 +12,7 @@ import multiprocessing_logging
 class Manager:
     def __init__(self, config_file, logger):
         self.logger = logger
-        self.logger.info("Starting manager process...")
+        self.logger.info("Starting main process...")
         # Store config file name
         self.config_file = config_file
         self.logger.info(f"Loading config file: '{self.config_file}'...")
@@ -48,7 +48,7 @@ class Manager:
         self.sensor_process.join()
         self.control_process.join()
         # Once both processes have ended, the manager can end too.
-        self.logger.info("Exiting manager process...")
+        self.logger.info("Exiting main process...")
 
 if __name__ == '__main__':
     # Get active config from ACTIVE_CONFIG file
@@ -71,23 +71,22 @@ if __name__ == '__main__':
     # Load config file
     config = json.load(open(config_file))
 
-    # Get the log level from the config. Default to INFO
-    log_level = levels.get(config["debug"]["log_level"].lower(), logging.INFO)
+    # Get the log level from the config. Default to logging.INFO
+    log_level = levels.get(config["debug"].get("log_level", "info").lower(), logging.INFO)
 
     # Setup logger
     logging.basicConfig(level=log_level, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
+    # Ensure multiprocessing compatibility
     multiprocessing_logging.install_mp_handler()
+    # This ensures we know which script we are logging from
     logger = logging.getLogger(__name__)
     
     # Create manager object
     manager = Manager(config_file, logger)
     
     # Main program loop
-    # If the restart flag is enabled we want to run the main function
     try:
         manager.run()
     except (KeyError, json.decoder.JSONDecodeError):
-        logger.error("Config error! SIGHTS will now terminate.")
+        logger.error("Configuration file error! SIGHTS will now terminate.")
         logger.error("Review your config file or restore a backup.")
-    else:
-        logger.info("All processes ended")
