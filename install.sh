@@ -327,7 +327,7 @@ select option in "${options[@]}"; do
         5) install_motion ;;
         6) install_shellinabox ;;
         7) install_supervisor ;;
-        8) enable_i2c
+        8) enable_i2c ;;
         9) update ;;
         10) print_detected_ip "/" ;;
         q) exit ;;
