@@ -110,3 +110,63 @@ You could do the same to add an `accuracy` option (for example), as long as you 
 ```python
 self.accuracy = config['accuracy']
 ```
+
+## Adding new motors
+
+To add a new motor handler, a "Connection" class needs to be created within `motors.py`. This only needs a total of four functions.
+
+```python
+class ExampleConnection:
+    def __init__(self, port, baudrate):
+        self.port = port
+        self.baudrate = baudrate
+        self.serial = ExampleClass()
+
+    def move_raw(self, left=None, right=None):
+        # Left side
+        if left is not None:
+            # Send data to left motors
+            pass
+        # Right side
+        if right is not None:
+            # Send data to right motors
+            pass
+
+    def stop(self):
+        # Stop all motors
+        pass
+
+    def close(self):
+        # Close the connection
+        pass
+```
+
+An example of this, is the SerialConnection class which is designed for Sabertooth motor controllers:
+
+```python
+class SerialConnection:
+    def __init__(self, port, baudrate):
+        self.port = port
+        self.baudrate = baudrate
+        self.serial = serial.Serial(port=port, baudrate=baudrate)
+
+    def move_raw(self, left=None, right=None):
+        # Left side
+        if left is not None:
+            msg = 64 + round(63 / 100 * max(min(left, 100), -100))
+            self.serial.write(bytes([msg]))
+        # Right side
+        if right is not None:
+            msg = 192 + round(63 / 100 * max(min(right, 100), -100))
+            self.serial.write(bytes([msg]))
+
+    def stop(self):
+        self.serial.write(bytes([0]))
+
+    def close(self):
+        self.serial.close()
+```
+
+Then the relevant code has to be added to the `__init__()` function of the Motors class. Here you can designate a name for the type of connection, as specified in the configuration file (e.g. `dynamixel` or `serial`).
+
+In the future, depending on demand, a plugin system similar to the sensor plugin system may be created to simplify and organise motor connection classes.
