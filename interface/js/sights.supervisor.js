@@ -19,17 +19,26 @@ function updateServiceInfo(response, status, jqXHR) {
     switch (state) {
         case "RUNNING":
             $("#service_info_statename").addClass("btn-success");
+            $("#service_start_button").prop('disabled', true);
+            $("#service_stop_button").prop('disabled', false);
+            $("#service_restart_button").prop('disabled', false);
             break;
         case "STARTING":
         case "STOPPING":
         case "BACKOFF":
             $("#service_info_statename").addClass("btn-warning");
+            $("#service_start_button").prop('disabled', true);
+            $("#service_stop_button").prop('disabled', true);
+            $("#service_restart_button").prop('disabled', true);
             break;
         case "EXITED":
         case "STOPPED":
         case "FATAL":
         default:
             $("#service_info_statename").addClass("btn-danger");
+            $("#service_start_button").prop('disabled', false);
+            $("#service_stop_button").prop('disabled', true);
+            $("#service_restart_button").prop('disabled', false);
             break;
     }
 
