@@ -84,22 +84,33 @@ function updateService() {
 function updateConfigSelector() {
     $.xmlrpc({
         url: '/RPC2',
-        methodName: 'sights_config.getConfigs',
-        params: {},
+        methodName: 'system.multicall',
+        params: { 
+            'calls': [
+                { 'methodName': 'sights_config.getConfigs', 'params': [] },
+                { 'methodName': 'sights_config.getActiveConfig', 'params': [] }
+            ]
+        },
         success: function(response, status, jqXHR) {
+            configs = response[0][0];
+            // Remove any line breaks from the "active config" string.
+            active_config = response[0][1].replace(/(\r\n|\n|\r)/gm, "");
+            // Get the active config and make it the currently selected config
+            $("#config_active_indicator").html(active_config)
+
             $('#config_selector').html("");
             // Populate config selector
-            for (var i = 0; i < response[0].length; i++) {
+            for (var i = 0; i < configs.length; i++) {
                 // Create item
                 var option = $('<div class="btn-group float-right">');
                 // Add a data attribute with the config file name so we can find it later
-                $(option).attr("data-file", response[0][i]);
+                $(option).attr("data-file", configs[i]);
                 // Create button with file name that will select that config file
                 var enable_button = $('<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">');
                 var delete_button = $('<a href="#" class="dropdown-item config-delete-button" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>');
                 // Add filename to button
-                $(enable_button).html(response[0][i]);
-                $(delete_button).attr("data-file", response[0][i]);
+                $(enable_button).html(configs[i]);
+                $(delete_button).attr("data-file", configs[i]);
 
                 $(enable_button).on("click", function() {
                     $.xmlrpc({
@@ -108,7 +119,7 @@ function updateConfigSelector() {
                         params: {value: $(this).html()},
                         success: function(response, status, jqXHR) {
                             serviceAlert("success", "Set config file, restart service to apply");
-                            active_config = response[0][i];
+                            active_config = $(this).html();
                             updateConfigSelector();
                         },
                         error: function(jqXHR, status, error) {
@@ -140,6 +151,12 @@ function updateConfigSelector() {
                     }
                 });
 
+                if (configs[i] == active_config) {
+                    // Set active item to a disabled state
+                    $(enable_button).addClass("disabled");
+                    $(delete_button).addClass("disabled");
+                }
+
                 // Add text and delete button to the item
                 $(option).append(enable_button);
                 $(option).append(delete_button);
@@ -147,26 +164,6 @@ function updateConfigSelector() {
                 // Add it to the config selector
                 $('#config_selector').append(option)
             }
-            // Get the active config and make it the currently selected config
-            $.xmlrpc({
-                url: '/RPC2',
-                methodName: 'sights_config.getActiveConfig',
-                params: {},
-                success: function(response, status, jqXHR) {
-                    // Also remove any line breaks from the string.
-                    active_config = response[0].replace(/(\r\n|\n|\r)/gm, "");
-                    // And set it to be the active select element
-                    var item = $("#config_selector").find(`[data-file='${active_config}']`)
-                    // Set active item to a disabled state
-                    $(item).find(".config-delete-button").addClass("disabled");
-                    $(item).find(".config-item-button").addClass("disabled");
-
-                    $("#config_active_indicator").html(active_config)
-                },
-                error: function(jqXHR, status, error) {
-                    serviceAlert("danger", "Couldn't get active config file");
-                }
-            });
         },
         error: function(jqXHR, status, error) {
             serviceAlert("danger", "Couldn't get available config files");
@@ -259,7 +256,6 @@ $(document).on("ready",function () {
             });
         }
     });
-
 
     serviceUpdater = setInterval(updateService, 500);
 
