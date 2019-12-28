@@ -4,7 +4,7 @@ var active_config;
 
 function updateServiceInfo(response, status, jqXHR) {
     // Only runs on first call after connecting
-    if ($("#service_info_statename").html() == "Disconnected") {
+    if ($("#service_info_status").attr("data-state") == "DISCONNECTED") {
          // Populate config file selector
         updateConfigSelector();
     }
@@ -12,24 +12,26 @@ function updateServiceInfo(response, status, jqXHR) {
     // Get state of the SIGHTS service (RUNNING, STOPPED, etc)
     var state = response[0].statename;
     // Update service state indicator
-    $("#service_info_statename").html(state[0] + state.slice(1).toLowerCase());
+    $("#service_info_status").attr("data-original-title", "Service " + state.toLowerCase());
     // Clear button style
-    $("#service_info_statename").removeClass("btn-success btn-danger btn-warning btn-secondary");
+    $("#service_info_status").removeClass("btn-success btn-danger btn-warning btn-secondary");
+    $("#service_info_status").attr("data-state", state);
+    
     // Set button style conditionally
     switch (state) {
         case "RUNNING":
-            $("#service_info_statename").addClass("btn-success");
+            $("#service_info_status").addClass("btn-success");
             break;
         case "STARTING":
         case "STOPPING":
         case "BACKOFF":
-            $("#service_info_statename").addClass("btn-warning");
+            $("#service_info_status").addClass("btn-warning");
             break;
         case "EXITED":
         case "STOPPED":
         case "FATAL":
         default:
-            $("#service_info_statename").addClass("btn-danger");
+            $("#service_info_status").addClass("btn-danger");
             break;
     }
 
@@ -51,14 +53,14 @@ function updateServiceInfo(response, status, jqXHR) {
 
 function serviceDisconnected(jqXHR, status, error) {
     // Update service state indicator
-    $("#service_info_statename").html("Disconnected");
-    // Swap button style
-    $("#service_info_statename").removeClass("btn-success btn-danger btn-warning");
-    $("#service_info_statename").addClass("btn-secondary");
+    $("#service_info_status").attr("data-state", "DISCONNECTED");
+    $("#service_info_status").attr("data-original-title", "Service disconnected");
+    $("#service_info_status").removeClass("btn-success btn-danger btn-warning");
+    $("#service_info_status").addClass("btn-secondary");
     // Update log modal information
     $("#service_info_logfile").html("Couldn't get service information");
     // Empty config selector
-    $('#config_selector').html("");
+    //$('#config_selector').html("");
 }
 
 function updateService() {
