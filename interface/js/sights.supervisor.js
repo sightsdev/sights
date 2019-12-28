@@ -99,9 +99,28 @@ function updateConfigSelector() {
                 var delete_button = $('<a href="#" class="dropdown-item config-delete-button" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>');
                 // Add filename to button
                 $(enable_button).html(response[0][i]);
+
+                $(enable_button).on("click", function() {
+                    console.log("Setting to " + $(this).html())
+                    $.xmlrpc({
+                        url: '/RPC2',
+                        methodName: 'sights_config.setActiveConfig',
+                        params: {value: $(this).html()},
+                        success: function(response, status, jqXHR) {
+                            serviceAlert("success", "Set config file, restart service to apply");
+                            active_config = response[0][i];
+                            updateConfigSelector();
+                        },
+                        error: function(jqXHR, status, error) {
+                            serviceAlert("danger", "Couldn't set config file");
+                        }
+                    });
+                });
+
                 // Add text and delete button to the item
                 $(option).append(enable_button);
                 $(option).append(delete_button);
+
                 // Add it to the config selector
                 $('#config_selector').append(option)
             }
@@ -118,6 +137,8 @@ function updateConfigSelector() {
                     // Set active item to a disabled state
                     $(item).find(".config-delete-button").addClass("disabled");
                     $(item).find(".config-item-button").addClass("disabled");
+
+                    $("#config_active_indicator").html(active_config)
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Couldn't get active config file");
@@ -128,6 +149,7 @@ function updateConfigSelector() {
             serviceAlert("danger", "Couldn't get available config files");
         }
     });
+    
 }
 
 function requestConfig(callback) {
@@ -219,26 +241,6 @@ $(document).on("ready",function () {
 
     serviceUpdater = setInterval(updateService, 500);
 
-    $('#config_refresh_button').on("click", function() {
-        updateConfigSelector();
-    });
-
-    $('#config_enable_button').on("click", function() {
-        $.xmlrpc({
-            url: '/RPC2',
-            methodName: 'sights_config.setActiveConfig',
-            params: {value: $('#config_selector').val()},
-            success: function(response, status, jqXHR) {
-                serviceAlert("success", "Set config file, restart service to apply");
-                $("#config_delete_button").addClass("disabled");
-                active_config = $('#config_selector').val();
-            },
-            error: function(jqXHR, status, error) {
-                serviceAlert("danger", "Couldn't set config file");
-            }
-        });
-    });
-
     $('#config_delete_button').on("click", function() {
         if (running_config == $('#config_selector').val()) {
             serviceAlert("danger", "You cannot delete the current running config")
@@ -321,7 +323,7 @@ $(document).on("ready",function () {
         });
     });
     
-    $('#service_info_clear_button').on("click", function() {
+    $('#service_log_clear_button').on("click", function() {
         $.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.clearProcessLog',
