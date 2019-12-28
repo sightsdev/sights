@@ -408,18 +408,18 @@
 				<button type="button" class="btn btn-success"><i class="fa fa-fw fa-file-alt"></i></button>
 				<button type="button" class="btn btn-outline-dark dropdown-toggle text-monospace" style="margin-left:0px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">virtual.json</button>
 				
-				<div class="dropdown-menu float-right">
+				<div class="dropdown-menu float-right" id="config_selector">
 					<div class="btn-group float-right">
-						<a href="#" class="dropdown-item text-monospace" style="display:block;">example.json</a>
-						<a href="#" class="dropdown-item" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>
+						<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">example.json</a>
+						<a href="#" class="dropdown-item config-delete-button" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>
 					</div>
 					<div class="btn-group float-right">
-						<a href="#" class="dropdown-item text-monospace" style="display:block;">dynamixel.json</a>
-						<a href="#" class="dropdown-item float-right" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>
+						<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">dynamixel.json</a>
+						<a href="#" class="dropdown-item config-delete-button" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>
 					</div>
 					<div class="btn-group float-right">
-						<a href="#" class="dropdown-item text-monospace" style="display:block;">serial.json</a>
-						<a href="#" class="dropdown-item" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>
+						<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">serial.json</a>
+						<a href="#" class="dropdown-item config-delete-button" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>
 					</div>
 				</div>
 			</div>
@@ -427,9 +427,6 @@
 		<div class="navbar-brand" style="z-index:1">
 			<div class="btn-group" role="group">
 				<button type="button" class="btn btn-success" data-state="DISCONNECTED" id="service_info_status" rel="tooltip" data-placement="bottom" title="Service disconnected"><i class="fa fa-fw fa-server"></i></button>
-				<!--button type="button" class="btn btn-secondary" style="margin-left:0px" id="service_info_statename" rel="tooltip"
-					data-placement="bottom" title="Service state">Disconnected
-				</!--button-->
 				<button type="button" class="btn btn-outline-dark btn-sm" style="margin-left:0px"  id="service_start_button" rel="tooltip"
 					data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i>
 				</button>
@@ -439,22 +436,6 @@
 				<button type="button" class="btn btn-outline-dark btn-sm" id="service_restart_button" rel="tooltip"
 					data-placement="bottom" title="Restart service"><i class="fa fa-fw fa-undo"></i>
 				</button>
-
-				<!--button type="button" class="btn btn-outline-dark dropdown-toggle dropdown-toggle-split"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<span class="sr-only">Service controls</span>
-				</!--button>
-				<div class="dropdown-menu">
-					<button type="button" class="dropdown-item" id="service_start_button" rel="tooltip"
-						data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i> Start
-					</button>
-					<button type="button" class="dropdown-item" id="service_stop_button" rel="tooltip"
-						data-placement="bottom" title="Stop service"><i class="fa fa-fw fa-stop"></i> Stop
-					</button>
-					<button type="button" class="dropdown-item" id="service_restart_button" rel="tooltip"
-						data-placement="bottom" title="Restart service"><i class="fa fa-fw fa-undo"></i> Restart
-					</button>
-				</div-->
 			</div>
 			<!--div class="btn-group" role="group">
 				<button type="button" class="btn btn-outline-dark" data-toggle="tooltip" data-placement="bottom"

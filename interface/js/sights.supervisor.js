@@ -89,12 +89,22 @@ function updateConfigSelector() {
         success: function(response, status, jqXHR) {
             $('#config_selector').html("");
             // Populate config selector
-            var option = '';
-            for (var i = 0; i < response[0].length; i++){
-                option += '<option value="'+ response[0][i] + '">' + response[0][i] + '</option>';
+            for (var i = 0; i < response[0].length; i++) {
+                // Create item
+                var option = $('<div class="btn-group float-right">');
+                // Add a data attribute with the config file name so we can find it later
+                $(option).attr("data-file", response[0][i]);
+                // Create button with file name that will select that config file
+                var enable_button = $('<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">');
+                var delete_button = $('<a href="#" class="dropdown-item config-delete-button" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>');
+                // Add filename to button
+                $(enable_button).html(response[0][i]);
+                // Add text and delete button to the item
+                $(option).append(enable_button);
+                $(option).append(delete_button);
+                // Add it to the config selector
+                $('#config_selector').append(option)
             }
-            // Add to config selector
-            $('#config_selector').append(option);
             // Get the active config and make it the currently selected config
             $.xmlrpc({
                 url: '/RPC2',
@@ -104,8 +114,10 @@ function updateConfigSelector() {
                     // Also remove any line breaks from the string.
                     active_config = response[0].replace(/(\r\n|\n|\r)/gm, "");
                     // And set it to be the active select element
-                    $("#config_selector").val(active_config).change();
-                    $("#config_delete_button").addClass("disabled");
+                    var item = $("#config_selector").find(`[data-file='${active_config}']`)
+                    // Set active item to a disabled state
+                    $(item).find(".config-delete-button").addClass("disabled");
+                    $(item).find(".config-item-button").addClass("disabled");
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Couldn't get active config file");
@@ -281,22 +293,6 @@ $(document).on("ready",function () {
             }
         });
     });
-
-    $('#service_info_clear_button').on("click", function() {
-        $.xmlrpc({
-            url: '/RPC2',
-            methodName: 'supervisor.clearProcessLog',
-            params: {name: 'sights'},
-            success: function(response, status, jqXHR) {
-                serviceAlert("info", "Cleared service logs");
-            },
-            error: function(jqXHR, status, error) {
-                serviceAlert("info", "Couldn't clear service logs");
-            }
-        });
-    });
-
-
     $('#service_restart_button').on("click", function() {
         serviceAlert("info", "Restarting service");
 		$.xmlrpc({
@@ -323,5 +319,19 @@ $(document).on("ready",function () {
                 serviceAlert("danger", "Couldn't stop service");
             }
         });
-	});
+    });
+    
+    $('#service_info_clear_button').on("click", function() {
+        $.xmlrpc({
+            url: '/RPC2',
+            methodName: 'supervisor.clearProcessLog',
+            params: {name: 'sights'},
+            success: function(response, status, jqXHR) {
+                serviceAlert("info", "Cleared service logs");
+            },
+            error: function(jqXHR, status, error) {
+                serviceAlert("info", "Couldn't clear service logs");
+            }
+        });
+    });
 });
