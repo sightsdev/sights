@@ -99,9 +99,9 @@ function updateConfigSelector() {
                 var delete_button = $('<a href="#" class="dropdown-item config-delete-button" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>');
                 // Add filename to button
                 $(enable_button).html(response[0][i]);
+                $(delete_button).attr("data-file", response[0][i]);
 
                 $(enable_button).on("click", function() {
-                    console.log("Setting to " + $(this).html())
                     $.xmlrpc({
                         url: '/RPC2',
                         methodName: 'sights_config.setActiveConfig',
@@ -115,6 +115,29 @@ function updateConfigSelector() {
                             serviceAlert("danger", "Couldn't set config file");
                         }
                     });
+                });
+                $(delete_button).on("click", function() {
+                    var conf = $(this).attr("data-file");
+                    if (running_config == conf) {
+                        serviceAlert("danger", "You cannot delete the current running config")
+                    }
+                    else if (active_config == conf) {
+                        serviceAlert("danger", "You cannot delete the next enabled config")
+                    }
+                    else {
+                        $.xmlrpc({
+                            url: '/RPC2',
+                            methodName: 'sights_config.deleteConfig',
+                            params: {value: conf},
+                            success: function(response, status, jqXHR) {
+                                serviceAlert("success", "Deleted config");
+                                updateConfigSelector();
+                            },
+                            error: function(jqXHR, status, error) {
+                                serviceAlert("danger", "Couldn't delete config file");
+                            }
+                        });
+                    }
                 });
 
                 // Add text and delete button to the item
@@ -218,7 +241,6 @@ $(document).on("ready",function () {
             });
         }
     });
-
     $("#reboot_button").on("click", function () {
         if(demo) {
             location.reload();
@@ -240,29 +262,6 @@ $(document).on("ready",function () {
 
 
     serviceUpdater = setInterval(updateService, 500);
-
-    $('#config_delete_button').on("click", function() {
-        if (running_config == $('#config_selector').val()) {
-            serviceAlert("danger", "You cannot delete the current running config")
-        }
-        else if (active_config == $('#config_selector').val()) {
-            serviceAlert("danger", "You cannot delete the next enabled config")
-        }
-        else {
-            $.xmlrpc({
-                url: '/RPC2',
-                methodName: 'sights_config.deleteConfig',
-                params: {value: $('#config_selector').val()},
-                success: function(response, status, jqXHR) {
-                    serviceAlert("success", "Deleted config");
-                    updateConfigSelector();
-                },
-                error: function(jqXHR, status, error) {
-                    serviceAlert("danger", "Couldn't delete config file");
-                }
-            });
-        }
-    });
 
     $('#service_start_button').on("click", function() {
         serviceAlert("info", "Starting service");
