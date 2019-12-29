@@ -10,10 +10,24 @@
   <script src="assets/docsify.min.js" defer></script>
   <script src="assets/docsify.search.min.js" defer></script>
   <script src="assets/docsify.themeable.min.js" defer></script>
+  <script src="assets/docsify.sights.js"></script>
   <title>SIGHTS Documentation</title>
   <style>
     img {
       width: 30%;
+    }
+    .back-button {
+      padding:10px;
+      margin:10px;
+      text-align: center;
+      background-color: #CC4F00; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
     }
   </style>
 </head>
@@ -24,6 +38,7 @@
       name: "SIGHTS",
       logo: 'assets/logo.png',
       homepage: 'getting_started.md',
+      executeScript: true,
       loadSidebar: true,
       relativePath: true,
       auto2top: true,
@@ -34,7 +49,10 @@
         paths: 'auto',
         placeholder: 'Search',
         noData: 'No Results.'
-      }
+      },
+      plugins: [
+        BackToSIGHTS.create("< Back to SIGHTS")
+      ]
     }
   </script>
 </body>
