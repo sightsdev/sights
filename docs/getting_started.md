@@ -43,7 +43,7 @@ Python >= 3.6 is required. All the supported distributions ship with Python 3.6+
 
 To install on a robot, just download and run the installer as root:
 
-```sh
+```shell
 wget https://raw.githubusercontent.com/SFXRescue/SIGHTSRobot/master/install.sh
 chmod +x install.sh
 sudo ./install.sh
@@ -51,7 +51,7 @@ sudo ./install.sh
 
 Through the installer you can do a complete install, or just install and setup individual parts of the software suite.
 
-```sh
+```shell
 SIGHTS installer
 
 Detected OS: ubuntu bionic
