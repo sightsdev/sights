@@ -116,8 +116,8 @@ function updateConfigSelector() {
                 // Add a data attribute with the config file name so we can find it later
                 $(option).attr("data-file", configs[i]);
                 // Create button with file name that will select that config file
-                var enable_button = $('<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">');
-                var delete_button = $('<a href="#" class="dropdown-item config-delete-button" style="display:block;"><i class="fa fa-fw fa-trash-alt"></i></a>');
+                var enable_button = $('<a href="#" class="dropdown-item text-monospace config-item-button">');
+                var delete_button = $('<a href="#" class="dropdown-item config-delete-button"><i class="fa fa-fw fa-trash-alt"></i></a>');
                 // Add filename to button
                 $(enable_button).html(configs[i]);
                 $(delete_button).attr("data-file", configs[i]);
