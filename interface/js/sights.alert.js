@@ -5,7 +5,7 @@
 
 /* Websocket Alerts */
 function sensorsConnectedAlert() {
-    $("#sensor_status").attr("class", "btn btn-border-outside btn-success");
+    $("#sensor_status").removeClass("btn-danger").addClass("btn-success");
     bootoast.toast({
         "message": "Sensor socket connected",
         "type": "success",
@@ -15,7 +15,7 @@ function sensorsConnectedAlert() {
 }
 
 function sensorsDisconnectedAlert() {
-    $("#sensor_status").attr("class", "btn btn-border-outside btn-danger");
+    $("#sensor_status").removeClass("btn-success").addClass("btn-danger");
     bootoast.toast({
         "message": "Sensor socket disconnected",
         "type": "danger",
@@ -25,7 +25,7 @@ function sensorsDisconnectedAlert() {
 }
 
 function controlConnectedAlert() {
-    $("#control_status").attr("class", "btn btn-border-outside btn-success");
+    $("#control_status").removeClass("btn-danger").addClass("btn-success");
     bootoast.toast({
         "message": "Control socket connected",
         "type": "success",
@@ -36,7 +36,7 @@ function controlConnectedAlert() {
 }
 
 function controlDisconnectedAlert() {
-    $("#control_status").attr("class", "btn btn-border-outside btn-danger");
+    $("#control_status").removeClass("btn-success").addClass("btn-danger");
     bootoast.toast({
         "message": "Control socket disconnected",
         "type": "danger",
