@@ -109,7 +109,21 @@ function DemoMode() {
 	$("#service_info_statename").addClass("btn-success").html("Running");
 	$('#config_selector').html("");
 	// Populate config selector
-	$('#config_selector').append('<option value="demo.json">demo.json</option>');
+	$('#config_selector').append('<div class="btn-group float-right" data-file="dynamixel.json">\
+		<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">dynamixel.json</a>\
+		<a href="#" class="dropdown-item config-delete-button" style="display:block;" data-file="dynamixel.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
+		</div>'
+	);
+	$('#config_selector').append('<div class="btn-group float-right" data-file="serial.json">\
+		<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">serial.json</a>\
+		<a href="#" class="dropdown-item config-delete-button" style="display:block;" data-file="serial.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
+		</div>'
+	);
+	$('#config_selector').append('<div class="btn-group float-right" data-file="virtual.json">\
+		<a href="#" class="dropdown-item text-monospace config-item-button disabled" style="display:block;">virtual.json</a>\
+		<a href="#" class="dropdown-item config-delete-button disabled" style="display:block;" data-file="virtual.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
+		</div>'
+	);
 	$("#current_config").html("demo.json");
 
 	// Update log modal
