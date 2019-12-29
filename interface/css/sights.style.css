@@ -209,3 +209,9 @@ blink, .blink {
 .config-delete-button {
   display: block;
 }
+
+.split-vertical-indicator {
+  padding: 0px 5px; 
+  line-height: 0px; 
+  border-left:none; 
+}
