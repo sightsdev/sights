@@ -113,6 +113,8 @@ function updateConfigSelector() {
             for (var i = 0; i < configs.length; i++) {
                 // Create item
                 var option = $('<div class="btn-group float-right">');
+                // Fill the entire line so other configs cannot be displayed alongside this one
+                $(option).css('padding-left', '100%');
                 // Add a data attribute with the config file name so we can find it later
                 $(option).attr("data-file", configs[i]);
                 // Create button with file name that will select that config file
