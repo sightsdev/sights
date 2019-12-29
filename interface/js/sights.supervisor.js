@@ -98,6 +98,16 @@ function updateConfigSelector() {
             // Get the active config and make it the currently selected config
             $("#config_active_indicator").html(active_config)
 
+            if (active_config != running_config) {
+                $("#config_status").removeClass("btn-success btn-danger btn-warning btn-secondary");
+                $("#config_status").addClass("btn-warning");
+                $("#config_status").attr("data-original-title", "Restart service to load this config file");
+            } else {
+                $("#config_status").removeClass("btn-success btn-danger btn-warning btn-secondary");
+                $("#config_status").addClass("btn-success");
+                $("#config_status").attr("data-original-title", "This is the active config file");
+            }
+
             $('#config_selector').html("");
             // Populate config selector
             for (var i = 0; i < configs.length; i++) {
@@ -119,7 +129,6 @@ function updateConfigSelector() {
                         params: {value: $(this).html()},
                         success: function(response, status, jqXHR) {
                             serviceAlert("success", "Set config file, restart service to apply");
-                            active_config = $(this).html();
                             updateConfigSelector();
                         },
                         error: function(jqXHR, status, error) {

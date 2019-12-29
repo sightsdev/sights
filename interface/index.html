@@ -405,16 +405,19 @@
 		</div>
 		<div class="navbar-brand" style="z-index:2">
 			<div class="btn-group">
-				<button type="button" class="btn btn-success"><i class="fa fa-fw fa-file-alt"></i></button>
-				<button type="button" class="btn btn-outline-dark dropdown-toggle text-monospace" id="config_active_indicator" style="margin-left:0px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">virtual.json</button>
-				
+				<button type="button" class="btn btn-secondary" id="config_status" rel="tooltip" data-placement="bottom" title="No config file loaded">
+					<i class="fa fa-fw fa-file-alt"></i>
+				</button>
+				<button type="button" class="btn btn-outline-dark dropdown-toggle text-monospace" id="config_active_indicator" 
+					style="margin-left:0px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 				<div class="dropdown-menu float-right" id="config_selector">
+					<p class="dropdown-header">No config files available</p>
 				</div>
 			</div>
 		</div>
 		<div class="navbar-brand" style="z-index:1">
 			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-success" data-state="DISCONNECTED" id="service_info_status" rel="tooltip" data-placement="bottom" title="Service disconnected"><i class="fa fa-fw fa-server"></i></button>
+				<button type="button" class="btn btn-secondary" data-state="DISCONNECTED" id="service_info_status" rel="tooltip" data-placement="bottom" title="Service disconnected"><i class="fa fa-fw fa-server"></i></button>
 				<button type="button" class="btn btn-outline-dark btn-sm" style="margin-left:0px"  id="service_start_button" rel="tooltip"
 					data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i>
 				</button>
@@ -573,38 +576,6 @@
 										id="memory"><span id="memory_used">0</span>/<span id="memory_total">0</span>
 										MB</span>
 								</li>
-								<!--li class="list-group-item">
-									<strong class="text-monospace" id="current_config"></strong>
-									<div class="btn-group float-right" role="group">
-										<button type="button" class="btn btn-secondary btn-sm" id="service_info_statename" 
-											rel="tooltip" data-placement="bottom" title="Service state">Disconnected</button>
-										<button type="button" class="btn btn-outline-dark btn-sm" id="service_start_button"
-											rel="tooltip" data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i></button>
-										<button type="button" class="btn btn-outline-dark btn-sm" id="service_stop_button"
-											rel="tooltip" data-placement="bottom" title="Stop service"><i class="fa fa-fw fa-stop"></i></button>
-										<button type="button" class="btn btn-outline-dark btn-sm" id="service_restart_button"
-											rel="tooltip" data-placement="bottom" title="Restart service"><i class="fa fa-fw fa-undo"></i></button>
-									</div>
-									<p></p>
-									<div class="input-group input-group-sm">
-										<select rel="tooltip" data-placement="bottom" title="Select active config" class="custom-select custom-select-sm" id="config_selector">
-										</select>
-										<div class="input-group-append">
-											<button type="button" class="btn btn-outline-dark btn-sm" id="config_enable_button" rel="tooltip"
-												data-placement="bottom" title="Enable">
-												<i class="fa fa-fw fa-save"></i>
-											</button>
-											<button type="button" class="btn btn-outline-dark btn-sm" id="config_delete_button" rel="tooltip"
-													data-placement="bottom" title="Delete">
-												<i class="fa fa-fw fa-trash-alt"></i>
-											</button>
-											<button type="button" class="btn btn-outline-dark btn-sm" id="config_refresh_button" rel="tooltip"
-												data-placement="bottom" title="Refresh list">
-												<i class="fa fa-fw fa-redo"></i>
-											</button>
-										</div>
-									</div>
-								</!--li-->
 							</ul>
 						</div>
 					</div>

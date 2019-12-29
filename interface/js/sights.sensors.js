@@ -89,6 +89,8 @@ function sensorConnection() {
 				$("#current_config").html(running_config);
 				$(".editor_filename").val(running_config.slice(0,-5));
 
+				updateConfigSelector();
+
 				// Software versions
 				if ("version_robot" in obj) {
 					$("#version_robot").html(obj["version_robot"]);
