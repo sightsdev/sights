@@ -105,16 +105,44 @@ function DemoMode() {
 
 	// Stop updateService from being run every half second
 	clearInterval(serviceUpdater);
-	// Update service monitor
-	$("#service_info_statename").addClass("btn-success").html("Running");
+	// Update service info stuff
+	$("#service_info_status").attr("data-original-title", "Service running");
+    $("#service_info_status").removeClass("btn-success btn-danger btn-warning btn-secondary").addClass("btn-success");
+	$("#service_info_status").attr("data-state", "RUNNING");
+	
+	running_config = "virtual.json";
+    
 	$('#config_selector').html("");
+	// Config status indicator style
+	$("#config_status").removeClass("btn-success btn-danger btn-warning btn-secondary");
+	$("#config_status").addClass("btn-success");
+	$("#config_status").attr("data-original-title", "This is the active config file");
+	$("#config_active_indicator").html("virtual.json")
 	// Populate config selector
-	$('#config_selector').append('<option value="demo.json">demo.json</option>');
+	$('#config_selector').append('<div class="btn-group float-right" data-file="dynamixel.json">\
+		<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">dynamixel.json</a>\
+		<a href="#" class="dropdown-item config-delete-button" style="display:block;" data-file="dynamixel.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
+		</div>'
+	);
+	$('#config_selector').append('<div class="btn-group float-right" data-file="serial.json">\
+		<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">serial.json</a>\
+		<a href="#" class="dropdown-item config-delete-button" style="display:block;" data-file="serial.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
+		</div>'
+	);
+	$('#config_selector').append('<div class="btn-group float-right" data-file="virtual.json">\
+		<a href="#" class="dropdown-item text-monospace config-item-button disabled" style="display:block;">virtual.json</a>\
+		<a href="#" class="dropdown-item config-delete-button disabled" style="display:block;" data-file="virtual.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
+		</div>'
+	);
 	$("#current_config").html("demo.json");
 
 	// Update log modal
 	$("#service_info_logfile").html("/opt/sights/sights.log");
 	$("#service_info_pre").html(hljs.highlight("YAML", example_log).value);
+
+	$("#docs_button").unbind('click').on("click", function () { 
+		window.open("https://sfxrescue.github.io/SIGHTSRobot/");
+	});
 
 	// After the sensor socket has connected
 	setTimeout(function(){

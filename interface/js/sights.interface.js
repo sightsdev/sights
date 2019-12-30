@@ -192,12 +192,10 @@ $(document).on("ready", function () {
 
 
 
-	// Allow both a tooltip and a modal window on a button
-	$('[rel="tooltip"]').tooltip({
+	// Enable tooltips
+	$('[tooltip]').tooltip({
 		trigger: "hover"
 	});
-	// Enable tooltips
-	$('[data-toggle="tooltip"]').tooltip();
 
 	// Reload page when header pressed
 	$("#nav_title").on("click", function () {
@@ -381,6 +379,12 @@ $(document).on("ready", function () {
 		else {
 			$("#config_delete_button").removeClass("disabled");
 		}
+	});
+
+	
+	// Documentation button
+	$("#docs_button").on("click", function () { 
+		window.open("docs/");
 	});
 
 	// Minor compatibility fix for incompatibility fixes

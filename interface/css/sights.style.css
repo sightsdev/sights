@@ -201,3 +201,17 @@ blink, .blink {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.config-item-button {
+  display: block;
+}
+
+.config-delete-button {
+  display: block;
+}
+
+.split-vertical-indicator {
+  padding: 0px 5px; 
+  line-height: 0px; 
+  border-left:none; 
+}
