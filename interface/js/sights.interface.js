@@ -381,6 +381,12 @@ $(document).on("ready", function () {
 		}
 	});
 
+	
+	// Documentation button
+	$("#docs_button").on("click", function () { 
+		window.open("docs/");
+	});
+
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").on("click", function () {
 		// allow access to integrated blockchain layer

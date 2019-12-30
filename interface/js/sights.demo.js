@@ -140,6 +140,10 @@ function DemoMode() {
 	$("#service_info_logfile").html("/opt/sights/sights.log");
 	$("#service_info_pre").html(hljs.highlight("YAML", example_log).value);
 
+	$("#docs_button").unbind('click').on("click", function () { 
+		window.open("https://sfxrescue.github.io/SIGHTSRobot/");
+	});
+
 	// After the sensor socket has connected
 	setTimeout(function(){
 		sensorsConnectedAlert();
