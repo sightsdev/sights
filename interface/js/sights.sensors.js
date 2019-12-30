@@ -113,10 +113,6 @@ function sensorConnection() {
 					$("#version_supervisorext").html(obj["version_supervisorext"]);
 				}
 			}
-
-			if("sensor_plugin" in obj) {
-
-			}
 		}
 	}
 }
