@@ -17,16 +17,22 @@
         BackToSIGHTS.target(event, vm)
       }
 
-      var header = generateHeader(title, target)
-      var e = document.createElement('span');
-      e.innerHTML = header
-
-      var ip = window.location.hostname;
-
       hook.mounted(function () {
+        // Get IP address or hostname
+        var ip = window.location.hostname;
         // Only execute on local networks. Hardly foolproof, but it'll do the job
         if (!ip.includes("github") && !ip.includes(".com") && !ip.includes(".io"))
-          document.getElementsByClassName('sidebar')[0].appendChild(e);
+          // Only show if we came to this page from SIGHTS
+          if (window.location.origin + "/" == document.referrer) {
+            // Create HTML for button
+            var header = generateHeader(title, target)
+            // Create a new DOM element
+            var e = document.createElement('span');
+            // Put the HTML into the new element
+            e.innerHTML = header
+            // Insert element into sidebar
+            document.getElementsByClassName('sidebar')[0].appendChild(e);
+          }
       })
     }
   }

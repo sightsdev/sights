@@ -5,4 +5,4 @@
 - [Network information](network.md)
 - **Links**
 - [![S.A.R.T. Website](assets/logo.svg)S.A.R.T. Website](https://www.sfxrescue.com/)
-- [![Github](assets/github.svg)Github](https://www.github.com/SFXRescue/)
+- [![GitHub](assets/github.svg)GitHub](https://www.github.com/SFXRescue/)
