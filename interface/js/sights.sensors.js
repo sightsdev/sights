@@ -76,9 +76,20 @@ function sensorConnection() {
 					// Enable / disable cameras and set their ports as defined by the config
 					update_cameras(response['cameras']);
 
+					// Generate the same unique sensor IDs that SIGHTSRobot generates
+					let sensorCount = {};
+
 					response['sensors'].forEach(function (sensor) {
 						if (sensor['enabled']) {
-							console.log("Sensor type: " + sensor['type']);
+							let type = sensor['type'];
+							if(type in sensorCount) {
+								sensorCount[type] += 1;
+							}
+							else {
+								sensorCount[type] = 1;
+							}
+							let sensorId = type + "-" + sensorCount[type];
+							console.log("Sensor of type '" + sensor['type'] +"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
 						}
 					});
 				});
@@ -101,6 +112,10 @@ function sensorConnection() {
 				if ("version_supervisorext" in obj) {
 					$("#version_supervisorext").html(obj["version_supervisorext"]);
 				}
+			}
+
+			if("sensor_plugin" in obj) {
+
 			}
 		}
 	}
