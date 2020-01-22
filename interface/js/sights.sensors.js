@@ -6,6 +6,8 @@
 var sensorSocket;
 var running_config;
 
+var graphs = {};
+
 var tempChart, distChart;
 
 function update_cameras(config) {
@@ -74,7 +76,15 @@ function sensorConnection() {
 
 					// Now handle loading stuff from the config file
 					// Enable / disable cameras and set their ports as defined by the config
-					update_cameras(response['cameras']);
+					update_cameras(response['interface']['cameras']);
+
+					response['interface']['graphs'].forEach(function (graph) {
+						if (graph.type == "line") {
+							graphs[graph.uid] = new LineGraph(graph);
+							graphs[graph.uid].appendTo(graph.location);
+						}
+						
+					});
 
 					// Generate the same unique sensor IDs that SIGHTSRobot generates
 					let sensorCount = {};
