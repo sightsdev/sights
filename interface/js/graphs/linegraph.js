@@ -3,8 +3,8 @@ class LineGraph { // extends Graph
         this.config = config;
 
         this.dom_object = $("<div/>", {
-            "id": this.uid + "_graph",
-            "class": 'some-col-md-auto'
+            "id": this.config.uid + "_graph",
+            "class": 'col-md-auto'
         });
 
         let card = $("<div/>", {"class": "card"});
