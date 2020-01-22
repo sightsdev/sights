@@ -1,4 +1,3 @@
-
 class LineGraph { // extends Graph
     constructor(config) {
         this.config = config;

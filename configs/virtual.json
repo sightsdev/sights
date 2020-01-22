@@ -53,29 +53,33 @@
 			"enabled": false,
 			"frequency": 0.5,
 			"width": 32,
-			"height": 24
+			"height": 24,
+			"display_on": []
 		},
 		{
 			"type": "mlx90614",
 			"name": "Temperature Sensor",
 			"enabled": false,
 			"frequency": 2,
-			"address": "0x5B"
+			"address": "0x5B",
+			"display_on": []
 		},
 		{
 			"type": "sgp30",
 			"name": "Gas Sensor",
 			"enabled": false,
-			"frequency": 2
+			"frequency": 2,
+			"display_on": []
 		},
 		{
 			"type": "memory",
 			"name": "System Memory",
 			"enabled": true,
-			"frequency": 2
+			"frequency": 2,
+			"display_on": []
 		},
 		{
-			"type": "cpu_temp",
+			"type": "random",
 			"name": "CPU Temperature",
 			"enabled": true,
 			"frequency": 5,

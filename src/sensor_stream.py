@@ -128,13 +128,13 @@ class SensorStream(WebSocketProcess):
                 data = sensor.get_data()
                 # Make sure we actually got data from the sensor
                 if data is not None:
-                    if sensor.type_ not in msg:
-                        msg[sensor.type_] = {}
+                    # Generate UID for sensor
+                    uid = f"{sensor.type_}_{sensor.index}"
+                    # Any sensor data handled automatically (anything in this for loop) goes in the "sensor_data" dict
+                    if not "sensor_data" in msg:
+                        msg["sensor_data"] = {}
                     # Create message
-                    msg[sensor.type_][sensor.index] = {
-                        "name": sensor.name,
-                        "data": data
-                    }
+                    msg["sensor_data"][uid] = data
         # Print out each message if print_messages is enabled
         if self.config['debug']['print_messages'] and bool(msg): 
             self.logger.info(msg)
