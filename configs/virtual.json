@@ -14,23 +14,37 @@
 		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
 		"baudrate": 115200
 	},
-	"cameras": {
-		"right": {
-			"enabled": false,
-			"id": 4
+	"interface": {
+		"cameras": {
+			"right": {
+				"enabled": false,
+				"id": 4
+			},
+			"front": {
+				"enabled": true,
+				"id": 1
+			},
+			"back": {
+				"enabled": false,
+				"id": 2
+			},
+			"left": {
+				"enabled": false,
+				"id": 3
+			}
 		},
-		"front": {
-			"enabled": true,
-			"id": 1
-		},
-		"back": {
-			"enabled": false,
-			"id": 2
-		},
-		"left": {
-			"enabled": false,
-			"id": 3
-		}
+		"graphs": [
+			{
+				"uid": "cpu_temp_graph",
+				"type": "line",
+				"enabled": true,
+				"location": "#btm_view_sensors",
+				"title": "CPU Temperature",
+				"icon": "thermometer-half",
+				"x_axis_label": "Time (seconds)",
+				"y_axis_label": "Temperature (degrees)"
+			}
+		]
 	},
 	"sensors": [
 		{
@@ -64,7 +78,10 @@
 			"type": "cpu_temp",
 			"name": "CPU Temperature",
 			"enabled": true,
-			"frequency": 5
+			"frequency": 5,
+			"display_on": [
+				"cpu_temp_graph"
+			]
 		}
 	],
 	"debug": {
