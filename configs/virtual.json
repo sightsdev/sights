@@ -40,6 +40,18 @@
 				"enabled": true,
 				"location": "#btm_view_sensors",
 				"title": "CPU Temperature",
+				"icon": "server",
+				"x_axis_label": "Time (seconds)",
+				"y_axis_label": "Temperature (degrees)",
+				"y_axis_min": 20,
+				"y_axis_max": 35
+			},
+			{
+				"uid": "temperature_graph",
+				"type": "line",
+				"enabled": true,
+				"location": "#btm_view_sensors",
+				"title": "Temperature",
 				"icon": "thermometer-half",
 				"x_axis_label": "Time (seconds)",
 				"y_axis_label": "Temperature (degrees)"
@@ -82,10 +94,21 @@
 			"type": "random",
 			"name": "CPU Temperature",
 			"enabled": true,
-			"frequency": 5,
+			"frequency": 1,
 			"display_on": [
 				"cpu_temp_graph"
 			]
+		},
+		{
+			"type": "random",
+			"name": "Temperature",
+			"enabled": true,
+			"frequency": 1,
+			"display_on": [
+				"temperature_graph"
+			],
+			"min": 10,
+			"max": 20
 		}
 	],
 	"debug": {
