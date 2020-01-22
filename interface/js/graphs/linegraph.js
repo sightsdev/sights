@@ -1,7 +1,6 @@
 class LineGraph { // extends Graph
     constructor(config) {
         this.config = config;
-        this.uid = 'line123';
 
         this.dom_object = $("<div/>", {
             "id": this.uid + "_graph",
@@ -14,16 +13,16 @@ class LineGraph { // extends Graph
 
         let icon = $("<i/>", {
             "class": "fas fa-fw header-icon fa-" + this.config.icon, 
-            "id": this.uid + "_icon"
+            "id": this.config.uid + "_icon"
         });
 
         let title = $("<span/>", {
-            "id": this.uid + "_title",
+            "id": this.config.uid + "_title",
             "text": " " + this.config.title
         });
 
         let canvas = $("<canvas/>", {
-            "id": this.uid + "_canvas",
+            "id": this.config.uid + "_canvas",
             "width": "400",
             "height": "200",
             "css": {
@@ -44,7 +43,7 @@ class LineGraph { // extends Graph
     appendTo(target) {
         $(target).append(this.dom_object);
         // Fix canvas rendering
-        $("#" + this.uid + "_canvas").attr("style", "display: block; height: 187px; width: 374px;");
+        $("#" + this.config.uid + "_canvas").attr("style", "display: block; height: 187px; width: 374px;");
     }
 
     update(data) {

@@ -7,6 +7,7 @@ var sensorSocket;
 var running_config;
 
 var graphs = {};
+var sensors = {};
 
 var tempChart, distChart;
 
@@ -78,12 +79,14 @@ function sensorConnection() {
 					// Enable / disable cameras and set their ports as defined by the config
 					update_cameras(response['interface']['cameras']);
 
+					// Create each sensor graph
 					response['interface']['graphs'].forEach(function (graph) {
 						if (graph.type == "line") {
+							// Add it to the array, regardless of whether it is enabled or not
 							graphs[graph.uid] = new LineGraph(graph);
+							// Create the actual DOM element
 							graphs[graph.uid].appendTo(graph.location);
 						}
-						
 					});
 
 					// Generate the same unique sensor IDs that SIGHTSRobot generates
@@ -98,8 +101,11 @@ function sensorConnection() {
 							else {
 								sensorCount[type] = 1;
 							}
-							let sensorId = type + "-" + sensorCount[type];
+							let sensorId = type + "_" + sensorCount[type];
 							console.log("Sensor of type '" + sensor['type'] +"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
+
+							// Add to dictionary of sensors
+							sensors[sensorId] = sensor;
 						}
 					});
 				});
@@ -122,6 +128,20 @@ function sensorConnection() {
 				if ("version_supervisorext" in obj) {
 					$("#version_supervisorext").html(obj["version_supervisorext"]);
 				}
+			}
+			
+			if ("sensor_data" in obj) {
+				// For each sensor data we received
+				Object.entries(obj["sensor_data"]).forEach(([key, val]) => {
+					// Ensure it has the "display_on" array which defines where it should be displayed
+					if ("display_on" in sensors[key]) {
+						// For each graph where it should be displayed
+						sensors[key]["display_on"].forEach(function (graph) {
+							// Lookup the graph and update it with the new data
+							graphs[graph].update([val]);
+						});
+					}
+				});
 			}
 		}
 	}
