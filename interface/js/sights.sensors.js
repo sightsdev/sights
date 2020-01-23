@@ -8,6 +8,7 @@ var running_config;
 
 var graphs = {};
 var sensors = {};
+var sensorsReady = false;
 
 var tempChart, distChart;
 
@@ -103,11 +104,19 @@ function sensorConnection() {
 							}
 							let sensorId = type + "_" + sensorCount[type];
 							console.log("Sensor of type '" + sensor['type'] +"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
-
+							
+							sensor['display_on'].forEach(function (graph) {
+								if (!("handles" in graphs[graph]))
+									graphs[graph]["handles"] = []
+								graphs[graph]["handles"].push(sensorId)
+							});
+							
 							// Add to dictionary of sensors
 							sensors[sensorId] = sensor;
 						}
 					});
+
+					sensorsReady = true;
 				});
 
 				// Other items in the initial message
@@ -129,16 +138,18 @@ function sensorConnection() {
 					$("#version_supervisorext").html(obj["version_supervisorext"]);
 				}
 			}
-			
-			if ("sensor_data" in obj) {
+			if ("sensor_data" in obj && sensorsReady)  {
 				// For each sensor data we received
-				Object.entries(obj["sensor_data"]).forEach(([key, val]) => {
+				Object.entries(obj["sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
 					// Ensure it has the "display_on" array which defines where it should be displayed
-					if ("display_on" in sensors[key]) {
+					if ("display_on" in sensors[sensor_uid]) {
 						// For each graph where it should be displayed
-						sensors[key]["display_on"].forEach(function (graph) {
-							// Lookup the graph and update it with the new data
-							graphs[graph].update([val]);
+						sensors[sensor_uid]["display_on"].forEach(function (graph) {
+							graphs[graph]["handles"].forEach(function (value, index) {
+								if (value == sensor_uid)
+									// Lookup the graph and update it with the new data
+									graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
+							});
 						});
 					}
 				});

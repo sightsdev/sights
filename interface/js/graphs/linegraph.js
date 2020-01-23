@@ -46,15 +46,23 @@ class LineGraph { // extends Graph
         $("#" + this.config.uid + "_canvas").attr("style", "display: block; height: 187px; width: 374px;");
     }
 
-    update(data) {
-        data.forEach(function (e, i) {
-            // Remove oldest element
-            this.chart.config.data.datasets[i].data.shift();
-            // Push new element
-            this.chart.config.data.datasets[i].data.push(e);
-            // Update chart to display new data
-            this.chart.update();
-        }, this);
+    update(index, data, name) {
+        if (index >= this.chart.config.data.datasets.length) {
+            this.chart.config.data.datasets[index] = {
+                label: name,
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: [
+                    randomColour()
+                ]
+            }
+        }
+        this.chart.config.data.datasets[index].label = name;
+        // Remove oldest element
+        this.chart.config.data.datasets[index].data.shift();
+        // Push new element
+        this.chart.config.data.datasets[index].data.push(data);
+        // Update chart to display new data
+        this.chart.update();
     }
 
     generate_chart_config() {
@@ -66,7 +74,7 @@ class LineGraph { // extends Graph
                     label: '',
                     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     borderColor: [
-                        'rgba(234, 67, 53, 1)'
+                        randomColour()
                     ]
                 }]
             },
@@ -84,14 +92,14 @@ class LineGraph { // extends Graph
                     display: false
                 },
                 tooltips: {
-                    enabled: false
+                    enabled: true
                 },
                 hover: {
                     mode: 'nearest',
                     intersect: true
                 },
                 legend: {
-                    display: false,
+                    display: true,
                 },
                 scales: {
                     xAxes: [{
