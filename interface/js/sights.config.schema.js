@@ -10,7 +10,7 @@ const schema = {
         "control",
         "motors",
         "arduino",
-        "cameras",
+        "interface",
         "sensors",
         "debug"
     ],
@@ -221,161 +221,264 @@ const schema = {
                 }
             }
         },
-        "cameras": {
-            "$id": "#/properties/cameras",
+        "interface": {
+            "$id": "#/properties/interface",
             "type": "object",
             "options": {
                 "collapsed": true
             },
-            "title": "Cameras",
-            "description": "Enable and configure the ID and location of up to 4 camera streams.",
+            "title": "Interface",
+            "description": "Configure and personalise the Interface for this robot configuration.",
             "required": [
-                "front",
-                "back",
-                "left",
-                "right"
+                "cameras",
+                "graphs"
             ],
             "properties": {
-                "front": {
-                    "$id": "#/properties/cameras/properties/front",
+                "cameras": {
+                    "$id": "#/properties/interface/properties/cameras",
                     "type": "object",
-                    "format": "grid",
                     "options": {
                         "collapsed": true
                     },
-                    "title": "Front Camera",
-                    "description": "Enable and configure the front camera.",
+                    "title": "Cameras",
+                    "description": "Enable and configure the ID and location of up to 4 camera streams.",
                     "required": [
-                        "enabled"
+                        "front",
+                        "back",
+                        "left",
+                        "right"
                     ],
                     "properties": {
-                        "enabled": {
-                            "$id": "#/properties/cameras/properties/front/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Front Camera",
-                            "description": "Whether the front camera is enabled.",
-                            "format": "checkbox",
-                            "default": true
-                        },
-                        "id": {
-                            "$id": "#/properties/cameras/properties/front/properties/id",
-                            "type": "integer",
-                            "title": "Front Camera ID",
-                            "description": "The ID of the front camera. This should be the same as the ID set in the motion config for this camera.",
-                            "default": 1,
+                        "front": {
+                            "$id": "#/properties/interface/properties/cameras/properties/front",
+                            "type": "object",
+                            "format": "grid",
                             "options": {
-                                "dependencies": {
-                                    "enabled": true
+                                "collapsed": true
+                            },
+                            "title": "Front Camera",
+                            "description": "Enable and configure the front camera.",
+                            "required": [
+                                "enabled"
+                            ],
+                            "properties": {
+                                "enabled": {
+                                    "$id": "#/properties/interface/properties/cameras/properties/front/properties/enabled",
+                                    "type": "boolean",
+                                    "title": "Enable Front Camera",
+                                    "description": "Whether the front camera is enabled.",
+                                    "format": "checkbox",
+                                    "default": true
+                                },
+                                "id": {
+                                    "$id": "#/properties/interface/properties/cameras/properties/front/properties/id",
+                                    "type": "integer",
+                                    "title": "Front Camera ID",
+                                    "description": "The ID of the front camera. This should be the same as the ID set in the motion config for this camera.",
+                                    "default": 1,
+                                    "options": {
+                                        "dependencies": {
+                                            "enabled": true
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "back": {
+                            "$id": "#/properties/interface/properties/cameras/properties/back",
+                            "type": "object",
+                            "format": "grid",
+                            "options": {
+                                "collapsed": true
+                            },
+                            "title": "Back Camera",
+                            "description": "Enable and configure the back camera.",
+                            "required": [
+                                "enabled"
+                            ],
+                            "properties": {
+                                "enabled": {
+                                    "$id": "#/properties/interface/properties/cameras/properties/back/properties/enabled",
+                                    "type": "boolean",
+                                    "title": "Enable Back Camera",
+                                    "description": "Whether the back camera is enabled.",
+                                    "format": "checkbox",
+                                    "default": false
+                                },
+                                "id": {
+                                    "$id": "#/properties/interface/properties/cameras/properties/back/properties/id",
+                                    "type": "integer",
+                                    "title": "Back Camera ID",
+                                    "description": "The ID of the back camera. This should be the same as the ID set in the motion config for this camera.",
+                                    "default": 2,
+                                    "options": {
+                                        "dependencies": {
+                                            "enabled": true
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "left": {
+                            "$id": "#/properties/interface/properties/cameras/properties/left",
+                            "type": "object",
+                            "format": "grid",
+                            "options": {
+                                "collapsed": true
+                            },
+                            "title": "Left Camera",
+                            "description": "Enable and configure the left camera.",
+                            "required": [
+                                "enabled"
+                            ],
+                            "properties": {
+                                "enabled": {
+                                    "$id": "#/properties/interface/properties/cameras/properties/left/properties/enabled",
+                                    "type": "boolean",
+                                    "title": "Enable Left Camera",
+                                    "description": "Whether the left camera is enabled.",
+                                    "format": "checkbox",
+                                    "default": false
+                                },
+                                "id": {
+                                    "$id": "#/properties/interface/properties/cameras/properties/left/properties/id",
+                                    "type": "integer",
+                                    "title": "Left Camera ID",
+                                    "description": "The ID of the left camera. This should be the same as the ID set in the motion config for this camera.",
+                                    "default": 3,
+                                    "options": {
+                                        "dependencies": {
+                                            "enabled": true
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "right": {
+                            "$id": "#/properties/interface/properties/cameras/properties/right",
+                            "type": "object",
+                            "format": "grid",
+                            "options": {
+                                "collapsed": true
+                            },
+                            "title": "Right Camera",
+                            "description": "Enable and configure the right camera.",
+                            "required": [
+                                "enabled"
+                            ],
+                            "properties": {
+                                "enabled": {
+                                    "$id": "#/properties/interface/properties/cameras/properties/right/properties/enabled",
+                                    "type": "boolean",
+                                    "title": "Enable Right Camera",
+                                    "description": "Whether the right camera is enabled.",
+                                    "format": "checkbox",
+                                    "default": false
+                                },
+                                "id": {
+                                    "$id": "#/properties/interface/properties/cameras/properties/right/properties/id",
+                                    "type": "integer",
+                                    "title": "Right Camera ID",
+                                    "description": "The ID of the right camera. This should be the same as the ID set in the motion config for this camera.",
+                                    "default": 4,
+                                    "options": {
+                                        "dependencies": {
+                                            "enabled": true
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 },
-                "back": {
-                    "$id": "#/properties/cameras/properties/back",
-                    "type": "object",
-                    "format": "grid",
+                "graphs": {
+                    "$id": "#/properties/interface/properties/graphs",
+                    "type": "array",
                     "options": {
                         "collapsed": true
                     },
-                    "title": "Back Camera",
-                    "description": "Enable and configure the back camera.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/cameras/properties/back/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Back Camera",
-                            "description": "Whether the back camera is enabled.",
-                            "format": "checkbox",
-                            "default": false
-                        },
-                        "id": {
-                            "$id": "#/properties/cameras/properties/back/properties/id",
-                            "type": "integer",
-                            "title": "Back Camera ID",
-                            "description": "The ID of the back camera. This should be the same as the ID set in the motion config for this camera.",
-                            "default": 2,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
+                    "title": "Graphs",
+                    "description": "Configure the graphs on which sensor data is displayed on the Interface",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "options": {
+                                    "collapsed": true
+                                },
+                                "title": "Line Graph",
+                                "properties": {
+                                    "uid": {
+                                        "type": "string",
+                                        "title": "Unique ID",
+                                        "description": "The UID used to identify the graph. Used in sensor configuration to determine what graph a sensor's data is displayed on."
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "title": "Type",
+                                        "description": "The type of graph to use.",
+                                        "enum": [
+                                            "line"
+                                        ],
+                                        "default": "line",
+                                        "format": "radio"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "title": "Enable",
+                                        "description": "Whether the graph is enabled.",
+                                        "format": "checkbox",
+                                        "default": true
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "title": "Location",
+                                        "description": "Element to append the graph to.",
+                                        "default": "#"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "title": "Title",
+                                        "description": "Title displayed on the graph.",
+                                        "default": "Graph"
+                                    },
+                                    "icon": {
+                                        "type": "string",
+                                        "title": "Icon",
+                                        "description": "Font Awesome icon displayed on the graph.",
+                                        "default": "line-chart"
+                                    },
+                                    "x_axis_label": {
+                                        "type": "string",
+                                        "title": "X-axis Label",
+                                        "description": "Label displayed on the graph's x-axis.",
+                                        "default": "x axis"
+                                    },
+                                    "y_axis_label": {
+                                        "type": "string",
+                                        "title": "Y-axis Label",
+                                        "description": "Label displayed on the graph's y-axis.",
+                                        "default": "y axis"
+                                    },
+                                    "y_axis_min": {
+                                        "type": "integer",
+                                        "title": "Y-axis Minimum",
+                                        "required": false,
+                                        "default": null,
+                                        "description": "Optional minimum for the y-axis"
+                                    },
+                                    "y_axis_max": {
+                                        "type": "integer",
+                                        "title": "Y-axis Maximum",
+                                        "required": false,
+                                        "default": null,
+                                        "description": "Optional maximum for the y-axis"
+                                    }
                                 }
                             }
-                        }
+                            ]
                     }
                 },
-                "left": {
-                    "$id": "#/properties/cameras/properties/left",
-                    "type": "object",
-                    "format": "grid",
-                    "options": {
-                        "collapsed": true
-                    },
-                    "title": "Left Camera",
-                    "description": "Enable and configure the left camera.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/cameras/properties/left/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Left Camera",
-                            "description": "Whether the left camera is enabled.",
-                            "format": "checkbox",
-                            "default": false
-                        },
-                        "id": {
-                            "$id": "#/properties/cameras/properties/left/properties/id",
-                            "type": "integer",
-                            "title": "Left Camera ID",
-                            "description": "The ID of the left camera. This should be the same as the ID set in the motion config for this camera.",
-                            "default": 3,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        }
-                    }
-                },
-                "right": {
-                    "$id": "#/properties/cameras/properties/right",
-                    "type": "object",
-                    "format": "grid",
-                    "options": {
-                        "collapsed": true
-                    },
-                    "title": "Right Camera",
-                    "description": "Enable and configure the right camera.",
-                    "required": [
-                        "enabled"
-                    ],
-                    "properties": {
-                        "enabled": {
-                            "$id": "#/properties/cameras/properties/right/properties/enabled",
-                            "type": "boolean",
-                            "title": "Enable Right Camera",
-                            "description": "Whether the right camera is enabled.",
-                            "format": "checkbox",
-                            "default": false
-                        },
-                        "id": {
-                            "$id": "#/properties/cameras/properties/right/properties/id",
-                            "type": "integer",
-                            "title": "Right Camera ID",
-                            "description": "The ID of the right camera. This should be the same as the ID set in the motion config for this camera.",
-                            "default": 4,
-                            "options": {
-                                "dependencies": {
-                                    "enabled": true
-                                }
-                            }
-                        }
-                    }
-                }
             }
         },
         "sensors": {
@@ -428,6 +531,15 @@ const schema = {
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, the MLX90614 sensor is polled.",
                                 "default": 3
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
                             }
                         }
                     },
@@ -465,6 +577,15 @@ const schema = {
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, the SGP30 sensor is polled.",
                                 "default": 3
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
                             }
                         }
                     },
@@ -512,6 +633,15 @@ const schema = {
                                 "type": "integer",
                                 "title": "Thermal Camera Height",
                                 "description": "The height, in pixels, of the thermal camera."
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
                             }
                         }
                     },
@@ -549,6 +679,15 @@ const schema = {
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, the memory monitor updates.",
                                 "default": 3
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
                             }
                         }
                     },
@@ -586,6 +725,75 @@ const schema = {
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, the CPU temperature monitor updates.",
                                 "default": 3
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "title": "Random Data",
+                        "options": {
+                            "collapsed": true
+                        },
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable Sensor",
+                                "description": "Whether the random data generator is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Type",
+                                "enum": [
+                                    "random"
+                                ],
+                                "default": "random",
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Random Data Generator Name",
+                                "description": "The pretty name for the random data generator.",
+                                "default": "New Random Data Generator"
+                            },
+                            "frequency": {
+                                "type": "integer",
+                                "title": "Update Frequency",
+                                "description": "How often, in seconds, random data is generated.",
+                                "default": 3
+                            },
+                            "min": {
+                                "type": "integer",
+                                "title": "Minimum Value",
+                                "description": "The minimum value of the randomly generated data.",
+                                "required": false,
+                                "default": null
+                            },
+                            "max": {
+                                "type": "integer",
+                                "title": "Maximum Value",
+                                "description": "The maximum value of the randomly generated data.",
+                                "required": false,
+                                "default": null
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
                             }
                         }
                     },
@@ -624,6 +832,15 @@ const schema = {
                                 "title": "Sensor Update Frequency",
                                 "description": "How often, in seconds, the custom sensor is polled.",
                                 "default": 3
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
                             }
                         }
                     }
