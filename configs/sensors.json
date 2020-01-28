@@ -1,0 +1,144 @@
+{
+	"network": {
+		"ip": "*"
+	},
+	"control": {
+		"default_gamepad_speed": 3,
+		"default_keyboard_speed": 3
+	},
+	"motors": {
+		"type": "virtual"
+	},
+	"arduino": {
+		"enabled": false
+	},
+	"interface": {
+		"cameras": {
+			"front": {
+				"enabled": true,
+				"id": 1
+			},
+			"back": {
+				"enabled": false
+			},
+			"left": {
+				"enabled": false
+			},
+			"right": {
+				"enabled": false
+			}
+		},
+		"graphs": [
+			{
+				"uid": "cpu_temp_graph",
+				"type": "line",
+				"enabled": true,
+				"location": "#btm_view_sensors",
+				"title": "CPU Temperature",
+				"icon": "server",
+				"x_axis_label": "Time (seconds)",
+				"y_axis_label": "Temperature (degrees)",
+				"y_axis_min": 20,
+				"y_axis_max": 35,
+				"frequency": 0.1
+			},
+			{
+				"uid": "temperature_graph",
+				"type": "line",
+				"enabled": true,
+				"location": "#btm_view_sensors",
+				"title": "Temperature",
+				"icon": "thermometer-half",
+				"x_axis_label": "Time (seconds)",
+				"y_axis_label": "Temperature (degrees)",
+				"frequency": 1
+			},
+			{
+				"uid": "cpu_temp",
+				"type": "circle",
+				"enabled": true,
+				"location": "#left_view_sensors",
+				"title": "CPU Temp",
+				"unit": "°C",
+				"maximum": 105
+			},
+			{
+				"uid": "system_memory_graph",
+				"type": "circle",
+				"enabled": true,
+				"location": "#left_view_sensors",
+				"title": "System Memory",
+				"unit": "MB",
+				"maximum": 16384
+			}
+		]
+	},
+	"sensors": [
+		{
+			"enabled": false,
+			"type": "amg8833",
+			"name": "Thermal Camera",
+			"frequency": 5,
+			"width": 32,
+			"height": 24,
+			"display_on": []
+		},
+		{
+			"enabled": false,
+			"type": "mlx90614",
+			"name": "Temperature Sensor",
+			"address": "0x5B",
+			"frequency": 2,
+			"display_on": []
+		},
+		{
+			"enabled": false,
+			"type": "sgp30",
+			"name": "Gas Sensor",
+			"frequency": 2,
+			"display_on": []
+		},
+		{
+			"enabled": true,
+			"type": "memory",
+			"name": "System Memory",
+			"frequency": 2,
+			"display_on": [
+				"system_memory_graph"
+			]
+		},
+		{
+			"enabled": true,
+			"type": "random",
+			"name": "CPU Temperature",
+			"frequency": 0.1,
+			"display_on": [
+				"cpu_temp_graph"
+			]
+		},
+		{
+			"enabled": true,
+			"type": "random",
+			"name": "Temperature",
+			"frequency": 1,
+			"min": 10,
+			"max": 20,
+			"display_on": [
+				"temperature_graph"
+			]
+		},
+		{
+			"enabled": true,
+			"type": "random",
+			"name": "CPU Temp",
+			"frequency": 3,
+			"display_on": [
+				"cpu_temp"
+			]
+		}
+	],
+	"debug": {
+		"log_level": "info",
+		"print_messages": false
+	}
+}
