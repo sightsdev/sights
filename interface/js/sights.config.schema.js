@@ -475,7 +475,7 @@ const schema = {
                                         "description": "Optional maximum for the y-axis"
                                     },
                                     "frequency": {
-                                        "type": "integer",
+                                        "type": "number",
                                         "title": "Frequency",
                                         "default": 1,
                                         "description": "Should be the same as the sensor/s used on this graph."
@@ -533,7 +533,7 @@ const schema = {
                                 "description": "I2C device address of the MLX90614 sensor."
                             },
                             "frequency": {
-                                "type": "integer",
+                                "type": "number",
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, the MLX90614 sensor is polled.",
                                 "default": 3
@@ -579,7 +579,7 @@ const schema = {
                                 "default": "New Sensor"
                             },
                             "frequency": {
-                                "type": "integer",
+                                "type": "number",
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, the SGP30 sensor is polled.",
                                 "default": 3
@@ -625,7 +625,7 @@ const schema = {
                                 "default": "New Sensor"
                             },
                             "frequency": {
-                                "type": "integer",
+                                "type": "number",
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, frames are pulled from the AMG8833 thermal camera.",
                                 "default": 3
@@ -681,7 +681,7 @@ const schema = {
                                 "default": "New Sensor"
                             },
                             "frequency": {
-                                "type": "integer",
+                                "type": "number",
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, the memory monitor updates.",
                                 "default": 3
@@ -727,7 +727,7 @@ const schema = {
                                 "default": "New Sensor"
                             },
                             "frequency": {
-                                "type": "integer",
+                                "type": "number",
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, the CPU temperature monitor updates.",
                                 "default": 3
@@ -773,7 +773,7 @@ const schema = {
                                 "default": "New Random Data Generator"
                             },
                             "frequency": {
-                                "type": "integer",
+                                "type": "number",
                                 "title": "Update Frequency",
                                 "description": "How often, in seconds, random data is generated.",
                                 "default": 3
@@ -834,7 +834,7 @@ const schema = {
                                 "description": "I2C (or similar) device address of the custom sensor, if required by your custom sensor wrapper."
                             },
                             "frequency": {
-                                "type": "integer",
+                                "type": "number",
                                 "title": "Sensor Update Frequency",
                                 "description": "How often, in seconds, the custom sensor is polled.",
                                 "default": 3

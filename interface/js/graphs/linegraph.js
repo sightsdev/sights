@@ -67,7 +67,7 @@ class LineGraph { // extends Graph
 
     generate_chart_config() {
         let frequency = this.config["frequency"];
-        let labels = [-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0].map(function(x) { return x * frequency;});
+        let labels = [-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0].map(function(x) { return +(x * frequency).toFixed(2);});
         return {
             type: 'line',
             data: {
