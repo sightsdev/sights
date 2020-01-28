@@ -473,6 +473,12 @@ const schema = {
                                         "required": false,
                                         "default": null,
                                         "description": "Optional maximum for the y-axis"
+                                    },
+                                    "frequency": {
+                                        "type": "integer",
+                                        "title": "Frequency",
+                                        "default": 1,
+                                        "description": "Should be the same as the sensor/s used on this graph."
                                     }
                                 }
                             }
