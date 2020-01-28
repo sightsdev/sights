@@ -80,6 +80,11 @@ function sensorConnection() {
 					// Enable / disable cameras and set their ports as defined by the config
 					update_cameras(response['interface']['cameras']);
 
+					// Remove any old invalidated graphs before adding the new ones
+					for(graph in graphs) {
+						$("#" + graphs[graph].dom_object[0].id).remove();
+					}
+
 					// Create each sensor graph
 					response['interface']['graphs'].forEach(function (graph) {
 						if (graph.type == "line") {
