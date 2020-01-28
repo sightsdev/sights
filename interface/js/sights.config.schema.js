@@ -481,8 +481,62 @@ const schema = {
                                         "description": "Should be the same as the sensor/s used on this graph."
                                     }
                                 }
+                            },
+                            {
+                                "type": "object",
+                                "options": {
+                                    "collapsed": true
+                                },
+                                "title": "Circle Graph",
+                                "properties": {
+                                    "uid": {
+                                        "type": "string",
+                                        "title": "Unique ID",
+                                        "description": "The UID used to identify the graph. Used in sensor configuration to determine what graph a sensor's data is displayed on."
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "title": "Type",
+                                        "description": "The type of graph to use.",
+                                        "enum": [
+                                            "circle"
+                                        ],
+                                        "default": "circle",
+                                        "format": "radio"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "title": "Enable",
+                                        "description": "Whether the graph is enabled.",
+                                        "format": "checkbox",
+                                        "default": true
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "title": "Location",
+                                        "description": "Element to append the graph to.",
+                                        "default": "#"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "title": "Title",
+                                        "description": "Title displayed on the graph.",
+                                        "default": "Graph"
+                                    },
+                                    "unit": {
+                                        "type": "string",
+                                        "title": "Units",
+                                        "description": "The unit of measurement to display on the readout."
+                                    },
+                                    "maximum": {
+                                        "type": "number",
+                                        "title": "Maximum",
+                                        "default": 1,
+                                        "description": "The maximum value that the sensor can report, used when calculating how full the circle bar should be."
+                                    }
+                                }
                             }
-                            ]
+                        ]
                     }
                 },
             }

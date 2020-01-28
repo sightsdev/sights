@@ -47,16 +47,6 @@ function updateCheck(type, altRepo) {
 	});
 }
 
-function updateCircle(name, value, modifier=1) {
-	let level = $("#" + name + "_level");
-	let graph = $("#" + name + "_graph");
-	let unit = level.attr("unit");
-	level.html(value + unit);
-	let percent = Math.round(value/modifier);
-	if(percent > 100) percent = 100;
-	graph.attr('class', "c100 med orange center p" + percent);
-}
-
 function updateConfigAlerts() {
 	var currentConfig = JSON.stringify(configEditor.getValue());
 

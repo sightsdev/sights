@@ -55,6 +55,7 @@
 	<script src="js/sights.util.js"></script>
 
 	<script src="js/graphs/linegraph.js"></script>
+	<script src="js/graphs/circlegraph.js"></script>
 
 </head>
 
@@ -542,39 +543,7 @@
 	<div class="container-fluid" style="padding-top: 10px">
 		<div class="row justify-content-md-center">
 			<div class="col-md-auto">
-				<div class="row">
-					<div class="col">
-						<div class="card">
-							<div class="card-body">
-								<div id="cpu_temp_graph" class="c100 p0 med orange center">
-									<span id="cpu_temp_level" unit="°C">0°C</span>
-									<div class="slice">
-										<div class="bar"></div>
-										<div class="fill"></div>
-									</div>
-								</div>
-							</div>
-							<div class="card-header">
-								<span>CPU Temp.</span><br />
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<div class="card-body">
-								<div id="charge_graph" class="c100 p0 med orange center">
-									<span id="charge_level" unit="%">0%</span>
-									<div class="slice">
-										<div class="bar"></div>
-										<div class="fill"></div>
-									</div>
-								</div>
-							</div>
-							<div class="card-header">
-								<span>Charge Level</span><br />
-							</div>
-						</div>
-					</div>
+				<div class="row" id="left_view_sensors">
 				</div>
 				<div class="row" style="padding-top: 12px">
 					<div class="col">
@@ -617,43 +586,7 @@
 				</div>
 			</div>
 			<div class="col-md-auto">
-				<div class="row">
-					<div class="col">
-						<div class="card">
-							<div class="card-body">
-								<div id="co2_graph" class="c100 p0 med orange center">
-									<span id="co2_level" unit='<span style="font-size: 10px"> ppm</span>'>
-										0<span style="font-size: 10px"> ppm</span>
-									</span>
-									<div class="slice">
-										<div class="bar"></div>
-										<div class="fill"></div>
-									</div>
-								</div>
-							</div>
-							<div class="card-header">
-								<span>CO<sub>2</sub> Level</span><br />
-							</div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="card">
-							<div class="card-body">
-								<div id="tvoc_graph" class="c100 p0 med orange center">
-									<span id="tvoc_level" unit='<span style="font-size: 10px"> ppb</span>'>
-										0<span style="font-size: 10px"> ppb</span>
-									</span>
-									<div class="slice">
-										<div class="bar"></div>
-										<div class="fill"></div>
-									</div>
-								</div>
-							</div>
-							<div class="card-header">
-								<span>TVOC Level</span><br />
-							</div>
-						</div>
-					</div>
+				<div class="row" id="right_view_sensors">
 				</div>
 				<div class="row" style="padding-top: 12px">
 					<div class="col">
