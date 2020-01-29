@@ -122,7 +122,8 @@ class ThermalCamera {
             "id": this.config.uid + "_camera_container"
         }).append(
             $("<div/>", {
-                "id": this.config.uid + "_camera"
+                "id": this.config.uid + "_camera",
+                "class": "thermal-camera"
             }).append(table)
         );
 
