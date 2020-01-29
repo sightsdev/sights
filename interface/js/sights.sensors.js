@@ -23,6 +23,7 @@ function update_cameras(config) {
 		let id = config[e]['id'];
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
 		camera.attr("data-id", config[e]['id']);
+		$("#sensor_toggle").show();
 	});
 	if (!config['back']['enabled'] &&
 		!config['left']['enabled'] &&
@@ -30,8 +31,8 @@ function update_cameras(config) {
 		$("#sensor_toggle").hide();
 		$("#btm_view_camera").hide();
 		$("#btm_view_sensors").show();
-		$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
-		sensorMode = false;
+		$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Cameras");
+		sensorMode = true;
 	}
 }
 
