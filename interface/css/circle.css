@@ -263,11 +263,10 @@
 .c100 > span {
   position: absolute;
   width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 1;
   left: 0;
-  top: 0;
-  width: 5em;
-  line-height: 5em;
   font-size: 0.2em;
   color: #cccccc;
   display: block;
