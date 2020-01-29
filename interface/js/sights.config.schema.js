@@ -474,11 +474,11 @@ const schema = {
                                         "default": null,
                                         "description": "Optional maximum for the y-axis"
                                     },
-                                    "frequency": {
+                                    "period": {
                                         "type": "number",
-                                        "title": "Frequency",
+                                        "title": "Period",
                                         "default": 1,
-                                        "description": "Should be the same as the sensor/s used on this graph."
+                                        "description": "How often the graph updates, in seconds. Should ideally be the same as the sensor/s used on this graph."
                                     }
                                 }
                             },
@@ -696,9 +696,9 @@ const schema = {
                                 "title": "Address",
                                 "description": "I2C device address of the MLX90614 sensor."
                             },
-                            "frequency": {
+                            "period": {
                                 "type": "number",
-                                "title": "Update Frequency",
+                                "title": "Update Period",
                                 "description": "How often, in seconds, the MLX90614 sensor is polled.",
                                 "default": 3
                             },
@@ -742,9 +742,9 @@ const schema = {
                                 "description": "The pretty name for the SGP30 sensor.",
                                 "default": "New Sensor"
                             },
-                            "frequency": {
+                            "period": {
                                 "type": "number",
-                                "title": "Update Frequency",
+                                "title": "Update Period",
                                 "description": "How often, in seconds, the SGP30 sensor is polled.",
                                 "default": 3
                             },
@@ -788,9 +788,9 @@ const schema = {
                                 "description": "The pretty name for the AMG8833 thermal camera.",
                                 "default": "New Sensor"
                             },
-                            "frequency": {
+                            "period": {
                                 "type": "number",
-                                "title": "Update Frequency",
+                                "title": "Update Period",
                                 "description": "How often, in seconds, frames are pulled from the AMG8833 thermal camera.",
                                 "default": 3
                             },
@@ -844,9 +844,9 @@ const schema = {
                                 "description": "The pretty name for the memory monitor.",
                                 "default": "New Sensor"
                             },
-                            "frequency": {
+                            "period": {
                                 "type": "number",
-                                "title": "Update Frequency",
+                                "title": "Update Period",
                                 "description": "How often, in seconds, the memory monitor updates.",
                                 "default": 3
                             },
@@ -890,9 +890,9 @@ const schema = {
                                 "description": "The pretty name for the CPU temperature monitor.",
                                 "default": "New Sensor"
                             },
-                            "frequency": {
+                            "period": {
                                 "type": "number",
-                                "title": "Update Frequency",
+                                "title": "Update Period",
                                 "description": "How often, in seconds, the CPU temperature monitor updates.",
                                 "default": 3
                             },
@@ -936,9 +936,9 @@ const schema = {
                                 "description": "The pretty name for the random data generator.",
                                 "default": "New Random Data Generator"
                             },
-                            "frequency": {
+                            "period": {
                                 "type": "number",
-                                "title": "Update Frequency",
+                                "title": "Update Period",
                                 "description": "How often, in seconds, random data is generated.",
                                 "default": 3
                             },
@@ -997,9 +997,9 @@ const schema = {
                                 "title": "Sensor Address",
                                 "description": "I2C (or similar) device address of the custom sensor, if required by your custom sensor wrapper."
                             },
-                            "frequency": {
+                            "period": {
                                 "type": "number",
-                                "title": "Sensor Update Frequency",
+                                "title": "Sensor Update Period",
                                 "description": "How often, in seconds, the custom sensor is polled.",
                                 "default": 3
                             },
