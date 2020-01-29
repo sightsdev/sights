@@ -21,7 +21,8 @@ class CircleGraph {
             "class": 'c100 p0 med orange center'
         }).append(
             $("<span/>", {
-                "id": this.config.uid + "_level"
+                "id": this.config.uid + "_level",
+                "style": this.config.unit_style
             }),
             $("<div/>", {
                 "class": 'slice'

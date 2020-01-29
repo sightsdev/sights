@@ -528,6 +528,12 @@ const schema = {
                                         "title": "Units",
                                         "description": "The unit of measurement to display on the readout."
                                     },
+                                    "unit_style": {
+                                        "type": "string",
+                                        "title": "Units Styling",
+                                        "default": "font-size: 24px;",
+                                        "description": "Inline CSS to style the units text, e.g. to decrease font size if it overflows."
+                                    },
                                     "maximum": {
                                         "type": "number",
                                         "title": "Maximum",
