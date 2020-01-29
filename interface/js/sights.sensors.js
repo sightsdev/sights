@@ -149,6 +149,7 @@ function sensorConnection() {
 					$("#version_supervisorext").html(obj["version_supervisorext"]);
 				}
 			}
+
 			if ("sensor_data" in obj && sensorsReady)  {
 				// For each sensor data we received
 				Object.entries(obj["sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
@@ -164,6 +165,14 @@ function sensorConnection() {
 						});
 					}
 				});
+			}
+
+			// Speed indicators for keyboard and gamepad
+			if ("kb_speed" in obj) {
+				setSpeedIndicator("kb", obj["kb_speed"]);
+			}
+			if ("gp_speed" in obj) {
+				setSpeedIndicator("gp", obj["gp_speed"]);
 			}
 		}
 	}
