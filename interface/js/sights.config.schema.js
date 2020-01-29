@@ -660,25 +660,37 @@ const schema = {
                                         "description": "Sets the default visible light camera to overlay the thermal camera on (optional)."
                                     },
                                     "opacity": {
-                                        "type": "number",
+                                        "type": "integer",
                                         "title": "Default Thermal Camera Opacity",
                                         "required": false,
                                         "default": null,
-                                        "description": "Sets the default opacity of the thermal camera when overlayed (optional)."
+                                        "description": "Sets the default opacity (0 - 100%) of the thermal camera when overlayed (optional).",
+                                        "format": "range",
+                                        "default": 25,
+                                        "minimum": 0,
+                                        "maximum": 100
                                     },
                                     "xscale": {
-                                        "type": "number",
+                                        "type": "integer",
                                         "title": "Default Thermal Camera X Scale",
                                         "required": false,
                                         "default": null,
-                                        "description": "Sets the default x scale of the thermal camera when overlayed (optional)."
+                                        "description": "Sets the default x scale (50 - 150%) of the thermal camera when overlayed (optional).",
+                                        "format": "range",
+                                        "default": 100,
+                                        "minimum": 50,
+                                        "maximum": 150
                                     },
                                     "yscale": {
-                                        "type": "number",
+                                        "type": "integer",
                                         "title": "Default Thermal Camera Y Scale",
                                         "required": false,
                                         "default": null,
-                                        "description": "Sets the default y scale of the thermal camera when overlayed (optional)."
+                                        "description": "Sets the default y scale (50 - 150%) of the thermal camera when overlayed (optional).",
+                                        "format": "range",
+                                        "default": 100,
+                                        "minimum": 50,
+                                        "maximum": 150
                                     }
                                 }
                             }

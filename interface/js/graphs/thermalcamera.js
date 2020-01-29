@@ -179,9 +179,9 @@ class ThermalCamera {
     registerSliders() {
         let uid = this.config.uid;
         // Set defaults from config
-        let defaultOpacity = this.config.opacity ? this.config.opacity : 0.25;
-        let defaultXScale = this.config.xscale ? this.config.xscale : 1;
-        let defaultYScale = this.config.yscale ? this.config.yscale : 1;
+        let defaultOpacity = this.config.opacity ? this.config.opacity / 100 : 0.25;
+        let defaultXScale = this.config.xscale ? this.config.xscale / 100 : 1;
+        let defaultYScale = this.config.yscale ? this.config.yscale / 100 : 1;
         $('#' + uid + '_thermal_overlay_opacity').val(defaultOpacity);
         $('#' + uid + '_thermal_overlay_xscale').val(defaultXScale);
         $('#' + uid + '_thermal_overlay_yscale').val(defaultYScale);
