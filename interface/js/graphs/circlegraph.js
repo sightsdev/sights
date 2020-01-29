@@ -13,7 +13,7 @@ class CircleGraph {
 
         let title = $("<span/>", {
             "id": this.config.uid + "_title",
-            "text": " " + this.config.title
+            "text": this.config.title
         });
 
         let circle = $("<div/>", {
@@ -46,7 +46,7 @@ class CircleGraph {
     }
 
     update(index, data, name) {
-        let max = this.config["maximum"];
+        let max = this.config.maximum;
         let level = $("#" + this.config.uid + "_level");
         let circle = $("#" + this.config.uid + "_circle");
         let unit = this.config.unit;

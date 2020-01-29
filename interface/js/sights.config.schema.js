@@ -535,6 +535,63 @@ const schema = {
                                         "description": "The maximum value that the sensor can report, used when calculating how full the circle bar should be."
                                     }
                                 }
+                            },
+                            {
+                                "type": "object",
+                                "options": {
+                                    "collapsed": true
+                                },
+                                "title": "Text Box",
+                                "properties": {
+                                    "uid": {
+                                        "type": "string",
+                                        "title": "Unique ID",
+                                        "description": "The UID used to identify the text box. Used in sensor configuration to determine what text box a sensor's data is displayed on."
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "title": "Type",
+                                        "description": "The type of graph to use.",
+                                        "enum": [
+                                            "text"
+                                        ],
+                                        "default": "text",
+                                        "format": "radio"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "title": "Enable",
+                                        "description": "Whether the text box is enabled.",
+                                        "format": "checkbox",
+                                        "default": true
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "title": "Location",
+                                        "description": "Element to append the text box to. Recommended to append to a list-group element.",
+                                        "default": "#"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "title": "Title",
+                                        "description": "Title displayed on the text box.",
+                                        "default": "Graph"
+                                    },
+                                    "unit": {
+                                        "type": "string",
+                                        "title": "Units",
+                                        "required": false,
+                                        "default": "",
+                                        "description": "The unit of measurement to display on the readout (optional)."
+                                    },
+                                    "maximum": {
+                                        "type": "number",
+                                        "title": "Maximum",
+                                        "required": false,
+                                        "default": null,
+                                        "description": "The maximum value that the sensor can report (optional)."
+                                    }
+                                }
                             }
                         ]
                     }
