@@ -70,6 +70,15 @@
 				"title": "System Memory",
 				"unit": "MB",
 				"maximum": 16384
+			},
+			{
+				"uid": "memory_box",
+				"type": "text",
+				"enabled": true,
+				"location": "#sensors_textbox",
+				"title": "Memory",
+				"unit": "MB",
+				"maximum": 16384
 			}
 		]
 	},
@@ -104,7 +113,8 @@
 			"name": "System Memory",
 			"frequency": 2,
 			"display_on": [
-				"system_memory_graph"
+				"system_memory_graph",
+				"memory_box"
 			]
 		},
 		{
