@@ -105,6 +105,12 @@ function sensorConnection() {
 							// Create the actual DOM element
 							graphs[graph.uid].appendTo(graph.location);
 						}
+						if (graph.type == "thermalcamera") {
+							// Add it to the array, regardless of whether it is enabled or not
+							graphs[graph.uid] = new ThermalCamera(graph);
+							// Create the actual DOM element
+							graphs[graph.uid].appendTo(graph.location);
+						}
 					});
 
 					// Generate the same unique sensor IDs that SIGHTSRobot generates

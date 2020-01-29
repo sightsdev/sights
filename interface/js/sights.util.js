@@ -33,3 +33,9 @@ function randomColour() {
     var rgb = HSVtoRGB(h, 0.5, 0.99);
     return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`
 }
+
+
+// Converts colours for thermal cameras
+function rainbow(n) {
+    return 'hsl(' + n * 15 + ', 100%, 50%)';
+}

@@ -592,6 +592,59 @@ const schema = {
                                         "description": "The maximum value that the sensor can report (optional)."
                                     }
                                 }
+                            },
+                            {
+                                "type": "object",
+                                "options": {
+                                    "collapsed": true
+                                },
+                                "title": "Thermal Camera Output",
+                                "properties": {
+                                    "uid": {
+                                        "type": "string",
+                                        "title": "Unique ID",
+                                        "description": "The UID used to identify the graph. Used in sensor configuration to determine what graph a sensor's data is displayed on."
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "title": "Type",
+                                        "description": "The type of graph to use.",
+                                        "enum": [
+                                            "thermalcamera"
+                                        ],
+                                        "default": "thermalcamera",
+                                        "format": "radio"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "title": "Enable",
+                                        "description": "Whether the graph is enabled.",
+                                        "format": "checkbox",
+                                        "default": true
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "title": "Location",
+                                        "description": "Element to append the graph to.",
+                                        "default": "#"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "title": "Title",
+                                        "description": "Title displayed on the graph.",
+                                        "default": "Thermal Camera"
+                                    },
+                                    "width": {
+                                        "type": "integer",
+                                        "title": "Thermal Camera Width",
+                                        "description": "The width, in pixels, of the thermal camera."
+                                    },
+                                    "height": {
+                                        "type": "integer",
+                                        "title": "Thermal Camera Height",
+                                        "description": "The height, in pixels, of the thermal camera."
+                                    }
+                                }
                             }
                         ]
                     }

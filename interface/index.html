@@ -57,6 +57,7 @@
 	<script src="js/graphs/linegraph.js"></script>
 	<script src="js/graphs/circlegraph.js"></script>
 	<script src="js/graphs/textbox.js"></script>
+	<script src="js/graphs/thermalcamera.js"></script>
 
 </head>
 
@@ -624,44 +625,6 @@
 			</div>
 		</div>
 		<div class="row justify-content-md-center" id="btm_view_sensors" style="padding-top:20px">
-			<div class="col-md-auto" id="thermal_camera_card">
-				<div class="card">
-					<div class="card-header">
-						<i class="fas fa-fw fa-camera header-icon"></i> Thermal Camera
-						<button style="margin-left: 10px; padding: 0px 2px 0px 2px" type="button"
-							class="btn btn-secondary" id="thermal_overlay_button" tooltip data-placement="bottom"
-							title="Toggle overlay">
-							<i class="fa fa-fw fa-arrow-up"></i>
-						</button>
-					</div>
-					<div class="card-body" style="display:none" id="thermal_overlay_controls">
-						<p style="margin: 0px">
-							Opacity
-							<button style="padding: 0px" class="btn float-right" id="thermal_overlay_opacity_reset"><i
-									class="fa fa-fw fa-undo"></i></button>
-						</p>
-						<input id="thermal_overlay_opacity" class="custom-range" type="range" min="0" max="1"
-							step="0.01" value="0.25">
-						<p style="margin: 0px">
-							X Scale
-							<button style="padding: 0px" class="btn float-right" id="thermal_overlay_xscale_reset"><i
-									class="fa fa-fw fa-undo"></i></button>
-						</p>
-						<input id="thermal_overlay_xscale" class="custom-range thermal-overlay-scale" type="range"
-							min="0.5" max="1.5" step="0.01" value="1">
-						<p style="margin: 0px">
-							Y Scale
-							<button style="padding: 0px" class="btn float-right" id="thermal_overlay_yscale_reset"><i
-									class="fa fa-fw fa-undo"></i></button>
-						</p>
-						<input id="thermal_overlay_yscale" class="custom-range thermal-overlay-scale" type="range"
-							min="0.5" max="1.5" step="0.01" value="1">
-					</div>
-					<div id="thermal_camera_container">
-						<div id="thermal_camera"></div>
-					</div>
-				</div>
-			</div>
 		</div>
 		<div class="row justify-content-md-center no-gutters" id="btm_view_camera">
 			<div class="col-md-auto camera-container" id="camera_left_card">
