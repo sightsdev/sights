@@ -123,7 +123,7 @@ install_motion () {
 
             echo -e "\nCreating symlink for Motion configuration files..."
             rm -r /etc/motion
-            ln -s /opt/sights/SIGHTSRobot/src/configs/motion /etc
+            ln -s $INSTALL_DIR/SIGHTSRobot/src/configs/motion /etc
 
             echo -e "\nEnabling Motion daemon flag..."
             echo "start_motion_daemon=yes" > /etc/default/motion
@@ -168,7 +168,7 @@ install_supervisor () {
     python3 -m pip install supervisor
 
     echo -e "\nCreating symlink for Supervisor configuration files..."
-    ln -sf /opt/sights/SIGHTSRobot/src/configs/supervisor /etc 
+    ln -sf $INSTALL_DIR/SIGHTSRobot/src/configs/supervisor /etc
 
     echo -e "\nDownloading Supervisor SIGHTS extension..."
     git clone https://github.com/SFXRescue/supervisor_sights_config
