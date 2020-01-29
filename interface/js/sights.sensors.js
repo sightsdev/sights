@@ -10,6 +10,8 @@ var graphs = {};
 var sensors = {};
 var sensorsReady = false;
 
+var config;
+
 var tempChart, distChart;
 
 function update_cameras(config) {
@@ -72,6 +74,8 @@ function sensorConnection() {
 					baseConfig = JSON.stringify(configEditor.getValue());
 					savedConfig = baseConfig;
 					updateConfigAlerts();
+					// Keep a copy to work from
+					config = response;
 
 					// Manually set output text of range slider elements
 					$('output', $('#visual_editor_container'))[0].innerText = response['control']['default_gamepad_speed'];

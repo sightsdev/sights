@@ -560,7 +560,7 @@
 				</div>
 			</div>
 			<div class="col-md-auto" id="main_container">
-				<div class="camera-container" id="camera_front_card">
+				<div class="camera-container" id="camera_front_card" enabled="false">
 					<div class="card" style="border: 0px">
 						<div class="d-flex justify-content-center">
 							<div id="spinner" class="spinner-border text-warning loading-spinner"
@@ -569,7 +569,7 @@
 							</div>
 						</div>
 						<img id="camera_front" width="512" class="rounded-top stream-image" src="" />
-						<div id="thermal_overlay" style="overflow:hidden"></div>
+						<div id="thermal_overlay_front" class="thermal-overlay" style="overflow:hidden"></div>
 						<div class="camera-buttons">
 							<button type="button" class="btn btn-dark camera-refresh-button" tooltip
 								data-placement="bottom" title="Refresh">
@@ -627,9 +627,10 @@
 		<div class="row justify-content-md-center" id="btm_view_sensors" style="padding-top:20px">
 		</div>
 		<div class="row justify-content-md-center no-gutters" id="btm_view_camera">
-			<div class="col-md-auto camera-container" id="camera_left_card">
+			<div class="col-md-auto camera-container" id="camera_left_card" enabled="false">
 				<div class="card" style="border: 0px">
 					<img id="camera_left" width="420" class="img-fluid rounded-left stream-image" src="" />
+					<div id="thermal_overlay_left" class="thermal-overlay" style="overflow:hidden"></div>
 					<div class="camera-buttons">
 						<button type="button" class="btn btn-dark camera-refresh-button" tooltip
 							data-placement="bottom" title="Refresh">
@@ -642,9 +643,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-auto camera-container" id="camera_back_card">
+			<div class="col-md-auto camera-container" id="camera_back_card" enabled="false">
 				<div class="card" style="border: 0px">
 					<img id="camera_back" width="420" class="img-fluid stream-image" src="" />
+					<div id="thermal_overlay_back" class="thermal-overlay" style="overflow:hidden"></div>
 					<div class="camera-buttons">
 						<button type="button" class="btn btn-dark camera-refresh-button" tooltip
 							data-placement="bottom" title="Refresh">
@@ -657,9 +659,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-auto camera-container" id="camera_right_card">
+			<div class="col-md-auto camera-container" id="camera_right_card" enabled="false">
 				<div class="card" style="border: 0px">
 					<img id="camera_right" width="420" class="img-fluid rounded-right stream-image" src="" />
+					<div id="thermal_overlay_right" class="thermal-overlay" style="overflow:hidden"></div>
 					<div class="camera-buttons">
 						<button type="button" class="btn btn-dark camera-refresh-button" tooltip
 							data-placement="bottom" title="Refresh">

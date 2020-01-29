@@ -2,6 +2,7 @@ class ThermalCamera {
     constructor(config) {
         this.overlayed = false;
         this.config = config;
+        this.overlayCamera = "";
 
         this.dom_object = $("<div/>", {
             "id": this.config.uid + "_thermal_camera",
@@ -50,6 +51,11 @@ class ThermalCamera {
             "style": "display: none;",
             "id": this.config.uid + "_overlay_controls"
         }).append(
+            $("<select/>",{
+                "class": "custom-select custom-select-sm",
+                "style": "margin-bottom: 5px;",
+                "id": this.config.uid + "_overlay_selector"
+            }),
             $("<p/>", {
                 "style": "margin: 0px",
                 "text": "Opacity"
@@ -144,12 +150,12 @@ class ThermalCamera {
         let xscale = $('#' + this.config.uid + '_thermal_overlay_xscale').val();
         let yscale = $('#' + this.config.uid + '_thermal_overlay_yscale').val();
         if(!this.overlayed) {
-            if($("#camera_front_card").is(":visible")) {
+            if(this.overlayCamera) {
                 $('#' + this.config.uid + '_camera').css({ 'opacity' : opacity });
-                $('#camera_front').css({'filter': 'grayscale(100%)'});
-                $('#thermal_overlay').append($('#' + this.config.uid + '_camera'));
+                $('#camera_' + this.overlayCamera).css({'filter': 'grayscale(100%)'});
+                $('#thermal_overlay_' + this.overlayCamera).append($('#' + this.config.uid + '_camera'));
                 $('#' + this.config.uid + '_overlay_controls').css({'display':'inline'});
-                $('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
+                $('#' + this.config.uid + '_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
             }
             else {
                 $('#main_container').append($('#' + this.config.uid + '_camera'));
@@ -161,7 +167,7 @@ class ThermalCamera {
         else {
             $('#' + this.config.uid + '_camera').css({ 'opacity' : 1 });
             $('#' + this.config.uid + '_camera_container').append($('#' + this.config.uid + '_camera'));
-            $('#camera_front').css({'filter': ''});
+            $('#camera_' + this.overlayCamera).css({'filter': ''});
             $('#' + this.config.uid + '_overlay_button').toggleClass('fa-rotate-180');
             $('#' + this.config.uid + '_overlay_controls').css({'display':'none'});
             $('#' + this.config.uid + '_camera').css({'transform' : 'scale(1,1)'});
@@ -200,6 +206,25 @@ class ThermalCamera {
             let xscale = $('#' + uid + '_thermal_overlay_xscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale('+xscale+', 1)'});
         });
+        // Camera selector
+        $('.thermal-overlay').each(function () {
+            let id = $(this).attr("id");
+            let location = id.substring(16, id.length);
+            if(config['interface']['cameras'][location]['enabled']) {
+                // Use first camera as overlay camera
+                if(!graphs[uid].overlayCamera) {
+                    graphs[uid].overlayCamera = location;
+                }
+                let pretty_id = location.charAt(0).toUpperCase() + location.slice(1) + " Camera";
+                let option = '<option value="'+ location + '">' + pretty_id + '</option>';
+                $('#' + uid + "_overlay_selector").append(option);
+            }
+        });
+        $('#' + uid + "_overlay_selector").on("input", function () {
+            graphs[uid].overlay(); // Remove current overlay
+            graphs[uid].overlayCamera = $('#' + uid + "_overlay_selector").val(); // Change the camera to use
+            graphs[uid].overlay(); // Add the new overlay
+        })
     }
 }
 
