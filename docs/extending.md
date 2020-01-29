@@ -60,7 +60,7 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
         "type": "bme280",
         "name": "BME280 multi-sensor (front)",
         "enabled": true,
-        "frequency": 3
+        "period": 3
     },
     ```
 

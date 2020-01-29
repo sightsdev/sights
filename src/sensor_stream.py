@@ -123,7 +123,7 @@ class SensorStream(WebSocketProcess):
 
         # Get data from each Sensor
         for sensor in self.sensors:
-            # Ensure time elapsed is greater than frequency
+            # Ensure time elapsed is greater than period
             if (sensor.is_ready(now)):
                 data = sensor.get_data()
                 # Make sure we actually got data from the sensor

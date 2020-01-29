@@ -7,11 +7,11 @@ class SensorWrapper:
         # Last time get_data() was called
         self.last_run = 0
         # If any of these required values do not exist in the config, display a warning
-        if {'enabled', 'type', 'frequency', 'name'} > set(config):
+        if {'enabled', 'type', 'period', 'name'} > set(config):
             self.logger.error(f"Sensor config entry: {config} is missing a required option! Check your config.")
         # Load essential configuration options
         self.enabled = config.get('enabled', False)
-        self.frequency = config.get('frequency', -1)
+        self.period = config.get('period', -1)
         self.name = config.get('name', self.type_)
 
     def get_data(self):
@@ -21,7 +21,7 @@ class SensorWrapper:
         # Time since last checked
         elapsed_time = now - self.last_run
         # Only get data if it has been long enough since last run
-        if (elapsed_time > self.frequency):
+        if (elapsed_time > self.period):
             # Store current time as last_time 
             self.last_run = now
             # Only return True if sensor is actually enabled

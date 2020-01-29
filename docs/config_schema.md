@@ -59,7 +59,7 @@ Array of sensors. Each sensor can have a number of different configuration optio
 - `type`: the type of sensor (i.e. the model name)
 - `enabled`: whether or not the sensor is enabled
 - `name`: fancy display name
-- `frequency`: how often the sensor is polled (in seconds)
+- `period`: how often the sensor is polled (in seconds)
 
 Some sensors will have an additional options such as an `address` option to set the I²C address.
 

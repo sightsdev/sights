@@ -11,66 +11,75 @@
 		"port": "/dev/serial/by-id/usb-Xevelabs_USB2AX_74031303437351B02270-if00",
 		"baudrate": 1000000,
 		"ids": {
-			"left": [1, 3],
-			"right": [2, 4]
+			"left": [
+				1,
+				3
+			],
+			"right": [
+				2,
+				4
+			]
 		}
 	},
 	"arduino": {
-		"enabled": false,
-		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
-		"baudrate": 115200
+		"enabled": false
 	},
-	"cameras": {
-		"front": {
-			"enabled": true,
-			"id": 1
+	"interface": {
+		"cameras": {
+			"front": {
+				"enabled": true,
+				"id": 1
+			},
+			"back": {
+				"enabled": false
+			},
+			"left": {
+				"enabled": false
+			},
+			"right": {
+				"enabled": false
+			}
 		},
-		"back": {
-			"enabled": true,
-			"id": 2
-		},
-		"left": {
-			"enabled": true,
-			"id": 3
-		},
-		"right": {
-			"enabled": true,
-			"id": 4
-		}
+		"graphs": []
 	},
 	"sensors": [
 		{
+			"enabled": false,
 			"type": "amg8833",
 			"name": "Thermal Camera",
-			"enabled": false,
-			"frequency": 0.5,
+			"period": 0.5,
 			"width": 32,
-			"height": 24
+			"height": 24,
+			"display_on": []
 		},
 		{
+			"enabled": false,
 			"type": "mlx90614",
 			"name": "Temperature Sensor",
-			"enabled": false,
-			"frequency": 2,
-			"address": "0x5A"
+			"address": "0x5A",
+			"period": 2,
+			"display_on": []
 		},
 		{
+			"enabled": false,
 			"type": "sgp30",
 			"name": "Gas Sensor",
-			"enabled": false,
-			"frequency": 2
+			"period": 2,
+			"display_on": []
 		},
 		{
+			"enabled": true,
 			"type": "memory",
 			"name": "System Memory",
-			"enabled": true,
-			"frequency": 2
+			"period": 2,
+			"display_on": []
 		},
 		{
+			"enabled": true,
 			"type": "cpu_temp",
 			"name": "CPU Temperature",
-			"enabled": true,
-			"frequency": 5
+			"period": 5,
+			"display_on": []
 		}
 	],
 	"debug": {

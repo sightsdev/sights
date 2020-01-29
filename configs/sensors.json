@@ -41,7 +41,7 @@
 				"y_axis_label": "Temperature (degrees)",
 				"y_axis_min": 20,
 				"y_axis_max": 35,
-				"frequency": 0.1
+				"period": 0.1
 			},
 			{
 				"uid": "temperature_graph",
@@ -52,7 +52,7 @@
 				"icon": "thermometer-half",
 				"x_axis_label": "Time (seconds)",
 				"y_axis_label": "Temperature (degrees)",
-				"frequency": 1
+				"period": 1
 			},
 			{
 				"uid": "cpu_temp",
@@ -97,7 +97,7 @@
 			"enabled": false,
 			"type": "amg8833",
 			"name": "Thermal Camera",
-			"frequency": 5,
+			"period": 5,
 			"width": 32,
 			"height": 24,
 			"display_on": []
@@ -107,21 +107,21 @@
 			"type": "mlx90614",
 			"name": "Temperature Sensor",
 			"address": "0x5B",
-			"frequency": 2,
+			"period": 2,
 			"display_on": []
 		},
 		{
 			"enabled": false,
 			"type": "sgp30",
 			"name": "Gas Sensor",
-			"frequency": 2,
+			"period": 2,
 			"display_on": []
 		},
 		{
 			"enabled": true,
 			"type": "memory",
 			"name": "System Memory",
-			"frequency": 2,
+			"period": 2,
 			"display_on": [
 				"system_memory_graph",
 				"memory_box"
@@ -131,7 +131,7 @@
 			"enabled": true,
 			"type": "random",
 			"name": "CPU Temperature",
-			"frequency": 0.1,
+			"period": 0.1,
 			"display_on": [
 				"cpu_temp_graph"
 			]
@@ -140,7 +140,7 @@
 			"enabled": true,
 			"type": "random",
 			"name": "Temperature",
-			"frequency": 1,
+			"period": 1,
 			"min": 10,
 			"max": 20,
 			"display_on": [
@@ -151,7 +151,7 @@
 			"enabled": true,
 			"type": "random",
 			"name": "CPU Temp",
-			"frequency": 3,
+			"period": 1,
 			"display_on": [
 				"cpu_temp"
 			]
