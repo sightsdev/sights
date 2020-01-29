@@ -148,6 +148,11 @@ function sensorConnection() {
 				if ("version_supervisorext" in obj) {
 					$("#version_supervisorext").html(obj["version_supervisorext"]);
 				}
+
+				// System uptime
+				if ("uptime" in obj) {
+					startTime = Date.now() - (obj["uptime"] * 1000);
+				}
 			}
 
 			if ("sensor_data" in obj && sensorsReady)  {
@@ -167,6 +172,7 @@ function sensorConnection() {
 				});
 			}
 
+			// Permanent/default "sensors"
 			// Speed indicators for keyboard and gamepad
 			if ("kb_speed" in obj) {
 				setSpeedIndicator("kb", obj["kb_speed"]);
