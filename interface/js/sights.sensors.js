@@ -23,6 +23,9 @@ function update_cameras(config) {
 		// Set image attributes to the relevant URL
 		let camera = $("#camera_" + e);
 		let id = config[e]['id'];
+		if(!id) {
+			return;
+		}
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
 		camera.attr("data-id", config[e]['id']);
 		$("#sensor_toggle").show();
