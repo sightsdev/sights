@@ -253,6 +253,8 @@ update () {
     cd ..
     python3 -m pip install ./supervisor_sights_config
 
+    python3 -m pip install -r SIGHTSRobot/src/requirements.txt
+
     echo -e "\nRestarting Supervisord and SIGHTS..."
     service supervisord restart
     #supervisord restart sights
