@@ -188,8 +188,6 @@ class SensorStream(WebSocketProcess):
         # System uptime, as time in seconds since boot
         with open('/proc/uptime', 'r') as f:
             msg["uptime"] = round(float(f.readline().split()[0]))
-        # Get RAM, add to message, use bit shift operator to represent in MB
-        msg["memory_total"] = psutil.virtual_memory().total >> 20
         # Send software versions
         msg["version_robot"] = subprocess.check_output(["git", "describe"]).strip().decode('utf-8')
         msg["version_interface"] = subprocess.check_output(["git", "describe"],
