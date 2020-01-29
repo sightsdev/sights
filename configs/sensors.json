@@ -79,6 +79,15 @@
 				"title": "Memory",
 				"unit": "MB",
 				"maximum": 16384
+			},
+			{
+				"uid": "thermal_camera",
+				"type": "thermalcamera",
+				"enabled": true,
+				"location": "#btm_view_sensors",
+				"title": "Thermal Camera",
+				"width": 32,
+				"height": 24
 			}
 		]
 	},
