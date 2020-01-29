@@ -2,7 +2,7 @@ class ThermalCamera {
     constructor(config) {
         this.overlayed = false;
         this.config = config;
-        this.overlayCamera = "";
+        this.overlayCamera = this.config.camera;
 
         this.dom_object = $("<div/>", {
             "id": this.config.uid + "_thermal_camera",
@@ -150,7 +150,7 @@ class ThermalCamera {
         let xscale = $('#' + this.config.uid + '_thermal_overlay_xscale').val();
         let yscale = $('#' + this.config.uid + '_thermal_overlay_yscale').val();
         if(!this.overlayed) {
-            if(this.overlayCamera) {
+            if(this.overlayCamera != 'default') {
                 $('#' + this.config.uid + '_camera').css({ 'opacity' : opacity });
                 $('#camera_' + this.overlayCamera).css({'filter': 'grayscale(100%)'});
                 $('#thermal_overlay_' + this.overlayCamera).append($('#' + this.config.uid + '_camera'));
@@ -178,6 +178,13 @@ class ThermalCamera {
 
     registerSliders() {
         let uid = this.config.uid;
+        // Set defaults from config
+        let defaultOpacity = this.config.opacity ? this.config.opacity : 0.25;
+        let defaultXScale = this.config.xscale ? this.config.xscale : 1;
+        let defaultYScale = this.config.yscale ? this.config.yscale : 1;
+        $('#' + uid + '_thermal_overlay_opacity').val(defaultOpacity);
+        $('#' + uid + '_thermal_overlay_xscale').val(defaultXScale);
+        $('#' + uid + '_thermal_overlay_yscale').val(defaultYScale);
         // Thermal Overlay Settings
         // Opacity slider
         $('#' + uid + '_thermal_overlay_opacity').on("input", function() {
@@ -185,8 +192,8 @@ class ThermalCamera {
         });
         // Opacity slider reset button
         $('#' + uid + '_thermal_overlay_opacity_reset').on("click", function() {
-            $('#' + uid + '_thermal_overlay_opacity').val('0.25');
-            $('#' + uid + '_camera').css('opacity', '0.25');
+            $('#' + uid + '_thermal_overlay_opacity').val(defaultOpacity);
+            $('#' + uid + '_camera').css('opacity', defaultOpacity);
         });
         // X and Y scale sliders
         $('.' + uid + '-thermal-overlay-scale').on("input", function() {
@@ -196,13 +203,13 @@ class ThermalCamera {
         });
         // X scale slider reset button
         $('#' + uid + '_thermal_overlay_xscale_reset').on("click", function() {
-            $('#' + uid + '_thermal_overlay_xscale').val('1');
+            $('#' + uid + '_thermal_overlay_xscale').val(defaultXScale);
             let yscale = $('#' + uid + '_thermal_overlay_yscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale(1,'+yscale+')'});
         });
         // Y scale slider reset button
         $('#' + uid + '_thermal_overlay_yscale_reset').on("click", function() {
-            $('#' + uid + '_thermal_overlay_yscale').val('1');
+            $('#' + uid + '_thermal_overlay_yscale').val(defaultYScale);
             let xscale = $('#' + uid + '_thermal_overlay_xscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale('+xscale+', 1)'});
         });
@@ -212,7 +219,7 @@ class ThermalCamera {
             let location = id.substring(16, id.length);
             if(global_config['interface']['cameras'][location]['enabled']) {
                 // Use first camera as overlay camera
-                if(!graphs[uid].overlayCamera) {
+                if(graphs[uid].overlayCamera == 'default') {
                     graphs[uid].overlayCamera = location;
                 }
                 let pretty_id = location.charAt(0).toUpperCase() + location.slice(1) + " Camera";
@@ -220,6 +227,11 @@ class ThermalCamera {
                 $('#' + uid + "_overlay_selector").append(option);
             }
         });
+        // Set default camera from config
+        if(this.config.camera != 'default') {
+            $('#' + uid + "_overlay_selector").val('' + this.config.camera);
+        }
+        // Change selection on input
         $('#' + uid + "_overlay_selector").on("input", function () {
             graphs[uid].overlay(); // Remove current overlay
             graphs[uid].overlayCamera = $('#' + uid + "_overlay_selector").val(); // Change the camera to use
