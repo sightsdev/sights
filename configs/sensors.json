@@ -19,7 +19,8 @@
 				"id": 1
 			},
 			"back": {
-				"enabled": false
+				"enabled": true,
+				"id": 2
 			},
 			"left": {
 				"enabled": false

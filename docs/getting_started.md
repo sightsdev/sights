@@ -24,7 +24,7 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
   - Configuration file management allowing you to swap the active configuration file at runtime, even if the SIGHTSRobot service is stopped or has crashed
   - Light and dark themes
   - Ability for the operator to safely shut down or restart the robot through the interface
-- Sensor wrapper classes that can use existing Python libraries to access sensors over I2C. No need to right libraries specifically for SIGHTS.
+- Sensor wrapper classes that can use existing Python libraries to access sensors over I2C. No need to write libraries specifically for SIGHTS.
 - Built entirely using open protocols and open-source software.
 
 All configuration for SIGHTS is done in the `.json` files within the `configs/` directory, which can be edited through the web interface. The active configuration file can be changed through the interface at any time, even if the SIGHTSRobot service is stopped or has crashed. This gives you the ability to fix any configuration issue without physical access to the robot.
