@@ -20,6 +20,7 @@ hljs.initHighlightingOnLoad();
 
 function updateCheck(type, altRepo) {
 	let update_field = $("#update_" + type);
+	let warning_field = $("#update_warning_" + type);
 	let version_field = $("#version_" + type);
 	let repo = altRepo == undefined ? "SFXRescue/sights" + type : altRepo;
 	update_field.html("Checking for update");
@@ -32,11 +33,23 @@ function updateCheck(type, altRepo) {
 			let current_version = version_field.html();
 			let current_release = current_version.split("-")[0];
 			let latest_release = result[0]['name'];
+			warning_field.html("");  // Clear warnings
+			$('#update_instructions').hide();
 			update_field.css("opacity", "100%");
 			if (current_release == latest_release) {
 				update_field.html("You are running the latest release");
+				if(current_version.includes('-')) {
+					warning_field.html("<br>Caution: " +
+						"You are running a newer development version that may be unstable.");
+					warning_field.css("color", "#dcc620");
+				}
 			} else {
+				$('#update_instructions').show();
 				update_field.html("Update available: " + latest_release);
+				if(current_version.includes('-')) {
+					warning_field.html("<br>Critical: You are running an outdated development version!");
+					warning_field.css("color", "#dc3545");
+				}
 			}
 		},
 		error: function () {
@@ -112,6 +125,8 @@ function setSpeedIndicator(type, speed) {
 }
 
 $(document).on("ready", function () {
+	// Hide update instructions until user checks for an update
+	$('#update_instructions').hide();
 
 	// Uptime updater
 	var daySecs = 60*60*24;
