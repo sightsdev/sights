@@ -22,7 +22,7 @@ print_detected_ip () {
     do
       output="$output or http://$ip$1"
     done
-    output="$output on any decice on the local network."
+    output="$output on any device on the local network."
   else
     output="$output or connect to a network."
   fi
