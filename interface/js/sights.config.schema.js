@@ -734,7 +734,8 @@ const schema = {
                                     }
                                 }
                             }
-                        ]
+                        ],
+                        "title": "Graph"
                     }
                 },
             }
@@ -1057,6 +1058,80 @@ const schema = {
                     },
                     {
                         "type": "object",
+                        "title": "MultiRandom (Random, Random, Random)",
+                        "options": {
+                            "collapsed": true
+                        },
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable",
+                                "description": "Whether the MultiRandom sensor is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Type",
+                                "enum": [
+                                    "multirandom"
+                                ],
+                                "default": "multirandom",
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Name",
+                                "description": "The pretty name for the MultiRandom sensor.",
+                                "default": "New Sensor"
+                            },
+                            "period": {
+                                "type": "number",
+                                "title": "Update Period",
+                                "description": "How often, in seconds, the MultiRandom sensor is polled.",
+                                "default": 3
+                            },
+                            "display_on": {
+                                "type": "object",
+                                "title": "Display On",
+                                "description": "The MultiRandom sensor is a multi-sensor. Choose how each value is displayed individually.",
+                                "options": {
+                                    "collapsed": false
+                                },
+                                "properties": {
+                                    "a": {
+                                        "type": "array",
+                                        "title": "A",
+                                        "description": "A list of graph UIDs to display this sensor's A data on.",
+                                        "items": {
+                                            "type": "string",
+                                            "title": "Graph UID"
+                                        }
+                                    },
+                                    "b": {
+                                        "type": "array",
+                                        "title": "B",
+                                        "description": "A list of graph UIDs to display this sensor's B data on.",
+                                        "items": {
+                                            "type": "string",
+                                            "title": "Graph UID"
+                                        }
+                                    },
+                                    "c": {
+                                        "type": "array",
+                                        "title": "C",
+                                        "description": "A list of graph UIDs to display this sensor's C data on.",
+                                        "items": {
+                                            "type": "string",
+                                            "title": "Graph UID"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
                         "title": "Custom Sensor",
                         "options": {
                             "collapsed": true
@@ -1102,7 +1177,8 @@ const schema = {
                             }
                         }
                     }
-                ]
+                ],
+                "title": "Sensor"
             }
         },
         "debug": {
