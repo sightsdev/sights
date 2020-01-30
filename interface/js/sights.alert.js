@@ -16,7 +16,7 @@ function launchToast(message, type, icon) {
         });
     }
     else {
-        console.log("Suppressed " + type + " toast notification: " + message);
+        interfaceLog("info", "toast", "Suppressed " + type + " toast notification: " + message);
     }
 }
 /* Websocket Alerts */

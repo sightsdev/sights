@@ -135,7 +135,8 @@ function sensorConnection() {
 								sensorCount[type] = 1;
 							}
 							let sensorId = type + "_" + sensorCount[type];
-							console.log("Sensor of type '" + sensor['type'] +"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
+							interfaceLog("info", "sensors", "Sensor of type '" + sensor['type'] +
+								"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
 							
 							sensor['display_on'].forEach(function (graph) {
 								if (!("handles" in graphs[graph]))

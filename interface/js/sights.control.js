@@ -115,7 +115,7 @@ $(document).on("ready", function () {
 	});
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
-		console.log('Controller connected:', device.id);
+		interfaceLog("info", "controller", "Connected: " + device.id);
 		gamepadConnectedAlert();
 
 		$('#gamepad_select').append('<option value="' + device.index + '" id="gamepad-' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") + '</option>');
@@ -124,7 +124,7 @@ $(document).on("ready", function () {
 	});
 
 	gamepad.bind(Gamepad.Event.DISCONNECTED, function (device) {
-		console.log('Controller disconnected', device.id);
+		interfaceLog("info", "controller", "Disconnected: " + device.id);
 
 		$('#gamepad-' + device.index).remove();
 

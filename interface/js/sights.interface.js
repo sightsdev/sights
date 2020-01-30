@@ -18,6 +18,11 @@ var startTime;
 // Load syntax highlighting
 hljs.initHighlightingOnLoad();
 
+function interfaceLog(level, system, message) {
+	$('#interface_info_pre').append((new Date).toLocaleTimeString() + " " + level.toUpperCase() + " " + system + ": " +
+		message + "\n");
+}
+
 function loadConfigSetting(path, defaultValue) {
 	let configItem = global_config;
 	try {
@@ -27,7 +32,8 @@ function loadConfigSetting(path, defaultValue) {
 	}
 	catch (e) {
 		configItem = defaultValue;
-		console.log(path.join(".") + " not found in your config. Using default: " + defaultValue);
+		interfaceLog("warning", "config", path.join(".") + " not found in your config." +
+			" Using default: " + defaultValue);
 	}
 	return configItem;
 }
@@ -243,6 +249,9 @@ $(document).on("ready", function () {
 	// Clear log dump box
 	$("#gamepad_log_clear_button").on("click", function () {
 		$("#gamepad_log_pre").html("");
+	});
+	$("#interface_log_clear_button").on("click", function () {
+		$("#interface_info_pre").html("");
 	});
 
 	// If the camera stream doesn't load, default to fallback image

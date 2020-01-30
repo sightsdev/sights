@@ -72,10 +72,12 @@ function updateService() {
         error: serviceDisconnected,
         statusCode: {
             404: function (response) {
-                console.log("404: Supervisor is not available. Retrying.");
+                interfaceLog("warning", "supervisor", "404: Supervisor is not available. " +
+                    "Retrying.");
             },
             503: function (response) {
-                console.log("503: Supervisor is not available. Retrying.");
+                interfaceLog("warning", "supervisor", "503: Supervisor is not available. " +
+                    "Retrying.");
             }
         }
     });
