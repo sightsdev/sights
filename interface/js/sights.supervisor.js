@@ -199,7 +199,7 @@ function requestConfig(callback) {
 
 function saveConfig() {
     let contents = $("#advanced_editor_pre")[0].innerText;
-    let tempSavedConfig = savedConfig;
+    let tempEditorSavedConfig = editorSavedConfig;
     let fileName = $(".editor_filename").val() + ".json";
     try {
         // Parse from YAML into JS
@@ -221,10 +221,10 @@ function saveConfig() {
             }
         });
         configSentAlert();
-        savedConfig = JSON.stringify(configEditor.getValue());
+        editorSavedConfig = JSON.stringify(configEditor.getValue());
     } catch (e) {
         configInvalidAlert();
-        savedConfig = tempSavedConfig;
+        editorSavedConfig = tempEditorSavedConfig;
     }
     updateConfigAlerts();
 }

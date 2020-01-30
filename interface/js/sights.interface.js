@@ -10,13 +10,27 @@ var ip = window.location.hostname;
 var sensorMode = false;
 
 var configEditor;
-var baseConfig;
-var savedConfig;
+var editorBaseConfig;
+var editorSavedConfig;
 
 var startTime;
 
 // Load syntax highlighting
 hljs.initHighlightingOnLoad();
+
+function loadConfigSetting(path, defaultValue) {
+	let configItem = global_config;
+	try {
+		path.forEach(function (p) {
+			console.log(p);
+			configItem = configItem[p];
+		})
+	}
+	catch (e) {
+		configItem = defaultValue;
+	}
+	return configItem;
+}
 
 function updateCheck(type, altRepo) {
 	let update_field = $("#update_" + type);
@@ -63,14 +77,14 @@ function updateCheck(type, altRepo) {
 function updateConfigAlerts() {
 	var currentConfig = JSON.stringify(configEditor.getValue());
 
-	if(baseConfig == currentConfig && currentConfig == savedConfig) {
+	if(editorBaseConfig == currentConfig && currentConfig == editorSavedConfig) {
 		// There are no changes. Hide all alerts.
 		$(".save-alert").slideUp();
 		$("#config_update_alert").slideUp();
 		$(".restart-service-alert").slideUp();
 		$(".editor_reload_button").removeClass("disabled");
 	}
-	else if(currentConfig == savedConfig) {
+	else if(currentConfig == editorSavedConfig) {
 		// There are saved changes that need a restart.
 		$(".save-alert").slideUp();
 		$("#config_update_alert").slideUp();

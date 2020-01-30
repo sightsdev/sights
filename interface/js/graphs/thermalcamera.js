@@ -225,7 +225,7 @@ class ThermalCamera extends Graph{
         $('.thermal-overlay').each(function () {
             let id = $(this).attr("id");
             let location = id.substring(16, id.length);
-            if(global_config['interface']['cameras'][location]['enabled']) {
+            if(loadConfigSetting(["interface", "cameras", location, "enabled"], null)) {
                 // Use first camera as overlay camera
                 if(graphs[uid].overlayCamera == 'default') {
                     graphs[uid].overlayCamera = location;

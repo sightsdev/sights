@@ -76,7 +76,7 @@ function DemoMode() {
             :{"print_messages":false}};
 
     configEditor.setValue(obj);
-    baseConfig = savedConfig = JSON.stringify(obj);
+    editorBaseConfig = editorSavedConfig = JSON.stringify(obj);
 	updateConfigAlerts();
 
 	// Setup functionality for keyboard speed indicators

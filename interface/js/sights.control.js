@@ -245,8 +245,8 @@ $(document).on("ready", function () {
             requestConfig(function(response) {
                 configEditor.setValue(response);
                 // Keep a copy to track changes
-                baseConfig = JSON.stringify(configEditor.getValue());
-                savedConfig = baseConfig;
+                editorBaseConfig = JSON.stringify(configEditor.getValue());
+                editorSavedConfig = editorBaseConfig;
 				// Stringify value of new config to remove key-value pairs with `undefined` value
 				var jsonString = JSON.stringify(response);
 				// Set advanced editor

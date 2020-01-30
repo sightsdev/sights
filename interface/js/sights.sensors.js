@@ -14,25 +14,25 @@ var global_config;
 
 var tempChart, distChart;
 
-function update_cameras(config) {
+function update_cameras() {
 	['front', 'left', 'right', 'back'].forEach(function (e) {
 		// Get parent div of camera stream image
 		var card = $("#camera_" + e + "_card");
 		// Enable the div, if camera is enabled in config file
-		config[e]['enabled'] ? card.show() : card.hide();
+		loadConfigSetting(['interface', 'cameras', e, 'enabled'], false) ? card.show() : card.hide();
 		// Set image attributes to the relevant URL
 		let camera = $("#camera_" + e);
-		let id = config[e]['id'];
+		let id = loadConfigSetting(['interface', 'cameras', e, 'id'], null);
 		if(!id) {
 			return;
 		}
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
-		camera.attr("data-id", config[e]['id']);
+		camera.attr("data-id", id);
 		$("#sensor_toggle").show();
 	});
-	if (!config['back']['enabled'] &&
-		!config['left']['enabled'] &&
-		!config['right']['enabled']) {
+	if (!loadConfigSetting(['interface', 'cameras', 'back', 'enabled'], false) &&
+		!loadConfigSetting(['interface', 'cameras', 'left', 'enabled'], false) &&
+		!loadConfigSetting(['interface', 'cameras', 'right', 'enabled'], false)) {
 		$("#sensor_toggle").hide();
 		$("#btm_view_camera").hide();
 		$("#btm_view_sensors").show();
@@ -74,8 +74,8 @@ function sensorConnection() {
 					// Populating advanced editor happens on configEditor change, which fires when the inital config is set
 					configEditor.setValue(response);
 					// Keep a copy to track changes
-					baseConfig = JSON.stringify(configEditor.getValue());
-					savedConfig = baseConfig;
+					editorBaseConfig = JSON.stringify(configEditor.getValue());
+					editorSavedConfig = editorBaseConfig;
 					updateConfigAlerts();
 					// Keep a copy to work from
 					global_config = response;
@@ -86,7 +86,7 @@ function sensorConnection() {
 
 					// Now handle loading stuff from the config file
 					// Enable / disable cameras and set their ports as defined by the config
-					update_cameras(response['interface']['cameras']);
+					update_cameras();
 
 					// Remove any old invalidated graphs before adding the new ones
 					for(let graph in graphs) {
