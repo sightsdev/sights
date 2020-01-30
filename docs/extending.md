@@ -34,7 +34,7 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
         def get_data(self):
             msg = {}
 
-            # Temperature in degrees celcius
+            # Temperature in degrees celsius
             temperature = self.sensor.read_temperature()
             msg["temperature"][0] = round(temperature, 2)
 
@@ -51,37 +51,70 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
 
     A more basic sensor could just return a single string or number value.
 
-3. Add a section to your configuration files for your new sensor
+3. Add a section to the config schema for your sensor.
 
-    The only required options are whether the sensor is enabled, and how often to poll it. This would be sufficient for the above example.
+    The interface can generate the necessary configuration file additions for your new sensor if you specify requirements in the schema located at `SIGHTSInterface/js/sights.config.schema.js`.
+
+    Sensors are defined in the list `properties.sensors.items.anyOf`.
+    The only required options are whether the sensor is enabled, and how often to poll it.
 
     ```json
     {
-        "type": "bme280",
-        "name": "BME280 multi-sensor (front)",
-        "enabled": true,
-        "period": 3
-    },
-    ```
-
-4. Add the interface side code.
-
-    > This section is outdated, will be fixed shortly
-
-    This is naturally very dependent on the type of sensor you are including. Essenitally, add the HTML code and then add an additional `if` statement for your sensor into the `SIGHTSInterface/js/sights.sensors.js` file. It should look something like this:
-
-    ```js
-    // Get temperature data for line graph
-    if ("bme280" in obj) {
-        var data = obj["bme280"];
-        // Remove oldest element
-        tempChartConfig.data.datasets[0].data.shift();
-        // Push new element
-        tempChartConfig.data.datasets[0].data.push(data[0]);
-        // Update chart to display new data
-        tempChart.update();
+        "type": "object",
+        "title": "BME280 (Temperature, Pressure, Humidity)",
+        "options": {
+            "collapsed": true
+        },
+        "properties": {
+            "enabled": {
+                "type": "boolean",
+                "title": "Enable",
+                "description": "Whether the BME280 sensor is enabled",
+                "format": "checkbox",
+                "default": true
+            },
+            "type": {
+                "type": "string",
+                "title": "Type",
+                "enum": [
+                    "bme280"
+                ],
+                "default": "bme280",
+                "format": "radio"
+            },
+            "name": {
+                "type": "string",
+                "title": "Name",
+                "description": "The pretty name for the BME280 sensor.",
+                "default": "New Sensor"
+            },
+            "period": {
+                "type": "number",
+                "title": "Update Period",
+                "description": "How often, in seconds, the BME280 sensor is polled.",
+                "default": 3
+            },
+            "display_on": {
+                "type": "array",
+                "title": "Display On",
+                "description": "A list of graph UIDs to display this sensor's data on.",
+                "items": {
+                    "type": "string",
+                    "title": "Graph UID"
+                }
+            }
+        }
     }
+
     ```
+
+4. (Optional) Create a sensor graph.
+
+    A sensor graph is a javascript class that determines how sensor data is displayed on the interface. In many cases, you may be able to use an existing graph to display the data from your new sensor.
+
+    Our BME280 sensor wrapper returns three readings per `get_data()` request, making it incompatible with any existing sensor graphs. A fix that allows this is planned.
+
+    A new sensor graph class can extend the existing "abstract" class Graph (`SIGHTSInterface/js/graphs/graph.js`) for an easy framework to build your graph class around.
 
 5. Test it!
 
