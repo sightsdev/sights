@@ -1091,6 +1091,48 @@ const schema = {
                                 "description": "How often, in seconds, the MultiRandom sensor is polled.",
                                 "default": 3
                             },
+                            "min_a": {
+                                "type": "integer",
+                                "title": "Minimum Value A",
+                                "description": "The minimum value of randomly generated data A.",
+                                "required": false,
+                                "default": null
+                            },
+                            "max_a": {
+                                "type": "integer",
+                                "title": "Maximum Value A",
+                                "description": "The maximum value of randomly generated data A.",
+                                "required": false,
+                                "default": null
+                            },
+                            "min_b": {
+                                "type": "integer",
+                                "title": "Minimum Value B",
+                                "description": "The minimum value of randomly generated data B.",
+                                "required": false,
+                                "default": null
+                            },
+                            "max_b": {
+                                "type": "integer",
+                                "title": "Maximum Value B",
+                                "description": "The maximum value of randomly generated data B.",
+                                "required": false,
+                                "default": null
+                            },
+                            "min_c": {
+                                "type": "integer",
+                                "title": "Minimum Value C",
+                                "description": "The minimum value of randomly generated data C.",
+                                "required": false,
+                                "default": null
+                            },
+                            "max_c": {
+                                "type": "integer",
+                                "title": "Maximum Value C",
+                                "description": "The maximum value of randomly generated data C.",
+                                "required": false,
+                                "default": null
+                            },
                             "display_on": {
                                 "type": "object",
                                 "title": "Display On",
