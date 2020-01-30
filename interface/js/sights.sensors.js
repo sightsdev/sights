@@ -139,17 +139,30 @@ function sensorConnection() {
 								"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
 							if (Array.isArray(sensor["display_on"])) {
 								sensor['display_on'].forEach(function (graph) {
-									if (!("handles" in graphs[graph]))
-										graphs[graph]["handles"] = [];
-									graphs[graph]["handles"].push(sensorId);
+									// If the graph sensor wants to display on exists
+									if (graph in graphs) {
+										if (!("handles" in graphs[graph]))
+											graphs[graph]["handles"] = [];
+										graphs[graph]["handles"].push(sensorId);
+									}
+									else {
+										interfaceLog("warning", "sensors", sensorId + " will " +
+											"not output to graph " + graph + " because " + graph + " does not exist.")
+									}
 								});
 							}
 							else {
 								// Deal with multi-sensors
 								Object.entries(sensor["display_on"]).forEach(([type, [graph]]) => {
-									if (!("handles" in graphs[graph]))
-										graphs[graph]["handles"] = [];
-									graphs[graph]["handles"].push(sensorId + "_" + type);
+									if (graph in graphs) {
+										if (!("handles" in graphs[graph]))
+											graphs[graph]["handles"] = [];
+										graphs[graph]["handles"].push(sensorId + "_" + type);
+									}
+									else {
+										interfaceLog("warning", "sensors", sensorId + " will " +
+											"not output to graph " + graph + " because " + graph + " does not exist.")
+									}
 								});
 							}
 							
@@ -194,22 +207,34 @@ function sensorConnection() {
 						// For each graph where it should be displayed
 						if(Array.isArray(sensors[sensor_uid]["display_on"])) {
 							sensors[sensor_uid]["display_on"].forEach(function (graph) {
-								graphs[graph]["handles"].forEach(function (value, index) {
-									if (value == sensor_uid)
-										// Lookup the graph and update it with the new data
-										graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
-								});
+								if(graph in graphs) {
+									graphs[graph]["handles"].forEach(function (value, index) {
+										if (value == sensor_uid)
+											// Lookup the graph and update it with the new data
+											graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
+									});
+								}
+								else {
+									interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+										"update graph " + graph + " because " + graph + " does not exist.")
+								}
 							});
 						}
 						else {
 							// Deal with multi-sensors
-							console.log("Dealing with multi-sensor update");
 							Object.entries(sensors[sensor_uid]["display_on"]).forEach(([type, [graph]]) => {
-								graphs[graph]["handles"].forEach(function (value, index) {
-									if (value == sensor_uid + "_" + type)
-										// Lookup the graph and update it with the new data
-										graphs[graph].update(index, sensor_data[type], sensors[sensor_uid]["name"] + " " + type);
-								});
+								if (graph in graphs) {
+									graphs[graph]["handles"].forEach(function (value, index) {
+										if (value == sensor_uid + "_" + type)
+											// Lookup the graph and update it with the new data
+											graphs[graph].update(index, sensor_data[type], sensors[sensor_uid]["name"] +
+												" " + type);
+									});
+								}
+								else {
+									interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+										"update graph " + graph + " because " + graph + " does not exist.")
+								}
 							});
 						}
 					}
