@@ -234,6 +234,40 @@ const schema = {
                 "graphs"
             ],
             "properties": {
+                "notifications": {
+                    "$id": "#/properties/interface/properties/notifications",
+                    "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
+                    "title": "Notifications",
+                    "description": "Enable and configure toast alerts and notifications on the interface.",
+                    "required": [
+                        "enabled"
+                    ],
+                    "properties": {
+                        "enabled": {
+                            "$id": "#/properties/interface/properties/notifications/properties/enabled",
+                            "type": "boolean",
+                            "title": "Enable Notifications",
+                            "description": "Whether notifications are enabled.",
+                            "format": "checkbox",
+                            "default": true
+                        },
+                        "timeout": {
+                            "$id": "#/properties/interface/properties/notifications/properties/timeout",
+                            "type": "integer",
+                            "title": "Notification Timeout",
+                            "description": "Automatically dismiss notifications after this many seconds. Set to 0 to disable.",
+                            "default": 7,
+                            "options": {
+                                "dependencies": {
+                                    "enabled": true
+                                }
+                            }
+                        }
+                    }
+                },
                 "cameras": {
                     "$id": "#/properties/interface/properties/cameras",
                     "type": "object",
