@@ -1,6 +1,6 @@
-class CircleGraph {
+class CircleGraph extends Graph{
     constructor(config) {
-        this.config = config;
+        super(config);
 
         this.dom_object = $("<div/>", {
             "id": this.config.uid + "_graph",
@@ -40,10 +40,6 @@ class CircleGraph {
         body.append(circle);
         card.append(body, header);
         this.dom_object.append(card);
-    }
-
-    appendTo(target) {
-        $(target).append(this.dom_object);
     }
 
     update(index, data, name) {

@@ -1,7 +1,8 @@
-class ThermalCamera {
+class ThermalCamera extends Graph{
     constructor(config) {
+        super(config);
+
         this.overlayed = false;
-        this.config = config;
         this.overlayCamera = this.config.camera;
 
         this.dom_object = $("<div/>", {
@@ -132,7 +133,7 @@ class ThermalCamera {
     }
 
     appendTo(target) {
-        $(target).append(this.dom_object);
+        super.appendTo(target);
         this.registerSliders();
     }
 
@@ -143,6 +144,11 @@ class ThermalCamera {
             var pixel = Math.round(data[i]);
             $("#p_" + this.config.uid + "_" + i).css("background", rainbow(pixel));
         }
+    }
+
+    remove() {
+        super.remove();
+        // Any cleanup specific to the graph.
     }
 
     //Swap thermal overlay on click

@@ -89,8 +89,8 @@ function sensorConnection() {
 					update_cameras(response['interface']['cameras']);
 
 					// Remove any old invalidated graphs before adding the new ones
-					for(graph in graphs) {
-						$("#" + graphs[graph].dom_object[0].id).remove();
+					for(let graph in graphs) {
+						graphs[graph].remove();
 					}
 
 					// Create each sensor graph

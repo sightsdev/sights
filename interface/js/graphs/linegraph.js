@@ -1,6 +1,6 @@
-class LineGraph { // extends Graph
+class LineGraph extends Graph {
     constructor(config) {
-        this.config = config;
+        super(config);
 
         this.dom_object = $("<div/>", {
             "id": this.config.uid + "_graph",
@@ -37,11 +37,11 @@ class LineGraph { // extends Graph
         header.append(icon, title);
         body.append(canvas);
         card.append(header, body);
-        this.dom_object.append(card);        
+        this.dom_object.append(card);
     }
 
     appendTo(target) {
-        $(target).append(this.dom_object);
+        super.appendTo(target);
         // Fix canvas rendering
         $("#" + this.config.uid + "_canvas").attr("style", "display: block; height: 187px; width: 374px;");
     }

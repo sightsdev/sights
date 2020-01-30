@@ -1,6 +1,6 @@
-class TextBox {
+class TextBox extends Graph{
     constructor(config) {
-        this.config = config;
+        super(config);
 
         this.dom_object = $("<li/>", {
             "id": this.config.uid + "_textbox",
@@ -25,10 +25,6 @@ class TextBox {
                 })
             )
         );
-    }
-
-    appendTo(target) {
-        $(target).append(this.dom_object);
     }
 
     update(index, data, name) {
