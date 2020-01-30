@@ -197,7 +197,7 @@ const schema = {
                 "port": {
                     "$id": "#/properties/arduino/properties/port",
                     "type": "string",
-                    "title": "Arduino Port",
+                    "title": "Serial Port",
                     "description": "The location of the Arduino serial device.",
                     "default": "/dev/serial/by-id/",
                     "pattern": "^(.*)$",
@@ -210,7 +210,7 @@ const schema = {
                 "baudrate": {
                     "$id": "#/properties/arduino/properties/baudrate",
                     "type": "integer",
-                    "title": "Arduino Baud Rate",
+                    "title": "Serial Baud Rate",
                     "description": "Baud rate of the serial port. Commonly set to 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600 or 115200.",
                     "default": 115200,
                     "options": {
