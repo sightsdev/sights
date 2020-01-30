@@ -36,15 +36,15 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
 
             # Temperature in degrees celsius
             temperature = self.sensor.read_temperature()
-            msg["temperature"][0] = round(temperature, 2)
+            msg["temperature"] = round(temperature, 2)
 
             # Pressure in hectopascals
             pressure = self.sensor.read_pressure() / 100
-            msg["pressure"][0] = round(pressure, 2)
+            msg["pressure"] = round(pressure, 2)
 
             # Humidity percentage
             humidity = self.sensor.read_humidity()
-            msg["humidity"][0] = round(humidity, 2)
+            msg["humidity"] = round(humidity, 2)
 
             return msg
     ```
@@ -56,7 +56,10 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
     The interface can generate the necessary configuration file additions for your new sensor if you specify requirements in the schema located at `SIGHTSInterface/js/sights.config.schema.js`.
 
     Sensors are defined in the list `properties.sensors.items.anyOf`.
-    The only required options are whether the sensor is enabled, and how often to poll it.
+
+    The only required options are whether the sensor is enabled, the type, how often to poll it and its name (`sensor_wrapper.py`).
+
+    For the BME280 sensor wrapper we created above, the following schema would be acceptable. Note how `display_on` is an object rather than an array. Since the BME280 sensor returns 3 values in its message, the interface needs to know where to display each one of the values. For a sensor that returns a single value, `display_on` is simply an array of strings representing graphs. 
 
     ```json
     {
@@ -69,7 +72,7 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
             "enabled": {
                 "type": "boolean",
                 "title": "Enable",
-                "description": "Whether the BME280 sensor is enabled",
+                "description": "Whether the MultiRandom sensor is enabled",
                 "format": "checkbox",
                 "default": true
             },
@@ -77,42 +80,67 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
                 "type": "string",
                 "title": "Type",
                 "enum": [
-                    "bme280"
+                    "multirandom"
                 ],
-                "default": "bme280",
+                "default": "multirandom",
                 "format": "radio"
             },
             "name": {
                 "type": "string",
                 "title": "Name",
-                "description": "The pretty name for the BME280 sensor.",
+                "description": "The pretty name for the MultiRandom sensor.",
                 "default": "New Sensor"
             },
             "period": {
                 "type": "number",
                 "title": "Update Period",
-                "description": "How often, in seconds, the BME280 sensor is polled.",
+                "description": "How often, in seconds, the MultiRandom sensor is polled.",
                 "default": 3
             },
             "display_on": {
-                "type": "array",
+                "type": "object",
                 "title": "Display On",
-                "description": "A list of graph UIDs to display this sensor's data on.",
-                "items": {
-                    "type": "string",
-                    "title": "Graph UID"
+                "description": "The MultiRandom sensor is a multi-sensor. Choose how each value is displayed individually.",
+                "options": {
+                    "collapsed": false
+                },
+                "properties": {
+                    "temperature": {
+                        "type": "array",
+                        "title": "Temperature",
+                        "description": "A list of graph UIDs to display this sensor's temperature data on.",
+                        "items": {
+                            "type": "string",
+                            "title": "Graph UID"
+                        }
+                    },
+                    "pressure": {
+                        "type": "array",
+                        "title": "Pressure",
+                        "description": "A list of graph UIDs to display this sensor's pressure data on.",
+                        "items": {
+                            "type": "string",
+                            "title": "Graph UID"
+                        }
+                    },
+                    "Humidity": {
+                        "type": "array",
+                        "title": "C",
+                        "description": "A list of graph UIDs to display this sensor's humidity data on.",
+                        "items": {
+                            "type": "string",
+                            "title": "Graph UID"
+                        }
+                    }
                 }
             }
         }
     }
-
     ```
 
 4. (Optional) Create a sensor graph.
 
     A sensor graph is a javascript class that determines how sensor data is displayed on the interface. In many cases, you may be able to use an existing graph to display the data from your new sensor.
-
-    Our BME280 sensor wrapper returns three readings per `get_data()` request, making it incompatible with any existing sensor graphs. A fix that allows this is planned.
 
     A new sensor graph class can extend the existing "abstract" class Graph (`SIGHTSInterface/js/graphs/graph.js`) for an easy framework to build your graph class around.
 
