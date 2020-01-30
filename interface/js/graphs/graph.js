@@ -4,6 +4,10 @@ class Graph {
     constructor(config) {
         this.config = config;
 
+        if (this.config.uid in graphs) {
+            duplicateGraphAlert(this.config.uid);
+        }
+
         // Make it so the "abstract" class cannot be instantiated.
         if (this.constructor === Graph) {
             throw new TypeError('Abstract class "Graph" cannot be instantiated directly.');

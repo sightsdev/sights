@@ -92,6 +92,7 @@ function sensorConnection() {
 					for(let graph in graphs) {
 						graphs[graph].remove();
 					}
+					graphs = {};
 
 					// Create each sensor graph
 					response['interface']['graphs'].forEach(function (graph) {

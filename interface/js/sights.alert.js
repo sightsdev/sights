@@ -135,3 +135,13 @@ function serviceAlert(type, message) {
         "position": "left-bottom"
     });
 }
+
+/* Sensor Alerts */
+function duplicateGraphAlert(id) {
+    bootoast.toast({
+        "message": "Multiple graphs with duplicate UID: " + id,
+        "type": "danger",
+        "icon": "chart-line",
+        "position": "left-bottom"
+    });
+}
