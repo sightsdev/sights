@@ -222,6 +222,7 @@ class ThermalCamera {
                 // Use first camera as overlay camera
                 if(graphs[uid].overlayCamera == 'default') {
                     graphs[uid].overlayCamera = location;
+                    $('#' + uid + "_overlay_selector").val(location);
                 }
                 let pretty_id = location.charAt(0).toUpperCase() + location.slice(1) + " Camera";
                 let option = '<option value="'+ location + '">' + pretty_id + '</option>';
@@ -230,7 +231,7 @@ class ThermalCamera {
         });
         // Set default camera from config
         if(this.config.camera != 'default') {
-            $('#' + uid + "_overlay_selector").val('' + this.config.camera);
+            $('#' + uid + "_overlay_selector").val(this.config.camera);
         }
         // Change selection on input
         $('#' + uid + "_overlay_selector").on("input", function () {
