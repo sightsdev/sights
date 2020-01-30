@@ -137,12 +137,21 @@ function sensorConnection() {
 							let sensorId = type + "_" + sensorCount[type];
 							interfaceLog("info", "sensors", "Sensor of type '" + sensor['type'] +
 								"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
-							
-							sensor['display_on'].forEach(function (graph) {
-								if (!("handles" in graphs[graph]))
-									graphs[graph]["handles"] = []
-								graphs[graph]["handles"].push(sensorId)
-							});
+							if (Array.isArray(sensor["display_on"])) {
+								sensor['display_on'].forEach(function (graph) {
+									if (!("handles" in graphs[graph]))
+										graphs[graph]["handles"] = [];
+									graphs[graph]["handles"].push(sensorId);
+								});
+							}
+							else {
+								// Deal with multi-sensors
+								Object.entries(sensor["display_on"]).forEach(([type, [graph]]) => {
+									if (!("handles" in graphs[graph]))
+										graphs[graph]["handles"] = [];
+									graphs[graph]["handles"].push(sensorId + "_" + type);
+								});
+							}
 							
 							// Add to dictionary of sensors
 							sensors[sensorId] = sensor;
@@ -183,13 +192,26 @@ function sensorConnection() {
 					// Ensure it has the "display_on" array which defines where it should be displayed
 					if ("display_on" in sensors[sensor_uid]) {
 						// For each graph where it should be displayed
-						sensors[sensor_uid]["display_on"].forEach(function (graph) {
-							graphs[graph]["handles"].forEach(function (value, index) {
-								if (value == sensor_uid)
-									// Lookup the graph and update it with the new data
-									graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
+						if(Array.isArray(sensors[sensor_uid]["display_on"])) {
+							sensors[sensor_uid]["display_on"].forEach(function (graph) {
+								graphs[graph]["handles"].forEach(function (value, index) {
+									if (value == sensor_uid)
+										// Lookup the graph and update it with the new data
+										graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
+								});
 							});
-						});
+						}
+						else {
+							// Deal with multi-sensors
+							console.log("Dealing with multi-sensor update");
+							Object.entries(sensors[sensor_uid]["display_on"]).forEach(([type, [graph]]) => {
+								graphs[graph]["handles"].forEach(function (value, index) {
+									if (value == sensor_uid + "_" + type)
+										// Lookup the graph and update it with the new data
+										graphs[graph].update(index, sensor_data[type], sensors[sensor_uid]["name"] + " " + type);
+								});
+							});
+						}
 					}
 				});
 			}
