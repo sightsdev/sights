@@ -181,7 +181,7 @@ const schema = {
                 "collapsed": true
             },
             "title": "Arduino",
-            "description": "Enable and configure the location of the robot's Arduino for extended sensor capability.",
+            "description": "Enable and configure the location of the robot's Arduino for legacy sensor capability.",
             "required": [
                 "enabled"
             ],
