@@ -22,12 +22,12 @@ function loadConfigSetting(path, defaultValue) {
 	let configItem = global_config;
 	try {
 		path.forEach(function (p) {
-			console.log(p);
 			configItem = configItem[p];
 		})
 	}
 	catch (e) {
 		configItem = defaultValue;
+		console.log(path.join(".") + " not found in your config. Using default: " + defaultValue);
 	}
 	return configItem;
 }
