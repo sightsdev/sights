@@ -149,6 +149,7 @@ class ThermalCamera extends Graph{
     remove() {
         super.remove();
         // Any cleanup specific to the graph.
+        $('#thermal_overlay_' + this.overlayCamera).empty(); // Removes overlay
     }
 
     //Swap thermal overlay on click
