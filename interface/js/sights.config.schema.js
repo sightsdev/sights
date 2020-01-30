@@ -1211,8 +1211,8 @@ const schema = {
                 "print_messages": {
                     "$id": "#/properties/debug/properties/print_messages",
                     "type": "boolean",
-                    "title": "Enable Message Logging",
-                    "description": "Log messages received from the interface.",
+                    "title": "Enable WebSocket Logging",
+                    "description": "Log messages between the SIGHTS service and interface.",
                     "format": "checkbox",
                     "default": false
                 }
