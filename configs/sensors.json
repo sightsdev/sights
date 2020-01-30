@@ -13,6 +13,10 @@
 		"enabled": false
 	},
 	"interface": {
+		"notifications": {
+			"enabled": true,
+			"timeout": 7
+		},
 		"cameras": {
 			"front": {
 				"enabled": true,
@@ -61,6 +65,7 @@
 				"location": "#left_view_sensors",
 				"title": "CPU Temp",
 				"unit": "°C",
+				"unit_style": "font-size: 24px;",
 				"maximum": 105
 			},
 			{
@@ -70,6 +75,7 @@
 				"location": "#left_view_sensors",
 				"title": "System Memory",
 				"unit": "MB",
+				"unit_style": "font-size: 24px;",
 				"maximum": 16384
 			},
 			{
@@ -88,7 +94,22 @@
 				"location": "#btm_view_sensors",
 				"title": "Thermal Camera",
 				"width": 32,
-				"height": 24
+				"height": 24,
+				"camera": "default",
+				"opacity": 25,
+				"xscale": 100,
+				"yscale": 100
+			},
+			{
+				"uid": "multi_graph",
+				"type": "line",
+				"enabled": true,
+				"location": "#right_view_sensors",
+				"title": "Graph",
+				"icon": "random",
+				"x_axis_label": "x axis",
+				"y_axis_label": "y axis",
+				"period": 1
 			}
 		]
 	},
@@ -155,6 +176,23 @@
 			"display_on": [
 				"cpu_temp"
 			]
+		},
+		{
+			"enabled": true,
+			"type": "multirandom",
+			"name": "MultiRandom",
+			"period": 1,
+			"display_on": {
+				"a": [
+					"multi_graph"
+				],
+				"b": [
+					"multi_graph"
+				],
+				"c": [
+					"multi_graph"
+				]
+			}
 		}
 	],
 	"debug": {
