@@ -186,7 +186,7 @@ Supervisor is now installed and set up.
 
 To ensure that `supervisord` is run at boot, we will install a provided init script for Supervisor:
 
-```sh
+```shell
 sudo cp SIGHTSRobot/src/configs/systemd/supervisord /etc/init.d/
 sudo chmod 755 /etc/init.d/supervisord
 sudo chown root:root /etc/init.d/supervisord
@@ -197,13 +197,13 @@ sudo update-rc.d supervisord defaults
 
 You can manage Supervisor with the usual service commands like:
 
-```sh
+```shell
 sudo service supervisord {start|stop|restart|status}
 ```
 
 You can manage the SIGHTS service in a similar fashion with:
 
-```sh
+```shell
 sudo supervisorctl {start|stop|restart|status} sights
 ```
 

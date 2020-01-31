@@ -42,7 +42,6 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
 
 All configuration for SIGHTS is done in the `.json` files within the `configs/` directory, which can be edited through the web interface. The active configuration file can be changed through the interface at any time, even if the SIGHTSRobot service is stopped or has crashed. This gives you the ability to fix any configuration issue without physical access to the robot.
 
-
 ## Requirements
 
 Officially supported operating systems:
