@@ -925,12 +925,31 @@ const schema = {
                                 "default": 3
                             },
                             "display_on": {
-                                "type": "array",
+                                "type": "object",
                                 "title": "Display On",
-                                "description": "A list of graph UIDs to display this sensor's data on.",
-                                "items": {
-                                    "type": "string",
-                                    "title": "Graph UID"
+                                "description": "The SGP30 sensor is a multi-sensor. Choose how each value is displayed individually.",
+                                "options": {
+                                    "collapsed": false
+                                },
+                                "properties": {
+                                    "co2": {
+                                        "type": "array",
+                                        "title": "Carbon Dioxide",
+                                        "description": "A list of graph UIDs to display this sensor's carbon dioxide data on.",
+                                        "items": {
+                                            "type": "string",
+                                            "title": "Graph UID"
+                                        }
+                                    },
+                                    "tvoc": {
+                                        "type": "array",
+                                        "title": "Total Volatile Organic Compounds",
+                                        "description": "A list of graph UIDs to display this sensor's total volatile organic compound data on.",
+                                        "items": {
+                                            "type": "string",
+                                            "title": "Graph UID"
+                                        }
+                                    }
                                 }
                             }
                         }
