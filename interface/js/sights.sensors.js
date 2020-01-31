@@ -67,6 +67,7 @@ function sensorConnection() {
 			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
 			if("initial_message" in obj) {
+				interfaceLog("info", "sensors", "Received initial message");
 				requestConfig(function(response) {
 					configReceivedAlert();
 
@@ -186,8 +187,6 @@ function sensorConnection() {
 						}
 					});
 
-					sensorsReady = true;
-
 					Object.entries(obj["initial_sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
 						// Ensure it has the "display_on" array which defines where it should be displayed
 						if ("display_on" in sensors[sensor_uid]) {
@@ -231,6 +230,8 @@ function sensorConnection() {
 							}
 						}
 					});
+
+					sensorsReady = true;
 				});
 
 				// Other items in the initial message
@@ -268,7 +269,7 @@ function sensorConnection() {
 							// For each graph the sensor would like to update
 							sensors[sensor_uid]["display_on"].forEach(function (graph) {
 								// If the graph exists
-								if(graph in graphs) {
+								if (graph in graphs) {
 									// For every graph, check if it handles this sensor
 									graphs[graph]["handles"].forEach(function (value, index) {
 										if (value == sensor_uid)
