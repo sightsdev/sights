@@ -112,7 +112,7 @@
 			"type": "disk_usage",
 			"name": "Disk Usage",
 			"address": "",
-			"period": 1,
+			"period": 15,
 			"display_on": [
 				"disk_usage"
 			]

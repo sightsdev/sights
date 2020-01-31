@@ -1,2 +1,0 @@
-mlx90614
-cpu_temp
