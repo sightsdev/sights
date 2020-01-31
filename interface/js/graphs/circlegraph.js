@@ -21,9 +21,16 @@ class CircleGraph extends Graph{
             "class": 'c100 p0 med orange center'
         }).append(
             $("<span/>", {
-                "id": this.config.uid + "_level",
-                "style": this.config.unit_style
-            }),
+                "id": this.config.uid + "_parent"
+            }).append(
+                $("<span/>", {
+                    "id": this.config.uid + "_level"
+                }),
+                $("<span/>", {
+                    "id": this.config.uid + "_unit",
+                    "style": this.config.unit_style
+                }),
+            ),
             $("<div/>", {
                 "class": 'slice'
             }).append(
@@ -45,9 +52,11 @@ class CircleGraph extends Graph{
     update(index, data, name) {
         let max = this.config.maximum;
         let level = $("#" + this.config.uid + "_level");
+        let unit_text = $("#" + this.config.uid + "_unit");
         let circle = $("#" + this.config.uid + "_circle");
         let unit = this.config.unit;
-        level.html(data + unit);
+        level.html(data);
+        unit_text.html(unit)
         let percent = Math.round((data / max) * 100);
         if (percent > 100) percent = 100;
         circle.attr('class', "c100 med orange center p" + percent);
