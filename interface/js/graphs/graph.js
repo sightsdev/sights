@@ -23,6 +23,9 @@ class Graph {
             "update(index, data, name)");
     }
 
+    setup(index, data, name) {
+    }
+
     remove() {
         $("#" + this.dom_object[0].id).remove();
     }

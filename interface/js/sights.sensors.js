@@ -187,6 +187,50 @@ function sensorConnection() {
 					});
 
 					sensorsReady = true;
+
+					Object.entries(obj["initial_sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
+						// Ensure it has the "display_on" array which defines where it should be displayed
+						if ("display_on" in sensors[sensor_uid]) {
+							// If the sensor has one display_on field (it is not a multi-sensor)
+							if(Array.isArray(sensors[sensor_uid]["display_on"])) {
+								// For each graph the sensor would like to update
+								sensors[sensor_uid]["display_on"].forEach(function (graph) {
+									// If the graph exists
+									if(graph in graphs) {
+										// For every graph, check if it handles this sensor
+										graphs[graph]["handles"].forEach(function (value, index) {
+											if (value == sensor_uid)
+												// Lookup the graph and update it with the new data
+												graphs[graph].setup(index, sensor_data, sensors[sensor_uid]["name"]);
+										});
+									}
+									else { // Else, the graph does not exist
+										interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+											"update graph " + graph + " because " + graph + " does not exist.")
+									}
+								});
+							}
+							else { // Else, the sensor has multiple display_on fields (it is a multi-sensor)
+								// For each graph the sensor would like to update
+								Object.entries(sensors[sensor_uid]["display_on"]).forEach(([type, [graph]]) => {
+									// If the graph exists
+									if (graph in graphs) {
+										// For every graph, check if it handles this sensor and message type
+										graphs[graph]["handles"].forEach(function (value, index) {
+											if (value == sensor_uid + "_" + type)
+												// Lookup the graph and update it with the new data
+												graphs[graph].setup(index, sensor_data[type], sensors[sensor_uid]["name"] +
+													" " + type);
+										});
+									}
+									else { // Else, the graph does not exist
+										interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+											"update graph " + graph + " because " + graph + " does not exist.")
+									}
+								});
+							}
+						}
+					});
 				});
 
 				// Other items in the initial message
