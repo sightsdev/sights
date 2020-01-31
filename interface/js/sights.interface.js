@@ -118,18 +118,50 @@ function selectTextInElement(id) {
 	selection.addRange(range);
 }
 
+function cameraModeEnabled() {
+	return loadConfigSetting(['interface', 'cameras', 'back', 'enabled'], false) ||
+		   loadConfigSetting(['interface', 'cameras', 'left', 'enabled'], false) ||
+		   loadConfigSetting(['interface', 'cameras', 'right', 'enabled'], false);
+}
+
+function sensorModeEnabled() {
+	return $("#btm_view_sensors").children().length !== 0;
+}
+
 // Toggle between sensor and camera view
 function toggleSensorMode() {
-	if (sensorMode) {
-		$("#btm_view_camera").show();
-		$("#btm_view_sensors").hide();
-		$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
-		sensorMode = false;
-	} else {
-		$("#btm_view_camera").hide();
-		$("#btm_view_sensors").show();
-		$("#sensor_toggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
-		sensorMode = true;
+	if (sensorModeEnabled() && cameraModeEnabled()) {
+		// If both modes are available, toggle as normal.
+		$("#sensor_toggle").show();
+		if (sensorMode) {
+			$("#btm_view_camera").show();
+			$("#btm_view_sensors").hide();
+			$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
+			sensorMode = false;
+		} else {
+			$("#btm_view_camera").hide();
+			$("#btm_view_sensors").show();
+			$("#sensor_toggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
+			sensorMode = true;
+		}
+	}
+	else {
+		// If only one mode (or, in fact, no mode) is available
+		$("#sensor_toggle").hide();
+		if (sensorModeEnabled()) {
+			// If only sensor mode is available
+			$("#btm_view_camera").hide();
+			$("#btm_view_sensors").show();
+			$("#sensor_toggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
+			sensorMode = true;
+		}
+		else {
+			// If only camera mode is available
+			$("#btm_view_camera").show();
+			$("#btm_view_sensors").hide();
+			$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
+			sensorMode = false;
+		}
 	}
 }
 

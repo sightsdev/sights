@@ -28,17 +28,7 @@ function update_cameras() {
 		}
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
 		camera.attr("data-id", id);
-		$("#sensor_toggle").show();
 	});
-	if (!loadConfigSetting(['interface', 'cameras', 'back', 'enabled'], false) &&
-		!loadConfigSetting(['interface', 'cameras', 'left', 'enabled'], false) &&
-		!loadConfigSetting(['interface', 'cameras', 'right', 'enabled'], false)) {
-		$("#sensor_toggle").hide();
-		$("#btm_view_camera").hide();
-		$("#btm_view_sensors").show();
-		$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Cameras");
-		sensorMode = true;
-	}
 }
 
 function sensorConnection() {
@@ -133,8 +123,19 @@ function sensorConnection() {
 						}
 					});
 
+					// Now that cameras and graphs have been created, we should be able to determine what modes the
+					// interface has and enable or disable toggling.
+					if (sensorModeEnabled() && cameraModeEnabled()) {
+						$("#sensor_toggle").show() // Enable toggling, stay on the same page
+					}
+					else {
+						$("#sensor_toggle").hide(); // Disble toggling
+						toggleSensorMode(); // May need to switch to the other page if the current one was disabled
+					}
+
 					let sensorCount = {};
 
+					// Add sensors to graphs
 					response['sensors'].forEach(function (sensor) {
 						// Generate the same unique sensor IDs that SIGHTSRobot generates
 						if (sensor['enabled']) {
@@ -187,6 +188,7 @@ function sensorConnection() {
 						}
 					});
 
+					// Handle sensors that send initialisation data and pass that data to the correct graph
 					Object.entries(obj["initial_sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
 						// Ensure it has the "display_on" array which defines where it should be displayed
 						if ("display_on" in sensors[sensor_uid]) {
