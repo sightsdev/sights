@@ -24,7 +24,8 @@ class SensorWrapper:
         # Time since last checked
         elapsed_time = now - self.last_run
         # Only get data if it has been long enough since last run
-        if (elapsed_time > self.period):
+        # Or if this is the first time checking since we need some data on the graph
+        if (elapsed_time > self.period or self.last_run == 0):
             # Store current time as last_time 
             self.last_run = now
             # Only return True if sensor is actually enabled
