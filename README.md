@@ -12,29 +12,36 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
 
 ## Features
 
-- Motor control with support for both Dynamixel AX-series servos and DC motors using a Sabertooth motor controller.
-  - Intuitive gamepad and keyboard control directly from the interface
-  - Ability to assign different Dynamixel IDs to different groups, representing parts of the robot (such as left and right side servos)
-- All SIGHTS configuation is done through a single configuration file which can be edited visually from within the interface, even if the SIGHTSRobot service is stopped or has crashed.
-- An extremely powerful [web interface](https://github.com/SFXRescue/SIGHTSInterface) that allows the operator to control every aspect of the robot.
-  - Up to four video camera streams through [Motion](https://github.com/Motion-Project/motion).
-  - Sensor graphs and displays for:
+- All SIGHTS configuation is done through a single configuration file which can be edited visually from within the interface, even if the SIGHTSRobot service is stopped or has crashed
+- A powerful and extensible modular sensor system
+  - A sensor plugin system to allow new sensors to be added with ease
+  - Sensor wrapper classes that can use existing Python libraries to access sensors over I2C. No need to write libraries specifically for SIGHTS
+  - User can define which sensors are enabled, where they go on the interface, how they are displayed, and what type of graph they are displayed on
+  - Sensors can be displayed on multiple graphs, or two sensors can be displayed on the same graph
+  - Includes sensor plugins and graphs for:
     - Thermal cameras
-    - IR temperature sensors
+    - Ambient and IR temperature sensors
     - Distance (Time of Flight) sensors
     - CO2 and TVOC sensors
-    - System memory usage and CPU temperature
+    - System memory usage
+    - CPU usage and temperature
     - System uptime
+    - Disk space usage
+- An extremely powerful [web interface](https://github.com/SFXRescue/SIGHTSInterface) that allows the operator to control every aspect of the robot
+  - Up to four video camera streams through [Motion](https://github.com/Motion-Project/motion)
   - Integrated tabbed SSH console allowing advanced access to the underlying OS
   - Full gamepad and keyboard support
   - Full visual configuration file editor and an advanced text-based editor
   - Configuration file management allowing you to swap the active configuration file at runtime, even if the SIGHTSRobot service is stopped or has crashed
   - Light and dark themes
   - Ability for the operator to safely shut down or restart the robot through the interface
-- Sensor wrapper classes that can use existing Python libraries to access sensors over I2C. No need to write libraries specifically for SIGHTS.
+- Motor control with support for both Dynamixel AX-series servos and DC motors using a Sabertooth motor controller
+  - Intuitive gamepad and keyboard control directly from the interface
+  - Ability to assign different Dynamixel IDs to different groups, representing parts of the robot (such as left and right side servos)
 - Built entirely using open protocols and open-source software.
 
 All configuration for SIGHTS is done in the `.json` files within the `configs/` directory, which can be edited through the web interface. The active configuration file can be changed through the interface at any time, even if the SIGHTSRobot service is stopped or has crashed. This gives you the ability to fix any configuration issue without physical access to the robot.
+
 
 ## Requirements
 
