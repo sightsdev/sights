@@ -72,6 +72,13 @@
 				"unit": "%",
 				"unit_style": "font-size: 15px;",
 				"maximum": 100
+			},
+			{
+				"uid": "uptime",
+				"type": "uptime",
+				"enabled": true,
+				"location": "#textgroup_left",
+				"title": "Uptime"
 			}
 		]
 	},
@@ -98,6 +105,7 @@
 			"enabled": true,
 			"type": "cpu_usage",
 			"name": "CPU Usage",
+			"address": "",
 			"period": 1,
 			"display_on": [
 				"cpu_usage"
@@ -107,6 +115,7 @@
 			"enabled": true,
 			"type": "disk_usage",
 			"name": "Disk Usage",
+			"address": "",
 			"period": 1,
 			"display_on": [
 				"disk_usage"

@@ -44,9 +44,9 @@
 				"type": "circle",
 				"enabled": true,
 				"location": "#left_view_sensors",
-				"title": "CPU Temperature",
+				"title": "CPU Temp.",
 				"unit": "°C",
-				"unit_style": "font-size: 24px;",
+				"unit_style": "font-size: 12px;",
 				"maximum": 100
 			},
 			{
@@ -55,9 +55,36 @@
 				"enabled": true,
 				"location": "#left_view_sensors",
 				"title": "RAM Usage",
-				"unit": "MB",
-				"unit_style": "font-size: 20px;",
+				"unit": " MB",
+				"unit_style": "font-size: 12px;",
 				"maximum": 16384
+			},
+			{
+				"uid": "disk_usage",
+				"type": "circle",
+				"enabled": true,
+				"location": "#right_view_sensors",
+				"title": "Disk Usage",
+				"unit": " GB",
+				"unit_style": "font-size: 12px;",
+				"maximum": 500
+			},
+			{
+				"uid": "cpu_usage",
+				"type": "circle",
+				"enabled": true,
+				"location": "#right_view_sensors",
+				"title": "CPU Usage",
+				"unit": "%",
+				"unit_style": "font-size: 15px;",
+				"maximum": 100
+			},
+			{
+				"uid": "uptime",
+				"type": "uptime",
+				"enabled": true,
+				"location": "#textgroup_left",
+				"title": "Uptime"
 			}
 		]
 	},
@@ -78,6 +105,26 @@
 			"period": 1,
 			"display_on": [
 				"memory_usage"
+			]
+		},
+		{
+			"enabled": true,
+			"type": "cpu_usage",
+			"name": "CPU Usage",
+			"address": "",
+			"period": 1,
+			"display_on": [
+				"cpu_usage"
+			]
+		},
+		{
+			"enabled": true,
+			"type": "disk_usage",
+			"name": "Disk Usage",
+			"address": "",
+			"period": 1,
+			"display_on": [
+				"disk_usage"
 			]
 		}
 	],
