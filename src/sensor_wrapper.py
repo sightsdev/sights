@@ -17,6 +17,9 @@ class SensorWrapper:
     def get_data(self):
         return None   
 
+    def get_initial(self):
+        return None
+
     def is_ready(self, now):
         # Time since last checked
         elapsed_time = now - self.last_run

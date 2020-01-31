@@ -195,6 +195,18 @@ class SensorStream(WebSocketProcess):
         msg["version_supervisorext"] = subprocess.check_output(["git", "describe"],
                                                            cwd="../supervisor_sights_config/").strip().decode('utf-8')
         msg["available_plugins"] = self.plugins
+        # Get intital data from each Sensor
+        for sensor in self.sensors:
+            data = sensor.get_initial()
+            # Make sure we actually got data from the sensor
+            if data is not None:
+                # Generate UID for sensor
+                uid = f"{sensor.type_}_{sensor.index}"
+                # Any sensor data handled automatically (anything in this for loop) goes in the "sensor_data" dict
+                if not "initial_sensor_data" in msg:
+                    msg["initial_sensor_data"] = {}
+                # Create message
+                msg["initial_sensor_data"][uid] = data
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
         self.logger.debug("Sent initial message")
