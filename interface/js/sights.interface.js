@@ -10,16 +10,37 @@ var ip = window.location.hostname;
 var sensorMode = false;
 
 var configEditor;
-var baseConfig;
-var savedConfig;
+var editorBaseConfig;
+var editorSavedConfig;
 
 var startTime;
 
 // Load syntax highlighting
 hljs.initHighlightingOnLoad();
 
+function interfaceLog(level, system, message) {
+	$('#interface_info_pre').append((new Date).toLocaleTimeString() + " " + level.toUpperCase() + " " + system + ": " +
+		message + "\n");
+}
+
+function loadConfigSetting(path, defaultValue) {
+	let configItem = global_config;
+	try {
+		path.forEach(function (p) {
+			configItem = configItem[p];
+		})
+	}
+	catch (e) {
+		configItem = defaultValue;
+		interfaceLog("warning", "config", path.join(".") + " not found in your config." +
+			" Using default: " + defaultValue);
+	}
+	return configItem;
+}
+
 function updateCheck(type, altRepo) {
 	let update_field = $("#update_" + type);
+	let warning_field = $("#update_warning_" + type);
 	let version_field = $("#version_" + type);
 	let repo = altRepo == undefined ? "SFXRescue/sights" + type : altRepo;
 	update_field.html("Checking for update");
@@ -32,11 +53,23 @@ function updateCheck(type, altRepo) {
 			let current_version = version_field.html();
 			let current_release = current_version.split("-")[0];
 			let latest_release = result[0]['name'];
+			warning_field.html("");  // Clear warnings
+			$('#update_instructions').hide();
 			update_field.css("opacity", "100%");
 			if (current_release == latest_release) {
 				update_field.html("You are running the latest release");
+				if(current_version.includes('-')) {
+					warning_field.html("<br>Caution: " +
+						"You are running a newer development version that may be unstable.");
+					warning_field.css("color", "#dcc620");
+				}
 			} else {
+				$('#update_instructions').show();
 				update_field.html("Update available: " + latest_release);
+				if(current_version.includes('-')) {
+					warning_field.html("<br>Critical: You are running an outdated development version!");
+					warning_field.css("color", "#dc3545");
+				}
 			}
 		},
 		error: function () {
@@ -47,27 +80,17 @@ function updateCheck(type, altRepo) {
 	});
 }
 
-function updateCircle(name, value, modifier=1) {
-	let level = $("#" + name + "_level");
-	let graph = $("#" + name + "_graph");
-	let unit = level.attr("unit");
-	level.html(value + unit);
-	let percent = Math.round(value/modifier);
-	if(percent > 100) percent = 100;
-	graph.attr('class', "c100 med orange center p" + percent);
-}
-
 function updateConfigAlerts() {
 	var currentConfig = JSON.stringify(configEditor.getValue());
 
-	if(baseConfig == currentConfig && currentConfig == savedConfig) {
+	if(editorBaseConfig == currentConfig && currentConfig == editorSavedConfig) {
 		// There are no changes. Hide all alerts.
 		$(".save-alert").slideUp();
 		$("#config_update_alert").slideUp();
 		$(".restart-service-alert").slideUp();
 		$(".editor_reload_button").removeClass("disabled");
 	}
-	else if(currentConfig == savedConfig) {
+	else if(currentConfig == editorSavedConfig) {
 		// There are saved changes that need a restart.
 		$(".save-alert").slideUp();
 		$("#config_update_alert").slideUp();
@@ -108,29 +131,22 @@ function toggleSensorMode() {
 		$("#sensor_toggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
 		sensorMode = true;
 	}
-} 
+}
+
+function setSpeedIndicator(type, speed) {
+	// Type is either 'kb' (keyboard) or 'gp' (gamepad)
+	// Given speed (127 to 1023) needs to be between 1 and 8
+	speed = (speed + 1) / 128;
+	// Enables / disables relevant nodes (1 - 8) for speed indicators
+	for (var i = 0; i < 8; i++) {
+		var val = i < speed ? '12.5%' : '0%';
+		$("#" + type + "_speed_node_" + (i + 1)).css('width', val);
+	}
+}
 
 $(document).on("ready", function () {
-
-	// Uptime updater
-	var daySecs = 60*60*24;
-	var hourSecs = 60*60;
-	var minSecs = 60; // minSecs rhymes with insects
-	setInterval(() => {
-		if(startTime) {
-			// Calculate uptime based on time elapsed since reported time of boot
-			let upSeconds = (Date.now() - startTime) / 1000;
-
-			let days = (Math.floor(upSeconds / daySecs) + "").padStart(2, '0');
-			let hours = (Math.floor((upSeconds % daySecs) / hourSecs) + "").padStart(2, '0');
-			let minutes = (Math.floor(((upSeconds % daySecs) % hourSecs) / minSecs) + "").padStart(2, '0');
-			let seconds = (Math.floor(((upSeconds % daySecs) % hourSecs) % minSecs) + "").padStart(2, '0');
-
-			// Format nicely
-			$("#uptime").html(days + ":" + hours + ":" + minutes + ":" + seconds);
-		}
-		else $("#uptime").html("00:00:00:00");
-	}, 1000);
+	// Hide update instructions until user checks for an update
+	$('#update_instructions').hide();
 	
 	// Dark mode toggle handler
 	$("#darkmode_toggle").on('change',function() {
@@ -192,12 +208,10 @@ $(document).on("ready", function () {
 
 
 
-	// Allow both a tooltip and a modal window on a button
-	$('[rel="tooltip"]').tooltip({
+	// Enable tooltips
+	$('[tooltip]').tooltip({
 		trigger: "hover"
 	});
-	// Enable tooltips
-	$('[data-toggle="tooltip"]').tooltip();
 
 	// Reload page when header pressed
 	$("#nav_title").on("click", function () {
@@ -213,8 +227,11 @@ $(document).on("ready", function () {
 	$("#sensor_toggle").on("click", toggleSensorMode);
 
 	// Clear log dump box
-	$("#gamepad_log_clear_button").on("click", function () {
-		$("#gamepad_log_pre").html("");
+	$("#input_log_clear_button").on("click", function () {
+		$("#input_log_pre").html("");
+	});
+	$("#interface_log_clear_button").on("click", function () {
+		$("#interface_info_pre").html("");
 	});
 
 	// If the camera stream doesn't load, default to fallback image
@@ -273,70 +290,6 @@ $(document).on("ready", function () {
 		link.click();
 		document.body.removeChild(link);
 	});
-	
-	// Whether the thermal camera is overlayed on the main camera
-	var overlayed = false;
-	//Swap thermal overlay on click
-	$('#thermal_overlay_button').on("click", function() {
-		let opacity = $('#thermal_overlay_opacity').val();
-		let xscale = $('#thermal_overlay_xscale').val();
-		let yscale = $('#thermal_overlay_yscale').val();
-		if(!overlayed) {
-			if($("#camera_front_card").is(":visible")) {
-				$('#thermal_camera').css({ 'opacity' : opacity });
-				$('#camera_front').css({'filter': 'grayscale(100%)'});
-				$('#thermal_overlay').append($('#thermal_camera'));
-				$('#thermal_overlay_controls').css({'display':'inline'});
-				$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
-			}
-			else {
-				$('#main_container').append($('#thermal_camera'));
-				$('#thermal_camera').css({'width':'500px'})
-			}
-			$('#thermal_overlay_button').toggleClass('fa-rotate-180');
-			overlayed = true;
-		}
-		else {
-			$('#thermal_camera').css({ 'opacity' : 1 });
-			$('#thermal_camera_container').append($('#thermal_camera'));
-			$('#camera_front').css({'filter': ''});
-			$('#thermal_overlay_button').toggleClass('fa-rotate-180');
-			$('#thermal_overlay_controls').css({'display':'none'});
-			$('#thermal_camera').css({'transform' : 'scale(1,1)'});
-			$('#thermal_camera').css({'width':'100%'})
-			overlayed = false;
-		}
-		
-	});
-	
-	// Thermal Overlay Settings
-	// Opacity slider
-	$('#thermal_overlay_opacity').on("input", function() {
-		$('#thermal_camera').css({ 'opacity' : $(this).val() });
-	}); 
-	// Opacity slider reset button
-	$('#thermal_overlay_opacity_reset').on("click", function() {
-		$('#thermal_overlay_opacity').val('0.25');
-		$('#thermal_camera').css('opacity', '0.25');
-	});
-	// X and Y scale sliders
-	$('.thermal-overlay-scale').on("input", function() {
-		let xscale = $('#thermal_overlay_xscale').val();
-		let yscale = $('#thermal_overlay_yscale').val();
-		$('#thermal_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
-	});
-	// X scale slider reset button
-	$('#thermal_overlay_xscale_reset').on("click", function() {
-		$('#thermal_overlay_xscale').val('1');
-		let yscale = $('#thermal_overlay_yscale').val();
-		$('#thermal_camera').css({'transform' : 'scale(1,'+yscale+')'});
-	});
-	// Y scale slider reset button
-	$('#thermal_overlay_yscale_reset').on("click", function() {
-		$('#thermal_overlay_yscale').val('1');
-		let xscale = $('#thermal_overlay_xscale').val();
-		$('#thermal_camera').css({'transform' : 'scale('+xscale+', 1)'});
-	});
 
 	configEditor = new JSONEditor($('#visual_editor_container')[0], {
 		schema: schema,
@@ -381,6 +334,12 @@ $(document).on("ready", function () {
 		else {
 			$("#config_delete_button").removeClass("disabled");
 		}
+	});
+
+	
+	// Documentation button
+	$("#docs_button").on("click", function () { 
+		window.open("docs/");
 	});
 
 	// Minor compatibility fix for incompatibility fixes

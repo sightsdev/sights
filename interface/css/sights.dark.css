@@ -27,8 +27,8 @@
 
 [data-theme="dark"] .btn-light {
   color: #d8d8d8;
-  background-color: #333333 !important;
-  border-color:#505050;
+  border: none;
+  background: none;
 }
 
 [data-theme="dark"] select {

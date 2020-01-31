@@ -4,137 +4,40 @@
 */
 
 var sensorSocket;
-var sensorConnected = false;
+var running_config;
+
+var graphs = {};
+var sensors = {};
+var sensorsReady = false;
+
+var global_config;
 
 var tempChart, distChart;
 
-var last_sensor_data = {
-	distance: [],
-	thermal_camera: [],
-	co2: 0,
-	tvoc: 0,
-	temp: [],
-	charge: 0,
-	cpu_temp: 0,
-};
-
-// Total RAM
-var memory_total;
-
-var running_config;
-
-// Rainbow
-function rainbow(n) {
-	return 'hsl(' + n * 15 + ', 100%, 50%)';
-}
-
-var percentColors = [{
-		pct: 0.0,
-		color: {
-			r: 0x28,
-			g: 0xa7,
-			b: 0x45
-		}
-	},
-	{
-		pct: 0.5,
-		color: {
-			r: 0xfd,
-			g: 0x7e,
-			b: 0x14
-		}
-	},
-	{
-		pct: 1.0,
-		color: {
-			r: 0xdc,
-			g: 0x35,
-			b: 0x45
-		}
-	}
-];
-
-function getColorForPercentage(pct) {
-	for (var i = 1; i < percentColors.length - 1; i++) {
-		if (pct < percentColors[i].pct) {
-			break;
-		}
-	}
-	var lower = percentColors[i - 1];
-	var upper = percentColors[i];
-	var range = upper.pct - lower.pct;
-	var rangePct = (pct - lower.pct) / range;
-	var pctLower = 1 - rangePct;
-	var pctUpper = rangePct;
-	var color = {
-		r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
-		g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
-		b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
-	};
-	return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
-}
-
-function update_cameras(config) {
+function update_cameras() {
 	['front', 'left', 'right', 'back'].forEach(function (e) {
 		// Get parent div of camera stream image
 		var card = $("#camera_" + e + "_card");
 		// Enable the div, if camera is enabled in config file
-		config[e]['enabled'] ? card.show() : card.hide();
+		loadConfigSetting(['interface', 'cameras', e, 'enabled'], false) ? card.show() : card.hide();
 		// Set image attributes to the relevant URL
 		let camera = $("#camera_" + e);
-		let id = config[e]['id'];
+		let id = loadConfigSetting(['interface', 'cameras', e, 'id'], null);
+		if(!id) {
+			return;
+		}
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
-		camera.attr("data-id", config[e]['id']);
+		camera.attr("data-id", id);
+		$("#sensor_toggle").show();
 	});
-	if (!config['back']['enabled'] &&
-		!config['left']['enabled'] &&
-		!config['right']['enabled']) {
+	if (!loadConfigSetting(['interface', 'cameras', 'back', 'enabled'], false) &&
+		!loadConfigSetting(['interface', 'cameras', 'left', 'enabled'], false) &&
+		!loadConfigSetting(['interface', 'cameras', 'right', 'enabled'], false)) {
 		$("#sensor_toggle").hide();
 		$("#btm_view_camera").hide();
 		$("#btm_view_sensors").show();
-		$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
-		sensorMode = false;
-	}
-}
-
-function update_sensors(config) {
-	['thermal_camera', 'temperature', 'distance'].forEach(function (e) {
-		// Get parent div of camera stream image
-		var card = $("#" + e + "_card");
-		// Enable the div, if camera is enabled in config file
-		config[e]['enabled'] ? card.show() : card.hide();
-	});
-	if (config['thermal_camera']['enabled']) {
-		var width = config['thermal_camera']['width'];
-		var height = config['thermal_camera']['height'];
-		// Generate thermal camera table
-		var x = 0;
-		var table = $("<table>");
-		for (i = 0; i < height; i++) {
-			var row = $('<tr>');
-			for (j = 0; j < width; j++) {
-				row.append("<td style='width: " + ((1 / width) * 100) + "%;position: relative;'><div class='content' id=p" + x + "></div></td>");
-				x++;
-			}
-			table.append(row);
-		}
-		$('#thermal_camera').html(table);
-	}
-}
-
-function set_speed_indicator_raw(type, speed) {
-	// Type is either 'kb' or 'gp'
-	// Given speed (127 to 1023) needs to be between 1 and 8
-	speed = (speed + 1) / 128;
-	// Now we enabled relevant nodes
-	set_speed_indicator(type, speed);
-}
-
-function set_speed_indicator(type, speed) {
-	// Enables / disables relevant nodes (1 - 8) for speed indicators
-	for (var i = 0; i < 8; i++) {
-		var val = i < speed ? '12.5%' : '0%';
-		$("#" + type + "_speed_node_" + (i + 1)).css('width', val);
+		$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Cameras");
+		sensorMode = true;
 	}
 }
 
@@ -164,6 +67,7 @@ function sensorConnection() {
 			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
 			if("initial_message" in obj) {
+				interfaceLog("info", "sensors", "Received initial message");
 				requestConfig(function(response) {
 					configReceivedAlert();
 
@@ -171,9 +75,11 @@ function sensorConnection() {
 					// Populating advanced editor happens on configEditor change, which fires when the inital config is set
 					configEditor.setValue(response);
 					// Keep a copy to track changes
-					baseConfig = JSON.stringify(configEditor.getValue());
-					savedConfig = baseConfig;
+					editorBaseConfig = JSON.stringify(configEditor.getValue());
+					editorSavedConfig = editorBaseConfig;
 					updateConfigAlerts();
+					// Keep a copy to work from
+					global_config = response;
 
 					// Manually set output text of range slider elements
 					$('output', $('#visual_editor_container'))[0].innerText = response['control']['default_gamepad_speed'];
@@ -181,8 +87,151 @@ function sensorConnection() {
 
 					// Now handle loading stuff from the config file
 					// Enable / disable cameras and set their ports as defined by the config
-					update_cameras(response['cameras']);
-					update_sensors(response['sensors']);
+					update_cameras();
+
+					// Remove any old invalidated graphs before adding the new ones
+					for(let graph in graphs) {
+						graphs[graph].remove();
+					}
+					graphs = {};
+					// If a textbox group list-group doesn't contain any hardcoded list elements, hide it
+					$('.textgroup-container > .col > .card > .list-group:not(:has(li))').each(function () {
+						$(this).parent().parent().parent().hide();
+					});
+
+					// Create each sensor graph
+					response['interface']['graphs'].forEach(function (graph) {
+						if (graph.type == "line") {
+							// Add it to the array, regardless of whether it is enabled or not
+							graphs[graph.uid] = new LineGraph(graph);
+							// Create the actual DOM element
+							graphs[graph.uid].appendTo(graph.location);
+						}
+						if (graph.type == "circle") {
+							// Add it to the array, regardless of whether it is enabled or not
+							graphs[graph.uid] = new CircleGraph(graph);
+							// Create the actual DOM element
+							graphs[graph.uid].appendTo(graph.location);
+						}
+						if (graph.type == "text") {
+							// Add it to the array, regardless of whether it is enabled or not
+							graphs[graph.uid] = new TextBox(graph);
+							// Create the actual DOM element
+							graphs[graph.uid].appendTo(graph.location);
+						}
+						if (graph.type == "thermalcamera") {
+							// Add it to the array, regardless of whether it is enabled or not
+							graphs[graph.uid] = new ThermalCamera(graph);
+							// Create the actual DOM element
+							graphs[graph.uid].appendTo(graph.location);
+						}
+						if (graph.type == "uptime") {
+							// Add it to the array, regardless of whether it is enabled or not
+							graphs[graph.uid] = new UptimeBox(graph);
+							// Create the actual DOM element
+							graphs[graph.uid].appendTo(graph.location);
+						}
+					});
+
+					let sensorCount = {};
+
+					response['sensors'].forEach(function (sensor) {
+						// Generate the same unique sensor IDs that SIGHTSRobot generates
+						if (sensor['enabled']) {
+							let type = sensor['type'];
+							if(type in sensorCount) {
+								sensorCount[type] += 1;
+							}
+							else {
+								sensorCount[type] = 1;
+							}
+							let sensorId = type + "_" + sensorCount[type];
+							interfaceLog("info", "sensors", "Sensor of type '" + sensor['type'] +
+								"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
+							// If the sensor has one display_on field (it is not a multi-sensor)
+							if (Array.isArray(sensor["display_on"])) {
+								// For each graph the sensor would like to display_on
+								sensor['display_on'].forEach(function (graph) {
+									// If the graph exists
+									if (graph in graphs) {
+										// Add this sensor to the list of sensors the graph handles.
+										if (!("handles" in graphs[graph]))
+											graphs[graph]["handles"] = [];
+										graphs[graph]["handles"].push(sensorId);
+									}
+									else { // Else, the graph does not exist
+										interfaceLog("warning", "sensors", sensorId + " will " +
+											"not output to graph " + graph + " because " + graph + " does not exist.")
+									}
+								});
+							}
+							else { // Else, the sensor has multiple display_on fields (it is a multi-sensor)
+								// For each graph the sensor would like to display_on
+								Object.entries(sensor["display_on"]).forEach(([type, [graph]]) => {
+									// If the graph exists
+									if (graph in graphs) {
+										// Add this sensor to the list of sensors the graph handles.
+										if (!("handles" in graphs[graph]))
+											graphs[graph]["handles"] = [];
+										graphs[graph]["handles"].push(sensorId + "_" + type);
+									}
+									else { // Else, the graph does not exist
+										interfaceLog("warning", "sensors", sensorId + " will " +
+											"not output to graph " + graph + " because " + graph + " does not exist.")
+									}
+								});
+							}
+							
+							// Add to dictionary of sensors
+							sensors[sensorId] = sensor;
+						}
+					});
+
+					Object.entries(obj["initial_sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
+						// Ensure it has the "display_on" array which defines where it should be displayed
+						if ("display_on" in sensors[sensor_uid]) {
+							// If the sensor has one display_on field (it is not a multi-sensor)
+							if(Array.isArray(sensors[sensor_uid]["display_on"])) {
+								// For each graph the sensor would like to update
+								sensors[sensor_uid]["display_on"].forEach(function (graph) {
+									// If the graph exists
+									if(graph in graphs) {
+										// For every graph, check if it handles this sensor
+										graphs[graph]["handles"].forEach(function (value, index) {
+											if (value == sensor_uid)
+												// Lookup the graph and update it with the new data
+												graphs[graph].setup(index, sensor_data, sensors[sensor_uid]["name"]);
+										});
+									}
+									else { // Else, the graph does not exist
+										interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+											"update graph " + graph + " because " + graph + " does not exist.")
+									}
+								});
+							}
+							else { // Else, the sensor has multiple display_on fields (it is a multi-sensor)
+								// For each graph the sensor would like to update
+								Object.entries(sensors[sensor_uid]["display_on"]).forEach(([type, [graph]]) => {
+									// If the graph exists
+									if (graph in graphs) {
+										// For every graph, check if it handles this sensor and message type
+										graphs[graph]["handles"].forEach(function (value, index) {
+											if (value == sensor_uid + "_" + type)
+												// Lookup the graph and update it with the new data
+												graphs[graph].setup(index, sensor_data[type], sensors[sensor_uid]["name"] +
+													" " + type);
+										});
+									}
+									else { // Else, the graph does not exist
+										interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+											"update graph " + graph + " because " + graph + " does not exist.")
+									}
+								});
+							}
+						}
+					});
+
+					sensorsReady = true;
 				});
 
 				// Other items in the initial message
@@ -190,6 +239,8 @@ function sensorConnection() {
 				running_config = obj["running_config"]
 				$("#current_config").html(running_config);
 				$(".editor_filename").val(running_config.slice(0,-5));
+
+				updateConfigSelector();
 
 				// Software versions
 				if ("version_robot" in obj) {
@@ -201,110 +252,72 @@ function sensorConnection() {
 				if ("version_supervisorext" in obj) {
 					$("#version_supervisorext").html(obj["version_supervisorext"]);
 				}
-			}
 
-			// Get distance data and create radial graph
-			if ("distance" in obj) {
-				// Update distance chart
-				var dist_data = [];
-				// Unfortunately the graph has directions clockwise (front, right, back, left) in the array.
-				// We have them front, left, right, back
-				dist_data[0] = obj["distance"][0];
-				dist_data[1] = obj["distance"][2];
-				dist_data[2] = obj["distance"][3];
-				dist_data[3] = obj["distance"][1];
-				// Change chart dataset to use new data
-				distChartConfig.data.datasets[0].data = dist_data;
-				// Reload chart with new data
-				distChart.update();
-			}
-
-			// Get thermal camera and create pixel grid
-			if ("thermal_camera" in obj) {
-				var thermal_camera_data = obj["thermal_camera"];
-
-				// Iterate through pixels
-				for (i = 0; i < thermal_camera_data.length; i++) {
-					// Apply colour to the appropriate HTML element
-					var pixel = Math.round(thermal_camera_data[i]);
-					$("#p" + i).css("background", rainbow(pixel));
+				// System uptime
+				if ("uptime" in obj) {
+					startTime = Date.now() - (obj["uptime"] * 1000);
 				}
 			}
 
-			// Get CO2 levels
-			if ("co2" in obj) {
-				updateCircle("co2", obj["co2"], 10);
+			if ("sensor_data" in obj && sensorsReady)  {
+				// For each sensor_data we received
+				Object.entries(obj["sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
+					// Ensure it has the "display_on" array which defines where it should be displayed
+					if ("display_on" in sensors[sensor_uid]) {
+						// If the sensor has one display_on field (it is not a multi-sensor)
+						if(Array.isArray(sensors[sensor_uid]["display_on"])) {
+							// For each graph the sensor would like to update
+							sensors[sensor_uid]["display_on"].forEach(function (graph) {
+								// If the graph exists
+								if (graph in graphs) {
+									// For every graph, check if it handles this sensor
+									graphs[graph]["handles"].forEach(function (value, index) {
+										if (value == sensor_uid)
+											// Lookup the graph and update it with the new data
+											graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
+									});
+								}
+								else { // Else, the graph does not exist
+									interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+										"update graph " + graph + " because " + graph + " does not exist.")
+								}
+							});
+						}
+						else { // Else, the sensor has multiple display_on fields (it is a multi-sensor)
+							// For each graph the sensor would like to update
+							Object.entries(sensors[sensor_uid]["display_on"]).forEach(([type, [graph]]) => {
+								// If the graph exists
+								if (graph in graphs) {
+									// For every graph, check if it handles this sensor and message type
+									graphs[graph]["handles"].forEach(function (value, index) {
+										if (value == sensor_uid + "_" + type)
+											// Lookup the graph and update it with the new data
+											graphs[graph].update(index, sensor_data[type], sensors[sensor_uid]["name"] +
+												" " + type);
+									});
+								}
+								else { // Else, the graph does not exist
+									interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+										"update graph " + graph + " because " + graph + " does not exist.")
+								}
+							});
+						}
+					}
+				});
 			}
 
-			// Get TVOC levels
-			if ("tvoc" in obj) {
-				updateCircle("tvoc", obj["tvoc"], 3)
-			}
-
-			// Get temperature data for line graph
-			if ("temp" in obj) {
-				var temp_data = obj["temp"];
-				// Remove oldest element
-				tempChartConfig.data.datasets[0].data.shift();
-				// Push new element
-				tempChartConfig.data.datasets[0].data.push(temp_data[0]);
-				// Update chart to display new data
-				tempChart.update();
-			}
-
-			// Get charge level
-			if ("charge" in obj) {
-				updateCircle("charge", obj["charge"]);
-			}
-
-			// Highest CPU core temperature
-			if ("cpu_temp" in obj) {
-				updateCircle("cpu_temp", Math.round(obj["cpu_temp"]));
-			}
-
-			// System uptime
-			if ("uptime" in obj) {
-				startTime = Date.now() - (obj["uptime"] * 1000);
-			}
-
-			// System memory
-			if ("memory_used" in obj) {
-				var percent = Number(obj["memory_used"]) / memory_total;
-				$("#memory").css('color', getColorForPercentage(percent));
-				$("#memory_used").html(obj["memory_used"]);
-			}
-			if ("memory_total" in obj) {
-				memory_total = Number(obj["memory_total"]);
-				$("#memory_total").html(obj["memory_total"]);
-			}
-
+			// Permanent/default "sensors"
 			// Speed indicators for keyboard and gamepad
 			if ("kb_speed" in obj) {
-				set_speed_indicator_raw("kb", obj["kb_speed"]);
+				setSpeedIndicator("kb", obj["kb_speed"]);
 			}
 			if ("gp_speed" in obj) {
-				set_speed_indicator_raw("gp", obj["gp_speed"]);
+				setSpeedIndicator("gp", obj["gp_speed"]);
 			}
-
-			last_sensor_data = obj;
 		}
 	}
 }
 
 $(document).on("ready",function () {
-	// Get temp chart canvas so we can use it as the canvas for our tempchart
-	try {
-		let tempChartCanvas = $("#temp_chart").get(0).getContext('2d');
-		let distChartCanvas = $("#dist_chart").get(0).getContext('2d');
-		// Create temperature and distance chart
-		tempChart = new Chart(tempChartCanvas, tempChartConfig);
-		distChart = new Chart(distChartCanvas, distChartConfig);
-		// Style that bad boy
-		$("#temp_chart").attr("style", "display: block; height: 187px; width: 374px;");
-		$("#dist_chart").attr("style", "display: block; height: 187px; width: 374px;");
-	} catch (err) {
-		console.log(err);
-	}
-
 	sensorConnection();
 });

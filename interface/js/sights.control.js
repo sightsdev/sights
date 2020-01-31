@@ -26,7 +26,7 @@ function safeSend(data) {
 // Log control to log modal
 function logControl(e) {
 	value = ('value' in e) ? e["value"] : "MESSAGE SENT"
-	$('#gamepad_log_pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
+	$('#input_log_pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
 }
 
 // Runs every tick to check changed axes and send values as required
@@ -103,6 +103,8 @@ $(document).on("ready", function () {
 
 	// Hide 'Controller Connected' indicator, until connected 
 	$("#controller_status_connected").hide();
+	// Hide gamepad speed indicator, until connected
+	$("#gamepad_speed_indicator").hide();
 
 	// Attach it to the window so it can be inspected at the console.
 	window.gamepad = new Gamepad();
@@ -113,7 +115,7 @@ $(document).on("ready", function () {
 	});
 
 	gamepad.bind(Gamepad.Event.CONNECTED, function (device) {
-		console.log('Controller connected:', device.id);
+		interfaceLog("info", "controller", "Connected: " + device.id);
 		gamepadConnectedAlert();
 
 		$('#gamepad_select').append('<option value="' + device.index + '" id="gamepad-' + device.index + '">' + device.id.replace(/ *\([^)]*\) */g, "") + '</option>');
@@ -122,12 +124,13 @@ $(document).on("ready", function () {
 	});
 
 	gamepad.bind(Gamepad.Event.DISCONNECTED, function (device) {
-		console.log('Controller disconnected', device.id);
+		interfaceLog("info", "controller", "Disconnected: " + device.id);
 
 		$('#gamepad-' + device.index).remove();
 
 		if (gamepad.count() == 0) {
 			$("#controller_status_connected").hide();
+			$("#gamepad_speed_indicator").hide();
 			$("#controller_status_disconnected").show();
 		}
 		gamepadDisconnectedAlert();
@@ -242,8 +245,8 @@ $(document).on("ready", function () {
             requestConfig(function(response) {
                 configEditor.setValue(response);
                 // Keep a copy to track changes
-                baseConfig = JSON.stringify(configEditor.getValue());
-                savedConfig = baseConfig;
+                editorBaseConfig = JSON.stringify(configEditor.getValue());
+                editorSavedConfig = editorBaseConfig;
 				// Stringify value of new config to remove key-value pairs with `undefined` value
 				var jsonString = JSON.stringify(response);
 				// Set advanced editor

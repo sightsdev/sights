@@ -3,46 +3,41 @@
 	Licensed under the GNU General Public License 3.0
 */
 
+function launchToast(message, type, icon) {
+    let enabled = loadConfigSetting(['interface', 'notifications', 'enabled'], true);
+    let timeout = loadConfigSetting(['interface', 'notifications', 'timeout'], 7);
+    if(enabled) {
+        bootoast.toast({
+            "message": message,
+            "type": type,
+            "icon": icon,
+            "position": "left-bottom",
+            "timeout": timeout
+        });
+    }
+    else {
+        interfaceLog("info", "toast", "Suppressed " + type + " toast notification: " + message);
+    }
+}
 /* Websocket Alerts */
 function sensorsConnectedAlert() {
-    $("#sensor_status").attr("class", "btn btn-border-outside btn-success");
-    bootoast.toast({
-        "message": "Sensor socket connected",
-        "type": "success",
-        "icon": "link",
-        "position": "left-bottom"
-    });
+    $("#sensor_status").removeClass("btn-danger").addClass("btn-success");
+    launchToast("Sensor socket connected", "success", "link");
 }
 
 function sensorsDisconnectedAlert() {
-    $("#sensor_status").attr("class", "btn btn-border-outside btn-danger");
-    bootoast.toast({
-        "message": "Sensor socket disconnected",
-        "type": "danger",
-        "icon": "unlink",
-        "position": "left-bottom"
-    });
+    $("#sensor_status").removeClass("btn-success").addClass("btn-danger");
+    launchToast("Sensor socket disconnected", "danger", "unlink");
 }
 
 function controlConnectedAlert() {
-    $("#control_status").attr("class", "btn btn-border-outside btn-success");
-    bootoast.toast({
-        "message": "Control socket connected",
-        "type": "success",
-        "icon": "link",
-        "position": "left-bottom"
-    });
-
+    $("#control_status").removeClass("btn-danger").addClass("btn-success");
+    launchToast("Control socket connected", "success", "link");
 }
 
 function controlDisconnectedAlert() {
-    $("#control_status").attr("class", "btn btn-border-outside btn-danger");
-    bootoast.toast({
-        "message": "Control socket disconnected",
-        "type": "danger",
-        "icon": "unlink",
-        "position": "left-bottom"
-    });
+    $("#control_status").removeClass("btn-success").addClass("btn-danger");
+    launchToast("Control socket disconnected", "danger", "unlink");
 }
 
 /* Gamepad Alerts */
@@ -50,86 +45,48 @@ function gamepadConnectedAlert() {
     // Controller status indicator
     $("#controller_status_connected").show();
     $("#controller_status_disconnected").hide();
+    // Gamepad speed indicator
+    $("#gamepad_speed_indicator").show();
     // Create corresponding toast
-    bootoast.toast({
-        "message": "Controller connected",
-        "icon": "gamepad",
-        "type": "success",
-        "position": "left-bottom"
-    });
+    launchToast("Controller connected", "success", "gamepad");
 }
 
 function gamepadDisconnectedAlert() {
-    bootoast.toast({
-        "message": "Controller disconnected",
-        "type": "danger",
-        "icon": "gamepad",
-        "position": "left-bottom"
-    });
+    launchToast("Controller disconnected", "danger", "gamepad");
 }
 
 /* Power Alerts */
 function shutdownAlert() {
-    bootoast.toast({
-        "message": "Shutting down",
-        "type": "warning",
-        "icon": "power-off",
-        "position": "left-bottom"
-    });
+    launchToast("Shutting down", "warning", "power-off");
 }
 
 function rebootAlert() {
-    bootoast.toast({
-        "message": "Rebooting",
-        "type": "warning",
-        "icon": "undo",
-        "position": "left-bottom"
-    });
+    launchToast("Rebooting", "warning", "undo");
 }
 
 /* Config Alerts */
 function configReceivedAlert() {
-    bootoast.toast({
-        "message": "Received config file",
-        "type": "success",
-        "icon": "file-alt",
-        "position": "left-bottom"
-    });
+    launchToast("Received config file", "success", "file-alt");
 }
 
 function configSentAlert() {
-    bootoast.toast({
-        "message": "Sent config file",
-        "type": "success",
-        "icon": "file-alt",
-        "position": "left-bottom"
-    });
+    launchToast("Sent config file", "success", "file-alt");
 }
 
 function configInvalidAlert() {
-    bootoast.toast({
-        "message": "Invalid config file",
-        "type": "danger",
-        "icon": "file-alt",
-        "position": "left-bottom"
-    });
+    launchToast("Invalid config file", "danger", "file-alt");
 }
 
 function configRequestedAlert() {
-    bootoast.toast({
-        "message": "Requested config file",
-        "type": "info",
-        "icon": "file-alt",
-        "position": "left-bottom"
-    });
+    launchToast("Requested config file", "info", "file-alt");
 }
 
 /* Service Alerts */
 function serviceAlert(type, message) {
-    bootoast.toast({
-        "message": message,
-        "type": type,
-        "icon": "server",
-        "position": "left-bottom"
-    });
+    launchToast(message, type, "server");
+}
+
+/* Sensor Alerts */
+function duplicateGraphAlert(id) {
+    launchToast("Multiple graphs with duplicate UID: " + id, "warning", "chart-line");
 }
