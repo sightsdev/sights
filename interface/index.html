@@ -128,9 +128,9 @@
 							   aria-selected="false"><i class="fa fa-fw fa-chart-line"></i> Interface</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link text-dark" id="gamepad_log_tab" data-toggle="tab" href="#gamepad_log"
-								role="tab" aria-controls="gamepad_log" aria-selected="false"><i
-									class="fa fa-fw fa-inbox"></i> Messages</a>
+							<a class="nav-link text-dark" id="input_log_tab" data-toggle="tab" href="#input_log"
+								role="tab" aria-controls="input_log" aria-selected="false"><i
+									class="fa fa-fw fa-keyboard"></i> Input Events</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link text-dark" id="gamepad_monitor_tab" data-toggle="tab"
@@ -155,7 +155,7 @@
 								<p class="text-monospace" id="service_info_logfile" style="padding:6px;margin:0px"></p>
 							</div>
 							<p>
-							<pre><code id="service_info_pre" class="JSON rounded internal-scroll" contenteditable="true"></code></pre>
+							<pre><code id="service_info_pre" class="JSON rounded internal-scroll" contenteditable="false"></code></pre>
 							</p>
 						</div>
 						<div class="tab-pane fade show" id="interface_info" role="tabpanel"
@@ -166,29 +166,29 @@
 								<i class="fa fa-fw fa-trash-alt"></i> Clear Log
 							</button>
 							<p>
-							<pre><code id="interface_info_pre" class="rounded internal-scroll" contenteditable="true"></code></pre>
+							<pre><code id="interface_info_pre" class="JSON rounded internal-scroll" contenteditable="false"></code></pre>
 							</p>
 						</div>
-						<div class="tab-pane fade" id="gamepad_log" role="tabpanel" aria-labelledby="gamepad_log_tab">
+						<div class="tab-pane fade" id="input_log" role="tabpanel" aria-labelledby="input_log_tab">
 							<br />
-							<button type="button" class="btn btn-danger btn-default" id="gamepad_log_clear_button"
+							<button type="button" class="btn btn-danger btn-default" id="input_log_clear_button"
 								tooltip data-placement="right" title="Clear log">
 								<i class="fa fa-fw fa-trash-alt"></i> Clear Log
 							</button>
 							<p>
-								<pre><code id="gamepad_log_pre" class="JSON rounded" contenteditable="true"></code></pre>
+								<pre><code id="input_log_pre" class="JSON rounded internal-scroll" contenteditable="false"></code></pre>
 							</p>
 						</div>
 						<div class="tab-pane fade" id="gamepad_monitor" role="tabpanel"
 							aria-labelledby="gamepad_monitor_tab">
 							<p>
-								<pre><code id="gamepad_monitor_pre" class="JSON rounded" contenteditable="true"></code></pre>
+								<pre><code id="gamepad_monitor_pre" class="JSON rounded" contenteditable="false"></code></pre>
 							</p>
 						</div>
 						<div class="tab-pane fade" id="sensor_monitor" role="tabpanel"
 							aria-labelledby="sensor_monitor_tab">
 							<p>
-								<pre><code id="sensor_monitor_pre" class="JSON rounded" contenteditable="true"></code></pre>
+								<pre><code id="sensor_monitor_pre" class="JSON rounded" contenteditable="false"></code></pre>
 							</p>
 						</div>
 					</div>
