@@ -10,7 +10,7 @@ class MemoryWrapper(SensorWrapper):
 
     def get_initial(self):
         # Get total memory, in MB
-        return psutil.virtual_memory().total >> 20
+        return {"maximum": psutil.virtual_memory().total >> 20}
 
     def get_data(self):
         # Get memory in use and add to msg, using bit shift operator to represent in MB

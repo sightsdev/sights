@@ -52,8 +52,7 @@
 				"location": "#left_view_sensors",
 				"title": "CPU Temp.",
 				"unit": "°C",
-				"unit_style": "font-size: 12px;",
-				"maximum": 100
+				"unit_style": "font-size: 12px;"
 			},
 			{
 				"uid": "memory_usage",
@@ -62,8 +61,7 @@
 				"location": "#left_view_sensors",
 				"title": "RAM Usage",
 				"unit": " MB",
-				"unit_style": "font-size: 12px;",
-				"maximum": 16384
+				"unit_style": "font-size: 12px;"
 			},
 			{
 				"uid": "disk_usage",
@@ -72,8 +70,7 @@
 				"location": "#right_view_sensors",
 				"title": "Disk Usage",
 				"unit": " GB",
-				"unit_style": "font-size: 12px;",
-				"maximum": 500
+				"unit_style": "font-size: 12px;"
 			},
 			{
 				"uid": "cpu_usage",
@@ -82,8 +79,7 @@
 				"location": "#right_view_sensors",
 				"title": "CPU Usage",
 				"unit": "%",
-				"unit_style": "font-size: 15px;",
-				"maximum": 100
+				"unit_style": "font-size: 15px;"
 			},
 			{
 				"uid": "uptime",

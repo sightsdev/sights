@@ -64,9 +64,7 @@
 				"enabled": true,
 				"location": "#left_view_sensors",
 				"title": "CPU Temp",
-				"unit": "°C",
-				"unit_style": "font-size: 24px;",
-				"maximum": 105
+				"unit": "°C"
 			},
 			{
 				"uid": "system_memory_graph",
@@ -74,9 +72,8 @@
 				"enabled": true,
 				"location": "#left_view_sensors",
 				"title": "System Memory",
-				"unit": "MB",
-				"unit_style": "font-size: 24px;",
-				"maximum": 16384
+				"unit": " MB",
+				"unit_style": "font-size: 12px;"
 			},
 			{
 				"uid": "memory_box",
@@ -84,8 +81,7 @@
 				"enabled": true,
 				"location": "#sensors_textbox",
 				"title": "Memory",
-				"unit": "MB",
-				"maximum": 16384
+				"unit": "MB"
 			},
 			{
 				"uid": "thermal_camera",
