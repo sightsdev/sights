@@ -6,3 +6,4 @@
 - **Links**
 - [![S.A.R.T. Website](assets/logo.svg)S.A.R.T. Website](https://www.sfxrescue.com/)
 - [![GitHub](assets/github.svg)GitHub](https://www.github.com/SFXRescue/)
+- [![Thingiverse](assets/thingiverse.svg)Thingiverse](https://www.thingiverse.com/SFXRescue/designs)
