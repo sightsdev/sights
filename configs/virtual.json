@@ -13,6 +13,10 @@
 		"enabled": false
 	},
 	"interface": {
+		"notifications": {
+			"enabled": true,
+			"timeout": 7
+		},
 		"cameras": {
 			"front": {
 				"enabled": true,
@@ -30,81 +34,44 @@
 		},
 		"graphs": [
 			{
-				"uid": "cpu_temp_graph",
-				"type": "line",
+				"uid": "cpu_temperature",
+				"type": "circle",
 				"enabled": true,
-				"location": "#btm_view_sensors",
+				"location": "#left_view_sensors",
 				"title": "CPU Temperature",
-				"icon": "server",
-				"x_axis_label": "Time (seconds)",
-				"y_axis_label": "Temperature (degrees)",
-				"y_axis_min": 20,
-				"y_axis_max": 35,
-				"period": 1
+				"unit": "°C",
+				"unit_style": "font-size: 24px;",
+				"maximum": 100
 			},
 			{
-				"uid": "temperature_graph",
-				"type": "line",
+				"uid": "memory_usage",
+				"type": "circle",
 				"enabled": true,
-				"location": "#btm_view_sensors",
-				"title": "Temperature",
-				"icon": "thermometer-half",
-				"x_axis_label": "Time (seconds)",
-				"y_axis_label": "Temperature (degrees)",
-				"period": 1
+				"location": "#left_view_sensors",
+				"title": "RAM Usage",
+				"unit": "MB",
+				"unit_style": "font-size: 20px;",
+				"maximum": 16384
 			}
 		]
 	},
 	"sensors": [
 		{
-			"enabled": false,
-			"type": "amg8833",
-			"name": "Thermal Camera",
-			"period": 0.5,
-			"width": 32,
-			"height": 24,
-			"display_on": []
-		},
-		{
-			"enabled": false,
-			"type": "mlx90614",
-			"name": "Temperature Sensor",
-			"address": "0x5B",
-			"period": 2,
-			"display_on": []
-		},
-		{
-			"enabled": false,
-			"type": "sgp30",
-			"name": "Gas Sensor",
-			"period": 2,
-			"display_on": []
-		},
-		{
 			"enabled": true,
-			"type": "memory",
-			"name": "System Memory",
-			"period": 2,
-			"display_on": []
-		},
-		{
-			"enabled": true,
-			"type": "random",
+			"type": "cpu_temp",
 			"name": "CPU Temperature",
 			"period": 1,
 			"display_on": [
-				"cpu_temp_graph"
+				"cpu_temperature"
 			]
 		},
 		{
 			"enabled": true,
-			"type": "random",
-			"name": "Temperature",
+			"type": "memory",
+			"name": "RAM Usage",
 			"period": 1,
-			"min": 10,
-			"max": 20,
 			"display_on": [
-				"temperature_graph"
+				"memory_usage"
 			]
 		}
 	],

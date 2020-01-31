@@ -9,12 +9,20 @@
 	"motors": {
 		"type": "serial",
 		"port": "/dev/ttyAMA0",
-		"baudrate": 9600
+		"baudrate": 9600,
+		"channels": {
+			"left": [],
+			"right": []
+		}
 	},
 	"arduino": {
 		"enabled": false
 	},
 	"interface": {
+		"notifications": {
+			"enabled": true,
+			"timeout": 7
+		},
 		"cameras": {
 			"front": {
 				"enabled": true,
@@ -30,50 +38,46 @@
 				"enabled": false
 			}
 		},
-		"graphs": []
+		"graphs": [
+			{
+				"uid": "cpu_temperature",
+				"type": "circle",
+				"enabled": true,
+				"location": "#left_view_sensors",
+				"title": "CPU Temperature",
+				"unit": "°C",
+				"unit_style": "font-size: 24px;",
+				"maximum": 100
+			},
+			{
+				"uid": "memory_usage",
+				"type": "circle",
+				"enabled": true,
+				"location": "#left_view_sensors",
+				"title": "RAM Usage",
+				"unit": "MB",
+				"unit_style": "font-size: 20px;",
+				"maximum": 16384
+			}
+		]
 	},
 	"sensors": [
-		{
-			"enabled": false,
-			"type": "amg8833",
-			"name": "Thermal Camera",
-			"period": 0.5,
-			"width": 32,
-			"height": 24,
-			"display_on": []
-		},
-		{
-			"enabled": false,
-			"type": "mlx90614",
-			"name": "Temperature Sensor",
-			"address": "0x5A",
-			"period": 2,
-			"display_on": []
-		},
-		{
-			"enabled": false,
-			"type": "sgp30",
-			"name": "Gas Sensor",
-			"period": 2,
-			"display_on": []
-		},
-		{
-			"enabled": true,
-			"type": "memory",
-			"name": "System Memory",
-			"period": 2,
-			"display_on": [
-				"system_memory_graph",
-				"memory_box"
-			]
-		},
 		{
 			"enabled": true,
 			"type": "cpu_temp",
 			"name": "CPU Temperature",
-			"period": 5,
+			"period": 1,
 			"display_on": [
-				"cpu_temp_graph"
+				"cpu_temperature"
+			]
+		},
+		{
+			"enabled": true,
+			"type": "memory",
+			"name": "RAM Usage",
+			"period": 1,
+			"display_on": [
+				"memory_usage"
 			]
 		}
 	],
