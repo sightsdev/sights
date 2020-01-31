@@ -51,12 +51,12 @@ class CircleGraph extends Graph{
 
     setup(index, data, name) {
         // Get maximum from the initial message (default to 100 if malformed)
-        this.config.maximum = data["maximum"] || 100;
+        this.config.limit = data["limit"] || 100;
     }
 
     update(index, data, name) {
         // Maximum value of graph, default to 100 if not set in initial message
-        let max = this.config.maximum || 100;
+        let max = this.config.limit || 100;
         let level = $("#" + this.config.uid + "_level");
         let unit_text = $("#" + this.config.uid + "_unit");
         let circle = $("#" + this.config.uid + "_circle");
