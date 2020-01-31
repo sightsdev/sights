@@ -171,6 +171,49 @@ const schema = {
                             }
                         }
                     }
+                },
+                "channels": {
+                    "$id": "#/properties/motors/properties/channels",
+                    "type": "object",
+                    "title": "Motor Channels",
+                    "description": "Configure serial motor controller channel assignment for left or right. 'Left' and 'right' groups define which channels control motors on the left and right side. For servo controllers with more than 2 channels, multiple channels can be added to each group.",
+                    "options": {
+                        "dependencies": {
+                            "type": "serial"
+                        }
+                    },
+                    "required": [
+                        "left",
+                        "right"
+                    ],
+                    "properties": {
+                        "left": {
+                            "$id": "#/properties/motors/properties/channels/properties/left",
+                            "type": "array",
+                            "format": "table",
+                            "title": "Left Motor Channel Array",
+                            "description": "The motor controller channel/s used for motors on the left of the robot.",
+                            "items": {
+                                "$id": "#/properties/motors/properties/channels/properties/left/items",
+                                "type": "integer",
+                                "title": "Left Motor Channel",
+                                "description": "An integer representing a channel used by motors on the left side of the robot."
+                            }
+                        },
+                        "right": {
+                            "$id": "#/properties/motors/properties/channels/properties/right",
+                            "type": "array",
+                            "format": "table",
+                            "title": "Right Motor Channel Array",
+                            "description": "The motor controller channel/s used for motors on the right of the robot.",
+                            "items": {
+                                "$id": "#/properties/motors/properties/channels/properties/right/items",
+                                "type": "integer",
+                                "title": "Right Motor Channel",
+                                "description": "An integer representing a channel used by motors on the right side of the robot."
+                            }
+                        }
+                    }
                 }
             }
         },
