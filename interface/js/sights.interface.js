@@ -54,9 +54,9 @@ function updateCheck(type, altRepo) {
 			let current_release = current_version.split("-")[0];
 			let latest_release = result[0]['name'];
 			warning_field.html("");  // Clear warnings
-			$('#update_instructions').hide();
 			update_field.css("opacity", "100%");
 			if (current_release == latest_release) {
+				$('#update_instructions').hide();
 				update_field.html("You are running the latest release");
 				if(current_version.includes('-')) {
 					warning_field.html("<br>Caution: " +
