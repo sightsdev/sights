@@ -59,6 +59,7 @@
 	<script src="js/graphs/circlegraph.js"></script>
 	<script src="js/graphs/textbox.js"></script>
 	<script src="js/graphs/thermalcamera.js"></script>
+	<script src="js/graphs/uptime.js"></script>
 
 </head>
 
@@ -586,14 +587,10 @@
 			<div class="col-md-auto">
 				<div class="row" id="left_view_sensors">
 				</div>
-				<div class="row" style="padding-top: 12px">
+				<div class="row textgroup-container" style="padding-top: 12px">
 					<div class="col">
 						<div class="card">
-							<ul id="sensors_textbox" class="list-group list-group-flush font-weight-light">
-								<li class="list-group-item"><strong style="padding-right: 10px;">Uptime:
-								</strong><span id="uptime" tooltip
-										data-placement="bottom" title="Time since boot">00:00:00:00</span>
-								</li>
+							<ul id="textgroup_left" class="list-group list-group-flush font-weight-light">
 							</ul>
 						</div>
 					</div>
@@ -626,10 +623,10 @@
 			<div class="col-md-auto">
 				<div class="row" id="right_view_sensors">
 				</div>
-				<div class="row" style="padding-top: 12px">
+				<div class="row textgroup-container" style="padding-top: 12px">
 					<div class="col">
 						<div class="card">
-							<ul class="list-group list-group-flush font-weight-light">
+							<ul id="textgroup_right" class="list-group list-group-flush font-weight-light">
 								<li id="gamepad_speed_indicator" class="list-group-item">
 									<p style="margin-bottom: 0.5rem;">
 										<span style="padding-right: 10px;">Gamepad speed </span>

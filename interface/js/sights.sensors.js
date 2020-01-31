@@ -93,6 +93,10 @@ function sensorConnection() {
 						graphs[graph].remove();
 					}
 					graphs = {};
+					// If a textbox group list-group doesn't contain any hardcoded list elements, hide it
+					$('.textgroup-container > .col > .card > .list-group:not(:has(li))').each(function () {
+						$(this).parent().parent().parent().hide();
+					});
 
 					// Create each sensor graph
 					response['interface']['graphs'].forEach(function (graph) {
@@ -117,6 +121,12 @@ function sensorConnection() {
 						if (graph.type == "thermalcamera") {
 							// Add it to the array, regardless of whether it is enabled or not
 							graphs[graph.uid] = new ThermalCamera(graph);
+							// Create the actual DOM element
+							graphs[graph.uid].appendTo(graph.location);
+						}
+						if (graph.type == "uptime") {
+							// Add it to the array, regardless of whether it is enabled or not
+							graphs[graph.uid] = new UptimeBox(graph);
 							// Create the actual DOM element
 							graphs[graph.uid].appendTo(graph.location);
 						}

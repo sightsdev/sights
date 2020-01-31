@@ -147,26 +147,6 @@ function setSpeedIndicator(type, speed) {
 $(document).on("ready", function () {
 	// Hide update instructions until user checks for an update
 	$('#update_instructions').hide();
-
-	// Uptime updater
-	var daySecs = 60*60*24;
-	var hourSecs = 60*60;
-	var minSecs = 60; // minSecs rhymes with insects
-	setInterval(() => {
-		if(startTime) {
-			// Calculate uptime based on time elapsed since reported time of boot
-			let upSeconds = (Date.now() - startTime) / 1000;
-
-			let days = (Math.floor(upSeconds / daySecs) + "").padStart(2, '0');
-			let hours = (Math.floor((upSeconds % daySecs) / hourSecs) + "").padStart(2, '0');
-			let minutes = (Math.floor(((upSeconds % daySecs) % hourSecs) / minSecs) + "").padStart(2, '0');
-			let seconds = (Math.floor(((upSeconds % daySecs) % hourSecs) % minSecs) + "").padStart(2, '0');
-
-			// Format nicely
-			$("#uptime").html(days + ":" + hours + ":" + minutes + ":" + seconds);
-		}
-		else $("#uptime").html("00:00:00:00");
-	}, 1000);
 	
 	// Dark mode toggle handler
 	$("#darkmode_toggle").on('change',function() {

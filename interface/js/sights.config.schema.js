@@ -681,6 +681,49 @@ const schema = {
                                 "options": {
                                     "collapsed": true
                                 },
+                                "title": "Uptime Box",
+                                "properties": {
+                                    "uid": {
+                                        "type": "string",
+                                        "title": "Unique ID",
+                                        "description": "The UID used to identify the uptime text box."
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "title": "Type",
+                                        "description": "The type of graph to use.",
+                                        "enum": [
+                                            "uptime"
+                                        ],
+                                        "default": "uptime",
+                                        "format": "radio"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "title": "Enable",
+                                        "description": "Whether the uptime text box is enabled.",
+                                        "format": "checkbox",
+                                        "default": true
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "title": "Location",
+                                        "description": "Element to append the uptime text box to. Recommended to append to a list-group element. Try '#textgroup_left' or '#textgroup_right'.",
+                                        "default": "#"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "title": "Title",
+                                        "description": "Title displayed on the uptime text box.",
+                                        "default": "Uptime"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "options": {
+                                    "collapsed": true
+                                },
                                 "title": "Thermal Camera Output",
                                 "properties": {
                                     "uid": {
