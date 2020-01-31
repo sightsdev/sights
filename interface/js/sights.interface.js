@@ -227,8 +227,8 @@ $(document).on("ready", function () {
 	$("#sensor_toggle").on("click", toggleSensorMode);
 
 	// Clear log dump box
-	$("#gamepad_log_clear_button").on("click", function () {
-		$("#gamepad_log_pre").html("");
+	$("#input_log_clear_button").on("click", function () {
+		$("#input_log_pre").html("");
 	});
 	$("#interface_log_clear_button").on("click", function () {
 		$("#interface_info_pre").html("");

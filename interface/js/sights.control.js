@@ -26,7 +26,7 @@ function safeSend(data) {
 // Log control to log modal
 function logControl(e) {
 	value = ('value' in e) ? e["value"] : "MESSAGE SENT"
-	$('#gamepad_log_pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
+	$('#input_log_pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
 }
 
 // Runs every tick to check changed axes and send values as required
