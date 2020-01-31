@@ -25,7 +25,11 @@ class CircleGraph extends Graph{
             }).append(
                 $("<span/>", {
                     "id": this.config.uid + "_level"
-                }),
+                }).append(
+                    $("<i/>", {
+                        "class": "fa fa-fw fa-ellipsis-h"
+                    })
+                ),
                 $("<span/>", {
                     "id": this.config.uid + "_unit",
                     "style": this.config.unit_style
