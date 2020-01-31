@@ -253,11 +253,11 @@ update () {
     cd ..
     python3 -m pip install ./supervisor_sights_config
 
+    # Ensure up to date dependencies are installed
     python3 -m pip install -r SIGHTSRobot/src/requirements.txt
 
     echo -e "\nRestarting Supervisord and SIGHTS..."
     service supervisord restart
-    #supervisord restart sights
 
     echo -e "\nUpdate complete!"
     echo
@@ -305,6 +305,13 @@ else
 fi
 echo -e "Installing as $SUDO_USER"
 echo
+
+# If update flag specified, just update, then exit
+if [ $1 == "--update" ]; then
+    echo -e "Performing an update..."
+    update
+    exit
+fi
 
 options=(
     "Complete Install" 
