@@ -1084,6 +1084,104 @@ const schema = {
                     },
                     {
                         "type": "object",
+                        "title": "Host CPU Usage Monitor",
+                        "options": {
+                            "collapsed": true
+                        },
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable",
+                                "description": "Whether the CPU usage monitor is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Type",
+                                "enum": [
+                                    "cpu_usage"
+                                ],
+                                "default": "cpu_usage",
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Name",
+                                "description": "The pretty name for the CPU usage monitor.",
+                                "default": "New Sensor"
+                            },
+                            "period": {
+                                "type": "number",
+                                "title": "Update Period",
+                                "description": "How often, in seconds, the CPU usage monitor updates.",
+                                "default": 3
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "title": "Host Disk Usage Monitor",
+                        "options": {
+                            "collapsed": true
+                        },
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable",
+                                "description": "Whether the disk usage monitor is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Type",
+                                "enum": [
+                                    "disk_usage"
+                                ],
+                                "default": "disk_usage",
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Name",
+                                "description": "The pretty name for the disk usage monitor.",
+                                "default": "New Sensor"
+                            },
+                            "precision": {
+                                "type": "integer",
+                                "title": "Precision",
+                                "description": "The number of decimal places to round to.",
+                                "default": 2
+                            },
+                            "period": {
+                                "type": "number",
+                                "title": "Update Period",
+                                "description": "How often, in seconds, the disk usage monitor updates.",
+                                "default": 3
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
                         "title": "Random Data",
                         "options": {
                             "collapsed": true
