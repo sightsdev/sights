@@ -9,61 +9,123 @@
 	"motors": {
 		"type": "serial",
 		"port": "/dev/ttyAMA0",
-		"baudrate": 9600
+		"baudrate": 9600,
+		"channels": {
+			"left": [],
+			"right": []
+		}
 	},
 	"arduino": {
-		"enabled": false,
-		"port": "/dev/serial/by-id/usb-UDOO_UDOO_X86__K73504309-if00",
-		"baudrate": 115200
+		"enabled": false
 	},
-	"cameras": {
-		"right": {
-			"enabled": false,
-			"id": 4
-		},
-		"front": {
+	"interface": {
+		"notifications": {
 			"enabled": true,
-			"id": 1
+			"timeout": 7
 		},
-		"back": {
-			"enabled": false,
-			"id": 2
+		"cameras": {
+			"front": {
+				"enabled": true,
+				"id": 1
+			},
+			"back": {
+				"enabled": false
+			},
+			"left": {
+				"enabled": false
+			},
+			"right": {
+				"enabled": false
+			}
 		},
-		"left": {
-			"enabled": false,
-			"id": 3
-		}
+		"graphs": [
+			{
+				"uid": "cpu_temperature",
+				"type": "circle",
+				"enabled": true,
+				"location": "#left_view_sensors",
+				"title": "CPU Temp.",
+				"unit": "°C",
+				"unit_style": "font-size: 12px;"
+			},
+			{
+				"uid": "memory_usage",
+				"type": "circle",
+				"enabled": true,
+				"location": "#left_view_sensors",
+				"title": "RAM Usage",
+				"unit": " MB",
+				"unit_style": "font-size: 12px;"
+			},
+			{
+				"uid": "disk_usage",
+				"type": "circle",
+				"enabled": true,
+				"location": "#right_view_sensors",
+				"title": "Disk Usage",
+				"unit": " GB",
+				"unit_style": "font-size: 12px;"
+			},
+			{
+				"uid": "cpu_usage",
+				"type": "circle",
+				"enabled": true,
+				"location": "#right_view_sensors",
+				"title": "CPU Usage",
+				"unit": "%",
+				"unit_style": "font-size: 15px;"
+			},
+			{
+				"uid": "uptime",
+				"type": "uptime",
+				"enabled": true,
+				"location": "#textgroup_left",
+				"title": "Uptime"
+			}
+		]
 	},
-	"sensors": {
-		"temperature": {
-			"address": "0x5A",
-			"frequency": 2,
-			"enabled": false
+	"sensors": [
+		{
+			"enabled": true,
+			"type": "cpu_temp",
+			"name": "CPU Temperature",
+			"period": 1,
+			"display_on": [
+				"cpu_temperature"
+			]
 		},
-		"gas": {
-			"frequency": 2,
-			"enabled": false
+		{
+			"enabled": true,
+			"type": "memory",
+			"name": "RAM Usage",
+			"period": 1,
+			"display_on": [
+				"memory_usage"
+			]
 		},
-		"distance": {
-			"frequency": 2,
-			"enabled": false
+		{
+			"enabled": true,
+			"type": "cpu_usage",
+			"name": "CPU Usage",
+			"address": "",
+			"period": 1,
+			"display_on": [
+				"cpu_usage"
+			]
 		},
-		"memory": {
-			"frequency": 3,
-			"enabled": true
-		},
-		"cpu_temp": {
-			"frequency": 5,
-			"enabled": false
-		},
-		"thermal_camera": {
-			"width": 32,
-			"height": 24,
-			"frequency": 0.5,
-			"enabled": false
+		{
+			"enabled": true,
+			"type": "disk_usage",
+			"name": "Disk Usage",
+			"address": "",
+			"period": 1,
+			"display_on": [
+				"disk_usage"
+			]
 		}
-	},
+	],
 	"debug": {
+		"log_level": "info",
 		"print_messages": false
 	}
 }

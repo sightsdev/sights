@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-import json
 from multiprocessing import Pipe
 from control_receiver import ControlReceiver
 from sensor_stream import SensorStream
 import signal
 import sys
 import os
+import json
 import logging
 import multiprocessing_logging
 
 class Manager:
     def __init__(self, config_file, logger):
         self.logger = logger
-        self.logger.info("Starting manager process")
+        self.logger.info("Starting main process...")
         # Store config file name
         self.config_file = config_file
-        self.logger.info("Using config file: " + self.config_file)
+        self.logger.info(f"Loading config file: '{self.config_file}'...")
 
     def terminate(self):
         # Terminate the two processes we spawn
@@ -25,18 +25,15 @@ class Manager:
         self.control_process.join()
 
     def sigint(self, signal, frame):
-        self.logger.info("Received INT signal. Terminating.")
+        self.logger.info("Received interrupt signal. Terminating...")
         # Make sure we terminate the child processes to prevent a zombie uprising
         self.terminate()
         # Also kill this process too
         sys.exit(0)
 
     def run(self):
-        # Save process ID to file
-        self.pid = str(os.getpid())
-        with open('../sights.pid', 'w') as f:
-            f.write(self.pid)
-        self.logger.info("PID {}".format(self.pid))
+        # Log process ID to file
+        self.logger.debug(f"Process ID (PID): {os.getpid()}")
         # Create pipe. sensor_pipe receives, and control_pipe sends
         self.sensor_pipe, self.control_pipe = Pipe(duplex=False)
         # Create server and receiver processes
@@ -51,14 +48,9 @@ class Manager:
         self.sensor_process.join()
         self.control_process.join()
         # Once both processes have ended, the manager can end too.
-        self.logger.info("Exiting manager process")
+        self.logger.info("Exiting main process...")
 
 if __name__ == '__main__':
-    # Setup logger
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
-    multiprocessing_logging.install_mp_handler()
-    logger = logging.getLogger(__name__)
-
     # Get active config from ACTIVE_CONFIG file
     try:
         with open("configs/ACTIVE_CONFIG", 'r') as f:
@@ -66,17 +58,35 @@ if __name__ == '__main__':
     # Otherwise fallback to default.json
     except FileNotFoundError:
         config_file = "src/configs/sights/minimal.json"
+
+    # Log levels
+    levels = {
+        'critical': logging.CRITICAL,
+        'error': logging.ERROR,
+        'warning': logging.WARNING,
+        'info': logging.INFO,
+        'debug': logging.DEBUG
+    }
+
+    # Load config file
+    config = json.load(open(config_file))
+
+    # Get the log level from the config. Default to logging.INFO
+    log_level = levels.get(config["debug"].get("log_level", "info").lower(), logging.INFO)
+
+    # Setup logger
+    logging.basicConfig(level=log_level, stream=sys.stdout, format='%(asctime)s %(levelname)s %(name)s: %(message)s')
+    # Ensure multiprocessing compatibility
+    multiprocessing_logging.install_mp_handler()
+    # This ensures we know which script we are logging from
+    logger = logging.getLogger(__name__)
     
     # Create manager object
     manager = Manager(config_file, logger)
     
     # Main program loop
-    # If the restart flag is enabled we want to run the main function
     try:
-        while(manager.run()):
-            logger.info("Going to restart")
+        manager.run()
     except (KeyError, json.decoder.JSONDecodeError):
-        logger.warning("Config error! SIGHTS will now terminate.")
-        logger.info("Review your config file or restore a backup.")
-    else:
-        logger.info("All processes ended")
+        logger.error("Configuration file error! SIGHTS will now terminate.")
+        logger.error("Review your config file or restore a backup.")

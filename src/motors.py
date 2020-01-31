@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-import pyax12.connection
 from pyax12.status_packet import RangeError
+import pyax12.connection
 import serial
 import logging
 
@@ -126,7 +126,6 @@ class Motors:
                 elif (self.type == 'dynamixel'):
                     self.connection = DynamixelConnection(self.port, self.baudrate)
                     self.connection.ids = config['motors']['ids']
-                    self.connection.logger = self.logger
             except serial.serialutil.SerialException:
                 self.logger.warning(f"Unable to create {self.type} motor connection")
                 self.logger.info("Falling back to virtual connection")
@@ -137,8 +136,10 @@ class Motors:
             self.logger.info("Falling back to virtual connection")
             self.connection = VirtualConnection()
             self.type = 'virtual'
-        self.logger.info("Opening motor connection of type: {}".format(self.type))
-
+        self.logger.info(f"Opening motor connection of type '{self.type}'")
+        # Ensure Connection class has access to logging capabilities
+        self.connection.logger = self.logger
+        
     def stop(self):
         # Set all servos to 0
         self.connection.stop()

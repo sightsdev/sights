@@ -12,41 +12,26 @@
 	"arduino": {
 		"enabled": false
 	},
-	"cameras": {
-		"front": {
-			"enabled": false
+	"interface": {
+		"cameras": {
+			"front": {
+				"enabled": false
+			},
+			"back": {
+				"enabled": false
+			},
+			"left": {
+				"enabled": false
+			},
+			"right": {
+				"enabled": false
+			}
 		},
-		"back": {
-			"enabled": false
-		},
-		"left": {
-			"enabled": false
-		},
-		"right": {
-			"enabled": false
-		}
+		"graphs": []
 	},
-	"sensors": {
-		"memory": {
-			"enabled": false
-		},
-		"cpu_temp": {
-			"enabled": false
-		},
-		"thermal_camera": {
-			"enabled": false
-		},
-		"temperature": {
-			"enabled": false
-		},
-		"distance": {
-			"enabled": false
-		},
-		"gas": {
-			"enabled": false
-		}
-	},
+	"sensors": [],
 	"debug": {
-		"print_messages": true
+		"log_level": "debug",
+		"print_messages": false
 	}
 }

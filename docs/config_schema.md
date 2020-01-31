@@ -54,12 +54,27 @@ For each camera, if the `enabled` option is set, it will be shown on the interfa
 
 ## `sensors`
 
-Each sensor will have _at least_ an `enabled` option, to enable the sensor, and a `frequency` option which defines (in seconds) how often the sensor is polled.
+Array of sensors. Each sensor can have a number of different configuration options but for every sensor, the required fields are:
 
-Some sensors will have an additional `address` option to set the I²C address.
+- `type`: the type of sensor (i.e. the model name)
+- `enabled`: whether or not the sensor is enabled
+- `name`: fancy display name
+- `period`: how often the sensor is polled (in seconds)
+
+Some sensors will have an additional options such as an `address` option to set the I²C address.
 
 ## `debug`
 
+`log_level`
+
+Takes one of the following string values, to specify the log types that are shown in the log file and log window. Anything lower than the specified level is not logged.
+
+- `critical`
+- `error`
+- `warning`
+- `info` (_default_)
+- `debug`
+
 `print_messages`
 
-Print any messages received from the interface to the console.
+Log any messages received from the interface, and any data received from the sensors to be sent to the interface.

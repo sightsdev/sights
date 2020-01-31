@@ -22,7 +22,7 @@ print_detected_ip () {
     do
       output="$output or http://$ip$1"
     done
-    output="$output on any decice on the local network."
+    output="$output on any device on the local network."
   else
     output="$output or connect to a network."
   fi
@@ -123,7 +123,7 @@ install_motion () {
 
             echo -e "\nCreating symlink for Motion configuration files..."
             rm -r /etc/motion
-            ln -s /opt/sights/SIGHTSRobot/src/configs/motion /etc
+            ln -s $INSTALL_DIR/SIGHTSRobot/src/configs/motion /etc
 
             echo -e "\nEnabling Motion daemon flag..."
             echo "start_motion_daemon=yes" > /etc/default/motion
@@ -168,7 +168,7 @@ install_supervisor () {
     python3 -m pip install supervisor
 
     echo -e "\nCreating symlink for Supervisor configuration files..."
-    ln -sf /opt/sights/SIGHTSRobot/src/configs/supervisor /etc 
+    ln -sf $INSTALL_DIR/SIGHTSRobot/src/configs/supervisor /etc
 
     echo -e "\nDownloading Supervisor SIGHTS extension..."
     git clone https://github.com/SFXRescue/supervisor_sights_config
@@ -189,26 +189,71 @@ install_supervisor () {
     print_detected_ip ":9001/"
 }
 
+enable_i2c () {
+    if [ $DETECTED_OS == "raspbian" ]
+    then 
+        echo -e '\nEnabling i2c-bcm2708 module...'
+        if grep -q 'i2c-bcm2708' /etc/modules; then
+            echo 'i2c-bcm2708 module already enabled.'
+        else
+            modprobe i2c-bcm2708
+            echo 'i2c-bcm2708' >> /etc/modules
+            echo -e '\nEnabled i2c-bcm2708 module.'
+        fi
+
+        echo -e '\nEnabling i2c-dev module...'
+        if grep -q 'i2c-dev' /etc/modules; then
+            echo -e 'i2c-dev module already enabled.'
+        else
+            modprobe i2c-dev
+            echo 'i2c-dev' >> /etc/modules
+            echo -e 'Enabled i2c-dev module.'
+        fi
+
+        echo -e '\nSetting i2c_arm parameter boot config option...'
+        if grep -q 'dtparam=i2c_arm=on' /boot/config.txt; then
+            echo -e 'i2c_arm parameter already set.'
+        else
+            echo 'dtparam=i2c_arm=on' >> /boot/config.txt
+            echo -e '\nSet i2c_arm parameter boot config option...'
+        fi
+
+        echo -e '\nRemoving i2c from blacklists...'
+        if [ -f /etc/modprobe.d/raspi-blacklist.conf ]; then
+            sed -i 's/^blacklist spi-bcm2708/#blacklist spi-bcm2708/' /etc/modprobe.d/raspi-blacklist.conf
+            sed -i 's/^blacklist i2c-bcm2708/#blacklist i2c-bcm2708/' /etc/modprobe.d/raspi-blacklist.conf
+        else
+            echo 'File raspi-blacklist.conf does not exist, skip this step.'
+        fi
+    else
+        echo -e '\nThis option can only be used on a Raspberry Pi (running Raspbian).'
+        echo -e '\nFor other devices or operating systems, consult the manufacturers documentation for enabling I2C.'
+    fi
+
+}
+
 update () {
-    echo -e "\nPerforming a basic update"
-    apt update
-    apt upgrade -y
+    #echo -e "\nPerforming a system update"
+    #apt update
+    #apt upgrade -y
 
-    echo -e "\nUpdating SIGHTSRobot"
-    cd SIGHTSRobot
+    echo -e "\nUpdating SIGHTSRobot..."
+    cd SIGHTSRobot || git clone https://github.com/SFXRescue/SIGHTSRobot && cd SIGHTSRobot
     git pull
     cd ..
 
-    echo -e "\nUpdating SIGHTSInterface"
-    cd SIGHTSInterface
+    echo -e "\nUpdating SIGHTSInterface..."
+    cd SIGHTSInterface || git clone https://github.com/SFXRescue/SIGHTSInterface && cd SIGHTSInterface
     git pull
     cd ..
 
-    echo -e "\nUpdating Supervisor SIGHTS extension"
-    cd supervisor_sights_config
+    echo -e "\nUpdating Supervisor SIGHTS extension..."
+    cd supervisor_sights_config || git clone https://github.com/SFXRescue/supervisor_sights_config && cd supervisor_sights_config
     git pull
     cd ..
     python3 -m pip install ./supervisor_sights_config
+
+    python3 -m pip install -r SIGHTSRobot/src/requirements.txt
 
     echo -e "\nRestarting Supervisord and SIGHTS..."
     service supervisord restart
@@ -269,6 +314,7 @@ options=(
     "Setup Motion" 
     "Setup ShellInABox" 
     "Setup Supervisor"
+    "Enable I2C"
     "Update"
     "Detect IPs"
 )
@@ -283,8 +329,9 @@ select option in "${options[@]}"; do
         5) install_motion ;;
         6) install_shellinabox ;;
         7) install_supervisor ;;
-        8) update ;;
-        9) print_detected_ip "/" ;;
+        8) enable_i2c ;;
+        9) update ;;
+        10) print_detected_ip "/" ;;
         q) exit ;;
     esac
 done
