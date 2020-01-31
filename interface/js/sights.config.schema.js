@@ -510,7 +510,7 @@ const schema = {
                                     "location": {
                                         "type": "string",
                                         "title": "Location",
-                                        "description": "Element to append the graph to.",
+                                        "description": "Element to append the graph to.  Try '#btm_view_sensors', '#left_view_sensors' or '#right_view_sensors'.",
                                         "default": "#"
                                     },
                                     "title": {
@@ -591,7 +591,7 @@ const schema = {
                                     "location": {
                                         "type": "string",
                                         "title": "Location",
-                                        "description": "Element to append the graph to.",
+                                        "description": "Element to append the graph to.  Try '#btm_view_sensors', '#left_view_sensors' or '#right_view_sensors'.",
                                         "default": "#"
                                     },
                                     "title": {
@@ -651,7 +651,7 @@ const schema = {
                                     "location": {
                                         "type": "string",
                                         "title": "Location",
-                                        "description": "Element to append the text box to. Recommended to append to a list-group element.",
+                                        "description": "Element to append the text box to. Recommended to append to a list-group element. Try '#textgroup_left' or '#textgroup_right'.",
                                         "default": "#"
                                     },
                                     "title": {
@@ -708,7 +708,7 @@ const schema = {
                                     "location": {
                                         "type": "string",
                                         "title": "Location",
-                                        "description": "Element to append the graph to.",
+                                        "description": "Element to append the graph to. Try '#btm_view_sensors', '#left_view_sensors' or '#right_view_sensors'.",
                                         "default": "#"
                                     },
                                     "title": {
