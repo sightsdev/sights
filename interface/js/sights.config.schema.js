@@ -614,8 +614,9 @@ const schema = {
                                     "maximum": {
                                         "type": "number",
                                         "title": "Maximum",
-                                        "default": 1,
-                                        "description": "The maximum value that the sensor can report, used when calculating how full the circle bar should be."
+                                        "required": false,
+                                        "default": null,
+                                        "description": "(Optional) The maximum value that the sensor can report, used when calculating how full the circle bar should be. Most sensors, especially the host resource monitors (CPU, disk and RAM usage as well as CPU temperature) can auto-report their correct maximum value, meaning you should leave this blank unless you need to reduce your sensor's maximum value."
                                     }
                                 }
                             },

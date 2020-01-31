@@ -54,13 +54,13 @@ class CircleGraph extends Graph{
     }
 
     setup(index, data, name) {
-        // Get maximum from the initial message (default to 100 if malformed)
-        this.config.limit = data["limit"] || 100;
+        // Get maximum from the initial message
+        this.config.limit = data["limit"];
     }
 
     update(index, data, name) {
-        // Maximum value of graph, default to 100 if not set in initial message
-        let max = this.config.limit || 100;
+        // Maximum value of graph. Use the user's value if set, otherwise the value provided by sensor itself, else 100.
+        let max = this.config.maximum || this.config.limit || 100;
         let level = $("#" + this.config.uid + "_level");
         let unit_text = $("#" + this.config.uid + "_unit");
         let circle = $("#" + this.config.uid + "_circle");
