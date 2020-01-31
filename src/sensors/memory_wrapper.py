@@ -9,8 +9,8 @@ class MemoryWrapper(SensorWrapper):
         SensorWrapper.__init__(self, config)
 
     def get_initial(self):
-        # Get total memory, in MB
-        return {"maximum": psutil.virtual_memory().total >> 20}
+        # Get total memory, in MB, this is used on circle graphs to calculate percentage
+        return {"limit": psutil.virtual_memory().total >> 20}
 
     def get_data(self):
         # Get memory in use and add to msg, using bit shift operator to represent in MB

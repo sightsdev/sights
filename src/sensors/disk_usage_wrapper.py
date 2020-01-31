@@ -10,8 +10,8 @@ class DiskUsageWrapper(SensorWrapper):
 
     def get_initial(self):
         # >> 20 will convert bytes to megabytes. Then we divide by 1024 to get GB but with decimals
-        # Then round to 2 decimal places
-        return {"maximum": round((psutil.disk_usage('/').total >> 20) / 1024, 2)}
+        # Then round to 2 decimal places. This is the limit when displayed on the circle graph
+        return {"limit": round((psutil.disk_usage('/').total >> 20) / 1024, 2)}
 
     def get_data(self):
         # Get disk space in use
