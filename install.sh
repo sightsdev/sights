@@ -81,6 +81,9 @@ install_sights_repositories () {
     # Get SIGHTSInterface
     git clone https://github.com/SFXRescue/SIGHTSInterface
 
+    # Get supervisor_sights_config
+    git clone https://github.com/SFXRescue/supervisor_sights_config
+
     checkout_release
 
     # Install all Python packages required by SIGHTSRobot
@@ -196,9 +199,6 @@ install_supervisor () {
 
     echo -e "\nCreating symlink for Supervisor configuration files..."
     ln -sf $INSTALL_DIR/SIGHTSRobot/src/configs/supervisor /etc
-
-    echo -e "\nDownloading Supervisor SIGHTS extension..."
-    git clone https://github.com/SFXRescue/supervisor_sights_config
 
     echo -e "\nInstalling Supervisor SIGHTS extension..."
     python3 -m pip install ./supervisor_sights_config
