@@ -77,8 +77,10 @@
 				<div class="modal-body ssh-container">
 					<ul id="ssh_term_list" class="nav nav-tabs" role="tablist">
 						<li class="nav-item ssh-tab" id="ssh_tab_1">
-							<a class="nav-link text-dark active" href="#ssh_term_1" role="tab" data-toggle="tab"
-								aria-selected="true"><i class="fa fa-fw fa-terminal"></i> 1</a>
+							<a class="nav-link text-dark active" ssh_tab="1" href="#ssh_term_1" role="tab" data-toggle="tab"
+								aria-selected="true" onclick="setCurrentSsh($(this));"><i class="fa fa-fw fa-terminal"></i> 1
+								<span id="ssh_tab_close_1" ssh_tab="1" style="padding-left: 1em" onclick="closeSshTab($(this));">&times</span>
+							</a>
 						</li>
 						<li class="nav-item" id="ssh_new_tab">
 							<span class="d-inline-block" tooltip data-placement="top" title="Open new tab">
@@ -89,8 +91,8 @@
 
 					<!-- Tab panes -->
 					<div id="ssh_term_content" class="tab-content">
-						<div class="tab-pane fade show active" id="ssh_term_1">
-							<iframe id="ssh_iframe_1" src="" width="100%" height="400px" onload="focusCurrentSsh()"
+						<div class="tab-pane fade show active ssh-term" id="ssh_term_1">
+							<iframe id="ssh_iframe_1" src="" width="100%" height="400px"
 								class="rounded-bottom ssh-iframe"></iframe>
 						</div>
 					</div>
