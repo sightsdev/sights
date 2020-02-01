@@ -13,6 +13,9 @@
 INSTALL_DIR=/opt/sights
 MOTION_VER=4.2.2
 
+update_only='false'
+developer_versions='false'
+
 print_detected_ip () {
   output="Visit http://localhost$1 on the host machine"
   hostname=$(hostname -I)
@@ -48,17 +51,22 @@ install_dependencies () {
 }
 
 checkout_release () {
-  cd SIGHTSRobot
-  git checkout -f master
-  git checkout `git tag | sort -V | tail -1`
+  # Check out the latest tag (latest versioned release) for each repository.
+  # Skip if developer versions are enabled (meaning master will be checked out)
+  if [ $developer_versions == 'false' ]
+  then
+    cd SIGHTSRobot
+    git checkout -f master
+    git checkout `git tag | sort -V | tail -1`
 
-  cd SIGHTSInterface
-  git checkout -f master
-  git checkout `git tag | sort -V | tail -1`
+    cd SIGHTSInterface
+    git checkout -f master
+    git checkout `git tag | sort -V | tail -1`
 
-  cd supervisor_sights_config
-  git checkout -f master
-  git checkout `git tag | sort -V | tail -1`
+    cd supervisor_sights_config
+    git checkout -f master
+    git checkout `git tag | sort -V | tail -1`
+  fi
 }
 
 install_sights_repositories () {
@@ -255,16 +263,19 @@ update () {
 
     echo -e "\nUpdating SIGHTSRobot..."
     cd SIGHTSRobot || git clone https://github.com/SFXRescue/SIGHTSRobot && cd SIGHTSRobot
+    git checkout -f master
     git pull
     cd ..
 
     echo -e "\nUpdating SIGHTSInterface..."
     cd SIGHTSInterface || git clone https://github.com/SFXRescue/SIGHTSInterface && cd SIGHTSInterface
+    git checkout -f master
     git pull
     cd ..
 
     echo -e "\nUpdating Supervisor SIGHTS extension..."
     cd supervisor_sights_config || git clone https://github.com/SFXRescue/supervisor_sights_config && cd supervisor_sights_config
+    git checkout -f master
     git pull
     cd ..
 
@@ -325,11 +336,34 @@ fi
 echo -e "Installing as $SUDO_USER"
 echo
 
+# Check provided flags
+while test $# -gt 0; do
+        case "$1" in
+            --update)
+                update_only='true'
+                shift
+                ;;
+            --dev)
+                developer_versions='true'
+                shift
+                ;;
+            *)
+               echo "$1 is not a recognized flag!"
+               exit
+               ;;
+        esac
+  done
+
 # If update flag specified, just update, then exit
-if [ $1 == "--update" ]; then
+if [ $update_only == 'true' ]; then
     echo -e "Performing an update..."
     update
     exit
+fi
+
+# If developer versions flag specified, notify and continue
+if [ $developer_versions == 'true' ]; then
+    echo -e "Developer versions will be used."
 fi
 
 options=(
