@@ -265,19 +265,19 @@ update () {
     #apt upgrade -y
 
     echo -e "\nUpdating SIGHTSRobot..."
-    cd SIGHTSRobot || git clone https://github.com/SFXRescue/SIGHTSRobot && cd SIGHTSRobot
+    cd SIGHTSRobot || `git clone https://github.com/SFXRescue/SIGHTSRobot && cd SIGHTSRobot`
     git checkout -f master
     git pull
     cd ..
 
     echo -e "\nUpdating SIGHTSInterface..."
-    cd SIGHTSInterface || git clone https://github.com/SFXRescue/SIGHTSInterface && cd SIGHTSInterface
+    cd SIGHTSInterface || `git clone https://github.com/SFXRescue/SIGHTSInterface && cd SIGHTSInterface`
     git checkout -f master
     git pull
     cd ..
 
     echo -e "\nUpdating Supervisor SIGHTS extension..."
-    cd supervisor_sights_config || git clone https://github.com/SFXRescue/supervisor_sights_config && cd supervisor_sights_config
+    cd supervisor_sights_config || `git clone https://github.com/SFXRescue/supervisor_sights_config && cd supervisor_sights_config`
     git checkout -f master
     git pull
     cd ..
