@@ -58,14 +58,17 @@ checkout_release () {
     cd SIGHTSRobot
     git checkout -f master
     git checkout `git tag | sort -V | tail -1`
+    cd ..
 
     cd SIGHTSInterface
     git checkout -f master
     git checkout `git tag | sort -V | tail -1`
+    cd ..
 
     cd supervisor_sights_config
     git checkout -f master
     git checkout `git tag | sort -V | tail -1`
+    cd ..
   fi
 }
 
