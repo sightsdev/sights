@@ -357,16 +357,16 @@ while test $# -gt 0; do
         esac
   done
 
+# If developer versions flag specified, notify and continue
+if [ $developer_versions == 'true' ]; then
+    echo -e "Developer versions will be used."
+fi
+
 # If update flag specified, just update, then exit
 if [ $update_only == 'true' ]; then
     echo -e "Performing an update..."
     update
     exit
-fi
-
-# If developer versions flag specified, notify and continue
-if [ $developer_versions == 'true' ]; then
-    echo -e "Developer versions will be used."
 fi
 
 options=(
