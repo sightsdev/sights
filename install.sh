@@ -47,6 +47,20 @@ install_dependencies () {
     echo
 }
 
+checkout_release () {
+  cd SIGHTSRobot
+  git checkout -f master
+  git checkout `git tag | sort -V | tail -1`
+
+  cd SIGHTSInterface
+  git checkout -f master
+  git checkout `git tag | sort -V | tail -1`
+
+  cd supervisor_sights_config
+  git checkout -f master
+  git checkout `git tag | sort -V | tail -1`
+}
+
 install_sights_repositories () {
     echo -e "\nDownloading SIGHTS repositories..."
 
@@ -55,6 +69,8 @@ install_sights_repositories () {
 
     # Get SIGHTSInterface
     git clone https://github.com/SFXRescue/SIGHTSInterface
+
+    checkout_release
 
     # Install all Python packages required by SIGHTSRobot
     echo -e "\nInstalling required Python packages..."
@@ -251,6 +267,9 @@ update () {
     cd supervisor_sights_config || git clone https://github.com/SFXRescue/supervisor_sights_config && cd supervisor_sights_config
     git pull
     cd ..
+
+    checkout_release
+
     python3 -m pip install ./supervisor_sights_config
 
     # Ensure up to date dependencies are installed
