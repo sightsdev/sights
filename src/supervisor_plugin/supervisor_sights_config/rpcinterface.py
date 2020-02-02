@@ -96,7 +96,7 @@ class SIGHTSConfigNamespaceRPCInterface:
                     # Get backup ID
                     backup_id = int(file[-1])
                     # Remove oldest backup
-                    if backup_id == 5:
+                    if backup_id == 9:
                         remove(BACKUP_DIR + file)
                     else:
                         # Add 1 to the rest of the backup IDs
@@ -117,10 +117,13 @@ class SIGHTSConfigNamespaceRPCInterface:
         return True
 
     def getRevisions(self, name):
+        """ Gets a lost of all revisions of a specified config file
+        @return string       A list of revisions and timestamps sorted by most recent
+        """
         files = [f for f in listdir(BACKUP_DIR) if isfile(BACKUP_DIR + f) and f.startswith(name + ".backup")]
         revisions = []
         for f in files:
-            revisions.append((f, getmtime(BACKUP_DIR + f)))
+            revisions.append((f, getmtime(BACKUP_DIR + f)))  # File name and unix timestamp (modified time)
         return sorted(revisions)
 
     def requestRevision(self, name):
@@ -128,7 +131,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         @return string       Contents of config revision file
         """
         try:
-            with open(BACKUP_DIR + "/" + name, 'r') as f:
+            with open(BACKUP_DIR + name, 'r') as f:
                 read_data = f.read()
         except FileNotFoundError:
             read_data = ""
