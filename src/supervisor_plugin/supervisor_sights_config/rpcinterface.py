@@ -137,6 +137,15 @@ class SIGHTSConfigNamespaceRPCInterface:
             read_data = ""
         return read_data
 
+    def deleteRevision(self, name):
+        """ Removes the specified config revision
+        @return boolean      Always true unless error
+        """
+        revision = BACKUP_DIR + name
+        if path.isfile(revision):
+            remove(revision)
+        return True
+
     # Handle power commands
     def reboot(self):
         system('reboot')
