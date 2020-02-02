@@ -2,7 +2,7 @@ from supervisor.states import SupervisorStates
 from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
 from os import listdir, remove, path, rename, system
-from os.path import isfile
+from os.path import isfile, getmtime
 
 API_VERSION = '0.2'
 ACTIVE_CONFIG_FILE = '/opt/sights/SIGHTSRobot/configs/ACTIVE_CONFIG'
@@ -96,7 +96,7 @@ class SIGHTSConfigNamespaceRPCInterface:
                     # Get backup ID
                     backup_id = int(file[-1])
                     # Remove oldest backup
-                    if backup_id == 5:
+                    if backup_id == 9:
                         remove(BACKUP_DIR + file)
                     else:
                         # Add 1 to the rest of the backup IDs
@@ -114,6 +114,36 @@ class SIGHTSConfigNamespaceRPCInterface:
             with open(config_path, 'w') as f:
                 f.write(value)
             # self.logger.info("Saved new configuration file " + config_path)
+        return True
+
+    def getRevisions(self, name):
+        """ Gets a lost of all revisions of a specified config file
+        @return string       A list of revisions and timestamps sorted by most recent
+        """
+        files = [f for f in listdir(BACKUP_DIR) if isfile(BACKUP_DIR + f) and f.startswith(name + ".backup")]
+        revisions = []
+        for f in files:
+            revisions.append((f, getmtime(BACKUP_DIR + f)))  # File name and unix timestamp (modified time)
+        return sorted(revisions)
+
+    def requestRevision(self, name):
+        """ Gets the specified revision of a config
+        @return string       Contents of config revision file
+        """
+        try:
+            with open(BACKUP_DIR + name, 'r') as f:
+                read_data = f.read()
+        except FileNotFoundError:
+            read_data = ""
+        return read_data
+
+    def deleteRevision(self, name):
+        """ Removes the specified config revision
+        @return boolean      Always true unless error
+        """
+        revision = BACKUP_DIR + name
+        if path.isfile(revision):
+            remove(revision)
         return True
 
     # Handle power commands
