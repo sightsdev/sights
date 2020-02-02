@@ -238,21 +238,70 @@ function getRevisions(runningConfig) {
         params: {name: runningConfig},
         success: function(response, status, jqXHR) {
             $('#revision_selector').html("");
+            $('#revision_viewer_pre').html("");
+            $('#revision_selector').append("<option value='none'>Select a revision...</option>");
             response[0].forEach(function (revision) {
                 var date = new Date(revision[1] * 1000);
                 let option = revision[0].split(".backup.")[0] + " on " + date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 $('#revision_selector').append("<option value=" + revision[0] + ">" + option + "</option>")
             });
-            if ($('#revision_selector').html() != "") {
+            if ($('#revision_selector').children().length > 1) {
                 $('#revision_selector').removeAttr("disabled");
             }
             else {
                 $('#revision_selector').attr("disabled", "disabled");
+                $("#revision_restore_button").addClass("disabled");
+                $("#revision_delete_button").addClass("disabled");
+                $('#revision_selector').html("");
                 $('#revision_selector').append("<option value='none'>No revisions available</option>")
             }
         },
         error: function(jqXHR, status, error) {
             serviceAlert("danger", "Couldn't get past revisions of the active config");
+        }
+    });
+}
+
+function requestRevision(revision) {
+    $.xmlrpc({
+        url: '/RPC2',
+        methodName: 'sights_config.requestRevision',
+        params: {name: revision},
+        success: function(response, status, jqXHR) {
+            let yaml = jsyaml.safeDump(JSON.parse(response[0]), indent = 4);
+            // Populate revision viewer
+            $("#revision_viewer_pre").html(hljs.highlight("YAML", yaml).value);
+        },
+        error: function(jqXHR, status, error) {
+            $("#revision_viewer_pre").html("");
+            serviceAlert("danger", "Couldn't get revision");
+        }
+    });
+}
+
+function deleteRevision(revision) {
+    $.xmlrpc({
+        url: '/RPC2',
+        methodName: 'sights_config.deleteRevision',
+        params: {name: revision},
+        success: function(response, status, jqXHR) {
+            $('#revision_selector').children().each(function () {
+                if ($(this).attr("value") == revision) {
+                    $(this).remove();
+                }
+            });
+            $('#revision_selector').val("none");
+            $("#revision_viewer_pre").html("");
+            $("#revision_restore_button").addClass("disabled");
+            $("#revision_delete_button").addClass("disabled");
+            if ($('#revision_selector').children().length == 1) {
+                $('#revision_selector').attr("disabled", "disabled");
+                $('#revision_selector').html("");
+                $('#revision_selector').append("<option value='none'>No revisions available</option>")
+            }
+        },
+        error: function(jqXHR, status, error) {
+            serviceAlert("danger", "Couldn't delete revision");
         }
     });
 }
