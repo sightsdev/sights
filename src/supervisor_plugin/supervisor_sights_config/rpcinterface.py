@@ -2,7 +2,7 @@ from supervisor.states import SupervisorStates
 from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
 from os import listdir, remove, path, rename, system
-from os.path import isfile
+from os.path import isfile, getmtime
 
 API_VERSION = '0.2'
 ACTIVE_CONFIG_FILE = '/opt/sights/SIGHTSRobot/configs/ACTIVE_CONFIG'
@@ -115,6 +115,24 @@ class SIGHTSConfigNamespaceRPCInterface:
                 f.write(value)
             # self.logger.info("Saved new configuration file " + config_path)
         return True
+
+    def getRevisions(self, name):
+        files = [f for f in listdir(BACKUP_DIR) if isfile(BACKUP_DIR + f) and f.startswith(name + ".backup")]
+        revisions = []
+        for f in files:
+            revisions.append((f, getmtime(BACKUP_DIR + f)))
+        return sorted(revisions)
+
+    def requestRevision(self, name):
+        """ Gets the specified revision of a config
+        @return string       Contents of config revision file
+        """
+        try:
+            with open(BACKUP_DIR + "/" + name, 'r') as f:
+                read_data = f.read()
+        except FileNotFoundError:
+            read_data = ""
+        return read_data
 
     # Handle power commands
     def reboot(self):
