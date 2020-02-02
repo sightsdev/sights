@@ -89,6 +89,7 @@ function updateConfigAlerts() {
 		$("#config_update_alert").slideUp();
 		$(".restart-service-alert").slideUp();
 		$(".editor_reload_button").removeClass("disabled");
+		$("#revision_restore_button").removeClass("disabled");
 	}
 	else if(currentConfig == editorSavedConfig) {
 		// There are saved changes that need a restart.
@@ -96,6 +97,7 @@ function updateConfigAlerts() {
 		$("#config_update_alert").slideUp();
 		$(".restart-service-alert").slideDown();
 		$(".editor_reload_button").addClass("disabled");
+		$("#revision_restore_button").addClass("disabled");
 	}
 	else {
 		// There are unsaved changes.
@@ -321,6 +323,34 @@ $(document).on("ready", function () {
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
+	});
+
+	$("#revision_selector").on("change", function () {
+		$("#revision_viewer_pre").html("");
+		let selected = $('#revision_selector').val();
+		if (selected != "none") {
+			requestRevision(selected);
+			$("#revision_restore_button").removeClass("disabled");
+			$("#revision_delete_button").removeClass("disabled");
+		}
+		else {
+			$("#revision_restore_button").addClass("disabled");
+			$("#revision_delete_button").addClass("disabled");
+		}
+	});
+
+	$("#revision_restore_button").on("click", function () {
+		if(!$("#revision_restore_button").hasClass("disabled")) {
+			$("#advanced_editor_pre").html($("#revision_viewer_pre").html());
+			saveConfig();
+		}
+	});
+
+	$("#revision_delete_button").on("click", function () {
+		if(!$("#revision_delete_button").hasClass("disabled")) {
+			let selected = $('#revision_selector').val();
+			deleteRevision(selected);
+		}
 	});
 
 	configEditor = new JSONEditor($('#visual_editor_container')[0], {

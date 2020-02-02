@@ -221,6 +221,11 @@
 								href="#advanced_editor" role="tab" aria-controls="advanced_editor"
 								aria-selected="true"><i class="fa fa-fw fa-edit"></i> Advanced Editor</a>
 						</li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" id="revisions_tab" data-toggle="tab"
+                                href="#config_revisions" role="tab" aria-controls="config_revisions"
+                                aria-selected="true"><i class="fa fa-fw fa-history"></i> Revisions</a>
+                        </li>
 						<li class="nav-item">
 							<a class="nav-link text-dark" id="about_tab" data-toggle="tab" href="#about" role="tab"
 								aria-controls="about" aria-selected="false"><i class="fa fa-fw fa-question-circle"></i>
@@ -305,6 +310,36 @@
 								<pre><code id="advanced_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
 							</p>
 						</div>
+                        <div class="tab-pane fade" id="config_revisions" role="tabpanel"
+                             aria-labelledby="revisions_tab">
+                            <br />
+							<div class="alert alert-warning fade show restart-service-alert" style="display:none"
+								 role="alert">
+								<span><b>Restart the service for changes to take effect.</b></span>
+							</div>
+                            <div class="row">
+                                <div class="col">
+                                    <select id="revision_selector" disabled="disabled" class="custom-select">
+                                        <option value="none">No revisions available</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="float-right">
+                                        <button id="revision_restore_button" type="button" class="btn btn-info btn-default"
+                                                tooltip data-placement="bottom" title="Restore this revision">
+                                            <i class="fa fa-fw fa-history"></i> Restore
+                                        </button>
+                                        <button id="revision_delete_button" type="button" class="btn btn-danger btn-default"
+                                                tooltip data-placement="bottom" title="Delete this revision">
+                                            <i class="fa fa-fw fa-save"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                            <pre><code id="revision_viewer_pre" class="JSON rounded" contenteditable="false" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
+                            </p>
+                        </div>
 						<div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about_tab">
 							<br />
 							<div class="float-right" style="padding:20px">
