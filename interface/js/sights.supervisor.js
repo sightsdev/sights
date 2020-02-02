@@ -231,6 +231,32 @@ function saveConfig() {
     updateConfigAlerts();
 }
 
+function getRevisions(runningConfig) {
+    $.xmlrpc({
+        url: '/RPC2',
+        methodName: 'sights_config.getRevisions',
+        params: {name: runningConfig},
+        success: function(response, status, jqXHR) {
+            $('#revision_selector').html("");
+            response[0].forEach(function (revision) {
+                var date = new Date(revision[1] * 1000);
+                let option = revision[0].split(".backup.")[0] + " on " + date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                $('#revision_selector').append("<option value=" + revision[0] + ">" + option + "</option>")
+            });
+            if ($('#revision_selector').html() != "") {
+                $('#revision_selector').removeAttr("disabled");
+            }
+            else {
+                $('#revision_selector').attr("disabled", "disabled");
+                $('#revision_selector').append("<option value='none'>No revisions available</option>")
+            }
+        },
+        error: function(jqXHR, status, error) {
+            serviceAlert("danger", "Couldn't get past revisions of the active config");
+        }
+    });
+}
+
 $(document).on("ready",function () {
     // Handle shutdown and reboot buttons
     $("#shutdown_button").on("click", function () {
