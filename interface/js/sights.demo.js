@@ -186,13 +186,6 @@ function DemoMode() {
 			}
 			updateCircle("charge", temp);
 		}, 20000 + getRandomInt(0,5000));
-		
-		// Temperature history graph
-		tempChartConfig.data.datasets[0].data = [22, 22, 22, 24, 22, 24, 28, 29, 27, 24, 25, 24, 23, 22, 22];
-		tempChart.update();
-		// Distance radial graph
-		distChartConfig.data.datasets[0].data = [768, 128, 256, 312]; // Four directions
-		distChart.update();
 
 		// Uptime
 		// Set boot time to yesterday at 7:59pm

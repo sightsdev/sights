@@ -190,34 +190,14 @@ $(document).on("ready", function () {
 			// Set dark theme cookie to true
 			localStorage.setItem("darkmode", "true");
 			// Modify charts to display properly
-			distChartConfig.options.scale.ticks.showLabelBackdrop = false;
-			distChartConfig.options.scale.gridLines.color = 'rgba(255, 255, 255, 0.2)';
-			distChartConfig.options.scale.angleLines.color = 'white';
-			tempChartConfig.options.scales.xAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
-			tempChartConfig.options.scales.yAxes[0].gridLines.color = 'rgba(255, 255, 255, 0.2)';
-			Chart.defaults.global.defaultFontColor = '#d8d8d8';	
-			// Only update charts if they have actually been initialised yet
-			if (distChart)
-				distChart.update();
-			if (tempChart)
-				tempChart.update();
+			Chart.defaults.global.defaultFontColor = '#d8d8d8';
 		} else {
 			// Disable dark theme CSS
 			document.body.removeAttribute("data-theme");
 			// Set dark theme cookie to false
 			localStorage.setItem("darkmode", "false");
 			// Revert charts to original display
-			distChartConfig.options.scale.ticks.showLabelBackdrop = true;
-			distChartConfig.options.scale.gridLines.color = 'rgba(0, 0, 0, 0.1)';
-			distChartConfig.options.scale.angleLines.color = 'white';
-			tempChartConfig.options.scales.xAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
-			tempChartConfig.options.scales.yAxes[0].gridLines.color = 'rgba(0, 0, 0, 0.1)';
-			Chart.defaults.global.defaultFontColor = '#666';	
-			// Only update charts if they have actually been initialised yet
-			if (distChart)
-				distChart.update();
-			if (tempChart)
-				tempChart.update();
+			Chart.defaults.global.defaultFontColor = '#666';
 		}
 	});
 

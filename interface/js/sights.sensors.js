@@ -12,8 +12,6 @@ var sensorsReady = false;
 
 var global_config;
 
-var tempChart, distChart;
-
 function update_cameras() {
 	['front', 'left', 'right', 'back'].forEach(function (e) {
 		// Get parent div of camera stream image
