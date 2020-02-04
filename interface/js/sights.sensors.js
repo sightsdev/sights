@@ -154,6 +154,7 @@ function sensorConnection() {
 						graphs[graph].remove();
 					}
 					graphs = {};
+					differentColours = {}; // Reset graph colours
 					sensors = {};
 					// If a textbox group list-group doesn't contain any hardcoded list elements, hide it
 					$('.textgroup-container > .col > .card > .list-group:not(:has(li))').each(function () {

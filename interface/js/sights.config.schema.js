@@ -525,6 +525,17 @@ const schema = {
                                         "description": "Font Awesome icon displayed on the graph.",
                                         "default": "line-chart"
                                     },
+                                    "colour_scheme": {
+                                        "type": "string",
+                                        "title": "Colour Scheme",
+                                        "description": "The colour scheme to use for graph lines. Other colours will be used if more are required.",
+                                        "enum": [
+                                            "summer",
+                                            "ocean",
+                                            "magic"
+                                        ],
+                                        "default": "summer"
+                                    },
                                     "x_axis_label": {
                                         "type": "string",
                                         "title": "X-axis Label",

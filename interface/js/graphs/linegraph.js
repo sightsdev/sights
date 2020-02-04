@@ -52,7 +52,7 @@ class LineGraph extends Graph {
                 label: name,
                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 borderColor: [
-                    randomColour()
+                    differentColour(this.config.uid, this.config.colour_scheme)
                 ]
             }
         }
@@ -78,7 +78,7 @@ class LineGraph extends Graph {
                     label: '',
                     data: base_data,
                     borderColor: [
-                        randomColour()
+                        differentColour(this.config.uid, this.config.colour_scheme)
                     ]
                 }]
             },

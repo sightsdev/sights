@@ -1,3 +1,5 @@
+var differentColours = {};
+
 function HSVtoRGB(h, s, v) {
     var r, g, b, i, f, p, q, t;
     if (arguments.length === 1) {
@@ -23,15 +25,35 @@ function HSVtoRGB(h, s, v) {
     };
 }
 
-// Returns random colour on the HSV colourspace
+// Returns colour on the HSV colourspace that hasn't been used before
 // a much nicer distribution than a more trivial approach
-function randomColour() {
-    // Random int between 0 and 255
-    var h = Math.random();
-    h += 0.618033988749895; // golden ration conjugate
-    h %= 1;
-    var rgb = HSVtoRGB(h, 0.5, 0.99);
-    return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`
+function differentColour(usedOn="generic", scheme) {
+    if (differentColours[usedOn]) {
+        // We've already picked colours for this graph and need to be careful not to pick a similar one.
+        if (differentColours[usedOn].length == 0) {
+            // In the cases where a lot of colours need to be chosen, we may run into a limit.
+            // Hopefully there aren't more than 10 lines on a single graph, but just in case, reset the list.
+            differentColours[usedOn] = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+        }
+    }
+    else {
+        differentColours[usedOn] = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+    }
+    // Fancy colour schemes!
+    let h = 0;
+    switch (scheme) {
+        case "ocean":
+            h = differentColours[usedOn].splice(Math.floor(differentColours[usedOn].length/2), 1);
+            break;
+        case "magic":
+            h = differentColours[usedOn].pop();
+            break;
+        default:
+            h = differentColours[usedOn].shift();
+    }
+    // Use the next colour on the list
+    let rgb = HSVtoRGB(h, 0.6, 0.99);
+    return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 }
 
 
