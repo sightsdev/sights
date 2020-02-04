@@ -4,6 +4,7 @@
 */
 
 var sensorSocket;
+var sensorConnected;
 var running_config;
 
 var graphs = {};
