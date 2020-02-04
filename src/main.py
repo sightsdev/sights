@@ -9,6 +9,7 @@ import json
 import logging
 import multiprocessing_logging
 
+
 class Manager:
     def __init__(self, config_file, logger):
         self.logger = logger
@@ -50,14 +51,18 @@ class Manager:
         # Once both processes have ended, the manager can end too.
         self.logger.info("Exiting main process...")
 
+
 if __name__ == '__main__':
     # Get active config from ACTIVE_CONFIG file
     try:
         with open("configs/ACTIVE_CONFIG", 'r') as f:
             config_file = "configs/" + f.read()
-    # Otherwise fallback to default.json
+            # Load config file
+            config = json.load(open(config_file))
+    # Otherwise fallback to minimal.json
     except FileNotFoundError:
         config_file = "src/configs/sights/minimal.json"
+        config = json.load(open(config_file))
 
     # Log levels
     levels = {
@@ -68,9 +73,6 @@ if __name__ == '__main__':
         'debug': logging.DEBUG
     }
 
-    # Load config file
-    config = json.load(open(config_file))
-
     # Get the log level from the config. Default to logging.INFO
     log_level = levels.get(config["debug"].get("log_level", "info").lower(), logging.INFO)
 
@@ -80,10 +82,10 @@ if __name__ == '__main__':
     multiprocessing_logging.install_mp_handler()
     # This ensures we know which script we are logging from
     logger = logging.getLogger(__name__)
-    
+
     # Create manager object
     manager = Manager(config_file, logger)
-    
+
     # Main program loop
     try:
         manager.run()
