@@ -12,7 +12,7 @@ var sensorsReady = false;
 
 var global_config;
 
-function update_cameras() {
+function updateCameras() {
 	['front', 'left', 'right', 'back'].forEach(function (e) {
 		// Get parent div of camera stream image
 		var card = $("#camera_" + e + "_card");
@@ -27,6 +27,65 @@ function update_cameras() {
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
 		camera.attr("data-id", id);
 	});
+}
+
+function updateGraphs(sensor_uid, sensor_data, initial=false) {
+	// Ensure it has the "display_on" array which defines where it should be displayed
+	if ("display_on" in sensors[sensor_uid]) {
+		// If the sensor has one display_on field (it is not a multi-sensor)
+		if(Array.isArray(sensors[sensor_uid]["display_on"])) {
+			// For each graph the sensor would like to update
+			sensors[sensor_uid]["display_on"].forEach(function (graph) {
+				// If the graph exists
+				if(graph in graphs) {
+					// For every graph, check if it handles this sensor
+					graphs[graph]["handles"].forEach(function (value, index) {
+						if (value == sensor_uid) {
+							// Lookup the graph and update it with the new data
+							if (initial) {
+								// If this is initialisation data, perform setup
+								graphs[graph].setup(index, sensor_data, sensors[sensor_uid]["name"]);
+							}
+							else {
+								// Else do the standard graph update.
+								graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
+							}
+						}
+					});
+				}
+				else { // Else, the graph does not exist
+					interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+						"update graph " + graph + " because " + graph + " does not exist.")
+				}
+			});
+		}
+		else { // Else, the sensor has multiple display_on fields (it is a multi-sensor)
+			// For each graph the sensor would like to update
+			Object.entries(sensors[sensor_uid]["display_on"]).forEach(([type, [graph]]) => {
+				// If the graph exists
+				if (graph in graphs) {
+					// For every graph, check if it handles this sensor and message type
+					graphs[graph]["handles"].forEach(function (value, index) {
+						if (value == sensor_uid + "_" + type) {
+							// Lookup the graph and update it with the new data
+							if (initial) {
+								// If this is initialisation data, perform setup
+								graphs[graph].setup(index, sensor_data, sensors[sensor_uid]["name"]);
+							}
+							else {
+								// Else do the standard graph update.
+								graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
+							}
+						}
+					});
+				}
+				else { // Else, the graph does not exist
+					interfaceLog("warning", "sensors", sensor_uid + " cannot " +
+						"update graph " + graph + " because " + graph + " does not exist.")
+				}
+			});
+		}
+	}
 }
 
 function sensorConnection() {
@@ -55,7 +114,6 @@ function sensorConnection() {
 			$("#sensor_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(obj, null, "\t")).value);
 
 			if("initial_message" in obj) {
-				console.log(obj)
 				interfaceLog("info", "sensors", "Received initial message");
 				requestConfig(function(response) {
 					configReceivedAlert();
@@ -76,7 +134,7 @@ function sensorConnection() {
 
 					// Now handle loading stuff from the config file
 					// Enable / disable cameras and set their ports as defined by the config
-					update_cameras();
+					updateCameras();
 
 					// Remove any old invalidated graphs before adding the new ones
 					for(let graph in graphs) {
@@ -148,6 +206,7 @@ function sensorConnection() {
 							let sensorId = type + "_" + sensorCount[type];
 							interfaceLog("info", "sensors", "Sensor of type '" + sensor['type'] +
 								"' with name '" + sensor['name'] + "' is assigned ID: " + sensorId);
+
 							// If the sensor has one display_on field (it is not a multi-sensor)
 							if (Array.isArray(sensor["display_on"])) {
 								// For each graph the sensor would like to display_on
@@ -189,92 +248,12 @@ function sensorConnection() {
 
 					// Handle sensors that send initialisation data and pass that data to the correct graph
 					Object.entries(obj["initial_sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
-						// Ensure it has the "display_on" array which defines where it should be displayed
-						if ("display_on" in sensors[sensor_uid]) {
-							// If the sensor has one display_on field (it is not a multi-sensor)
-							if(Array.isArray(sensors[sensor_uid]["display_on"])) {
-								// For each graph the sensor would like to update
-								sensors[sensor_uid]["display_on"].forEach(function (graph) {
-									// If the graph exists
-									if(graph in graphs) {
-										// For every graph, check if it handles this sensor
-										graphs[graph]["handles"].forEach(function (value, index) {
-											if (value == sensor_uid)
-												// Lookup the graph and update it with the new data
-												graphs[graph].setup(index, sensor_data, sensors[sensor_uid]["name"]);
-										});
-									}
-									else { // Else, the graph does not exist
-										interfaceLog("warning", "sensors", sensor_uid + " cannot " +
-											"update graph " + graph + " because " + graph + " does not exist.")
-									}
-								});
-							}
-							else { // Else, the sensor has multiple display_on fields (it is a multi-sensor)
-								// For each graph the sensor would like to update
-								Object.entries(sensors[sensor_uid]["display_on"]).forEach(([type, [graph]]) => {
-									// If the graph exists
-									if (graph in graphs) {
-										// For every graph, check if it handles this sensor and message type
-										graphs[graph]["handles"].forEach(function (value, index) {
-											if (value == sensor_uid + "_" + type)
-												// Lookup the graph and update it with the new data
-												graphs[graph].setup(index, sensor_data[type], sensors[sensor_uid]["name"] +
-													" " + type);
-										});
-									}
-									else { // Else, the graph does not exist
-										interfaceLog("warning", "sensors", sensor_uid + " cannot " +
-											"update graph " + graph + " because " + graph + " does not exist.")
-									}
-								});
-							}
-						}
+						updateGraphs(sensor_uid, sensor_data, true);
 					});
 
 					// For each sensor_data we received
 				Object.entries(obj["sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
-					// Ensure it has the "display_on" array which defines where it should be displayed
-					if ("display_on" in sensors[sensor_uid]) {
-						// If the sensor has one display_on field (it is not a multi-sensor)
-						if(Array.isArray(sensors[sensor_uid]["display_on"])) {
-							// For each graph the sensor would like to update
-							sensors[sensor_uid]["display_on"].forEach(function (graph) {
-								// If the graph exists
-								if (graph in graphs) {
-									// For every graph, check if it handles this sensor
-									graphs[graph]["handles"].forEach(function (value, index) {
-										if (value == sensor_uid)
-											// Lookup the graph and update it with the new data
-											graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
-									});
-								}
-								else { // Else, the graph does not exist
-									interfaceLog("warning", "sensors", sensor_uid + " cannot " +
-										"update graph " + graph + " because " + graph + " does not exist.")
-								}
-							});
-						}
-						else { // Else, the sensor has multiple display_on fields (it is a multi-sensor)
-							// For each graph the sensor would like to update
-							Object.entries(sensors[sensor_uid]["display_on"]).forEach(([type, [graph]]) => {
-								// If the graph exists
-								if (graph in graphs) {
-									// For every graph, check if it handles this sensor and message type
-									graphs[graph]["handles"].forEach(function (value, index) {
-										if (value == sensor_uid + "_" + type)
-											// Lookup the graph and update it with the new data
-											graphs[graph].update(index, sensor_data[type], sensors[sensor_uid]["name"] +
-												" " + type);
-									});
-								}
-								else { // Else, the graph does not exist
-									interfaceLog("warning", "sensors", sensor_uid + " cannot " +
-										"update graph " + graph + " because " + graph + " does not exist.")
-								}
-							});
-						}
-					}
+					updateGraphs(sensor_uid, sensor_data);
 				});
 
 					sensorsReady = true;
