@@ -197,16 +197,26 @@ class SensorStream(WebSocketProcess):
         msg["available_plugins"] = self.plugins
         # Get intital data from each Sensor
         for sensor in self.sensors:
-            data = sensor.get_initial()
+            # Send both the normal data from the sensor 
+            data = sensor.get_data()
+            # As well as the inital data (stuff that only needs to be sent once, at the start)
+            initial_data = sensor.get_initial()
+            # Generate UID for sensor
+            uid = f"{sensor.type_}_{sensor.index}"
             # Make sure we actually got data from the sensor
             if data is not None:
-                # Generate UID for sensor
-                uid = f"{sensor.type_}_{sensor.index}"
+                # Any sensor data handled automatically (anything in this for loop) goes in the "sensor_data" dict
+                if not "sensor_data" in msg:
+                    msg["sensor_data"] = {}
+                # Create message
+                msg["sensor_data"][uid] = data
+            # Make sure we actually got data from the sensor
+            if initial_data is not None:
                 # Any sensor data handled automatically (anything in this for loop) goes in the "sensor_data" dict
                 if not "initial_sensor_data" in msg:
                     msg["initial_sensor_data"] = {}
                 # Create message
-                msg["initial_sensor_data"][uid] = data
+                msg["initial_sensor_data"][uid] = initial_data
         # Send message to interface
         await self.websocket.send(json.dumps(msg))
         self.logger.debug("Sent initial message")

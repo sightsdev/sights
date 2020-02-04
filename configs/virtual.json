@@ -110,7 +110,7 @@
 			"enabled": true,
 			"type": "disk_usage",
 			"name": "Disk Usage",
-			"period": 15,
+			"period": 60,
 			"precision": 1,
 			"display_on": [
 				"disk_usage"
