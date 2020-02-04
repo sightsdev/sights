@@ -13,6 +13,10 @@
 		"enabled": false
 	},
 	"interface": {
+		"notifications": {
+			"enabled": true,
+			"timeout": 7
+		},
 		"cameras": {
 			"front": {
 				"enabled": false
