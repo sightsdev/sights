@@ -70,11 +70,13 @@ function updateGraphs(sensor_uid, sensor_data, initial=false) {
 							// Lookup the graph and update it with the new data
 							if (initial) {
 								// If this is initialisation data, perform setup
-								graphs[graph].setup(index, sensor_data, sensors[sensor_uid]["name"]);
+								graphs[graph].setup(index, sensor_data[type], sensors[sensor_uid]["name"] +
+									" " + type)
 							}
 							else {
 								// Else do the standard graph update.
-								graphs[graph].update(index, sensor_data, sensors[sensor_uid]["name"]);
+								graphs[graph].update(index, sensor_data[type], sensors[sensor_uid]["name"] +
+									" " + type)
 							}
 						}
 					});
