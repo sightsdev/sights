@@ -32,6 +32,7 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
   - Integrated tabbed SSH console allowing advanced access to the underlying OS
   - Full gamepad and keyboard support
   - Full visual configuration file editor and an advanced text-based editor
+  - Keep track of old revisions of your config file to easily restore to a previous version
   - Configuration file management allowing you to swap the active configuration file at runtime, even if the SIGHTSRobot service is stopped or has crashed
   - Light and dark themes
   - Ability for the operator to safely shut down or restart the robot through the interface
