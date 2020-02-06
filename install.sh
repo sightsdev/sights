@@ -383,8 +383,9 @@ options=(
 )
 PS3="Enter a number (1-${#options[@]}) or q to quit: "
 
-select option in "${options[@]}"; do
-    case "$REPLY" in 
+while true; do
+  select option in "${options[@]}"; do
+    case "$REPLY" in
         1) complete_install ;;
         2) install_dependencies ;;
         3) install_sights_repositories ;;
@@ -397,4 +398,6 @@ select option in "${options[@]}"; do
         10) print_detected_ip "/" ;;
         q) exit ;;
     esac
+    break
+  done
 done
