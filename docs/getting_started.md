@@ -11,7 +11,7 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
   - Sensor wrapper classes that can use existing Python libraries to access sensors over I2C. No need to write libraries specifically for SIGHTS
   - User can define which sensors are enabled, where they go on the interface, how they are displayed, and what type of graph they are displayed on
   - Sensors can be displayed on multiple graphs, or two sensors can be displayed on the same graph
-  - Includes sensor plugins and graphs for:
+  - Includes sensor plugins for:
     - Thermal cameras
     - Ambient and IR temperature sensors
     - Distance (Time of Flight) sensors
@@ -20,12 +20,18 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
     - CPU usage and temperature
     - System uptime
     - Disk space usage
+  - Includes sensor graphs:
+    - Line graph (supports multiple sensors on a single graph)
+    - Percentage circle chart
+    - Thermal camera with overlay features
+    - Text box (with optional uptime display box)
 - An extremely powerful [web interface](https://github.com/SFXRescue/SIGHTSInterface) that allows the operator to control every aspect of the robot
   - Up to four video camera streams through [Motion](https://github.com/Motion-Project/motion)
   - Integrated tabbed SSH console allowing advanced access to the underlying OS
   - Full gamepad and keyboard support
   - Full visual configuration file editor and an advanced text-based editor
   - Configuration file management allowing you to swap the active configuration file at runtime, even if the SIGHTSRobot service is stopped or has crashed
+  - Keep track of old revisions of your config file to easily restore to a previous version
   - Light and dark themes
   - Ability for the operator to safely shut down or restart the robot through the interface
 - Motor control with support for both Dynamixel AX-series servos and DC motors using a Sabertooth motor controller
