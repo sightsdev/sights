@@ -60,7 +60,12 @@ class CircleGraph extends Graph{
 
     update(index, data, name) {
         // Maximum value of graph. Use the user's value if set, otherwise the value provided by sensor itself, else 100.
-        let max = this.config.maximum || this.config.limit || 100;
+        let max = this.config.maximum || this.config.limit;
+        if (!max) {
+            max = 100;
+            interfaceLog("warning", "sensors", "Sensor " + this.config.uid + " is not providing" +
+                " a maximum value. You should set this in your config instead. Default of 100 is used.")
+        }
         let level = $("#" + this.config.uid + "_level");
         let unit_text = $("#" + this.config.uid + "_unit");
         let circle = $("#" + this.config.uid + "_circle");
