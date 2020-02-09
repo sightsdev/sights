@@ -12,7 +12,10 @@ function getRandomInt(min, max) {
 
 // Populate interface with dummy data to demonstrate what a functional setup looks like
 function demoMode() {
+
+	// Set demo related global variables
 	demo = true;
+	ssh_address = "https://gitsuppository.net/";
 
 	// Camera streams
 	// First show any hidden cameras
