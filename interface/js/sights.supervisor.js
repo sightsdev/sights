@@ -186,17 +186,22 @@ function updateConfigSelector() {
 }
 
 function requestConfig(callback) {
-    $.xmlrpc({
-        url: '/RPC2',
-        methodName: 'sights_config.requestConfig',
-        params: {},
-        success: function(response, status, jqXHR) {
-            callback(JSON.parse(response));
-        },
-        error: function(jqXHR, status, error) {
-            serviceAlert("danger", "Couldn't get active config file");
-        }
-    });
+    if (demo) {
+        callback(demo_config);
+    }
+    else {
+        $.xmlrpc({
+            url: '/RPC2',
+            methodName: 'sights_config.requestConfig',
+            params: {},
+            success: function(response, status, jqXHR) {
+                callback(JSON.parse(response));
+            },
+            error: function(jqXHR, status, error) {
+                serviceAlert("danger", "Couldn't get active config file");
+            }
+        });
+    }
 }
 
 function saveConfig() {

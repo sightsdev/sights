@@ -3,6 +3,33 @@
 	Licensed under the GNU General Public License 3.0
 */
 var demo = false;
+var demo_config = {"network":{"ip":"*"},"control":{"default_gamepad_speed":3,"default_keyboard_speed":3},"motors":
+		{"type":"virtual"},"arduino":{"enabled":false},"interface":{"notifications":{"enabled":true,"timeout":7},
+		"cameras":{"front":{"enabled":true,"id":1},"back":{"enabled":true,"id":2},"left":{"enabled":true,"id":3},
+			"right":{"enabled":true,"id":4}},"graphs":[{"uid":"cpu_temperature","type":"circle","enabled":true,
+			"location":"#left_view_sensors","title":"CPU Temp.","unit":"°C","unit_style":"font-size: 12px;",
+			"maximum":100},{"uid":"memory_usage","type":"circle","enabled":true,"location":"#left_view_sensors",
+			"title":"RAM Usage","unit":" MB","unit_style":"font-size: 12px;","maximum":4096},{"uid":"disk_usage",
+			"type":"circle","enabled":true,"location":"#right_view_sensors","title":"Disk Usage","unit":" GB",
+			"unit_style":"font-size: 12px;","maximum":100},{"uid":"cpu_usage","type":"circle","enabled":true,
+			"location":"#right_view_sensors","title":"CPU Usage","unit":"%","unit_style":"font-size: 15px;",
+			"maximum":100},{"uid":"uptime","type":"uptime","enabled":true,"location":"#textgroup_left","title":
+				"Uptime"},{"uid":"co2_graph","type":"line","enabled":true,"location":"#btm_view_sensors","title":
+				"CO2","icon":"cloud","colour_scheme":"summer","x_axis_label":"Time (seconds)","y_axis_label":
+				"CO2 Concentration (ppm)","y_axis_min":300,"y_axis_max":600,"period":3},{"uid":"thermal_camera",
+			"type":"thermalcamera","enabled":true,"location":"#btm_view_sensors","title":"Thermal Camera","width":
+				32,"height":24,"camera":"default","opacity":25,"xscale":100,"yscale":100},{"uid":"ambient_temp",
+			"type":"line","enabled":true,"location":"#btm_view_sensors","title":"Ambient Temperature","icon":
+				"thermometer-half","colour_scheme":"ocean","x_axis_label":"Time (s)","y_axis_label":
+				"Temperature (°C)","period":3}]},"sensors":[{"enabled":true,"type":"random","name":"demo_cpu_temp",
+		"period":3,"min":50,"max":55,"display_on":["cpu_temperature"]},{"enabled":true,"type":"random","name":
+			"demo_memory_usage","period":3,"min":2000,"max":3000,"display_on":["memory_usage"]},{"enabled":true,
+		"type":"random","name":"demo_disk_usage","period":3,"min":10,"max":10,"display_on":["disk_usage"]},
+		{"enabled":true,"type":"random","name":"demo_cpu_usage","period":3,"min":2,"max":10,"display_on":
+				["cpu_usage"]},{"enabled":true,"type":"random","name":"Internal","period":3,"min":45,"max":50,
+			"display_on":["ambient_temp"]},{"enabled":true,"type":"random","name":"External","period":3,"min":25,
+			"max":30,"display_on":["ambient_temp"]},{"enabled":true,"type":"random","name":"CO2 Level","period":3,
+			"min":450,"max":500,"display_on":["co2_graph"]}],"debug":{"log_level":"info","print_messages":false}};
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -15,6 +42,7 @@ function demoMode() {
 
 	// Set demo related global variables
 	demo = true;
+	sensorUpdate({"initial_message":true, "running_config":"demo.json"});
 	ssh_address = "https://gitsuppository.net/";
 
 	// Camera streams
@@ -70,36 +98,21 @@ function demoMode() {
 	};
 	$('#gamepad_monitor_pre').html(hljs.highlight("JSON",JSON.stringify(obj, null, '\t')).value);
 
-	// Config editor box
-	obj = {"network":{"ip":"localhost"},"control":{"default_gamepad_speed":5,"default_keyboard_speed":5},"motors":{
-	    "type":"dynamixel","port":"/dev/ttyACM0","baudrate":1000000,"ids":{"left":[],"right":[]}},"arduino":{"enabled":
-                false},"cameras":{"front":{"enabled":true,"id":1},"back":{"enabled":true,"id":2},"left":{"enabled":false
-            },"right":{"enabled":false}},"sensors":{"memory":{"enabled":true,"frequency":3},"cpu_temp":{"enabled":true,
-                "frequency":5},"thermal_camera":{"enabled":true,"frequency":0.5,"width":32,"height":24},"temperature":{
-                "enabled":true,"frequency":2,"address":""},"distance":{"enabled":false},"gas":{"enabled":false}},"debug"
-            :{"print_messages":false}};
-
-    configEditor.setValue(obj);
-    editorBaseConfig = editorSavedConfig = JSON.stringify(obj);
-	updateConfigAlerts();
-
-	// Setup functionality for keyboard speed indicators
-	var demo_keyboard_speed = obj["control"]["default_keyboard_speed"];
-
+	let demo_keyboard_speed = 3;
 	keyboardJS.bind('-', null, function (e) {
 		// Keep speed at a minimum of 1
 		demo_keyboard_speed = Math.max(1, demo_keyboard_speed - 1);
-		set_speed_indicator("kb", demo_keyboard_speed);
+		setSpeedIndicator("kb", demo_keyboard_speed);
 	});
 
 	keyboardJS.bind('=', null, function (e) {
 		// Keep speed at a max of 8
 		demo_keyboard_speed = Math.min(8, demo_keyboard_speed + 1);
-		set_speed_indicator("kb", demo_keyboard_speed);
+		setSpeedIndicator("kb", demo_keyboard_speed);
 	});
 
 	var example_log = `2019-11-09 13:37:04,068 INFO __main__: Starting manager process
-	2019-11-09 13:37:04,069 INFO __main__: Using config file: configs/virtual.json
+	2019-11-09 13:37:04,069 INFO __main__: Using config file: configs/demo.json
 	2019-11-09 13:37:04,071 INFO __main__: PID 289
 	2019-11-09 13:37:04,072 INFO motors: Opening motor connection of type: virtual
 	2019-11-09 13:37:04,084 INFO sensor_stream: Starting SensorStream-1 process at *:5556
@@ -114,14 +127,14 @@ function demoMode() {
     $("#service_info_status").removeClass("btn-success btn-danger btn-warning btn-secondary").addClass("btn-success");
 	$("#service_info_status").attr("data-state", "RUNNING");
 	
-	running_config = "virtual.json";
+	running_config = "demo.json";
     
 	$('#config_selector').html("");
 	// Config status indicator style
 	$("#config_status").removeClass("btn-success btn-danger btn-warning btn-secondary");
 	$("#config_status").addClass("btn-success");
 	$("#config_status").attr("data-original-title", "This is the active config file");
-	$("#config_active_indicator").html("virtual.json")
+	$("#config_active_indicator").html("demo.json");
 	// Populate config selector
 	$('#config_selector').append('<div class="btn-group float-right" data-file="dynamixel.json">\
 		<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">dynamixel.json</a>\
@@ -133,9 +146,9 @@ function demoMode() {
 		<a href="#" class="dropdown-item config-delete-button" style="display:block;" data-file="serial.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
 		</div>'
 	);
-	$('#config_selector').append('<div class="btn-group float-right" data-file="virtual.json">\
-		<a href="#" class="dropdown-item text-monospace config-item-button disabled" style="display:block;">virtual.json</a>\
-		<a href="#" class="dropdown-item config-delete-button disabled" style="display:block;" data-file="virtual.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
+	$('#config_selector').append('<div class="btn-group float-right" data-file="demo.json">\
+		<a href="#" class="dropdown-item text-monospace config-item-button disabled" style="display:block;">demo.json</a>\
+		<a href="#" class="dropdown-item config-delete-button disabled" style="display:block;" data-file="demo.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
 		</div>'
 	);
 	$("#current_config").html("demo.json");
@@ -152,67 +165,6 @@ function demoMode() {
 	setTimeout(function(){
 		sensorsConnectedAlert();
 		configReceivedAlert();
-
-		// First show any hidden sensor cards
-		['thermal_camera', 'temperature', 'distance'].forEach(function (e) {
-			$("#" + e + "_card").show();
-		});
-
-		// Set initial values for circles
-        updateCircle("cpu_temp", 45);
-        updateCircle("charge", 97);
-        updateCircle("co2", 250, 10);
-        updateCircle("tvoc", 30, 3);
-		// Randomisers for CPU temp and gas sensor readings
-		setInterval(() => {
-			// CPU temp graph
-            updateCircle("cpu_temp", getRandomInt(40, 45));
-		}, 2000);
-		setInterval(() => {
-			// CO2 level
-			updateCircle("co2", getRandomInt(200, 230), 10);
-			// TVOC level
-            updateCircle("tvoc", getRandomInt(30, 42), 3);
-		}, 3000);
-
-		// Decrease charge
-		setInterval(() => {
-			// Charge level
-			// Get last charge level and subtract one
-			var temp = $("#charge_level").html().slice(0, -1) - 1;
-			// Loop around just in case
-			if (temp <= 0) {
-                let charger = setInterval(function () {
-                    temp += 1;
-                    updateCircle("charge", temp);
-                    if(temp == 100) window.clearInterval(charger);
-                }, 10);
-			}
-			updateCircle("charge", temp);
-		}, 20000 + getRandomInt(0,5000));
-
-		// Uptime
-		// Set boot time to yesterday at 7:59pm
-		startTime = new Date();
-		startTime.setDate(startTime.getDate() - 1);
-		startTime.setHours(19,59);
-		// Memory
-		$("#memory").css('color', getColorForPercentage(0.3));
-		$("#memory_used").html(1273);
-		$("#memory_total").html(8192);
-
-		// Generate thermal camera table
-		var table = $("<table>");
-		for (i = 0; i < 24; i++) {
-			var row = $('<tr>');
-			for (j = 0; j < 32; j++) {
-				var offset = i * 32 + j;
-				var node = $("<td style='position: relative;'><div class='content' id=p" + offset + "></div></td>");
-				row.append(node);
-			}
-			table.append(row);
-		}
-		$('#thermal_camera').html(table);
 
 		// Hue values for demo thermal camera data
 		var thermal_camera_data = [244, 246, 248, 250, 252, 252, 251, 253, 251, 250, 248, 248, 247, 247, 247, 246, 246, 246, 246, 246, 246, 246, 246, 246, 248, 248, 249, 248, 249, 249, 250, 249, 235, 241, 244, 245, 245, 244, 244, 245, 244, 243, 243, 243, 241, 239, 239, 240, 241, 240, 238, 238, 239, 239, 240, 242, 243, 243, 243, 243, 242, 243, 243, 244, 222, 230, 236, 235, 234, 235, 235, 236, 234, 232, 232, 228, 226, 226, 226, 226, 226, 225, 225, 226, 225, 224, 226, 227, 229, 229, 229, 229, 231, 230, 231, 231, 212, 218, 221, 221, 222, 223, 223, 222, 220, 219, 219, 218, 215, 216, 216, 214, 213, 216, 216, 215, 217, 216, 216, 216, 216, 217, 219, 219, 218, 219, 220, 220, 204, 210, 213, 212, 212, 214, 213, 212, 211, 210, 210, 208, 206, 207, 170, 26, 169, 205, 207, 206, 206, 206, 207, 208, 207, 206, 209, 210, 209, 209, 211, 210, 193, 199, 202, 201, 202, 203, 203, 201, 199, 200, 200, 196, 198, 184, 88, 9, 129, 191, 197, 195, 194, 194, 196, 196, 195, 195, 198, 198, 196, 196, 200, 198, 182, 188, 192, 191, 189, 192, 193, 190, 186, 188, 188, 185, 181, 68, 9, 11, 156, 181, 183, 179, 179, 181, 184, 183, 182, 183, 184, 184, 182, 182, 187, 185, 167, 173, 177, 177, 174, 179, 178, 173, 171, 173, 172, 168, 158, 21, 10, 8, 89, 169, 168, 164, 164, 166, 167, 167, 166, 166, 170, 169, 168, 169, 174, 172, 149, 155, 158, 157, 155, 160, 162, 156, 155, 158, 157, 154, 145, 14, 0, 2, 27, 129, 150, 146, 147, 148, 151, 151, 152, 151, 154, 153, 152, 156, 159, 158, 125, 135, 138, 136, 136, 144, 144, 135, 137, 139, 138, 132, 125, 98, 7, 360, 18, 107, 132, 127, 127, 128, 130, 126, 127, 133, 137, 132, 130, 136, 141, 146, 120, 120, 121, 121, 120, 122, 122, 121, 121, 121, 121, 120, 121, 51, 8, 2, 62, 39, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 127, 149, 120, 120, 120, 120, 120, 120, 120, 119, 120, 120, 120, 119, 120, 102, 0, 0, 61, 118, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 139, 119, 120, 119, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 19, 0, 81, 120, 120, 120, 120, 120, 119, 120, 120, 120, 120, 120, 120, 120, 121, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 121, 120, 44, 0, 78, 120, 120, 121, 120, 120, 120, 120, 120, 121, 120, 120, 120, 120, 120, 120, 93, 104, 114, 117, 118, 120, 119, 119, 120, 119, 118, 117, 119, 107, 2, 1, 79, 111, 116, 116, 120, 115, 117, 117, 112, 104, 116, 119, 120, 120, 120, 120, 72, 79, 88, 89, 89, 92, 90, 91, 90, 90, 91, 89, 91, 28, 7, 10, 74, 83, 85, 86, 90, 89, 85, 78, 51, 58, 87, 91, 110, 106, 104, 97, 60, 67, 71, 75, 77, 77, 74, 77, 78, 76, 75, 74, 73, 5, 15, 35, 72, 74, 74, 76, 77, 74, 74, 76, 76, 82, 86, 84, 102, 117, 104, 97, 47, 53, 56, 60, 61, 62, 63, 65, 65, 64, 64, 65, 65, 56, 45, 49, 68, 69, 71, 71, 72, 72, 75, 77, 81, 83, 90, 68, 85, 116, 102, 99, 43, 48, 53, 56, 57, 57, 62, 62, 63, 64, 64, 62, 66, 61, 64, 66, 68, 68, 68, 68, 69, 71, 74, 74, 77, 79, 76, 72, 80, 88, 90, 84, 44, 48, 54, 57, 59, 57, 61, 64, 65, 65, 63, 64, 66, 64, 62, 65, 67, 68, 67, 67, 71, 72, 72, 73, 73, 69, 49, 54, 73, 81, 82, 79, 43, 48, 54, 56, 58, 58, 61, 62, 64, 62, 62, 65, 65, 65, 63, 67, 70, 70, 70, 71, 71, 71, 70, 70, 73, 72, 61, 54, 70, 78, 81, 82, 38, 42, 51, 56, 58, 57, 59, 61, 61, 59, 60, 63, 64, 64, 63, 64, 67, 67, 66, 69, 70, 69, 69, 71, 71, 64, 61, 56, 67, 76, 81, 81, 36, 41, 50, 55, 56, 55, 57, 58, 59, 57, 60, 66, 65, 64, 62, 60, 62, 62, 59, 63, 63, 63, 64, 65, 62, 49, 51, 60, 61, 71, 74, 77, 32, 39, 47, 53, 56, 55, 57, 56, 56, 56, 61, 64, 60, 57, 54, 53, 56, 57, 56, 59, 59, 58, 59, 63, 52, 45, 41, 52, 63, 71, 73, 73];

@@ -26,7 +26,6 @@ function closeSshTab(tab) {
 	});
 	// Set a new current tab if there wasn't another already selected
 	if (!tabActive) {
-		console.log("Finding another tab to show");
 		$(".ssh-tab").first().find("a").addClass("active");
 		$(".ssh-term").first().addClass("active show");
 	}
