@@ -45,16 +45,6 @@ function demoMode() {
 	sensorUpdate({"initial_message":true, "running_config":"demo.json"});
 	ssh_address = "https://gitsuppository.net/";
 
-	// Camera streams
-	// First show any hidden cameras
-	['front', 'left', 'right', 'back'].forEach(function (e) {
-		// Enable the div
-		$("#camera_" + e + "_card").show();
-	})
-	$("#sensor_toggle").show();
-	$("#btm_view_camera").show();
-	$("#btm_view_sensors").hide();
-	// Load dummy images
 	let imageSets = 9; // Number of sets of images in images/demo_camera
 	let set = Math.floor(Math.random()*imageSets);
 	$('.stream-image').each(function() {
