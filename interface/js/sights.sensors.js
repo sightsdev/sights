@@ -263,14 +263,17 @@ function sensorConnection() {
 					});
 
 					// Handle sensors that send initialisation data and pass that data to the correct graph
-					Object.entries(obj["initial_sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
-						updateGraphs(sensor_uid, sensor_data, true);
-					});
-
-					// For each sensor_data we received
-				Object.entries(obj["sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
-					updateGraphs(sensor_uid, sensor_data);
-				});
+					if (obj["initial_sensor_data"]) {
+						Object.entries(obj["initial_sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
+							updateGraphs(sensor_uid, sensor_data, true);
+						});
+					}
+				// For each sensor_data we received
+					if (obj["sensor_data"]) {
+						Object.entries(obj["sensor_data"]).forEach(([sensor_uid, sensor_data]) => {
+							updateGraphs(sensor_uid, sensor_data);
+						});
+					}
 
 					sensorsReady = true;
 				});
