@@ -1,25 +1,31 @@
 # Extending SIGHTS
 
-SIGHTS is designed to be somewhat extensible.
+SIGHTS is designed to be modular and extensible. There are a number of ways you can extend SIGHTS to make it work with your hardware.
 
 ## Adding new sensors
 
-New sensors can be added by creating a new sensor wrapper. These reside within the `SIGHTSRobot/src/sensors` directory.
+New sensors can be added by creating a new sensor wrapper. These reside within the `SIGHTSRobot/src/sensors` directory and inherit from the `SensorWrapper` class.
+
+The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, `get_initial()`, etc.) that are common to all sensor wrappers.
 
 1. Download and install a compatible Python library
 
     Essentially, most standard sensor libraries will be compatible. Adafruit ones tend to be pretty well written and documented.
 
+    Or write your own library, if you'd like.
+
 2. Create a sensor wrapper
 
     The sensor wrapper class is designed to be pretty broad in what it will support. If you can access a sensor through Python, you can wrap it within a sensor wrapper.
 
-    Create a new file with an appropriate name in the `SIGHTSRobot/src/sensors` directory.
+    Create a new file with an appropriate name in the `SIGHTSRobot/src/sensors` directory. It should follow the format of `<sensor_name>_wrapper.py`.
 
     Here's a (untested) example for the Adafruit BME280 using [this Adafruit library](https://github.com/adafruit/Adafruit_Python_BME280). Your file should like something like this:
 
     ```python
+    # Import the SensorWrapper class that we inherit from
     from sensor_wrapper import SensorWrapper
+    # Import the relevant library for the sensor
     from Adafruit_BME280 import *
 
     # Unique name for the wrapper
@@ -50,6 +56,8 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
     ```
 
     A more basic sensor could just return a single string or number value.
+
+    Additionally a sensor wrapper can have a `get_initial()` function that is similar to `get_data()` but is only called once, during initialisation. This is useful for sending maximum values, or similar values that won't change. For example, it is used in the memory usage wrapper to send the total amount of RAM on the system, since this does not change.
 
 3. Add a section to the config schema for your sensor.
 
@@ -140,13 +148,19 @@ New sensors can be added by creating a new sensor wrapper. These reside within t
 
 4. (Optional) Create a sensor graph.
 
-    A sensor graph is a javascript class that determines how sensor data is displayed on the interface. In many cases, you may be able to use an existing graph to display the data from your new sensor.
+    A sensor graph is a JavaScript class that determines how sensor data is displayed on the interface. In many cases, you may be able to use an existing graph to display the data from your new sensor.
 
-    A new sensor graph class can extend the existing "abstract" class Graph (`SIGHTSInterface/js/graphs/graph.js`) for an easy framework to build your graph class around.
+    A new sensor graph class can extend the existing "abstract" class `Graph` (`SIGHTSInterface/js/graphs/graph.js`) for an easy framework to build your graph class around.
 
-5. Test it!
+5. Add the sensor and it's corresponding graph to your config file.
 
-6. Submit a pull request so we can include your sensor wrapper in the upstream branch!
+    If you created the schema, following step 3, then you can create a new sensor through the visual editor in the interface. Otherwise, it can be created manually through the advanced editor.
+
+    Also create a graph for the sensor data to be displayed on. If you created a new type of graph in step 4, you can use that one. Otherwise you can use one of the default graph types.
+
+6. Test it!
+
+7. Submit a pull request so we can include your sensor wrapper in the upstream branch!
 
     We're always happy to merge pull requests that add features. Just make sure your code follows our guidelines!
 
@@ -166,10 +180,12 @@ def load_config(self, config):
     self.address = config['address']
 ```
 
-You could do the same to add an `accuracy` option (for example), as long as you have the corresponding key in the config file.
+Just make sure you have the corresponding key in your config file.
+
+If you need your value to be a specific type, such as an integer, you can use Python's built in type casting operations:
 
 ```python
-self.accuracy = config['accuracy']
+self.accuracy = int(config['accuracy'])
 ```
 
 ## Adding new motors
