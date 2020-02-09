@@ -11,8 +11,12 @@
 		"port": "/dev/ttyAMA0",
 		"baudrate": 9600,
 		"channels": {
-			"left": [],
-			"right": []
+			"left": [
+				1
+			],
+			"right": [
+				2
+			]
 		}
 	},
 	"arduino": {
@@ -107,7 +111,6 @@
 			"enabled": true,
 			"type": "cpu_usage",
 			"name": "CPU Usage",
-			"address": "",
 			"period": 1,
 			"display_on": [
 				"cpu_usage"
@@ -117,8 +120,8 @@
 			"enabled": true,
 			"type": "disk_usage",
 			"name": "Disk Usage",
-			"address": "",
-			"period": 1,
+			"precision": 1,
+			"period": 60,
 			"display_on": [
 				"disk_usage"
 			]
