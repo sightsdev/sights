@@ -11,8 +11,9 @@ function getRandomInt(min, max) {
 }
 
 // Populate interface with dummy data to demonstrate what a functional setup looks like
-function DemoMode() {
+function demoMode() {
 	demo = true;
+
 	// Camera streams
 	// First show any hidden cameras
 	['front', 'left', 'right', 'back'].forEach(function (e) {
@@ -237,7 +238,7 @@ function DemoMode() {
 		controlConnectedAlert();
 	},Math.ceil(Math.random()*2000));
 
-	// Hide 'Demo Mode' button and the seperator near it
+	// Hide 'Demo Mode' button and the separator near it
 	$("#power_options_divider").hide();
 	$("#demo_mode_button").hide();
 

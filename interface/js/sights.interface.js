@@ -266,7 +266,7 @@ $(document).on("ready", function () {
 	// Load demo mode if on public webserver
 	$(window).on('load', function () {
 		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com")
-			DemoMode();
+			demoMode();
 	});
 
 	// Focus an element in a modal if it is specified
