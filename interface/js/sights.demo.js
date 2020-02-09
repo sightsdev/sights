@@ -42,9 +42,13 @@ function demoMode() {
 
 	// Set demo related global variables
 	demo = true;
-	sensorUpdate({"initial_message":true, "running_config":"demo.json"});
+	running_config = "demo.json";
 	ssh_address = "https://gitsuppository.net/";
 
+	// Make sensors.js think that there's a real config running!
+	sensorUpdate({"initial_message":true,"running_config":"demo.json","uptime":0});
+
+	// Set demo camera images
 	let imageSets = 9; // Number of sets of images in images/demo_camera
 	let set = Math.floor(Math.random()*imageSets);
 	$('.stream-image').each(function() {
@@ -116,8 +120,6 @@ function demoMode() {
 	$("#service_info_status").attr("data-original-title", "Service running");
     $("#service_info_status").removeClass("btn-success btn-danger btn-warning btn-secondary").addClass("btn-success");
 	$("#service_info_status").attr("data-state", "RUNNING");
-	
-	running_config = "demo.json";
     
 	$('#config_selector').html("");
 	// Config status indicator style
