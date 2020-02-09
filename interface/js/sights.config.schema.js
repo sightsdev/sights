@@ -5,7 +5,7 @@ const schema = {
     "$id": "http://example.com/root.json",
     "type": "object",
     "title": "SIGHTS Robot Config",
-    "description": "Configuration file for a S.A.R.T. SIGHTS-based robot.",
+    "description": "Configuration file for a SIGHTS-based robot.",
     "required": [
         "control",
         "motors",
@@ -523,7 +523,7 @@ const schema = {
                                         "type": "string",
                                         "title": "Icon",
                                         "description": "Font Awesome icon displayed on the graph.",
-                                        "default": "line-chart"
+                                        "default": "chart-line"
                                     },
                                     "colour_scheme": {
                                         "type": "string",

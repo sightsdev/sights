@@ -23,7 +23,7 @@ var demo_config = {"network":{"ip":"*"},"control":{"default_gamepad_speed":3,"de
 				"thermometer-half","colour_scheme":"ocean","x_axis_label":"Time (s)","y_axis_label":
 				"Temperature (°C)","period":3}]},"sensors":[{"enabled":true,"type":"random","name":"demo_cpu_temp",
 		"period":3,"min":50,"max":55,"display_on":["cpu_temperature"]},{"enabled":true,"type":"random","name":
-			"demo_memory_usage","period":3,"min":575,"max":625,"display_on":["memory_usage"]},{"enabled":true,
+			"demo_memory_usage","period":3,"min":175,"max":225,"display_on":["memory_usage"]},{"enabled":true,
 		"type":"random","name":"demo_disk_usage","period":3,"min":10,"max":10,"display_on":["disk_usage"]},
 		{"enabled":true,"type":"random","name":"demo_cpu_usage","period":3,"min":2,"max":10,"display_on":
 				["cpu_usage"]},{"enabled":true,"type":"random","name":"Internal","period":3,"min":45,"max":50,
@@ -60,7 +60,7 @@ function demoMode() {
 		sensorUpdate({
 			"sensor_data": {
 				"random_1": getRandomInt(50, 55),
-				"random_2": getRandomInt(575, 625),
+				"random_2": getRandomInt(175, 225),
 				"random_3": 10,
 				"random_4": getRandomInt(2, 10),
 				"random_5": getRandomInt(45, 50),
