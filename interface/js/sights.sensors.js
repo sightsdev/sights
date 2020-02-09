@@ -195,6 +195,7 @@ function sensorConnection() {
 						}
 					});
 
+					$('#speed_textbox').show();
 					// Now that cameras and graphs have been created, we should be able to determine what modes the
 					// interface has and enable or disable toggling.
 					if (sensorModeEnabled() && cameraModeEnabled()) {
