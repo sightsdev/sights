@@ -4,16 +4,19 @@
 
 ## About
 
-The SIGHTS Interface is the complete browser-based control interface used to control the S.A.R.T. robots.
+The SIGHTS Interface is the complete browser-based control interface used to control SIGHTS-compatible robots.
 Features include:
 
-- Support for up to four video camera streams
-- Live sensor data graphs and charts from connected thermal camera, temperature sensors, distance sensors, and eCO2 / TVOC levels, as well as system information, such as uptime, CPU temp and memory usage.
-- A tabbed SSH console interface, providing unrestricted direct access to the robot's underlying OS
-- A powerful configuration file editor, to adjust every option of both the robot and the interface, including what sensors and cameras are enabled, what ports to use, and individual settings for each sensor.
+- Up to four video camera streams through [Motion](https://github.com/Motion-Project/motion)
+- Integrated tabbed SSH console allowing advanced access to the underlying OS
+- Full gamepad and keyboard support
+- Full visual configuration file editor and an advanced text-based editor
+- Configuration file management allowing you to swap the active configuration file at runtime, even if the SIGHTSRobot service is stopped or has crashed
+- Keep track of old revisions of your config file to easily restore to a previous version
 - Light and dark themes
+- Ability for the operator to safely shut down or restart the robot through the interface
 
-Users never have to access the S.A.R.T hardware directly – everything can be done within the interface.
+Users never have to access the robot's hardware directly – everything can be done within the interface.
 
 ## Installation
 
