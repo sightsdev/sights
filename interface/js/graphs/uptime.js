@@ -14,7 +14,9 @@ class UptimeBox extends Graph{
                 "id": this.config.uid + "_uptime_text",
                 "style": 'float:right; font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", ' +
                     '"Courier New", monospace;',
-                "text": "00:00:00:00"
+                "text": "00:00:00:00",
+                "data-placement": "bottom",
+                "title": "DD:HH:MM:SS"
             })
         );
     }
@@ -42,6 +44,11 @@ class UptimeBox extends Graph{
             }
             else $(id).html("00:00:00:00");
         }, 1000);
+
+        // Enable tooltips
+        $(id).tooltip({
+            trigger: "hover"
+        });
     }
 
     update(index, data, name) {

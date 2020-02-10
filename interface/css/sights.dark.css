@@ -76,7 +76,7 @@
 
 [data-theme="dark"] .c100.orange .bar,
 [data-theme="dark"] .c100.orange .fill {
-  border-color: #d65a31 !important;
+  border-color: #d65a31 !important; /* Sacrilege */
 }
 
 /* Demo mode indicator */
