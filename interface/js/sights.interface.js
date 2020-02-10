@@ -157,12 +157,17 @@ function toggleSensorMode() {
 			$("#sensor_toggle").html("<i class='fa fa-fw fa-camera'></i> Show Cameras");
 			sensorMode = true;
 		}
-		else {
+		else if (cameraModeEnabled()){
 			// If only camera mode is available
 			$("#btm_view_camera").show();
 			$("#btm_view_sensors").hide();
 			$("#sensor_toggle").html("<i class='fa fa-fw fa-chart-area'></i> Show Sensors");
 			sensorMode = false;
+		}
+		else {
+			$("#btm_view_sensors").hide();
+			$("#btm_view_camera").hide();
+			$("#sensor_toggle").hide();
 		}
 	}
 }
@@ -179,6 +184,7 @@ function setSpeedIndicator(type, speed) {
 }
 
 $(document).on("ready", function () {
+	toggleSensorMode();
 	// Hide update instructions until user checks for an update
 	$('#update_instructions').hide();
 	
