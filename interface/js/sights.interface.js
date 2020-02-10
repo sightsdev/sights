@@ -256,8 +256,8 @@ $(document).on("ready", function () {
 
 	// If the camera stream doesn't load, default to fallback image
 	$('.stream-image').on('error', function () {
-		if (this.src != 'images/no-feed-small.png') {
-			this.src = 'images/no-feed-small.png';
+		if (this.src != 'images/no-feed.png') {
+			this.src = 'images/no-feed.png';
 			$('.stream-image').removeClass("rotated");
 		}
 	});
