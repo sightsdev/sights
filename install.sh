@@ -330,7 +330,7 @@ DETECTED_OS=$(cat /etc/*-release | grep -E "\bID=" | sed 's/ID=//g')
 DETECTED_CODENAME=$(cat /etc/*-release | grep "VERSION_CODENAME" | sed 's/VERSION_CODENAME=//g')
 
 echo -e "\nDetected OS: $DETECTED_OS $DETECTED_CODENAME"
-if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ]
+if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ] || [ $DETECTED_OS == "raspbian" ]
 then
     echo -e "Using a supported OS"
 else
