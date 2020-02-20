@@ -7,10 +7,12 @@ class SabertoothConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'sabertooth'
 
-    def __init__(self, port, baudrate):
-        self.port = port
-        self.baudrate = baudrate
-        self.serial = serial.Serial(port=port, baudrate=baudrate)
+    def __init__(self, config):
+        MotorWrapper.__init__(self, config)
+        self.port = config.get('port')
+        self.baudrate = config.get('baudrate')
+        # Try
+        self.serial = serial.Serial(port=self.port, baudrate=self.baudrate)
 
     def move_raw(self, left=None, right=None):
         # Left side

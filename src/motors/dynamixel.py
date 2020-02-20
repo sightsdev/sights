@@ -9,11 +9,13 @@ class DynamixelConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'dynamixel'
 
-    def __init__(self, port, baudrate):
-        self.port = port
-        self.baudrate = baudrate
+    def __init__(self, config):
+        MotorWrapper.__init__(self, config)
+        self.port = config.get('port')
+        self.baudrate = config.get('baudrate')
+        self.ids = config.get('ids')
         self.motors = pyax12.connection.Connection(
-            port=port, baudrate=baudrate)
+            port=self.port, baudrate=self.baudrate)
         
 
     def move_raw(self, left=None, right=None):
