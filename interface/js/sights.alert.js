@@ -15,9 +15,7 @@ function launchToast(message, type, icon) {
             "timeout": timeout
         });
     }
-    else {
-        interfaceLog("info", "toast", "Suppressed " + type + " toast notification: " + message);
-    }
+    interfaceLog("info", "toast", type + " notification: " + message);
 }
 /* Websocket Alerts */
 function sensorsConnectedAlert() {
