@@ -145,7 +145,7 @@ class ThermalCamera extends Graph{
     }
 
     update(index, data, name) {
-        for (i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             // Apply colour to the appropriate HTML element
             var pixel = Math.round(data[i]);
             $("#p_" + this.config.uid + "_" + i).css("background", rainbow(pixel));
