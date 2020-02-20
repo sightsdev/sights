@@ -470,6 +470,33 @@
 	<!-- NAVIGATION BAR -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<!-- Left, always display -->
+		
+		<div class="navbar-brand" style="z-index:1">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-secondary" data-state="DISCONNECTED" id="service_info_status" tooltip data-placement="bottom" title="Service disconnected"><i class="fa fa-fw fa-server"></i></button>
+				<button type="button" class="btn btn-outline-dark btn-sm" style="margin-left:0px"  id="service_start_button" tooltip
+					data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i>
+				</button>
+				<button type="button" class="btn btn-outline-dark btn-sm" id="service_stop_button" tooltip
+					data-placement="bottom" title="Stop service"><i class="fa fa-fw fa-stop"></i>
+				</button>
+				<button type="button" class="btn btn-outline-dark btn-sm" id="service_restart_button" tooltip
+					data-placement="bottom" title="Restart service"><i class="fa fa-fw fa-undo"></i>
+				</button>
+			</div>
+		</div>
+		<div class="navbar-brand" style="z-index:2">
+			<div class="btn-group">
+				<button type="button" class="btn btn-secondary" id="config_status" tooltip data-placement="bottom" title="No config file loaded">
+					<i class="fa fa-fw fa-file-alt"></i>
+				</button>
+				<button type="button" class="btn btn-outline-dark dropdown-toggle text-monospace" id="config_active_indicator" 
+					style="margin-left:0px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+				<div class="dropdown-menu float-right" id="config_selector">
+					<p class="dropdown-header">No config files available</p>
+				</div>
+			</div>
+		</div>
 		<div class="navbar-brand" style="z-index:1">
 			<div class="btn-group" role="group" id="controller_status_disconnected">
 				<button type="button" id="controller_status" class="btn btn-danger btn-border-outside" tooltip
@@ -490,32 +517,6 @@
 					</div>
 					<select class='custom-select btn-border-outside' id='gamepad_select'></select>
 				</div>
-			</div>
-		</div>
-		<div class="navbar-brand" style="z-index:2">
-			<div class="btn-group">
-				<button type="button" class="btn btn-secondary" id="config_status" tooltip data-placement="bottom" title="No config file loaded">
-					<i class="fa fa-fw fa-file-alt"></i>
-				</button>
-				<button type="button" class="btn btn-outline-dark dropdown-toggle text-monospace" id="config_active_indicator" 
-					style="margin-left:0px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-				<div class="dropdown-menu float-right" id="config_selector">
-					<p class="dropdown-header">No config files available</p>
-				</div>
-			</div>
-		</div>
-		<div class="navbar-brand" style="z-index:1">
-			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-secondary" data-state="DISCONNECTED" id="service_info_status" tooltip data-placement="bottom" title="Service disconnected"><i class="fa fa-fw fa-server"></i></button>
-				<button type="button" class="btn btn-outline-dark btn-sm" style="margin-left:0px"  id="service_start_button" tooltip
-					data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i>
-				</button>
-				<button type="button" class="btn btn-outline-dark btn-sm" id="service_stop_button" tooltip
-					data-placement="bottom" title="Stop service"><i class="fa fa-fw fa-stop"></i>
-				</button>
-				<button type="button" class="btn btn-outline-dark btn-sm" id="service_restart_button" tooltip
-					data-placement="bottom" title="Restart service"><i class="fa fa-fw fa-undo"></i>
-				</button>
 			</div>
 		</div>
 		<div class="navbar-brand" style="z-index:1">
