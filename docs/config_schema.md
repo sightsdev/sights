@@ -27,7 +27,7 @@ Default keyboard speed option between 1 and 8.
 Type of motor connection to use. Available options:
 
 - `dynamixel` for Dynamixel AX-series servos
-- `serial` for Sabertooth motor controllers
+- `sabertooth` for Sabertooth motor controllers
 - `virtual` for a virtual motor connection (for testing)
 
 `port`
@@ -52,7 +52,7 @@ _Only required for Dynamixel connection._
 
 Configure the serial channel/s in use for each side of the robot. Currently only `left` and `right` groups are supported which define which motor channels are on the left and right side. Each group is a list, allowing for multiple motor channels.
 
-_Only required for Serial connection._
+_Only required for Sabertooth connection._
 
 ## `arduino`
 
