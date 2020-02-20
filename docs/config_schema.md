@@ -30,6 +30,8 @@ Type of motor connection to use. Available options:
 - `sabertooth` for Sabertooth motor controllers
 - `virtual` for a virtual motor connection (for testing)
 
+Additional motor connection handlers can be added by following the instructions in [extending.md](/extending.md?id=adding-new-motors)
+
 `port`
 
 Serial port to connect over (e.g. `/dev/ttyACM0`).
