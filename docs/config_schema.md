@@ -88,7 +88,8 @@ As with all configuration settings, they take effect after a configuration file 
 For each camera, if the `enabled` option is set, it will be shown on the interface. The URL that the interface will attempt to load the camera stream from is defined in the `id` option. Note that these settings don't modify the Motion settings, and are meant to be set to whatever has been set in the relevant Motion config files.
 
 Example for the front camera:
-```
+
+```yaml
 front:
   enabled: true
   id: 1
@@ -118,7 +119,7 @@ Where on the interface the graph should display. Common values are listed, inclu
 
 The pretty title to display on the graph.
 
-**Other**
+#### Other
 
 Some graphs may require additional fields specific to the type of graph. Refer to individual documentation provided in the config schema.
 

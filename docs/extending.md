@@ -67,7 +67,7 @@ The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, 
 
     The only required options are whether the sensor is enabled, the type, how often to poll it and its name (`sensor_wrapper.py`).
 
-    For the BME280 sensor wrapper we created above, the following schema would be acceptable. Note how `display_on` is an object rather than an array. Since the BME280 sensor returns 3 values in its message, the interface needs to know where to display each one of the values. For a sensor that returns a single value, `display_on` is simply an array of strings representing graphs. 
+    For the BME280 sensor wrapper we created above, the following schema would be acceptable. Note how `display_on` is an object rather than an array. Since the BME280 sensor returns 3 values in its message, the interface needs to know where to display each one of the values. For a sensor that returns a single value, `display_on` is simply an array of strings representing graphs.
 
     ```json
     {
