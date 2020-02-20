@@ -5,6 +5,8 @@ import re
 import sys
 import inspect
 
+# Generic plugin system used for loading motor and sensor wrappers
+# Dynamically loads .py files that contain a certain class
 class PluginManager:
     def __init__(self, base_class, plugin_dir):
         self.base_class = base_class
