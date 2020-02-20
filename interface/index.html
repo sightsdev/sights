@@ -470,7 +470,25 @@
 	<!-- NAVIGATION BAR -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<!-- Left, always display -->
-		
+		<div class="navbar-brand" style="z-index:1">
+			<div class="btn-group" role="group">
+				<div class="btn-group-vertical">
+					<button type="button" class="btn btn-danger btn-sm split-vertical-indicator" id="control_status"
+						tooltip data-placement="right" title="Uplink (control)" style="border-radius: .2rem 0 0 0;">
+						<i class="fa fa-fw fa-fx fa-arrow-up" ></i>
+					</button>
+	
+					<button type="button" class="btn btn-danger btn-sm split-vertical-indicator" id="sensor_status"
+						tooltip data-placement="right" title="Downlink (sensors)" style="border-radius: 0 0 0 .2rem">
+						<i class="fa fa-fw fa-fx fa-arrow-down" ></i>
+					</button>
+				</div>
+				<button type="button" class="btn btn-outline-dark" tooltip data-placement="bottom"
+					title="Websocket connection status" style="margin-left:0px">
+					<i class="fa fa-fw fa-link"></i>
+				</button>
+			</div>		
+		</div>
 		<div class="navbar-brand" style="z-index:1">
 			<div class="btn-group" role="group">
 				<button type="button" class="btn btn-secondary" data-state="DISCONNECTED" id="service_info_status" tooltip data-placement="bottom" title="Service disconnected"><i class="fa fa-fw fa-server"></i></button>
@@ -518,25 +536,6 @@
 					<select class='custom-select btn-border-outside' id='gamepad_select'></select>
 				</div>
 			</div>
-		</div>
-		<div class="navbar-brand" style="z-index:1">
-			<div class="btn-group" role="group">
-				<div class="btn-group-vertical">
-					<button type="button" class="btn btn-danger btn-sm split-vertical-indicator" id="control_status"
-						tooltip data-placement="right" title="Uplink (control)" style="border-radius: .2rem 0 0 0;">
-						<i class="fa fa-fw fa-fx fa-arrow-up" ></i>
-					</button>
-	
-					<button type="button" class="btn btn-danger btn-sm split-vertical-indicator" id="sensor_status"
-						tooltip data-placement="right" title="Downlink (sensors)" style="border-radius: 0 0 0 .2rem">
-						<i class="fa fa-fw fa-fx fa-arrow-down" ></i>
-					</button>
-				</div>
-				<button type="button" class="btn btn-outline-dark" tooltip data-placement="bottom"
-					title="Websocket connection status" style="margin-left:0px">
-					<i class="fa fa-fw fa-link"></i>
-				</button>
-			</div>		
 		</div>
 
 		<!-- Absolute centre, always display -->
