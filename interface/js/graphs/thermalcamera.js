@@ -39,7 +39,9 @@ class ThermalCamera extends Graph{
                 "style": "margin-left: 10px; padding: 0px 2px 0px 2px",
                 "type": "button",
                 "class": "btn btn-secondary",
-                "onClick": "graphs['" + this.config.uid + "'].overlay();"
+                "onClick": "graphs['" + this.config.uid + "'].overlay();",
+                "data-placement": "bottom",
+                "title": "Toggle overlay"
             }).append(
                 $("<i/>", {
                     "class": "fas fa-fw fa-arrow-up"
@@ -135,9 +137,13 @@ class ThermalCamera extends Graph{
     appendTo(target) {
         super.appendTo(target);
         this.registerSliders();
+
+        // Enable tooltips
+        $("#" + this.config.uid + "_overlay_button").tooltip({
+            trigger: "hover"
+        });
     }
 
-    //TODO update thermal camera
     update(index, data, name) {
         for (i = 0; i < data.length; i++) {
             // Apply colour to the appropriate HTML element
@@ -248,4 +254,3 @@ class ThermalCamera extends Graph{
         })
     }
 }
-
