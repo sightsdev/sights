@@ -2,11 +2,10 @@
 import logging
 import serial
 import os
+import traceback
 from plugin_system import PluginManager
 from motor_wrapper import MotorWrapper
 from motors.virtual import VirtualConnection
-from motors.dynamixel import DynamixelConnection
-from motors.sabertooth import SabertoothConnection
 
 class Motors:
     def __init__(self, config):
@@ -21,13 +20,14 @@ class Motors:
         try:
             # Create motor connection (from a list loaded by the plugin manager) using class specified in the config
             self.connection = self.pm.wrappers[self.type](config['motors'])
-        except KeyError:
-            self.logger.error("Could not determine motor connection type")
-            self.logger.warning("Falling back to virtual connection")
-            self.connection = VirtualConnection(config['motors'])
-            self.type = 'virtual'
-        except serial.serialutil.SerialException:
-            self.logger.error(f"Could not open motor connection of type '{self.type}'")
+        except Exception as e:
+            if isinstance(e, KeyError):
+                self.logger.error(f"Could not determine motor connection type '{self.type}'")
+            elif isinstance(e, serial.serialutil.SerialException):
+                self.logger.error(f"Could not open motor connection of type '{self.type}'")
+            else:
+                traceback.print_exc()
+            # Fall back to virtual connection common to all motor connection errors
             self.logger.warning("Falling back to virtual connection")
             self.connection = VirtualConnection(config['motors'])
             self.type = 'virtual'

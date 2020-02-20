@@ -12,11 +12,11 @@ Internal configs used by the installer and SIGHTS. Not intended to be modified b
 
 ### `motors/`
 
-Motor plugins for each type of motor connection. Additional motor plguins can be added here.
+Motor plugins for each type of motor connection. Additional motor plugins can be added here.
 
 ### `sensors/`
 
-Sensor plugins for each I2C sensor class. Additional sensor plguins can be added here.
+Sensor plugins for each I2C sensor class. Additional sensor plugins can be added here.
 
 ### `utils/`
 
