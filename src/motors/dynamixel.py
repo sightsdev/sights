@@ -6,6 +6,9 @@ import serial
 import logging
 
 class DynamixelConnection(MotorWrapper):
+    # What type of motor this wrapper handles
+    type_ = 'dynamixel'
+
     def __init__(self, port, baudrate):
         self.port = port
         self.baudrate = baudrate

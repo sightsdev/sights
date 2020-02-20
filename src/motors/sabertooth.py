@@ -4,6 +4,9 @@ import serial
 import logging
 
 class SabertoothConnection(MotorWrapper):
+    # What type of motor this wrapper handles
+    type_ = 'sabertooth'
+
     def __init__(self, port, baudrate):
         self.port = port
         self.baudrate = baudrate

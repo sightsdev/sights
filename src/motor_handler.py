@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import logging
 import serial
+import os
+from plugin_system import PluginManager
+from motor_wrapper import MotorWrapper
 from motors.virtual import VirtualConnection
 from motors.dynamixel import DynamixelConnection
 from motors.sabertooth import SabertoothConnection
@@ -9,6 +12,8 @@ class Motors:
     def __init__(self, config):
         # Setup logger
         self.logger = logging.getLogger(__name__)
+        # Create new plugin manager looking for subclasses of MotorWrapper in "src/motors/"
+        self.pm = PluginManager(MotorWrapper, os.getcwd() + "/src/motors")
         # Load values from configuration file
         self.type = config['motors']['type'].lower()
         if (self.type != 'virtual'):
