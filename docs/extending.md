@@ -190,24 +190,32 @@ self.accuracy = int(config['accuracy'])
 
 ## Adding new motors
 
-To add a new motor handler, a "Connection" class needs to be created within `motors.py`. This only needs a total of four functions.
+To add support for a new type of motor connection, a motor wrapper class needs to be created within the `motors/` directory, and needs to inherit from `MotorWrapper`. This only needs a total of four functions.
 
 ```python
-class ExampleConnection:
-    def __init__(self, port, baudrate):
-        self.port = port
-        self.baudrate = baudrate
+class ExampleConnection(MotorWrapper):
+    # What type of motor this wrapper handles
+    type_ = 'example'
+
+    def __init__(self, config):
+        MotorWrapper.__init__(self, config)
+        # Load config options
+        self.port = config.get('port')
+        self.baudrate = config.get('baudrate')
+        # Load an additional option
+        self.additional_option = config.get('additional_option')
+        # Create actual communication object, can be an external library
         self.serial = ExampleClass()
 
     def move_raw(self, left=None, right=None):
         # Left side
         if left is not None:
             # Send data to left motors
-            pass
+            self.serial.move_left(left)
         # Right side
         if right is not None:
             # Send data to right motors
-            pass
+            self.serial.move_right(right)
 
     def stop(self):
         # Stop all motors
@@ -218,14 +226,19 @@ class ExampleConnection:
         pass
 ```
 
-An example of this, is the SerialConnection class which is designed for Sabertooth motor controllers:
+An example of this, is the SabertoothConnection class which is designed for Sabertooth motor controllers:
 
 ```python
-class SerialConnection:
-    def __init__(self, port, baudrate):
-        self.port = port
-        self.baudrate = baudrate
-        self.serial = serial.Serial(port=port, baudrate=baudrate)
+class SabertoothConnection(MotorWrapper):
+    # What type of motor this wrapper handles
+    type_ = 'sabertooth'
+
+    def __init__(self, config):
+        MotorWrapper.__init__(self, config)
+        self.port = config.get('port')
+        self.baudrate = config.get('baudrate')
+        # Try
+        self.serial = serial.Serial(port=self.port, baudrate=self.baudrate)
 
     def move_raw(self, left=None, right=None):
         # Left side
@@ -242,8 +255,9 @@ class SerialConnection:
 
     def close(self):
         self.serial.close()
+
 ```
 
-Then the relevant code has to be added to the `__init__()` function of the Motors class. Here you can designate a name for the type of connection, as specified in the configuration file (e.g. `dynamixel` or `serial`).
+Additional config options can be added as needed, as shown in the above examples.
 
-In the future, depending on demand, a plugin system similar to the sensor plugin system may be created to simplify and organise motor connection classes.
+Motor wrappers are loaded dynamically, just like sensor wrappers. Make sure your wrapper is in the right directory, update your config file, and you should be good to go.
