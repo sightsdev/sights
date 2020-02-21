@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from motors import Motors
+from motor_handler import Motors
 from websocket_process import WebSocketProcess
 import websockets
 import asyncio

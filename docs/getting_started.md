@@ -37,6 +37,7 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
 - Motor control with support for both Dynamixel AX-series servos and DC motors using a Sabertooth motor controller
   - Intuitive gamepad and keyboard control directly from the interface
   - Ability to assign different Dynamixel IDs to different groups, representing parts of the robot (such as left and right side servos)
+  - Support for adding additional motor connection handlers in a similar manner to sensors
 - Built entirely using open protocols and open-source software.
 
 All configuration for SIGHTS is done in the `.json` files within the `configs/` directory, which can be edited through the web interface. The active configuration file can be changed through the interface at any time, even if the SIGHTSRobot service is stopped or has crashed. This gives you the ability to fix any configuration issue without physical access to the robot.

@@ -27,8 +27,10 @@ Default keyboard speed option between 1 and 8.
 Type of motor connection to use. Available options:
 
 - `dynamixel` for Dynamixel AX-series servos
-- `serial` for Sabertooth motor controllers
+- `sabertooth` for Sabertooth motor controllers
 - `virtual` for a virtual motor connection (for testing)
+
+Additional motor connection handlers can be added by following the instructions in [extending.md](/extending.md?id=adding-new-motors)
 
 `port`
 
@@ -52,7 +54,7 @@ _Only required for Dynamixel connection._
 
 Configure the serial channel/s in use for each side of the robot. Currently only `left` and `right` groups are supported which define which motor channels are on the left and right side. Each group is a list, allowing for multiple motor channels.
 
-_Only required for Serial connection._
+_Only required for Sabertooth connection._
 
 ## `arduino`
 
@@ -88,7 +90,8 @@ As with all configuration settings, they take effect after a configuration file 
 For each camera, if the `enabled` option is set, it will be shown on the interface. The URL that the interface will attempt to load the camera stream from is defined in the `id` option. Note that these settings don't modify the Motion settings, and are meant to be set to whatever has been set in the relevant Motion config files.
 
 Example for the front camera:
-```
+
+```yaml
 front:
   enabled: true
   id: 1
@@ -118,7 +121,7 @@ Where on the interface the graph should display. Common values are listed, inclu
 
 The pretty title to display on the graph.
 
-**Other**
+#### Other
 
 Some graphs may require additional fields specific to the type of graph. Refer to individual documentation provided in the config schema.
 

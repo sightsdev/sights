@@ -7,7 +7,7 @@
 		"default_keyboard_speed": 3
 	},
 	"motors": {
-		"type": "serial",
+		"type": "sabertooth",
 		"port": "/dev/ttyAMA0",
 		"baudrate": 9600,
 		"channels": {

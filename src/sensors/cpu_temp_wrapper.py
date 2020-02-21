@@ -19,12 +19,12 @@ class CPUTempWrapper(SensorWrapper):
             for core in temp_data['coretemp']:
                 if core.current > highest:
                     highest = core.current
-            temperature = highest
+            temperature = round(highest, 1)
         # Some systems will report temp differently
         # Nvidia Jetson
         elif 'thermal-fan-est' in temp_data:
-            temperature = temp_data['thermal-fan-est'][0].current
+            temperature = round(temp_data['thermal-fan-est'][0].current, 1)
         # Raspberry Pi
         elif 'cpu-thermal' in temp_data:
-            temperature = temp_data['cpu-thermal'][0].current
+            temperature = round(temp_data['cpu-thermal'][0].current, 1)
         return temperature

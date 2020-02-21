@@ -15,6 +15,7 @@ import re
 import sys
 import inspect
 import time
+from plugin_system import PluginManager
 
 class SensorStream(WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
@@ -34,35 +35,11 @@ class SensorStream(WebSocketProcess):
                 self.logger.warning("Continuing without Arduino connection\n")
                 self.arduino_enabled = False
 
-        # Directory of sensor plugins
-        self.plugin_dir = os.getcwd() + "/src/sensors"
-        # Get list of available plugins
-        self.plugins = self.get_plugins()
-        # Create sensor name -> appropriate class lookup table
-        self.wrappers = {}
+        # Create new plugin manager looking for subclasses of SensorWrapper in "src/sensors/"
+        self.pm = PluginManager(SensorWrapper, os.getcwd() + "/src/sensors")
+        
         # Create dict to store the number of each type of sensor
         self.sensor_count = {}
-
-        # Add plugin directory to path to ensure we can import modules from there
-        if not self.plugin_dir in sys.path:
-            sys.path.insert(0, self.plugin_dir)
-
-        # Load each plugin
-        for plugin_name in self.plugins:
-            # Import the module
-            plugin = importlib.import_module(plugin_name)
-            # Iterate through all the available classes for this module and find the class that is the sensor wrapper
-            classes = inspect.getmembers(plugin, inspect.isclass)
-            class_ = None
-            for c in classes:
-                # To find the correct class, we check if it's a subclass of SensorWrapper (and is not SensorWrapper itself)
-                if c[1] != SensorWrapper and issubclass(c[1], SensorWrapper):
-                    # We've found the sensor wrapper class
-                    class_ = c[1]
-            # Assign the discovered class to the appropriate key (eg. assign MLX90614Wrapper class to sensors of type 'mlx90614')
-            self.wrappers[class_.type_] = class_
-            # Log information about enabled plugin
-            self.logger.debug(f"Enabling plugin '{plugin_name}' for '{class_.type_}' using class: {class_}")
 
         # Create list of sensors
         self.sensors = []
@@ -72,7 +49,7 @@ class SensorStream(WebSocketProcess):
             if sensor_config.get('enabled', False):
                 # Find the appropriate wrapper class and create the sensor object
                 type_ = sensor_config['type']
-                sensor = self.wrappers[type_](sensor_config)
+                sensor = self.pm.wrappers[type_](sensor_config)
                 # Count the number of times we create a sensor of this type, to assign a unique id
                 if not type_ in self.sensor_count:
                     self.sensor_count[type_] = 1
@@ -84,36 +61,7 @@ class SensorStream(WebSocketProcess):
                 self.sensors.append(sensor)
                 self.logger.info(f"Created sensor of type '{type_}' (#{sensor.index})")
         self.logger.info(f"Loaded {len(self.sensors)} sensors")
-        
-
-    def get_plugins(self):
-        """Adds plugins to sys.path and returns them as a list"""
-        registered_plugins = []
-        # Check to see if a plugins directory exists and add any found plugins
-        if os.path.exists(self.plugin_dir):
-            plugins = os.listdir(self.plugin_dir)
-            # Plugins are .py files
-            pattern = ".py$"
-            for plugin in plugins:
-                plugin_path = os.path.join(self.plugin_dir, plugin)
-                # Don't load __init__.py as plugin
-                if plugin != "__init__.py":
-                    if re.search(pattern, plugin):
-                        (shortname, ext) = os.path.splitext(plugin)
-                        registered_plugins.append(shortname)
-                # Search in subdirectories too (one level deep)
-                if os.path.isdir(plugin_path):
-                    plugins = os.listdir(plugin_path)
-                    for plugin in plugins:
-                        if plugin != "__init__.py":
-                            if re.search(pattern, plugin):
-                                (shortname, ext) = os.path.splitext(plugin)
-                                sys.path.append(plugin_path)
-                                registered_plugins.append(shortname)
-        else:
-            self.logger.error("Couldn't find sensor plugin directory. SIGHTS is possibly running in wrong working directory.")
-        return registered_plugins
-
+    
     def get_data(self):
         # Create empty message
         msg = {}
@@ -194,7 +142,7 @@ class SensorStream(WebSocketProcess):
                                                            cwd="../SIGHTSInterface/").strip().decode('utf-8')
         msg["version_supervisorext"] = subprocess.check_output(["git", "describe"],
                                                            cwd="../supervisor_sights_config/").strip().decode('utf-8')
-        msg["available_plugins"] = self.plugins
+        msg["available_plugins"] = self.pm.plugins
         # Get intital data from each Sensor
         for sensor in self.sensors:
             # Send both the normal data from the sensor 
