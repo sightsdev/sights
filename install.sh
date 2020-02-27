@@ -10,7 +10,7 @@
 # https://www.github.com/SFXRescue
 
 
-INSTALL_DIR=/opt/sights
+INSTALL_DIR=/opt
 MOTION_VER=4.2.2
 
 update_only='false'
@@ -55,17 +55,7 @@ checkout_release () {
   # Skip if developer versions are enabled (meaning master will be checked out)
   if [ $developer_versions == 'false' ]
   then
-    cd SIGHTSRobot
-    git checkout -f master
-    git checkout `git tag | sort -V | tail -1`
-    cd ..
-
-    cd SIGHTSInterface
-    git checkout -f master
-    git checkout `git tag | sort -V | tail -1`
-    cd ..
-
-    cd supervisor_sights_config
+    cd sights
     git checkout -f master
     git checkout `git tag | sort -V | tail -1`
     cd ..
@@ -76,19 +66,13 @@ install_sights_repositories () {
     echo -e "\nDownloading SIGHTS repositories..."
 
     # Get SIGHTSRobot
-    git clone https://github.com/SFXRescue/SIGHTSRobot
-
-    # Get SIGHTSInterface
-    git clone https://github.com/SFXRescue/SIGHTSInterface
-
-    # Get supervisor_sights_config
-    git clone https://github.com/SFXRescue/supervisor_sights_config
+    git clone https://github.com/SFXRescue/sights
 
     checkout_release
 
     # Install all Python packages required by SIGHTSRobot
     echo -e "\nInstalling required Python packages..."
-    python3 -m pip install -r SIGHTSRobot/src/requirements.txt
+    python3 -m pip install -r sights/src/requirements.txt
     echo
 }
 
@@ -98,7 +82,7 @@ install_apache () {
     # This is the site file that defines where the interface is hosted from
     # It also sets up a reverse proxy for Supervisor to work correctly
     echo -e "\nCopying SIGHTSInterface site config..."
-    cp SIGHTSRobot/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
+    cp sights/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
 
     # This is the required option to allow Apache to host from $INSTALL_DIR
     echo -e "\nAllowing Apache to host the SIGHTSInterface directory..."
@@ -153,7 +137,7 @@ install_motion () {
 
             echo -e "\nCreating symlink for Motion configuration files..."
             rm -r /etc/motion
-            ln -s $INSTALL_DIR/SIGHTSRobot/src/configs/motion /etc
+            ln -s $INSTALL_DIR/sights/src/configs/motion /etc
 
             echo -e "\nEnabling Motion daemon flag..."
             echo "start_motion_daemon=yes" > /etc/default/motion
@@ -198,13 +182,13 @@ install_supervisor () {
     python3 -m pip install supervisor
 
     echo -e "\nCreating symlink for Supervisor configuration files..."
-    ln -sf $INSTALL_DIR/SIGHTSRobot/src/configs/supervisor /etc
+    ln -sf $INSTALL_DIR/sights/src/configs/supervisor /etc
 
     echo -e "\nInstalling Supervisor SIGHTS extension..."
     python3 -m pip install ./supervisor_sights_config
 
     echo -e "\nInstalling Supervisor init script"
-    cp SIGHTSRobot/src/configs/systemd/supervisord /etc/init.d/
+    cp sights/src/configs/systemd/supervisord /etc/init.d/
     chmod 755 /etc/init.d/supervisord
     chown root:root /etc/init.d/supervisord
     update-rc.d supervisord defaults
@@ -265,19 +249,7 @@ update () {
     #apt upgrade -y
 
     echo -e "\nUpdating SIGHTSRobot..."
-    cd SIGHTSRobot || `git clone https://github.com/SFXRescue/SIGHTSRobot && cd SIGHTSRobot`
-    git checkout -f master
-    git pull
-    cd ..
-
-    echo -e "\nUpdating SIGHTSInterface..."
-    cd SIGHTSInterface || `git clone https://github.com/SFXRescue/SIGHTSInterface && cd SIGHTSInterface`
-    git checkout -f master
-    git pull
-    cd ..
-
-    echo -e "\nUpdating Supervisor SIGHTS extension..."
-    cd supervisor_sights_config || `git clone https://github.com/SFXRescue/supervisor_sights_config && cd supervisor_sights_config`
+    cd sights || `git clone https://github.com/SFXRescue/sights && cd SIGHTSRobot`
     git checkout -f master
     git pull
     cd ..
@@ -287,7 +259,7 @@ update () {
     python3 -m pip install ./supervisor_sights_config
 
     # Ensure up to date dependencies are installed
-    python3 -m pip install -r SIGHTSRobot/src/requirements.txt
+    python3 -m pip install -r sights/src/requirements.txt
 
     echo -e "\nRestarting Supervisord and SIGHTS..."
     service supervisord restart
