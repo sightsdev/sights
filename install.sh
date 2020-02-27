@@ -134,7 +134,7 @@ install_motion () {
 
             echo -e "\nCreating symlink for Motion configuration files..."
             rm -r /etc/motion
-            ln -s $INSTALL_DIR/sights/src/configs/motion /etc
+            ln -sf $INSTALL_DIR/sights/src/configs/motion /etc
 
             echo -e "\nEnabling Motion daemon flag..."
             echo "start_motion_daemon=yes" > /etc/default/motion
