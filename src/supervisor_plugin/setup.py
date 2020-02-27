@@ -3,9 +3,9 @@ import setuptools
 
 setuptools.setup(
     name = 'supervisor_sights_config',
-    version = '0.1.3',
+    version = '0.1.4',
     license = 'License :: OSI Approved :: MIT License',
-    url = 'https://github.com/SFXRescue/supervisor_sights_config',
+    url = 'https://github.com/SFXRescue/sights',
     description = "supervisor_sights_config RPC extension for supervisor. Config file management for SIGHTS software",
     classifiers = [
 		'Environment :: No Input/Output (Daemon)',
