@@ -267,17 +267,9 @@ function sensorUpdate(obj) {
 		updateConfigSelector();
 
 		// Software versions
-		if ("version_robot" in obj) {
-			$("#version_robot").html(obj["version_robot"]);
+		if ("version" in obj) {
+			$("#version_sights").html(obj["version_sights"]);
 			updateCheck("robot");
-		}
-		if ("version_interface" in obj) {
-			$("#version_interface").html(obj["version_interface"]);
-			updateCheck("interface");
-		}
-		if ("version_supervisorext" in obj) {
-			$("#version_supervisorext").html(obj["version_supervisorext"]);
-			updateCheck("supervisorext", "SFXRescue/supervisor_sights_config");
 		}
 
 		// System uptime

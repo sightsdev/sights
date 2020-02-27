@@ -369,8 +369,8 @@ $(document).on("ready", function () {
 	});
 
 	$("#update_check").on('click', function() {
-		updateCheck("");
-		//updateCheck("Vision") // If the vision repository is one day reported
+		updateCheck("sights");
+		//updateCheck("vision") // If the vision repository is one day reported
 	});
 
 	$("#config_selector").on("change", function () {

@@ -137,7 +137,7 @@ class SensorStream(WebSocketProcess):
         with open('/proc/uptime', 'r') as f:
             msg["uptime"] = round(float(f.readline().split()[0]))
         # Send software versions
-        msg["version"] = subprocess.check_output(["git", "describe"]).strip().decode('utf-8')
+        msg["version_sights"] = subprocess.check_output(["git", "describe"]).strip().decode('utf-8')
         #msg["version_interface"] = subprocess.check_output(["git", "describe"],
          #                                                  cwd="../SIGHTSInterface/").strip().decode('utf-8')
         #msg["version_supervisorext"] = subprocess.check_output(["git", "describe"],
