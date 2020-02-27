@@ -369,9 +369,8 @@ $(document).on("ready", function () {
 	});
 
 	$("#update_check").on('click', function() {
-		updateCheck("robot");
-		updateCheck("interface");
-		updateCheck("supervisorext", "SFXRescue/supervisor_sights_config");
+		updateCheck("");
+		//updateCheck("Vision") // If the vision repository is one day reported
 	});
 
 	$("#config_selector").on("change", function () {
