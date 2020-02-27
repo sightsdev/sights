@@ -41,9 +41,6 @@ enable_ssh () {
 }
 
 install_dependencies () {
-    echo -e "Transfering ownership of directory to user: $SUDO_USER"
-    chown $SUDO_USER:$SUDO_USER -R $INSTALL_DIR
-    
     echo -e "\nInstalling dependencies..."
     apt update
     apt install -y git apache2 python3 python3-pip wget gdebi 
@@ -185,7 +182,7 @@ install_supervisor () {
     ln -sf $INSTALL_DIR/sights/src/configs/supervisor /etc
 
     echo -e "\nInstalling Supervisor SIGHTS extension..."
-    python3 -m pip install ./supervisor_sights_config
+    python3 -m pip install sights/src/supervisor_plugin
 
     echo -e "\nInstalling Supervisor init script"
     cp sights/src/configs/systemd/supervisord /etc/init.d/
@@ -248,15 +245,15 @@ update () {
     #apt update
     #apt upgrade -y
 
-    echo -e "\nUpdating SIGHTSRobot..."
-    cd sights || `git clone https://github.com/SFXRescue/sights && cd SIGHTSRobot`
+    echo -e "\nUpdating SIGHTS..."
+    cd sights || `git clone https://github.com/SFXRescue/sights && cd sights`
     git checkout -f master
     git pull
     cd ..
 
     checkout_release
 
-    python3 -m pip install ./supervisor_sights_config
+    python3 -m pip install sights/src/supervisor_plugin
 
     # Ensure up to date dependencies are installed
     python3 -m pip install -r sights/src/requirements.txt
