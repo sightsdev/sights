@@ -246,10 +246,25 @@ update () {
     #apt upgrade -y
 
     echo -e "\nUpdating SIGHTS..."
+
+    if [ -d "sights/SIGHTSRobot" ]; then
+        echo -e '\nUpdating from a pre-merge version'
+        mkdir sights-temp
+        mv sights/* sights-temp
+        rm -r sights
+    fi
+
     cd sights || `git clone https://github.com/SFXRescue/sights && cd sights`
     git checkout -f master
     git pull
     cd ..
+
+    if [ -d "sights-temp" ]; then
+        echo -e '\nYour old installation can now be found in sights/old'
+        mkdir sights/old
+        mv sights-temp/* sights/old
+        rm -r sights-temp
+    fi
 
     checkout_release
 
