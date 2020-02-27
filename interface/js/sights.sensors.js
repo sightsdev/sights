@@ -189,7 +189,7 @@ function sensorUpdate(obj) {
 
 			// Add sensors to graphs
 			response['sensors'].forEach(function (sensor) {
-				// Generate the same unique sensor IDs that SIGHTSRobot generates
+				// Generate the same unique sensor IDs that SIGHTS generates
 				if (sensor['enabled']) {
 					let type = sensor['type'];
 					if(type in sensorCount) {

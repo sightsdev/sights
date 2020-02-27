@@ -4,7 +4,7 @@ SIGHTS is designed to be modular and extensible. There are a number of ways you 
 
 ## Adding new sensors
 
-New sensors can be added by creating a new sensor wrapper. These reside within the `SIGHTSRobot/src/sensors` directory and inherit from the `SensorWrapper` class.
+New sensors can be added by creating a new sensor wrapper. These reside within the `sights/src/sensors` directory and inherit from the `SensorWrapper` class.
 
 The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, `get_initial()`, etc.) that are common to all sensor wrappers.
 
@@ -18,7 +18,7 @@ The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, 
 
     The sensor wrapper class is designed to be pretty broad in what it will support. If you can access a sensor through Python, you can wrap it within a sensor wrapper.
 
-    Create a new file with an appropriate name in the `SIGHTSRobot/src/sensors` directory. It should follow the format of `<sensor_name>_wrapper.py`.
+    Create a new file with an appropriate name in the `sights/src/sensors` directory. It should follow the format of `<sensor_name>_wrapper.py`.
 
     Here's a (untested) example for the Adafruit BME280 using [this Adafruit library](https://github.com/adafruit/Adafruit_Python_BME280). Your file should like something like this:
 
@@ -61,7 +61,7 @@ The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, 
 
 3. Add a section to the config schema for your sensor.
 
-    The interface can generate the necessary configuration file additions for your new sensor if you specify requirements in the schema located at `SIGHTSInterface/js/sights.config.schema.js`.
+    The interface can generate the necessary configuration file additions for your new sensor if you specify requirements in the schema located at `sights/interface/js/sights.config.schema.js`.
 
     Sensors are defined in the list `properties.sensors.items.anyOf`.
 
@@ -150,7 +150,7 @@ The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, 
 
     A sensor graph is a JavaScript class that determines how sensor data is displayed on the interface. In many cases, you may be able to use an existing graph to display the data from your new sensor.
 
-    A new sensor graph class can extend the existing "abstract" class `Graph` (`SIGHTSInterface/js/graphs/graph.js`) for an easy framework to build your graph class around.
+    A new sensor graph class can extend the existing "abstract" class `Graph` (`sights/interface/js/graphs/graph.js`) for an easy framework to build your graph class around.
 
 5. Add the sensor and it's corresponding graph to your config file.
 

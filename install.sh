@@ -62,12 +62,12 @@ checkout_release () {
 install_sights_repositories () {
     echo -e "\nDownloading SIGHTS repositories..."
 
-    # Get SIGHTSRobot
+    # Get SIGHTS
     git clone https://github.com/SFXRescue/sights
 
     checkout_release
 
-    # Install all Python packages required by SIGHTSRobot
+    # Install all Python packages required by SIGHTS
     echo -e "\nInstalling required Python packages..."
     python3 -m pip install -r sights/src/requirements.txt
     echo
@@ -82,7 +82,7 @@ install_apache () {
     cp sights/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
 
     # This is the required option to allow Apache to host from $INSTALL_DIR
-    echo -e "\nAllowing Apache to host the SIGHTSInterface directory..."
+    echo -e "\nAllowing Apache to host the interface directory..."
     # Only append this to the file if it does not already exist
     if grep -Fxq "<Directory ${INSTALL_DIR}/>" /etc/apache2/apache2.conf
     then

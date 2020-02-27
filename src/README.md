@@ -34,7 +34,7 @@ This is the server part of the software. This script handles getting various sen
 
 ### `control_receiver.py`
 
-This is the receiver part of the software. This script handles receiving information from the SIGHTSInterface. It runs a WebSocket client, which receives a JSON formatted string from the control panel. The string contains all the required data from the interface, including controller information, such as button and axis events. It processes this and using _motors.py_, calculates the appropriate speed and power distribution of the servos based on the thumb-stick or trigger values. This script also handles keyboard controls and various other messages from the interface, such as shutdown and reboot requests.
+This is the receiver part of the software. This script handles receiving information from the SIGHTS interface. It runs a WebSocket client, which receives a JSON formatted string from the control panel. The string contains all the required data from the interface, including controller information, such as button and axis events. It processes this and using _motors.py_, calculates the appropriate speed and power distribution of the servos based on the thumb-stick or trigger values. This script also handles keyboard controls and various other messages from the interface, such as shutdown and reboot requests.
 
 ### `motor_handler.py`
 

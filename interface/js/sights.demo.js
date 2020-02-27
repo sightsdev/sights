@@ -178,7 +178,7 @@ function demoMode() {
 	$("#service_info_pre").html(hljs.highlight("YAML", example_log).value);
 
 	$("#docs_button").unbind('click').on("click", function () {
-		window.open("https://sfxrescue.github.io/SIGHTSRobot/");
+		window.open("https://sfxrescue.github.io/sights/");
 	});
 
 	// After the sensor socket has connected

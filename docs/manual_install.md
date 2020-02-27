@@ -1,10 +1,10 @@
 # Manual Installation
 
-> This page is maintained for posterity, however small changes in installation instructions may escape future revisions. The most up-to-date installation instructions can always be inferred by reading the current [install.sh](https://github.com/SFXRescue/SIGHTSRobot/blob/master/install.sh) script.
+> This page is maintained for posterity, however small changes in installation instructions may escape future revisions. The most up-to-date installation instructions can always be inferred by reading the current [install.sh](https://github.com/SFXRescue/sights/blob/master/install.sh) script.
 
 Installation is preferably done to the `/opt/sights/` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues. Installing to other locations will require changes to various config files.
 
-[Supervisor](http://supervisord.org/) is used to manage running the SIGHTSRobot software.
+[Supervisor](http://supervisord.org/) is used to manage running the SIGHTS software.
 
 ## Preparing the installation directory
 
@@ -17,12 +17,11 @@ sudo chown $USER:$USER /opt/sights
 
 ## Downloading the software
 
-Next clone this repository, as well as [`SIGHTSInterface`](https://github.com/SFXRescue/SIGHTSInterface).
+Next clone this repository
 
 ```shell
 cd /opt/sights
-git clone https://github.com/SFXRescue/SIGHTSRobot
-git clone https://github.com/SFXRescue/SIGHTSInterface
+git clone https://github.com/SFXRescue/sights
 ```
 
 Install the required packages:
@@ -34,13 +33,13 @@ sudo apt install git apache2 python3 python3-pip wget gdebi
 Then install the Python dependencies with:
 
 ```shell
-cd /opt/sights/SIGHTSRobot/src
+cd /opt/sights/src
 python3 -m pip install -r requirements.txt
 ```
 
 ## Setting up Apache
 
-Apache should be configured to point to the `SIGHTSInterface` directory.
+Apache should be configured to point to the `sights/interface` directory.
 
 Edit `/etc/apache2/apache2.conf` and add the following in the relevant section to allow Apache to access the `/opt/sights/` directory:
 
@@ -55,7 +54,7 @@ Edit `/etc/apache2/apache2.conf` and add the following in the relevant section t
 Copy the provided site file to the appropriate directory.
 
 ```shell
-sudo cp /opt/sights/SIGHTSRobot/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
+sudo cp /opt/sights/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
 ```
 
 And then enable this site, and disable the default one, with
@@ -97,11 +96,11 @@ wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/bi
 sudo gdebi ./bionic_motion_4.2.2-1_amd64.deb
 ```
 
-Create a symlink from `/etc/motion` to `/opt/sights/SIGHTSRobot/src/configs/motion/` for Motion config files.
+Create a symlink from `/etc/motion` to `/opt/sights/src/configs/motion/` for Motion config files.
 
 ```shell
 rm -r /etc/motion
-sudo ln -s /opt/sights/SIGHTSRobot/src/configs/motion /etc
+sudo ln -s /opt/sights/src/configs/motion /etc
 ```
 
 Next, allow Motion to be run as a service by editing `/etc/default/motion` and changing `start_motion_daemon=no` to `start_motion_daemon=yes`.
@@ -157,7 +156,7 @@ To test it out, navigate to `http://<robot_ip>:4200`
 
 ## Running as a managed service with Supervisor
 
-All we need to do now is ensure that `SIGHTSRobot`'s `manager.py` is run on boot as a managed service so we can start, stop and restart it at will.
+All we need to do now is ensure that `manager.py` is run on boot as a managed service so we can start, stop and restart it at will.
 
 For this, we'll use [Supervisor](http://supervisord.org/) which is a software package designed to manage (including starting/stopping/restarting) processes and also handle logging their output.
 
@@ -170,7 +169,7 @@ sudo -H python3 -m pip install supervisor
 Create a symlink for the Supervisor configuration file with:
 
 ```shell
-sudo ln -sf /opt/sights/SIGHTSRobot/src/configs/supervisor /etc
+sudo ln -sf /opt/sights/src/configs/supervisor /etc
 ```
 
 Install the SIGHTS Supervisor extension. This allows Supervisor to manage configuration files, even when SIGHTS is not running.
@@ -187,7 +186,7 @@ Supervisor is now installed and set up.
 To ensure that `supervisord` is run at boot, we will install a provided init script for Supervisor:
 
 ```shell
-sudo cp SIGHTSRobot/src/configs/systemd/supervisord /etc/init.d/
+sudo cp src/configs/systemd/supervisord /etc/init.d/
 sudo chmod 755 /etc/init.d/supervisord
 sudo chown root:root /etc/init.d/supervisord
 sudo update-rc.d supervisord defaults
