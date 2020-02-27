@@ -5,11 +5,11 @@ from os import listdir, remove, path, rename, system
 from os.path import isfile, getmtime
 
 API_VERSION = '0.2'
-ACTIVE_CONFIG_FILE = '/opt/sights/SIGHTSRobot/configs/ACTIVE_CONFIG'
-CONFIG_DIR = '/opt/sights/SIGHTSRobot/configs/'
-BACKUP_DIR = '/opt/sights/SIGHTSRobot/src/configs/sights/backup/'
+ACTIVE_CONFIG_FILE = '/opt/sights/configs/ACTIVE_CONFIG'
+CONFIG_DIR = '/opt/sights/configs/'
+BACKUP_DIR = '/opt/sights/src/configs/sights/backup/'
 CONFIG_EXT = '.json'
-MINIMAL_CONFIG = "/opt/sights/SIGHTSRobot/src/configs/sights/minimal.json"
+MINIMAL_CONFIG = "/opt/sights/src/configs/sights/minimal.json"
 
 class SIGHTSConfigNamespaceRPCInterface:
     """ An extension for Supervisor that implements a basic 
