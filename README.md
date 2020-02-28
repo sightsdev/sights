@@ -85,7 +85,7 @@ Using a supported OS
 Enter a number (1-10) or q to quit:
 ```
 
-For manual installation see [docs/manual_install.md](docs/manual_install.md).
+For manual installation see [docs/manual_install.md](https://sfxrescue.github.io/sights/#/manual_install).
 
 Then visit the robot's IP address in any web browser on the same network.
 
