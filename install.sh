@@ -273,8 +273,11 @@ update () {
     # Ensure up to date dependencies are installed
     python3 -m pip install -r sights/src/requirements.txt
 	
-	# Reconfigure Apache with any changes
+	# Reconfigure Apache with any config changes
 	configure_apache
+	
+	# Reconfigure Supervisor with any config changes
+	install_supervisor
 
     echo -e "\nRestarting Supervisord and SIGHTS..."
     service supervisord restart
