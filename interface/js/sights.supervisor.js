@@ -16,6 +16,10 @@ function updateServiceInfo(response, status, jqXHR) {
     // Clear button style
     $("#service_info_status").removeClass("btn-success btn-danger btn-warning btn-secondary");
     $("#service_info_status").attr("data-state", state);
+
+    // Don't show 'Demo Mode' button and the separator near it when supervisor is available
+    $("#power_options_divider").hide();
+    $("#demo_mode_button").hide();
     
     // Set button style conditionally
     switch (state) {
@@ -61,6 +65,9 @@ function serviceDisconnected(jqXHR, status, error) {
     $("#service_info_logfile").html("Couldn't get service information");
     // Empty config selector
     //$('#config_selector').html("");
+    // Show 'Demo Mode' button and the separator near it
+    $("#power_options_divider").show();
+    $("#demo_mode_button").show();
 }
 
 function updateService() {
