@@ -42,7 +42,7 @@ function updateCheck(type, altRepo) {
 	let update_field = $("#update_" + type);
 	let warning_field = $("#update_warning_" + type);
 	let version_field = $("#version_" + type);
-	let repo = altRepo == undefined ? "SFXRescue/sights" + type : altRepo;
+	let repo = altRepo == undefined ? "SFXRescue/" + type : altRepo;
 	update_field.html("Checking for update");
 	update_field.css("color", "#28a745");
 	update_field.css("opacity", "20%");
@@ -370,7 +370,7 @@ $(document).on("ready", function () {
 
 	$("#update_check").on('click', function() {
 		updateCheck("sights");
-		//updateCheck("vision") // If the vision repository is one day reported
+		//updateCheck("vision", "SIGHTSVision") // If the vision repository version is one day reported
 	});
 
 	$("#config_selector").on("change", function () {

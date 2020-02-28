@@ -267,9 +267,9 @@ function sensorUpdate(obj) {
 		updateConfigSelector();
 
 		// Software versions
-		if ("version" in obj) {
+		if ("version_sights" in obj) {
 			$("#version_sights").html(obj["version_sights"]);
-			updateCheck("robot");
+			updateCheck("sights");
 		}
 
 		// System uptime
