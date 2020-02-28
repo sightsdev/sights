@@ -89,6 +89,12 @@ For manual installation see [docs/manual_install.md](docs/manual_install.md).
 
 Then visit the robot's IP address in any web browser on the same network.
 
+## Documentation
+
+Documentation can be found at [sfxrescue.github.io/sights](http://sfxrescue.github.io/sights).
+
+It can also be accessed through the SIGHTS interface itself, even without an internet connection.
+
 ## Contributing
 
 If you have an idea, suggestion or bug report for the SIGHTS project, or want to make a contribution of your own, we'd love to work with you to make it happen! Take a look at our [contributing page](https://github.com/SFXRescue/.github/blob/master/CONTRIBUTING.md) for more information.
