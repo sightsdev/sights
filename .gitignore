@@ -112,3 +112,6 @@ ENV/
 # Config files
 /configs/last_invalid_config.json
 /src/configs/sights/backup/*
+
+# Ignore old SIGHTS installations
+/old/
