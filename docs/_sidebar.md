@@ -1,3 +1,4 @@
+- [Introduction](introduction.md)
 - [Getting started](getting_started.md)
 - [Manual installation](manual_install.md)
 - [Extending](extending.md)
