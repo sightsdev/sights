@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>
+<!--#############################################################
+	# Created by the Semi Autonomous Rescue Team				#
+	# Licensed under the GNU General Public License 3.0			#
+	##########################################################-->
+
+<title>SIGHTS Interface</title>
+
+<head>
+	<!--Link CSS and scripts-->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="css/favicon.ico" type="image/x-icon" />
+
+	<!-- Interface CSS -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/circle.css">
+	<link rel="stylesheet" href="css/bootoast.min.css">
+	<link rel="stylesheet" href="css/sights.style.css">
+	<link rel="stylesheet" href="css/sights.dark.css">
+	<!-- Syntax highlighting -->
+	<link rel="stylesheet" href="css/monokai.css">
+
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.xmlrpc.min.js"></script>
+	<!-- Gamepad -->
+	<script src="js/gamepad.js"></script>
+	<!-- Keyboard -->
+	<script src="js/keyboard.min.js"></script>
+	<!-- UI scripts -->
+	<script src="js/bootstrap.bundle.min.js"></script>
+	<script src="js/bootoast-fa.min.js"></script>
+	<script src="js/Chart.bundle.min.js"></script>
+	<!-- Syntax highlighting -->
+	<script src="js/highlight.pack.js"></script>
+	<!-- YAML -->
+	<script src="js/js-yaml.min.js"></script>
+	<!-- Font Awesome -->
+	<script defer src="js/fontawesome/fontawesome.min.js"></script>
+	<script defer src="js/fontawesome/solid.min.js"></script>
+	<!-- JSON Editor -->
+	<script src="js/jsoneditor.min.js"></script>
+	<script src="js/sights.config.schema.js"></script>
+	<!-- SIGHTS Scripts -->
+	<script src="js/sights.alert.js"></script>
+	<script src="js/sights.interface.js"></script>
+	<script src="js/sights.supervisor.js"></script>
+	<script src="js/sights.ssh.js"></script>
+	<script src="js/sights.demo.js"></script>
+	<script src="js/sights.sensors.js"></script>
+	<script src="js/sights.control.js"></script>
+	<script src="js/sights.util.js"></script>
+
+	<script src="js/graphs/graph.js"></script>
+	<script src="js/graphs/linegraph.js"></script>
+	<script src="js/graphs/circlegraph.js"></script>
+	<script src="js/graphs/textbox.js"></script>
+	<script src="js/graphs/thermalcamera.js"></script>
+	<script src="js/graphs/uptime.js"></script>
+
+</head>
+
+<body>
+	<!-- SSH MODAL -->
+	<div class="modal fade top" id="ssh_modal" role="dialog" data-backdrop="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><i class="fas fa-fw fa-terminal"></i> SSH</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body ssh-container">
+					<ul id="ssh_term_list" class="nav nav-tabs" role="tablist">
+						<li class="nav-item ssh-tab" id="ssh_tab_1">
+							<a class="nav-link text-dark active" ssh_tab="1" href="#ssh_term_1" role="tab" data-toggle="tab"
+								aria-selected="true" onclick="setCurrentSsh($(this));"><i class="fa fa-fw fa-terminal"></i> 1
+								<span style="padding-right: 1em"></span>
+								<span id="ssh_tab_close_1" ssh_tab="1" onclick="closeSshTab($(this));">&times</span>
+							</a>
+						</li>
+						<li class="nav-item" id="ssh_new_tab">
+							<span class="d-inline-block" tooltip data-placement="top" title="Open new tab">
+								<a class="nav-link text-dark"><i class="fa fa-fw fa-plus"></i></a>
+							</span>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div id="ssh_term_content" class="tab-content">
+						<div class="tab-pane fade show active ssh-term" id="ssh_term_1">
+							<iframe id="ssh_iframe_1" src="" width="100%" height="400px"
+								class="rounded-bottom ssh-iframe"></iframe>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<span class="d-inline-block" tooltip data-placement="bottom" title="Refresh current tab">
+						<button type="button" class="btn btn-warning btn-default" id="ssh_refresh_button"><i
+								class="fa fa-fw fa-redo-alt"></i> Refresh</button>
+					</span>
+					<button type="button" class="btn btn-danger btn-default" data-dismiss="modal">&times; Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- LOG MODAL -->
+	<div class="modal fade top" id="log_modal" role="dialog" data-backdrop="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><i class="fas fa-fw fa-archive"></i> Logs</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<ul class="nav nav-tabs" id="log_tab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link text-dark active" id="service_info_tab" data-toggle="tab"
+							   href="#service_info" role="tab" aria-controls="service_info_tab"
+							   aria-selected="false"><i class="fa fa-fw fa-server"></i> Service</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="interface_info_tab" data-toggle="tab"
+							   href="#interface_info" role="tab" aria-controls="interface_info_tab"
+							   aria-selected="false"><i class="fa fa-fw fa-chart-line"></i> Interface</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="input_log_tab" data-toggle="tab" href="#input_log"
+								role="tab" aria-controls="input_log" aria-selected="false"><i
+									class="fa fa-fw fa-keyboard"></i> Input Events</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="gamepad_monitor_tab" data-toggle="tab"
+								href="#gamepad_monitor" role="tab" aria-controls="gamepad_monitor"
+								aria-selected="true"><i class="fa fa-fw fa-gamepad"></i> Gamepad Monitor</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="sensor_monitor_tab" data-toggle="tab"
+								href="#sensor_monitor" role="tab" aria-controls="sensor_monitor"
+								aria-selected="false"><i class="fa fa-fw fa-chart-area"></i> Sensor Monitor</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="log_tab_content">
+						<div class="tab-pane fade show active" id="service_info" role="tabpanel"
+							 aria-labelledby="service_info_tab">
+							<br />
+							<button type="button" class="btn btn-danger btn-default" id="service_log_clear_button"
+									tooltip data-placement="right" title="Clear log on disk">
+								<i class="fa fa-fw fa-trash-alt"></i> Clear Log
+							</button>
+							<div class="float-right">
+								<p class="text-monospace" id="service_info_logfile" style="padding:6px;margin:0px"></p>
+							</div>
+							<p>
+							<pre><code id="service_info_pre" class="JSON rounded internal-scroll" contenteditable="false"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade show" id="interface_info" role="tabpanel"
+							 aria-labelledby="interface_info_tab">
+							<br />
+							<button type="button" class="btn btn-danger btn-default" id="interface_log_clear_button"
+									tooltip data-placement="right" title="Clear log on disk">
+								<i class="fa fa-fw fa-trash-alt"></i> Clear Log
+							</button>
+							<p>
+							<pre><code id="interface_info_pre" class="JSON rounded internal-scroll" contenteditable="false"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="input_log" role="tabpanel" aria-labelledby="input_log_tab">
+							<br />
+							<button type="button" class="btn btn-danger btn-default" id="input_log_clear_button"
+								tooltip data-placement="right" title="Clear log">
+								<i class="fa fa-fw fa-trash-alt"></i> Clear Log
+							</button>
+							<p>
+								<pre><code id="input_log_pre" class="JSON rounded internal-scroll" contenteditable="false"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="gamepad_monitor" role="tabpanel"
+							aria-labelledby="gamepad_monitor_tab">
+							<p>
+								<pre><code id="gamepad_monitor_pre" class="JSON rounded" contenteditable="false"></code></pre>
+							</p>
+						</div>
+						<div class="tab-pane fade" id="sensor_monitor" role="tabpanel"
+							aria-labelledby="sensor_monitor_tab">
+							<p>
+								<pre><code id="sensor_monitor_pre" class="JSON rounded" contenteditable="false"></code></pre>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- SETTINGS MODAL -->
+	<div class="modal fade top" id="settings_modal" role="dialog" data-backdrop="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><i class="fas fa-fw fa-cog"></i> Settings</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<ul class="nav nav-tabs" id="settings_tab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link text-dark active" id="visual_editor_tab" data-toggle="tab"
+								href="#visual_editor" role="tab" aria-controls="visual_editor" aria-selected="true"><i
+									class="fa fa-fw fa-cog"></i> Configuration</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="advanced_editor_tab" data-toggle="tab"
+								href="#advanced_editor" role="tab" aria-controls="advanced_editor"
+								aria-selected="true"><i class="fa fa-fw fa-edit"></i> Advanced Editor</a>
+						</li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" id="revisions_tab" data-toggle="tab"
+                                href="#config_revisions" role="tab" aria-controls="config_revisions"
+                                aria-selected="true"><i class="fa fa-fw fa-history"></i> Revisions</a>
+                        </li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" id="about_tab" data-toggle="tab" href="#about" role="tab"
+								aria-controls="about" aria-selected="false"><i class="fa fa-fw fa-question-circle"></i>
+								About</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="settings_tab_content">
+						<div class="tab-pane fade active show" id="visual_editor" role="tabpanel"
+							aria-labelledby="visual_editor_tab">
+							<br />
+							<div class="alert alert-warning fade show save-alert" style="display:none" role="alert">
+								<span><b>You have unsaved configuration changes.</b></span>
+								<br>
+								<span>Don't forget to click save before exiting.</span>
+							</div>
+							<div class="alert alert-warning fade show restart-service-alert" style="display:none"
+								role="alert">
+								<span><b>Restart the service for changes to take effect.</b></span>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="text" class="text-monospace text-right editor_filename">
+									<span class="text-monospace text-center"
+										style="padding-top:6px;padding-bottom:6px;margin:0px">.json
+									</span>
+								</div>
+								<div class="col-auto">
+									<div class="float-right">
+										<button type="button" class="btn btn-info btn-default editor_reload_button"
+											tooltip data-placement="bottom" title="Reload config">
+											<i class="fa fa-fw fa-redo"></i> Reload
+										</button>
+										<button type="button" class="btn btn-success btn-default editor_save_button"
+											tooltip data-placement="bottom" title="Save config">
+											<i class="fa fa-fw fa-save"></i> Save
+										</button>
+									</div>
+								</div>
+							</div>
+							<div id="visual_editor_container"></div>
+						</div>
+						<div class="tab-pane fade" id="advanced_editor" role="tabpanel"
+							aria-labelledby="advanced_editor_tab">
+							<br />
+							<div class="alert alert-warning fade show save-alert" style="display:none" role="alert">
+								<span><b>You have unsaved configuration changes.</b></span>
+								<br>
+								<span>Don't forget to click save before exiting.</span>
+							</div>
+							<div class="alert alert-warning fade show" style="display:none" role="alert"
+								id="config_update_alert">
+								<span><b>Changes made in the advanced editor are not automatically reflected in the
+										visual editor.</b></span>
+								<br>
+								<span>Don't forget to click save before switching back.</span>
+							</div>
+							<div class="alert alert-warning fade show restart-service-alert" style="display:none"
+								role="alert">
+								<span><b>Restart the service for changes to take effect.</b></span>
+							</div>
+							<div class="row">
+								<div class="col">
+									<input type="text" class="text-monospace text-right editor_filename">
+									<span class="text-monospace text-center"
+										style="padding-top:6px;padding-bottom:6px;margin:0px">.json
+									</span>
+								</div>
+								<div class="col-auto">
+									<div class="float-right">
+										<button type="button" class="btn btn-info btn-default editor_reload_button"
+											tooltip data-placement="bottom" title="Reload config">
+											<i class="fa fa-fw fa-redo"></i> Reload
+										</button>
+										<button type="button" class="btn btn-success btn-default editor_save_button"
+											tooltip data-placement="bottom" title="Save config">
+											<i class="fa fa-fw fa-save"></i> Save
+										</button>
+									</div>
+								</div>
+							</div>
+							<p>
+								<pre><code id="advanced_editor_pre" class="JSON rounded" contenteditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
+							</p>
+						</div>
+                        <div class="tab-pane fade" id="config_revisions" role="tabpanel"
+                             aria-labelledby="revisions_tab">
+                            <br />
+							<div class="alert alert-warning fade show restart-service-alert" style="display:none"
+								 role="alert">
+								<span><b>Restart the service for changes to take effect.</b></span>
+							</div>
+                            <div class="row">
+                                <div class="col">
+                                    <select id="revision_selector" disabled="disabled" class="custom-select">
+                                        <option value="none">No revisions available</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="float-right">
+                                        <button id="revision_restore_button" type="button" class="btn btn-info btn-default"
+                                                tooltip data-placement="bottom" title="Restore this revision">
+                                            <i class="fa fa-fw fa-history"></i> Restore
+                                        </button>
+                                        <button id="revision_delete_button" type="button" class="btn btn-danger btn-default"
+                                                tooltip data-placement="bottom" title="Delete this revision">
+                                            <i class="fa fa-fw fa-save"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                            <pre><code id="revision_viewer_pre" class="JSON rounded" contenteditable="false" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></code></pre>
+                            </p>
+                        </div>
+						<div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about_tab">
+							<br />
+							<div class="float-right" style="padding:20px">
+								<img width="150" src="images/logo.png" />
+							</div>
+							<h4>About</h4>
+							<p>
+								Created by the <em>Semi-Autonomous Rescue Team</em>
+								&lt;<a href="https://www.sfxrescue.com/">https://www.sfxrescue.com/</a>&gt;
+							</p>
+							<h4>Software Versions</h4>
+							<p>
+								<b>SIGHTS: </b><span id="version_sights"></span> <span id="update_sights"></span>
+								<span id="update_warning_sights"></span>
+							</p>
+							<p><a href="#" id="update_check">Check for updates</a></p>
+							<div id="update_instructions">
+								<h4>Updating Instructions</h4>
+								<ol>
+									<li>Download the latest installer.
+										<br>
+										<code class="rounded" contenteditable="false">wget https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh -O install.sh</code>
+										<br>
+										Note: This command will overwrite any existing <code>install.sh</code> file in the directory.
+										<br><br>
+									</li>
+									<li>Make the installer executable.
+										<br>
+										<code class="rounded" contenteditable="false">chmod +x install.sh</code>
+										<br><br>
+									</li>
+									<li>Run the installer as root.
+										<br>
+										<code class="rounded" contenteditable="false">sudo ./install.sh --update</code>
+									</li>
+								</ol>
+							</div>
+							<h4>Open Source Licenses</h4>
+							<ul>
+								<li>
+									<strong>Bootoast</strong>
+									&lt;<a
+										href="https://github.com/odahcam/bootoast">https://github.com/odahcam/bootoast</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>Bootstrap</strong>
+									&lt;<a href="https://getbootstrap.com/">https://getbootstrap.com/</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>Chart.js</strong>
+									&lt;<a href="https://www.chartjs.org/">https://www.chartjs.org/</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>circle.css</strong>
+									&lt;<a
+										href="https://github.com/afuersch/css-percentage-circle">https://github.com/afuersch/css-percentage-circle</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>docsify</strong>
+									&lt;<a
+										href="https://docsify.js.org/">https://docsify.js.org/</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>Font Awesome</strong>
+									&lt;<a href="https://fontawesome.com/">https://fontawesome.com/</a>&gt;<br />
+									Released under the MIT license. Icons released under CC BY 4.0 license
+								</li>
+								<li>
+									<strong>gamepad.js</strong>
+									&lt;<a
+										href="http://kallaspriit.github.io/HTML5-JavaScript-Gamepad-Controller-Library/">http://kallaspriit.github.io/HTML5-JavaScript-Gamepad-Controller-Library/</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>highlight.js</strong>
+									&lt;<a href="https://highlightjs.org/">https://highlightjs.org/</a>&gt;<br />
+									Released under the BSD license
+								</li>
+								<li>
+									<strong>jQuery</strong>
+									&lt;<a href="https://jquery.com/">https://jquery.com/</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>jQuery XML-RPC</strong>
+									&lt;<a
+										href="https://github.com/timheap/jquery-xmlrpc">https://github.com/timheap/jquery-xmlrpc</a>&gt;<br />
+									Released under the Unlicense (public domain)
+								</li>
+								<li>
+									<strong>JSON Editor</strong>
+									&lt;<a
+										href="https://github.com/json-editor/json-editor">https://github.com/json-editor/json-editor</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>JS-YAML</strong>
+									&lt;<a
+										href="https://github.com/nodeca/js-yaml">https://github.com/nodeca/js-yaml</a>&gt;<br />
+									Released under the MIT license
+								</li>
+								<li>
+									<strong>KeyboardJS</strong>
+									&lt;<a
+										href="https://github.com/RobertWHurst/KeyboardJS">https://github.com/RobertWHurst/KeyboardJS</a>&gt;<br />
+									Released under the MIT license
+									<span class="float-right" id="user_agent"><i
+											class="fa fa-fw fa-user-secret"></i></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- NAVIGATION BAR -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<!-- Left, always display -->
+		<div class="navbar-brand" style="z-index:1">
+			<div class="btn-group" role="group">
+				<div class="btn-group-vertical">
+					<button type="button" class="btn btn-danger btn-sm split-vertical-indicator" id="control_status"
+						tooltip data-placement="right" title="Uplink (control)" style="border-radius: .2rem 0 0 0;">
+						<i class="fa fa-fw fa-fx fa-arrow-up" ></i>
+					</button>
+	
+					<button type="button" class="btn btn-danger btn-sm split-vertical-indicator" id="sensor_status"
+						tooltip data-placement="right" title="Downlink (sensors)" style="border-radius: 0 0 0 .2rem">
+						<i class="fa fa-fw fa-fx fa-arrow-down" ></i>
+					</button>
+				</div>
+				<button type="button" class="btn btn-outline-dark" tooltip data-placement="bottom"
+					title="Websocket connection status" style="margin-left:0px">
+					<i class="fa fa-fw fa-link"></i>
+				</button>
+			</div>		
+		</div>
+		<div class="navbar-brand" style="z-index:1">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-secondary" data-state="DISCONNECTED" id="service_info_status" tooltip data-placement="bottom" title="Service disconnected"><i class="fa fa-fw fa-server"></i></button>
+				<button type="button" class="btn btn-outline-dark btn-sm" style="margin-left:0px"  id="service_start_button" tooltip
+					data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i>
+				</button>
+				<button type="button" class="btn btn-outline-dark btn-sm" id="service_stop_button" tooltip
+					data-placement="bottom" title="Stop service"><i class="fa fa-fw fa-stop"></i>
+				</button>
+				<button type="button" class="btn btn-outline-dark btn-sm" id="service_restart_button" tooltip
+					data-placement="bottom" title="Restart service"><i class="fa fa-fw fa-undo"></i>
+				</button>
+			</div>
+		</div>
+		<div class="navbar-brand" style="z-index:2">
+			<div class="btn-group">
+				<button type="button" class="btn btn-secondary" id="config_status" tooltip data-placement="bottom" title="No config file loaded">
+					<i class="fa fa-fw fa-file-alt"></i>
+				</button>
+				<button type="button" class="btn btn-outline-dark dropdown-toggle text-monospace" id="config_active_indicator" 
+					style="margin-left:0px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+				<div class="dropdown-menu float-right" id="config_selector">
+					<p class="dropdown-header">No config files available</p>
+				</div>
+			</div>
+		</div>
+		<div class="navbar-brand" style="z-index:1">
+			<div class="btn-group" role="group" id="controller_status_disconnected">
+				<button type="button" id="controller_status" class="btn btn-danger btn-border-outside" tooltip
+					data-placement="bottom" title="Gamepad connection status">
+					<i class="fa fa-fw fa-gamepad"></i>
+				</button>
+				<button type="button" class="btn btn-border-outside mobile-hidden" tooltip data-placement="bottom" title="Press any button to connect">
+					Disconnected
+				</button>
+			</div>
+			<div class="btn-group" role="group" id="controller_status_connected">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<button tooltip data-placement="bottom" title="Gamepad connection status"
+							class="btn btn-success btn-border-outside" type="button">
+							<i class='fa fa-fw fa-gamepad'></i>
+						</button>
+					</div>
+					<select class='custom-select btn-border-outside' id='gamepad_select'></select>
+				</div>
+			</div>
+		</div>
+
+		<!-- Absolute centre, always display -->
+		<div class="navbar-text abs">
+			<div class="btn-group mr-2" role="group">
+				<button type="button" class="btn btn-light" id="nav_title" tooltip data-placement="bottom"
+					title="Reload page">
+					<span style="color: #FF5A00">SIGHTS</span> Interface
+					<div class="float-right banner ugly" id="demo_mode_indicator">
+						<blink>Demo Mode</blink>
+					</div>
+				</button>
+			</div>
+		</div>
+
+		<!-- Expand button -->
+		<div class="btn-group mr-2" role="group" tooltip data-placement="bottom" title="More">
+			<button class="navbar-toggler btn-light" type="button" data-toggle="collapse"
+				data-target="#collapsing_navbar">
+				<i class="fa fa-fw fa-bars"></i>
+			</button>
+		</div>
+
+		<!-- Right -->
+		<div class="navbar-collapse collapse" id="collapsing_navbar">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<div class="btn-group mr-2" role="group">
+						<button type="button" class="btn btn-outline-dark" id="sensor_toggle" tooltip
+							data-placement="bottom" title="Swap between sensor and camera view" data-trigger="hover">
+							<i class="fa fa-fw fa-chart-area"></i> <span class="mobile-hidden">Show </span>Sensors
+						</button>
+					</div>
+					<div class="btn-group mr-2" role="group">
+						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#ssh_modal"
+							tooltip data-placement="bottom" title="Open SSH window">
+							<i class="fa fa-fw fa-terminal"></i>
+						</button>
+						<button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#log_modal"
+							tooltip data-placement="bottom" title="Open log window">
+							<i class="fa fa-fw fa-archive"></i>
+						</button>
+						<button type="button" class="btn btn-outline-dark" target="_blank" rel="noopener noreferrer" tooltip
+							data-placement="bottom" title="View documentation" id="docs_button">
+							<i class="fa fa-fw fa-book"></i>
+						</button>
+						<button type="button" class="btn btn-outline-dark" data-toggle="modal"
+							data-target="#settings_modal" tooltip data-placement="bottom" title="Open settings">
+							<i class="fa fa-fw fa-cog"></i>
+						</button>
+					</div>
+					<div class="btn-group mr-2" role="group">
+						<span class="btn-group-toggle" data-toggle="buttons">
+							<label class="btn btn-outline-dark" tooltip data-placement="bottom"
+								title="Toggle dark mode">
+								<input type="checkbox" autocomplete="off" id="darkmode_toggle"><i
+									class="fa fa-fw fa-cloud-moon"></i>
+							</label>
+						</span>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<button id="power_button_dropdown" type="button" class="btn btn-outline-danger dropdown-toggle"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-fw fa-power-off"></i> Power
+					</button>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="power_button_dropdown">
+						<h6 class="dropdown-header">Power options</h6>
+						<a class="dropdown-item" href="#" id="shutdown_button" tooltip data-placement="left"
+							title="Safely power off the robot"><i class="fa fa-fw fa-power-off"></i> Shutdown</a>
+						<a class="dropdown-item" href="#" id="reboot_button" tooltip data-placement="left"
+							title="Safely reboot the robot"><i class="fa fa-fw fa-undo"></i> Reboot</a>
+						<div class="dropdown-divider" id="power_options_divider"></div>
+						<a class="dropdown-item" href="#" onclick="demoMode()" tooltip data-placement="left"
+							title="Load demo mode" id="demo_mode_button"><i class="fa fa-fw fa-object-group"></i> Demo
+							Mode</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- CONTENT -->
+	<div class="container-fluid" style="padding-top: 10px">
+		<div class="row justify-content-md-center">
+			<div class="col-md-auto">
+				<div class="row" id="left_view_sensors">
+				</div>
+				<div class="row textgroup-container" style="padding-top: 12px">
+					<div class="col">
+						<div class="card">
+							<ul id="textgroup_left" class="list-group list-group-flush font-weight-light">
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-auto" id="main_container">
+				<div class="camera-container" id="camera_front_card">
+					<div class="card" style="border: 0px">
+						<div class="d-flex justify-content-center">
+							<div id="spinner" class="spinner-border text-warning loading-spinner"
+								style="width: 3rem; height: 3rem;" role="status">
+								<span class="sr-only">Loading...</span>
+							</div>
+						</div>
+						<img id="camera_front" width="512" class="rounded-top stream-image" src="" />
+						<div id="thermal_overlay_front" class="thermal-overlay" style="overflow:hidden"></div>
+						<div class="camera-buttons">
+							<button type="button" class="btn btn-dark camera-refresh-button" tooltip
+								data-placement="bottom" title="Refresh">
+								<i class="fa fa-fw fa-redo-alt"></i>
+							</button>
+							<button type="button" class="btn btn-dark camera-screenshot-button" tooltip
+								data-placement="bottom" title="Screenshot">
+								<i class="fa fa-fw fa-camera"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-auto">
+				<div class="row" id="right_view_sensors">
+				</div>
+				<div id="speed_textbox" class="row textgroup-container" style="padding-top: 12px; display: none;">
+					<div class="col">
+						<div class="card">
+							<ul id="textgroup_right" class="list-group list-group-flush font-weight-light">
+								<li id="gamepad_speed_indicator" class="list-group-item">
+									<p style="margin-bottom: 0.5rem;">
+										<span style="padding-right: 10px;">Gamepad speed </span>
+										<kbd class="float-right">dpad ▼/▲</kbd></p>
+									<div class="progress">
+										<div id="gp_speed_node_1" class="progress-bar pb-en bg-success">1</div>
+										<div id="gp_speed_node_2" class="progress-bar pb-en bg-success">2</div>
+										<div id="gp_speed_node_3" class="progress-bar pb-en bg-success">3</div>
+										<div id="gp_speed_node_4" class="progress-bar pb-en bg-success">4</div>
+										<div id="gp_speed_node_5" class="progress-bar pb-en bg-success">5</div>
+										<div id="gp_speed_node_6" class="progress-bar pb-dis bg-success">6</div>
+										<div id="gp_speed_node_7" class="progress-bar pb-dis bg-warning">7</div>
+										<div id="gp_speed_node_8" class="progress-bar pb-dis bg-danger">8</div>
+									</div>
+								</li>
+								<li class="list-group-item">
+									<p style="margin-bottom: 0.5rem;">
+										<span style="padding-right: 10px;">Keyboard speed</span>
+										<kbd class="float-right">➖/➕</kbd>
+									</p>
+									<div class="progress">
+										<div id="kb_speed_node_1" class="progress-bar pb-en bg-success">1</div>
+										<div id="kb_speed_node_2" class="progress-bar pb-en bg-success">2</div>
+										<div id="kb_speed_node_3" class="progress-bar pb-en bg-success">3</div>
+										<div id="kb_speed_node_4" class="progress-bar pb-en bg-success">4</div>
+										<div id="kb_speed_node_5" class="progress-bar pb-en bg-success">5</div>
+										<div id="kb_speed_node_6" class="progress-bar pb-dis bg-success">6</div>
+										<div id="kb_speed_node_7" class="progress-bar pb-dis bg-warning">7</div>
+										<div id="kb_speed_node_8" class="progress-bar pb-dis bg-danger">8</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-md-center" id="btm_view_sensors" style="padding-top:20px">
+		</div>
+		<div class="row justify-content-md-center no-gutters" id="btm_view_camera">
+			<div class="col-md-auto camera-container" id="camera_left_card">
+				<div class="card" style="border: 0px">
+					<img id="camera_left" width="420" class="img-fluid rounded-left stream-image" src="" />
+					<div id="thermal_overlay_left" class="thermal-overlay" style="overflow:hidden"></div>
+					<div class="camera-buttons">
+						<button type="button" class="btn btn-dark camera-refresh-button" tooltip
+							data-placement="bottom" title="Refresh">
+							<i class="fa fa-fw fa-redo-alt"></i>
+						</button>
+						<button type="button" class="btn btn-dark camera-screenshot-button" tooltip
+							data-placement="bottom" title="Screenshot">
+							<i class="fa fa-fw fa-camera"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-auto camera-container" id="camera_back_card">
+				<div class="card" style="border: 0px">
+					<img id="camera_back" width="420" class="img-fluid stream-image" src="" />
+					<div id="thermal_overlay_back" class="thermal-overlay" style="overflow:hidden"></div>
+					<div class="camera-buttons">
+						<button type="button" class="btn btn-dark camera-refresh-button" tooltip
+							data-placement="bottom" title="Refresh">
+							<i class="fa fa-fw fa-redo-alt"></i>
+						</button>
+						<button type="button" class="btn btn-dark camera-screenshot-button" tooltip
+							data-placement="bottom" title="Screenshot">
+							<i class="fa fa-fw fa-camera"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-auto camera-container" id="camera_right_card">
+				<div class="card" style="border: 0px">
+					<img id="camera_right" width="420" class="img-fluid rounded-right stream-image" src="" />
+					<div id="thermal_overlay_right" class="thermal-overlay" style="overflow:hidden"></div>
+					<div class="camera-buttons">
+						<button type="button" class="btn btn-dark camera-refresh-button" tooltip
+							data-placement="bottom" title="Refresh">
+							<i class="fa fa-fw fa-redo-alt"></i>
+						</button>
+						<button type="button" class="btn btn-dark camera-screenshot-button" tooltip
+							data-placement="bottom" title="Screenshot">
+							<i class="fa fa-fw fa-camera"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

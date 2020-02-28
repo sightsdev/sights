@@ -137,11 +137,11 @@ class SensorStream(WebSocketProcess):
         with open('/proc/uptime', 'r') as f:
             msg["uptime"] = round(float(f.readline().split()[0]))
         # Send software versions
-        msg["version_robot"] = subprocess.check_output(["git", "describe"]).strip().decode('utf-8')
-        msg["version_interface"] = subprocess.check_output(["git", "describe"],
-                                                           cwd="../SIGHTSInterface/").strip().decode('utf-8')
-        msg["version_supervisorext"] = subprocess.check_output(["git", "describe"],
-                                                           cwd="../supervisor_sights_config/").strip().decode('utf-8')
+        msg["version_sights"] = subprocess.check_output(["git", "describe"]).strip().decode('utf-8')
+        #msg["version_interface"] = subprocess.check_output(["git", "describe"],
+         #                                                  cwd="../SIGHTSInterface/").strip().decode('utf-8')
+        #msg["version_supervisorext"] = subprocess.check_output(["git", "describe"],
+         #                                                  cwd="../supervisor_sights_config/").strip().decode('utf-8')
         msg["available_plugins"] = self.pm.plugins
         # Get intital data from each Sensor
         for sensor in self.sensors:
