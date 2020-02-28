@@ -3,6 +3,7 @@
 - [Extending](extending.md)
 - [Configuration file format](config_schema.md)
 - [Network information](network.md)
+- [Changelog](changelog.md)
 - **Links**
 - [![S.A.R.T. Website](assets/logo.svg)S.A.R.T. Website](https://www.sfxrescue.com/)
 - [![GitHub](assets/github.svg)GitHub](https://www.github.com/SFXRescue/)
