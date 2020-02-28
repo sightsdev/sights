@@ -73,7 +73,7 @@ install_sights_repositories () {
     echo
 }
 
-install_apache () {
+configure_apache () {
     echo -e "\nSetting up Apache..."
 
     # This is the site file that defines where the interface is hosted from
@@ -254,10 +254,10 @@ update () {
         rm -r sights
     fi
 
-    cd sights || `git clone https://github.com/SFXRescue/sights && cd sights`
+    cd sights || git clone https://github.com/SFXRescue/sights && cd sights
     git checkout -f master
     git pull
-    cd ..
+    cd $INSTALL_DIR
 
     if [ -d "sights-temp" ]; then
         echo -e '\nYour old installation can now be found in sights/old'
@@ -272,6 +272,9 @@ update () {
 
     # Ensure up to date dependencies are installed
     python3 -m pip install -r sights/src/requirements.txt
+	
+	# Reconfigure Apache with any changes
+	configure_apache
 
     echo -e "\nRestarting Supervisord and SIGHTS..."
     service supervisord restart
@@ -284,7 +287,7 @@ update () {
 complete_install () { 
     install_dependencies
     install_sights_repositories
-    install_apache
+    configure_apache
     install_motion
     install_shellinabox
     install_supervisor
@@ -357,8 +360,8 @@ options=(
     "Complete Install" 
     "Install Dependencies" 
     "Install SIGHTS Software"
-    "Setup Apache" 
-    "Setup Motion" 
+    "Configure Apache" 
+    "Install Motion" 
     "Setup ShellInABox" 
     "Setup Supervisor"
     "Enable I2C"
@@ -373,7 +376,7 @@ while true; do
         1) complete_install ;;
         2) install_dependencies ;;
         3) install_sights_repositories ;;
-        4) install_apache ;;
+        4) configure_apache ;;
         5) install_motion ;;
         6) install_shellinabox ;;
         7) install_supervisor ;;
