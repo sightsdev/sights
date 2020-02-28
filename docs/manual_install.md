@@ -1,27 +1,24 @@
 # Manual Installation
 
-> This page is maintained for posterity, however small changes in installation instructions may escape future revisions. The most up-to-date installation instructions can always be inferred by reading the current [install.sh](https://github.com/SFXRescue/sights/blob/master/install.sh) script.
+!> This page is maintained for posterity, however small changes in installation instructions may escape future revisions. The most up-to-date installation instructions can always be inferred by reading the current [install.sh](https://github.com/SFXRescue/sights/blob/master/install.sh) script.
 
 Installation is preferably done to the `/opt/sights/` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues. Installing to other locations will require changes to various config files.
 
 [Supervisor](http://supervisord.org/) is used to manage running the SIGHTS software.
-
-## Preparing the installation directory
-
-First, you'll want to create the aforementioned directory, and we'll make it owned by the current user for convenience:
-
-```shell
-sudo mkdir /opt/sights
-sudo chown $USER:$USER /opt/sights
-```
 
 ## Downloading the software
 
 Next clone this repository
 
 ```shell
-cd /opt/sights
+cd /opt/
 git clone https://github.com/SFXRescue/sights
+```
+
+We'll make it owned by the current user for convenience:
+
+```shell
+sudo chown $USER:$USER /opt/sights
 ```
 
 Install the required packages:
@@ -175,10 +172,7 @@ sudo ln -sf /opt/sights/src/configs/supervisor /etc
 Install the SIGHTS Supervisor extension. This allows Supervisor to manage configuration files, even when SIGHTS is not running.
 
 ```shell
-cd /opt/sights/
-git clone https://github.com/SFXRescue/supervisor_sights_config
-cd supervisor_sights_config
-python3 -m pip install .
+python3 -m pip install /opt/sights/src/supervisor_plugin
 ```
 
 Supervisor is now installed and set up.
@@ -186,7 +180,7 @@ Supervisor is now installed and set up.
 To ensure that `supervisord` is run at boot, we will install a provided init script for Supervisor:
 
 ```shell
-sudo cp src/configs/systemd/supervisord /etc/init.d/
+sudo cp /opt/sights/src/configs/systemd/supervisord /etc/init.d/
 sudo chmod 755 /etc/init.d/supervisord
 sudo chown root:root /etc/init.d/supervisord
 sudo update-rc.d supervisord defaults
