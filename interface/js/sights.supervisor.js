@@ -419,33 +419,41 @@ $(document).on("ready",function () {
     });
 
     $('#update_button').on("click", function() {
-        serviceAlert("info", "Going to update");
-		$.xmlrpc({
-            url: '/RPC2',
-            methodName: 'sights_config.update',
-            params: {'dev' : 'false'},
-            success: function(response, status, jqXHR) {
-                serviceAlert("success", "Updated successfully!");
-            },
-            error: function(jqXHR, status, error) {
-                serviceAlert("danger", "Update failed. Check /opt/sights/update.log");
-            }
-        });
+        if ($("#service_info_status").attr("data-state") == "STOPPED") {
+            serviceAlert("info", "Going to update");
+            $.xmlrpc({
+                url: '/RPC2',
+                methodName: 'sights_config.update',
+                params: {'dev' : 'false'},
+                success: function(response, status, jqXHR) {
+                    serviceAlert("success", "Updated successfully!");
+                },
+                error: function(jqXHR, status, error) {
+                    serviceAlert("danger", "Update failed. Check /opt/sights/update.log");
+                }
+            });
+        } else {
+            serviceAlert("danger", "Service must be stopped first");
+        }
     });
 
     $('#update_button_dev').on("click", function() {
-        serviceAlert("info", "Going to update");
-		$.xmlrpc({
-            url: '/RPC2',
-            methodName: 'sights_config.update',
-            params: {'dev' : 'true'},
-            success: function(response, status, jqXHR) {
-                serviceAlert("success", "Updated successfully!");
-            },
-            error: function(jqXHR, status, error) {
-                serviceAlert("danger", "Update failed. Check /opt/sights/update.log");
-            }
-        });
+        if ($("#service_info_status").attr("data-state") == "STOPPED") {
+            serviceAlert("info", "Going to update");
+            $.xmlrpc({
+                url: '/RPC2',
+                methodName: 'sights_config.update',
+                params: {'dev' : 'true'},
+                success: function(response, status, jqXHR) {
+                    serviceAlert("success", "Updated successfully!");
+                },
+                error: function(jqXHR, status, error) {
+                    serviceAlert("danger", "Update failed. Check /opt/sights/update.log");
+                }
+            });
+        } else {
+            serviceAlert("danger", "Service must be stopped first");
+        }
     });
     
     $('#service_log_clear_button').on("click", function() {
