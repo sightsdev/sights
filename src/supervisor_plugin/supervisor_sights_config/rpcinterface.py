@@ -175,12 +175,15 @@ class SIGHTSConfigNamespaceRPCInterface:
         system('poweroff')
         return True
 
-    def update(self):
+    def update(self, dev=False):
         update_commands = [
             ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O", "/tmp/sights.install.sh"],
             ["chmod", "+x", "/tmp/sights.install.sh"],
-            ["/tmp/sights.install.sh", "--update", "--internal"]
+            ["/tmp/sights.install.sh", "--update", "--internal"],
+            ["rm", "/tmp/sights.install.sh"]
         ]
+        if (dev):
+            update_commands[2].append('--dev')
         with open('test.log', 'w') as f:
             f.write(f"Update log for SIGHTS on {datetime.datetime.now()}\n")
             for command in update_commands:
