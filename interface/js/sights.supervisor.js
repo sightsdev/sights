@@ -420,11 +420,11 @@ $(document).on("ready",function () {
 
     $('#update_button').on("click", function() {
         if ($("#service_info_status").attr("data-state") == "STOPPED") {
-            serviceAlert("info", "Going to update");
+            serviceAlert("info", "Performing an update...");
             $.xmlrpc({
                 url: '/RPC2',
                 methodName: 'sights_config.update',
-                params: {'dev' : 'false'},
+                params: {'dev' : false},
                 success: function(response, status, jqXHR) {
                     serviceAlert("success", "Updated successfully!");
                 },
@@ -439,11 +439,11 @@ $(document).on("ready",function () {
 
     $('#update_button_dev').on("click", function() {
         if ($("#service_info_status").attr("data-state") == "STOPPED") {
-            serviceAlert("info", "Going to update");
+            serviceAlert("info", "Performing an update...");
             $.xmlrpc({
                 url: '/RPC2',
                 methodName: 'sights_config.update',
-                params: {'dev' : 'true'},
+                params: {'dev' : true},
                 success: function(response, status, jqXHR) {
                     serviceAlert("success", "Updated successfully!");
                 },

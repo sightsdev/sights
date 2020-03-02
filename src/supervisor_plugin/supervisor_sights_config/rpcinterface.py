@@ -27,7 +27,7 @@ def _runCommand(f, command):
     # Ensure process has finished
     process.wait()
     # Log result of command
-    f.write(f"Process returned: {process.returncode}\n")
+    f.write(f"\nProcess returned: {process.returncode}\n")
     # Return the return code
     return process.returncode
 
@@ -175,7 +175,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         system('poweroff')
         return True
 
-    def update(self, dev=False):
+    def update(self, dev):
         update_commands = [
             ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O", "/tmp/sights.install.sh"],
             ["chmod", "+x", "/tmp/sights.install.sh"],
