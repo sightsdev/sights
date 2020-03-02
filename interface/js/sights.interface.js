@@ -57,17 +57,17 @@ function updateCheck(type, altRepo) {
 			update_field.css("opacity", "100%");
 			if (current_release == latest_release) {
 				$('#update_instructions').hide();
-				update_field.html("You are running the latest release");
+				update_field.html("You are running the latest versioned release");
 				if(current_version.includes('-')) {
 					warning_field.html("<br>Caution: " +
-						"You are running a newer development version that may be unstable.");
+						"You are running a newer development build that may be unstable.");
 					warning_field.css("color", "#dcc620");
 				}
 			} else {
 				$('#update_instructions').show();
 				update_field.html("Update available: " + latest_release);
 				if(current_version.includes('-')) {
-					warning_field.html("<br>Critical: You are running an outdated development version!");
+					warning_field.html("<br>Critical: You are running an outdated development build. Please update!");
 					warning_field.css("color", "#dc3545");
 				}
 			}
