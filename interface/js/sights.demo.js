@@ -23,8 +23,8 @@ var demo_config = {"network":{"ip":"*"},"control":{"default_gamepad_speed":3,"de
 				"Temperature (°C)","period":3}]},"sensors":[{"enabled":true,"type":"random","name":"demo_cpu_temp",
 		"period":3,"min":50,"max":55,"display_on":["cpu_temperature"]},{"enabled":true,"type":"random","name":
 			"demo_memory_usage","period":3,"min":175,"max":225,"display_on":["memory_usage"]},{"enabled":true,"type":
-			"random","name":"demo_disk_usage","period":3,"min":10,"max":10,"display_on":["disk_usage"]},{"enabled":true,
-		"type":"random","name":"demo_cpu_usage","period":3,"min":2,"max":10,"display_on":["cpu_usage"]},{"enabled":true,
+			"random","name":"demo_disk_usage","period":60,"min":10,"max":10,"display_on":["disk_usage"]},{"enabled":true,
+		"type":"random","name":"demo_cpu_usage","period":1,"min":2,"max":10,"display_on":["cpu_usage"]},{"enabled":true,
 		"type":"random","name":"Internal","period":3,"min":45,"max":50,"display_on":["ambient_temp"]},{"enabled":true,
 		"type":"random","name":"External","period":3,"min":25,"max":30,"display_on":["ambient_temp"]},{"enabled":true,
 		"type":"random","name":"CO2 Level","period":3,"min":450,"max":500,"display_on":["co2_graph"]},{"enabled":true,
@@ -50,9 +50,7 @@ function demoMode() {
 		"initial_message": true,
 		"running_config": "demo.json",
 		"uptime": 0,
-		"version_robot": "Web-based Demo",
-		"version_interface": "Web-based Demo",
-		"version_supervisorext": "Web-based Demo"
+		"version_sights": "Web-based Demo"
 	});
 	sensorsConnectedAlert();
 
@@ -62,19 +60,23 @@ function demoMode() {
 		}
 	});
 
-	setInterval(function () {
-		sensorUpdate({
-			"sensor_data": {
-				"random_1": getRandomInt(50, 55),
-				"random_2": getRandomInt(175, 225),
-				"random_3": 10,
-				"random_4": getRandomInt(2, 10),
-				"random_5": getRandomInt(45, 50),
-				"random_6": getRandomInt(25, 30),
-				"random_7": getRandomInt(450, 500)
-			}
-		});
-	}, 3000);
+	function demoSensorUpdate(sensor) {
+		let json = {"sensor_data" : {}};
+		json["sensor_data"]["random_" + sensor.id] = getRandomInt(sensor.min, sensor.max);
+		sensorUpdate(json);
+	}
+
+	let randomSensors = 0;
+	demo_config.sensors.forEach(function (sensor) {
+		if (sensor.type == "random") {
+			randomSensors = randomSensors + 1;
+			sensor.id = randomSensors;
+			demoSensorUpdate(sensor);
+			setInterval(function () {
+				demoSensorUpdate(sensor)
+			}, sensor.period * 1000)
+		}
+	});
 
 	// Set demo camera images
 	let imageSets = 9; // Number of sets of images in images/demo_camera
