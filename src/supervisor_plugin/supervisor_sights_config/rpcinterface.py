@@ -176,19 +176,14 @@ class SIGHTSConfigNamespaceRPCInterface:
         return True
 
     def update(self):
-        '''update_commands = [
+        update_commands = [
             ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O", "/tmp/sights.install.sh"],
             ["chmod", "+x", "/tmp/sights.install.sh"],
             ["/tmp/sights.install.sh", "--update", "--internal"]
-        ]'''
-        test_commands = [
-            ["dos2unix", "/opt/sights/install.sh"],
-            ["chmod", "+x", "/opt/sights/install.sh"],
-            ["/opt/sights/install.sh", "--update", "--internal"]
         ]
         with open('test.log', 'w') as f:
             f.write(f"Update log for SIGHTS on {datetime.datetime.now()}\n")
-            for command in test_commands:
+            for command in update_commands:
                 f.write('> ' + ''.join(e + " " for e in command))
                 if _runCommand(f, command) != 0:
                     f.write("\nUpdate failed.")
