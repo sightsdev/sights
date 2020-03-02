@@ -59,7 +59,7 @@ function demoMode() {
 	setInterval(function () {
 		thermal = thermal.map(function (value) {
 			return (value + 10) % 360;
-		})
+		});
 		sensorUpdate({
 			"sensor_data" : {
 				"fancy_1": thermal

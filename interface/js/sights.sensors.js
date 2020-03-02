@@ -177,12 +177,9 @@ function sensorUpdate(obj) {
 			$('#speed_textbox').show();
 			// Now that cameras and graphs have been created, we should be able to determine what modes the
 			// interface has and enable or disable toggling.
+			toggleSensorMode(); // Enable/disable correct options for the current mode
 			if (sensorModeEnabled() && cameraModeEnabled()) {
-				$("#sensor_toggle").show() // Enable toggling, stay on the same page
-			}
-			else {
-				$("#sensor_toggle").hide(); // Disble toggling
-				toggleSensorMode(); // May need to switch to the other page if the current one was disabled
+				toggleSensorMode(); // Switch back to camera mode
 			}
 
 			let sensorCount = {};
