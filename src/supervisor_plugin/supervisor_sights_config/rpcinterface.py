@@ -3,6 +3,9 @@ from supervisor.xmlrpc import Faults
 from supervisor.xmlrpc import RPCError
 from os import listdir, remove, path, rename, system
 from os.path import isfile, getmtime
+import subprocess
+import sys
+import datetime
 
 API_VERSION = '0.2'
 ACTIVE_CONFIG_FILE = '/opt/sights/configs/ACTIVE_CONFIG'
@@ -10,6 +13,23 @@ CONFIG_DIR = '/opt/sights/configs/'
 BACKUP_DIR = '/opt/sights/src/configs/sights/backup/'
 CONFIG_EXT = '.json'
 MINIMAL_CONFIG = "/opt/sights/src/configs/sights/minimal.json"
+
+def _runCommand(f, command):
+    # Run the passed command
+    process = subprocess.Popen(command, stdout=subprocess.PIPE)
+    while True:
+        line = process.stdout.readline().decode('utf-8')
+        if not line:
+            break
+        # Write every line to the log
+        sys.stdout.write(line)
+        f.write(line)
+    # Ensure process has finished
+    process.wait()
+    # Log result of command
+    f.write(f"Process returned: {process.returncode}\n")
+    # Return the return code
+    return process.returncode
 
 class SIGHTSConfigNamespaceRPCInterface:
     """ An extension for Supervisor that implements a basic 
@@ -153,6 +173,27 @@ class SIGHTSConfigNamespaceRPCInterface:
 
     def poweroff(self):
         system('poweroff')
+        return True
+
+    def update(self):
+        '''update_commands = [
+            ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O", "/tmp/sights.install.sh"],
+            ["chmod", "+x", "/tmp/sights.install.sh"],
+            ["/tmp/sights.install.sh", "--update", "--internal"]
+        ]'''
+        test_commands = [
+            ["dos2unix", "/opt/sights/install.sh"],
+            ["chmod", "+x", "/opt/sights/install.sh"],
+            ["/opt/sights/install.sh", "--update", "--internal"]
+        ]
+        with open('test.log', 'w') as f:
+            f.write(f"Update log for SIGHTS on {datetime.datetime.now()}\n")
+            for command in test_commands:
+                f.write('> ' + ''.join(e + " " for e in command))
+                if _runCommand(f, command) != 0:
+                    f.write("\nUpdate failed.")
+                    return False
+            f.write("\nSIGHTS update succeeded!")
         return True
 
 def make_sights_config_rpcinterface(supervisord, **config):

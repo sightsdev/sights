@@ -15,6 +15,9 @@ MOTION_VER=4.2.2
 
 update_only='false'
 developer_versions='false'
+internal_update='false'
+
+set -e
 
 print_detected_ip () {
   output="Visit http://localhost$1 on the host machine"
@@ -78,8 +81,8 @@ configure_apache () {
 
     # This is the site file that defines where the interface is hosted from
     # It also sets up a reverse proxy for Supervisor to work correctly
-    echo -e "\nCopying SIGHTSInterface site config..."
-    cp sights/src/configs/apache/SIGHTSInterface.conf /etc/apache2/sites-available/
+    echo -e "\nCopying SIGHTS site config..."
+    cp sights/src/configs/apache/sights.conf /etc/apache2/sites-available/
 
     # This is the required option to allow Apache to host from $INSTALL_DIR
     echo -e "\nAllowing Apache to host the interface directory..."
@@ -97,7 +100,7 @@ configure_apache () {
 
     echo -e "\nDisabling Apache default site and enabling SIGHTSInterface..."
     a2dissite 000-default.conf
-    a2ensite SIGHTSInterface.conf
+    a2ensite sights.conf
 
     echo -e "\nEnabling Apache proxy modules..."
     a2enmod proxy
@@ -173,11 +176,7 @@ install_shellinabox () {
     print_detected_ip ":4200/"
 }
 
-install_supervisor () {
-    # Supervisor
-    echo -e "\nInstalling Supervisor..."
-    python3 -m pip install supervisor
-
+configure_supervisor () {
     echo -e "\nCreating symlink for Supervisor configuration files..."
     ln -sf $INSTALL_DIR/sights/src/configs/supervisor /etc
 
@@ -241,47 +240,28 @@ enable_i2c () {
 }
 
 update () {
-    #echo -e "\nPerforming a system update"
-    #apt update
-    #apt upgrade -y
-
     echo -e "\nUpdating SIGHTS..."
 
-    if [ -d "sights/SIGHTSRobot" ]; then
-        echo -e '\nUpdating from a pre-merge version'
-        mkdir sights-temp
-        mv sights/* sights-temp
-        rm -r sights
-    fi
-
-    cd sights || git clone https://github.com/SFXRescue/sights && cd sights
+    cd sights
     git checkout -f master
     git pull
     cd $INSTALL_DIR
 
-    if [ -d "sights-temp" ]; then
-        echo -e '\nYour old installation can now be found in sights/old'
-        mkdir sights/old
-        mv sights-temp/* sights/old
-        rm -r sights-temp
-    fi
-
+    # Checkout appropriate release (stable or dev)
     checkout_release
 
+    # Update Supervisor 
     python3 -m pip install sights/src/supervisor_plugin
 
     # Ensure up to date dependencies are installed
     python3 -m pip install -r sights/src/requirements.txt
-	
-	# Reconfigure Apache with any config changes
-	configure_apache
-	
-	# Reconfigure Supervisor with any config changes
-	install_supervisor
 
-    echo -e "\nRestarting Supervisord and SIGHTS..."
-    service supervisord restart
-
+    # If update flag specified, just update, then exit
+    if [ $internal_update == 'false' ]; then
+        echo -e "\nRestarting Supervisord and SIGHTS..."
+        service supervisord restart
+    fi
+    
     echo -e "\nUpdate complete!"
     echo
     print_detected_ip "/"
@@ -293,7 +273,7 @@ complete_install () {
     configure_apache
     install_motion
     install_shellinabox
-    install_supervisor
+    configure_supervisor
     echo -e "\nInstallation complete! Reboot to ensure proper functionality."
     print_detected_ip "/"
 }
@@ -340,9 +320,13 @@ while test $# -gt 0; do
                 developer_versions='true'
                 shift
                 ;;
+            --internal)
+                internal_update='true'
+                shift
+                ;;
             *)
                echo "$1 is not a recognized flag!"
-               exit
+               exit 1
                ;;
         esac
   done
@@ -356,7 +340,7 @@ fi
 if [ $update_only == 'true' ]; then
     echo -e "Performing an update..."
     update
-    exit
+    exit 0
 fi
 
 options=(
@@ -366,7 +350,7 @@ options=(
     "Configure Apache" 
     "Install Motion" 
     "Setup ShellInABox" 
-    "Setup Supervisor"
+    "Configure Supervisor"
     "Enable I2C"
     "Update"
     "Detect IPs"
@@ -382,7 +366,7 @@ while true; do
         4) configure_apache ;;
         5) install_motion ;;
         6) install_shellinabox ;;
-        7) install_supervisor ;;
+        7) configure_supervisor ;;
         8) enable_i2c ;;
         9) update ;;
         10) print_detected_ip "/" ;;
