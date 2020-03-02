@@ -1,5 +1,5 @@
-
-# SART Integrated GUI and Host Teleoperation Service (SIGHTS)
+![SIGHTS Logo](https://raw.githubusercontent.com/SFXRescue/sights/master/docs/assets/sights.png)
+## SART Integrated GUI and Host Teleoperation Service (SIGHTS)
 
 [![Build status](https://img.shields.io/badge/build-passing-brightgreen)](https://www.sfxrescue.com)
 [![GitHub license](https://img.shields.io/github/license/SFXRescue/sights)](https://github.com/SFXRescue/sights/blob/master/LICENSE)
@@ -8,7 +8,7 @@
 
 S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete teleoperation interface written by the Semi-Autonomous Rescue Team for the S.A.R.T. rescue robots.
 
-![Screenshot](https://github.com/SFXRescue/sights/blob/master/interface/images/demo_screenshot_dark.png?raw=true "Screenshot of the interface")
+![Screenshot of the interface](https://github.com/SFXRescue/sights/blob/master/docs/assets/interface-screenshot.jpg)
 
 ## Features
 
