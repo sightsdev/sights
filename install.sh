@@ -82,7 +82,7 @@ configure_apache () {
     # This is the site file that defines where the interface is hosted from
     # It also sets up a reverse proxy for Supervisor to work correctly
     echo -e "\nEnabling SIGHTS site config..."
-    ln -sf /opt/sights/src/configs/apache/sights.conf /etc/apache2/sites-enabled/sights.conf
+    ln -sf $INSTALL_DIR/sights/src/configs/apache/sights.conf /etc/apache2/sites-enabled/sights.conf
 
     # This is the required option to allow Apache to host from $INSTALL_DIR
     echo -e "\nAllowing Apache to host the interface directory..."
