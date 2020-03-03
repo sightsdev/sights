@@ -13,6 +13,7 @@
 - Updater in install.sh now reconfigures Apache and Supervisor
 - Simulation of sensors in demo mode now uses the demo config with variable periods
 - Thermal camera is now animated in demo mode
+- Removed unnecessary example configs to avoid overwriting user changes during updates. Replaced virtual.json with example.json
 
 ### Bug fixes
 

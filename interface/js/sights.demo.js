@@ -170,9 +170,9 @@ function demoMode() {
 		<a href="#" class="dropdown-item config-delete-button" style="display:block;" data-file="dynamixel.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
 		</div>'
 	);
-	$('#config_selector').append('<div class="btn-group float-right" data-file="serial.json">\
-		<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">serial.json</a>\
-		<a href="#" class="dropdown-item config-delete-button" style="display:block;" data-file="serial.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
+	$('#config_selector').append('<div class="btn-group float-right" data-file="sabertooth.json">\
+		<a href="#" class="dropdown-item text-monospace config-item-button" style="display:block;">sabertooth.json</a>\
+		<a href="#" class="dropdown-item config-delete-button" style="display:block;" data-file="sabertooth.json"><i class="fa fa-fw fa-trash-alt"></i></a>\
 		</div>'
 	);
 	$('#config_selector').append('<div class="btn-group float-right" data-file="demo.json">\
