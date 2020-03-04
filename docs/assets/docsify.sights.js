@@ -21,7 +21,7 @@
         // Get IP address or hostname
         var ip = window.location.hostname;
         // Only execute on local networks. Hardly foolproof, but it'll do the job
-        if (!ip.includes("github") && !ip.includes(".com") && !ip.includes(".io"))
+        if (!ip.includes(".com") && !ip.includes(".org") && !ip.includes(".io"))
           // Only show if we came to this page from SIGHTS
           if (window.location.origin + "/" == document.referrer) {
             // Create HTML for button
