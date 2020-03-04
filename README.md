@@ -12,7 +12,7 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
 
 ## Features
 
-- All SIGHTS configuation is done through a single configuration file which can be edited visually from within the interface, even if the SIGHTS service is stopped or has crashed
+- All SIGHTS configuration is done through a single configuration file which can be edited visually from within the interface, even if the SIGHTS service is stopped or has crashed
 - A powerful and extensible modular sensor system
   - A sensor plugin system to allow new sensors to be added with ease
   - Sensor wrapper classes that can use existing Python libraries to access sensors over I2C. No need to write libraries specifically for SIGHTS
@@ -32,7 +32,7 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
     - Percentage circle chart
     - Thermal camera with overlay features
     - Text box (with optional uptime display box)
-- An extremely powerful that allows the operator to control every aspect of the robot
+- An extremely powerful interface that allows the operator to control every aspect of the robot
   - Up to four video camera streams through [Motion](https://github.com/Motion-Project/motion)
   - Integrated tabbed SSH console allowing advanced access to the underlying OS
   - Full gamepad and keyboard support
