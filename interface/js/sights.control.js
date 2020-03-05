@@ -54,7 +54,9 @@ function createKeyBind(keys, ctrl, func) {
 	keys.forEach(function (key) {
 		keyboardJS.bind(key, function (e) {
 			// Key down event
-			e.preventRepeat();
+			if (!["SPEED_UP","SPEED_DOWN"].includes(ctrl)) {
+				e.preventRepeat();
+			}
 			var c_event = {
 				type: "KEYBOARD",
 				control: ctrl,
