@@ -25,14 +25,14 @@ function safeSend(data) {
 
 // Log control to log modal
 function logControl(e) {
-	value = ('value' in e) ? e["value"] : "MESSAGE SENT"
+	let value = ('value' in e) ? e["value"] : "MESSAGE SENT";
 	$('#input_log_pre').prepend("<li>" + new Date().toLocaleTimeString() + " - " + e['type'] + " " + e['control'] + " " + value + "</li>");
 }
 
 // Runs every tick to check changed axes and send values as required
 function axisUpdate(currGamepad, ctrl) {
 	// Current value of specified control, to 1dp
-	var val = currGamepad.state[ctrl].toFixed(1)
+	var val = currGamepad.state[ctrl].toFixed(1);
 	// Compare against last value
 	if (val != last_axis_state[ctrl]) {
 		// Update last value with current value
@@ -49,19 +49,16 @@ function axisUpdate(currGamepad, ctrl) {
 }
 
 // Create 'KEYBOARD' event bind that is sent to robot
-function createKeyBind(keys, ctrl, func) {
+function createFunctionKeyBind(keys, ctrl, func) {
 	// Create keyboard bindings using KeyboardJS
+	let c_event = {
+				type: "KEYBOARD",
+				control: ctrl
+			};
 	keys.forEach(function (key) {
 		keyboardJS.bind(key, function (e) {
 			// Key down event
-			if (!["SPEED_UP","SPEED_DOWN"].includes(ctrl)) {
-				e.preventRepeat();
-			}
-			var c_event = {
-				type: "KEYBOARD",
-				control: ctrl,
-				value: "DOWN"
-			};
+			c_event["value"] = "DOWN";
 			safeSend(c_event);
 			if (func !== undefined) {
 				// optional function was passed
@@ -69,12 +66,41 @@ function createKeyBind(keys, ctrl, func) {
 			}
 		}, function (e) {
 			// Key up event
-			var c_event = {
-				type: "KEYBOARD",
-				control: ctrl,
-				value: "UP"
-			};
+			c_event["value"] = "UP";
 			safeSend(c_event);
+		});
+	});
+}
+
+let movementKeysPressed = [];
+function sendMovementKeys() {
+	let c_event = {type: "KEYBOARD", control: "STOP"};
+	safeSend(c_event);
+	if (movementKeysPressed.length) {
+		c_event["control"] = movementKeysPressed[0];
+		safeSend(c_event)
+	}
+	/* // For future motor rewrite (motor handler ignores when motors are not independent)
+	let c_event = {type: "KEYBOARD", value: "STOP"};
+	(movementKeysPressed.length) ? c_event["control"] = movementKeysPressed[0] : c_event["control"] = "STOP";
+	console.log(c_event);
+	safeSend(c_event);
+	*/
+}
+
+// Create 'KEYBOARD' event bind that is sent to robot
+function createMovementKeyBind(keys, ctrl) {
+	// Create keyboard bindings using KeyboardJS
+	keys.forEach(function (key) {
+		keyboardJS.bind(key, function (e) {
+			// Key down event
+			e.preventRepeat();
+			movementKeysPressed.unshift(ctrl);
+			sendMovementKeys();
+		}, function (e) {
+			// Key up event
+			movementKeysPressed.splice(movementKeysPressed.findIndex(e => e == ctrl), 1);
+			sendMovementKeys();
 		});
 	});
 }
@@ -214,12 +240,12 @@ $(document).on("ready", function () {
 	}
 
 	// Create keyboard bindings
-	createKeyBind(['w', 'up'], "FORWARD");
-	createKeyBind(['a', 'left'], "LEFT");
-	createKeyBind(['s', 'down'], "BACKWARDS");
-	createKeyBind(['d', 'right'], "RIGHT");
-	createKeyBind(['+', '='], "SPEED_UP");
-	createKeyBind(['-', '_'], "SPEED_DOWN");
+	createMovementKeyBind(['w', 'up'], "FORWARD");
+	createMovementKeyBind(['a', 'left'], "LEFT");
+	createMovementKeyBind(['s', 'down'], "BACKWARDS");
+	createMovementKeyBind(['d', 'right'], "RIGHT");
+	createFunctionKeyBind(['+', '='], "SPEED_UP");
+	createFunctionKeyBind(['-', '_'], "SPEED_DOWN");
 	// Disable keyboard controls when modal is open
 	$(".modal").on('shown.bs.modal', function () {
 		keyboardJS.pause();

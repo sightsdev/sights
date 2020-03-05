@@ -67,25 +67,15 @@ class ControlReceiver (WebSocketProcess):
     def keyboard_handler(self, control, value):
         speed = self.motors.keyboard_speed
         if (control == "FORWARD"):
-            if value == "UP":
-                self.motors.move(0, 0)
-            else:
-                self.motors.move(speed, speed)
+            self.motors.move(speed, speed)
         elif (control == "BACKWARDS"):
-            if value == "UP":
-                self.motors.move(0, 0)
-            else:
-                self.motors.move(-speed, -speed)
+            self.motors.move(-speed, -speed)
         elif (control == "LEFT"):
-            if value == "UP":
-                self.motors.move(0, 0)
-            else:
-                self.motors.move(-speed, speed)
+            self.motors.move(-speed, speed)
         elif (control == "RIGHT"):
-            if value == "UP":
-                self.motors.move(0, 0)
-            else:
-                self.motors.move(speed, -speed)
+            self.motors.move(speed, -speed)
+        elif (control == "STOP"):
+            self.motors.move(0, 0)
         elif (control == "SPEED_UP"):
             if value == "DOWN":
                 self.motors.keyboard_speed = min(1023, speed + 128)
@@ -105,33 +95,33 @@ class ControlReceiver (WebSocketProcess):
         typ = msg["type"]  # axis, button, or keyboard
         control = msg["control"]  # FACE_0, LEFT_STICK_Y, SPEED_UP etc.
 
-        if (typ == "KEYBOARD"):
-            value = msg["value"]  # UP, DOWN
+        if typ == "KEYBOARD":
+            value = msg["value"] if "value" in msg else False  # UP, DOWN
             # Handle directional movement etc
             self.keyboard_handler(control, value)
-        elif (typ == "BUTTON"):
+        elif typ == "BUTTON":
             value = msg["value"]  # UP, DOWN
             # Store in state, because it might be useful (e.g. for modifiers)
             self.state[control] = True if value == "DOWN" else False
             # 
-            if (control == "LEFT_TOP_SHOULDER" or control == "RIGHT_TOP_SHOULDER"):
+            if control == "LEFT_TOP_SHOULDER" or control == "RIGHT_TOP_SHOULDER":
                 self.gamepad_movement_handler(type="TRIGGER")
             # Then handle any button events
-            if (control == "DPAD_UP"):
+            if control == "DPAD_UP":
                 if value == "DOWN":
                     self.motors.gamepad_speed = min(1023, self.motors.gamepad_speed + 128)
                     self.pipe.send(["SYNC_SPEED", "gp", self.motors.gamepad_speed])
-            elif (control == "DPAD_DOWN"):
+            elif control == "DPAD_DOWN":
                 if value == "DOWN":
                     self.motors.gamepad_speed = max(127, self.motors.gamepad_speed - 128)
                     self.pipe.send(["SYNC_SPEED", "gp", self.motors.gamepad_speed])
-        elif (typ == "AXIS"):
+        elif typ == "AXIS":
             # If axis, store as float
             value = float(msg["value"])
             # Update state with new value of axis
             self.state[control] = value
             # Handle trigger and stick controls
-            if (control == "LEFT_STICK_X" or control == "LEFT_STICK_Y"):
+            if control == "LEFT_STICK_X" or control == "LEFT_STICK_Y":
                 self.gamepad_movement_handler(type="STICK")
             else:
                 self.gamepad_movement_handler(type="TRIGGER")
