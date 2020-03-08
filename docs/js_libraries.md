@@ -7,7 +7,7 @@ Forks of open source libraries that we've modified, or libraries where some docu
 
 Modified to use Font Awesome icons instead of Glyphicons
 
-## [gamepad.js](https://github.com/SFXRescue/gamepad.js
+## [gamepad.js](https://github.com/SFXRescue/gamepad.js)
 
 Forked from [khanbabaeifanap/HTML5-JavaScript-Gamepad-Controller-Library](https://github.com/khanbabaeifanap/HTML5-JavaScript-Gamepad-Controller-Library)
 Which itself was forked from [kallaspriit/HTML5-JavaScript-Gamepad-Controller-Library](https://github.com/kallaspriit/HTML5-JavaScript-Gamepad-Controller-Library)
