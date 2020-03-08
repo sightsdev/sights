@@ -4,6 +4,7 @@
 - [Extending](extending.md)
 - [Configuration file format](config_schema.md)
 - [Network information](network.md)
+- [JS Libraries](js_libraries.md)
 - [Changelog](changelog.md)
 - **Links**
 - [![S.A.R.T. Website](assets/logo.svg)S.A.R.T. Website](https://www.sfxrescue.com/)
