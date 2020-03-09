@@ -325,15 +325,16 @@ $(document).on("ready",function () {
             location.reload();
         }
         else {
+            shutdownAlert();
             $.xmlrpc({
                 url: '/RPC2',
                 methodName: 'sights_config.poweroff',
                 params: {},
                 success: function (response, status, jqXHR) {
-                    shutdownAlert();
+                    serviceAlert("danger", "Couldn't shut down");
                 },
                 error: function (jqXHR, status, error) {
-                    serviceAlert("danger", "Couldn't shut down");
+                    serviceAlert("success", "Successfully shut down");
                 }
             });
         }
@@ -343,15 +344,16 @@ $(document).on("ready",function () {
             location.reload();
         }
         else {
+            rebootAlert();
             $.xmlrpc({
                 url: '/RPC2',
                 methodName: 'sights_config.reboot',
                 params: {},
                 success: function (response, status, jqXHR) {
-                    rebootAlert();
+                    serviceAlert("danger", "Couldn't reboot");
                 },
                 error: function (jqXHR, status, error) {
-                    serviceAlert("danger", "Couldn't reboot");
+                    serviceAlert("success", "Rebooting...");
                 }
             });
         }
