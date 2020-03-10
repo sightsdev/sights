@@ -2,16 +2,21 @@
 from pyax12.connection import Connection
 from serial import Serial
 from enum import IntEnum
-from motors import Motors
+from motor_handler import Motors
 import json
 import time
 import atexit
 
+'''
+A basic example of autonomy.
+This script is currently deprecated, but still works if you tweak a few things.
+'''
+
 # Load config file
-config = json.load(open('robot.json'))
+config = json.load(open('example.json'))
 
 # Servos
-motors = Motors()
+motors = Motors(config)
 # Arduino
 sc_arduino = Serial(port=config['arduino']['port'],
                     baudrate=config['arduino']['baudrate'])

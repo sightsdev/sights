@@ -15,6 +15,9 @@ CONFIG_EXT = '.json'
 MINIMAL_CONFIG = "/opt/sights/src/configs/sights/minimal.json"
 
 def _runCommand(f, command):
+    """ Run a command using subprocess, and log output
+    @return integer     return code of command
+    """
     # Run the passed command
     process = subprocess.Popen(command, stdout=subprocess.PIPE)
     while True:
@@ -168,14 +171,23 @@ class SIGHTSConfigNamespaceRPCInterface:
 
     # Handle power commands
     def reboot(self):
+        """ Reboots the system
+        @return boolean      Returns true if unsuccessful. Counterintuitive, I know.
+        """
         system('reboot')
         return True
 
     def poweroff(self):
+        """ Shuts down the system
+        @return boolean      Returns true if unsuccessful.
+        """
         system('poweroff')
         return True
 
     def update(self, dev):
+        """ Updates SIGHTS using the latest install script
+        @return boolean      Returns true if successful and false if not
+        """
         update_commands = [
             ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O", "/tmp/sights.install.sh"],
             ["chmod", "+x", "/tmp/sights.install.sh"],
