@@ -107,11 +107,11 @@ class ControlReceiver (WebSocketProcess):
             if control == "LEFT_TOP_SHOULDER" or control == "RIGHT_TOP_SHOULDER":
                 self.gamepad_movement_handler(type="TRIGGER")
             # Then handle any button events
-            if control == "DPAD_UP":
+            if control == "DPAD_LEFT":
                 if value == "DOWN":
                     self.motors.gamepad_speed = min(1023, self.motors.gamepad_speed + 128)
                     self.pipe.send(["SYNC_SPEED", "gp", self.motors.gamepad_speed])
-            elif control == "DPAD_DOWN":
+            elif control == "DPAD_RIGHT":
                 if value == "DOWN":
                     self.motors.gamepad_speed = max(127, self.motors.gamepad_speed - 128)
                     self.pipe.send(["SYNC_SPEED", "gp", self.motors.gamepad_speed])
