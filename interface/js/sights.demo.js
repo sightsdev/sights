@@ -3,7 +3,7 @@
 	Licensed under the GNU General Public License 3.0
 */
 var demo = false;
-var demo_config = {"network":{"ip":"*"},"control":{"default_gamepad_speed":3,"default_keyboard_speed":3},"motors":{
+var demo_config = {"network":{"ip":"*"},"control":{"default_speed":3},"motors":{
 	"type":"virtual"},"arduino":{"enabled":false},"interface":{"notifications":{"enabled":true,"timeout":7},"cameras":{
 		"front":{"enabled":true,"id":1},"back":{"enabled":true,"id":2},"left":{"enabled":true,"id":3},"right":{
 			"enabled":true,"id":4}},"graphs":[{"uid":"cpu_temperature","type":"circle","enabled":true,"location":
@@ -129,17 +129,17 @@ function demoMode() {
 	};
 	$('#gamepad_monitor_pre').html(hljs.highlight("JSON", JSON.stringify(obj, null, '\t')).value);
 
-	let demo_keyboard_speed = 3;
+	let demo_speed = 3;
 	keyboardJS.bind('-', null, function (e) {
 		// Keep speed at a minimum of 1
-		demo_keyboard_speed = Math.max(1, demo_keyboard_speed - 1);
-		setSpeedIndicator("kb", demo_keyboard_speed);
+		demo_speed = Math.max(1, demo_speed - 1);
+		setSpeedIndicator(demo_speed);
 	});
 
 	keyboardJS.bind('=', null, function (e) {
 		// Keep speed at a max of 8
-		demo_keyboard_speed = Math.min(8, demo_keyboard_speed + 1);
-		setSpeedIndicator("kb", demo_keyboard_speed);
+		demo_speed = Math.min(8, demo_speed + 1);
+		setSpeedIndicator(demo_speed);
 	});
 
 	var example_log = `2019-11-09 13:37:04,068 INFO __main__: Starting manager process

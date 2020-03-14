@@ -172,18 +172,25 @@ function toggleSensorMode() {
 	}
 }
 
-function setSpeedIndicator(type, speed) {
-	// Type is either 'kb' (keyboard) or 'gp' (gamepad)
+function setSpeedIndicator(speed) {
 	// Given speed (127 to 1023) needs to be between 1 and 8
 	speed = (speed + 1) / 128;
 	// Enables / disables relevant nodes (1 - 8) for speed indicators
 	for (var i = 0; i < 8; i++) {
 		var val = i < speed ? '12.5%' : '0%';
-		$("#" + type + "_speed_node_" + (i + 1)).css('width', val);
+		$("#speed_node_" + (i + 1)).css('width', val);
 	}
 }
 
 $(document).on("ready", function () {
+    $("#speed_down").on("click", function () {
+        keyboardJS.pressKey('-');
+        keyboardJS.releaseKey('-');
+    });
+    $("#speed_up").on("click", function () {
+        keyboardJS.pressKey('=');
+        keyboardJS.releaseKey('=');
+    });
 	toggleSensorMode();
 	// Hide update instructions until user checks for an update
 	$('#update_instructions').hide();

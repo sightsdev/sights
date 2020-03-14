@@ -30,9 +30,9 @@ class ControlReceiver (WebSocketProcess):
 
     def gamepad_movement_handler(self, type="TRIGGER"):
         if (type == "TRIGGER"):
-            # Set speed range to be from 0 to `gamepad_speed`
-            left = self.state["LEFT_BOTTOM_SHOULDER"] * self.motors.gamepad_speed
-            right = self.state["RIGHT_BOTTOM_SHOULDER"] * self.motors.gamepad_speed
+            # Set speed range to be from 0 to `speed`
+            left = self.state["LEFT_BOTTOM_SHOULDER"] * self.motors.speed
+            right = self.state["RIGHT_BOTTOM_SHOULDER"] * self.motors.speed
 
             # If modifier pressed, then invert value
             left *= (-1) ** self.state["LEFT_TOP_SHOULDER"]
@@ -57,15 +57,15 @@ class ControlReceiver (WebSocketProcess):
             # Clamp to -1/+1
             left = max(-1, min(left, 1))
             right = max(-1, min(right, 1))
-            # Multiply by gamepad_speed to get our final speed to be sent to the servos
-            left *= self.motors.gamepad_speed
-            right *= self.motors.gamepad_speed
+            # Multiply by speed to get our final speed to be sent to the servos
+            left *= self.motors.speed
+            right *= self.motors.speed
             # Send command to servos
             self.motors.move(left, right)
 
 
     def keyboard_handler(self, control, value):
-        speed = self.motors.keyboard_speed
+        speed = self.motors.speed
         if (control == "FORWARD"):
             self.motors.move(speed, speed)
         elif (control == "BACKWARDS"):
@@ -78,14 +78,14 @@ class ControlReceiver (WebSocketProcess):
             self.motors.move(0, 0)
         elif (control == "SPEED_UP"):
             if value == "DOWN":
-                self.motors.keyboard_speed = min(1023, speed + 128)
+                self.motors.speed = min(1023, speed + 128)
                 # Send a message to SensorStream to update the interface with the current speed
-                self.pipe.send(["SYNC_SPEED", "kb", self.motors.keyboard_speed])
+                self.pipe.send(["SYNC_SPEED", self.motors.speed])
         elif (control == "SPEED_DOWN"):
             if value == "DOWN":
-                self.motors.keyboard_speed = max(127, speed - 128)
+                self.motors.speed = max(127, speed - 128)
                 # Send a message to SensorStream to update the interface with the current speed
-                self.pipe.send(["SYNC_SPEED", "kb", self.motors.keyboard_speed])
+                self.pipe.send(["SYNC_SPEED", self.motors.speed])
 
 
     def message_handler(self, buf):
@@ -109,12 +109,12 @@ class ControlReceiver (WebSocketProcess):
             # Then handle any button events
             if control == "DPAD_LEFT":
                 if value == "DOWN":
-                    self.motors.gamepad_speed = min(1023, self.motors.gamepad_speed + 128)
-                    self.pipe.send(["SYNC_SPEED", "gp", self.motors.gamepad_speed])
+                    self.motors.speed = min(1023, self.motors.speed + 128)
+                    self.pipe.send(["SYNC_SPEED", self.motors.speed])
             elif control == "DPAD_RIGHT":
                 if value == "DOWN":
-                    self.motors.gamepad_speed = max(127, self.motors.gamepad_speed - 128)
-                    self.pipe.send(["SYNC_SPEED", "gp", self.motors.gamepad_speed])
+                    self.motors.speed = max(127, self.motors.speed - 128)
+                    self.pipe.send(["SYNC_SPEED", self.motors.speed])
         elif typ == "AXIS":
             # If axis, store as float
             value = float(msg["value"])

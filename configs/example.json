@@ -3,8 +3,7 @@
 		"ip": "*"
 	},
 	"control": {
-		"default_gamepad_speed": 3,
-		"default_keyboard_speed": 3
+		"default_speed": 3
 	},
 	"motors": {
 		"type": "virtual"

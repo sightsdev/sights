@@ -121,8 +121,7 @@ function sensorUpdate(obj) {
 			global_config = response;
 
 			// Manually set output text of range slider elements
-			$('output', $('#visual_editor_container'))[0].innerText = response['control']['default_gamepad_speed'];
-			$('output', $('#visual_editor_container'))[1].innerText = response['control']['default_keyboard_speed'];
+			$('output', $('#visual_editor_container'))[0].innerText = response['control']['default_speed'];
 
 			// Now handle loading stuff from the config file
 			// Enable / disable cameras and set their ports as defined by the config
@@ -284,11 +283,8 @@ function sensorUpdate(obj) {
 
 	// Permanent/default "sensors"
 	// Speed indicators for keyboard and gamepad
-	if ("kb_speed" in obj) {
-		setSpeedIndicator("kb", obj["kb_speed"]);
-	}
-	if ("gp_speed" in obj) {
-		setSpeedIndicator("gp", obj["gp_speed"]);
+	if ("speed" in obj) {
+		setSpeedIndicator(obj["speed"]);
 	}
 }
 

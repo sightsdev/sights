@@ -131,8 +131,6 @@ $(document).on("ready", function () {
 
 	// Hide 'Controller Connected' indicator, until connected 
 	$("#controller_status_connected").hide();
-	// Hide gamepad speed indicator, until connected
-	$("#gamepad_speed_indicator").hide();
 
 	// Attach it to the window so it can be inspected at the console.
 	window.gamepad = new Gamepad();
@@ -158,7 +156,6 @@ $(document).on("ready", function () {
 
 		if (gamepad.count() == 0) {
 			$("#controller_status_connected").hide();
-			$("#gamepad_speed_indicator").hide();
 			$("#controller_status_disconnected").show();
 		}
 		gamepadDisconnectedAlert();
