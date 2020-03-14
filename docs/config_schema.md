@@ -12,13 +12,9 @@ It can be set to '*' to bind to any available address.
 
 ## `control`
 
-`default_gamepad_speed`
+`default_speed`
 
-Default gamepad speed option between 1 and 8.
-
-`default_keyboard_speed`
-
-Default keyboard speed option between 1 and 8.
+Default speed between 1 and 8.
 
 ## `motors`
 
