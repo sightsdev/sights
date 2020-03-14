@@ -32,8 +32,7 @@ class Motors:
             self.connection = VirtualConnection(config['motors'])
             self.type = 'virtual'
         # Load speed defaults
-        self.gamepad_speed = config['control']['default_gamepad_speed'] * 128 - 1
-        self.keyboard_speed = config['control']['default_keyboard_speed'] * 128 - 1
+        self.speed = config['control']['default_speed'] * 128 - 1
         self.last_left = 0
         self.last_right = 0
         # Ensure Connection class has access to logging capabilities
