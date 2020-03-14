@@ -43,8 +43,6 @@ function gamepadConnectedAlert() {
     // Controller status indicator
     $("#controller_status_connected").show();
     $("#controller_status_disconnected").hide();
-    // Gamepad speed indicator
-    $("#gamepad_speed_indicator").show();
     // Create corresponding toast
     launchToast("Controller connected", "success", "gamepad");
 }
