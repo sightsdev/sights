@@ -46,25 +46,14 @@ const schema = {
             "title": "Control",
             "description": "Default settings for controllers.",
             "required": [
-                "default_gamepad_speed",
-                "default_keyboard_speed"
+                "default_speed"
             ],
             "properties": {
-                "default_gamepad_speed": {
-                    "$id": "#/properties/control/properties/default_gamepad_speed",
+                "default_speed": {
+                    "$id": "#/properties/control/properties/default_speed",
                     "type": "integer",
-                    "title": "Default Gamepad Speed",
-                    "description": "The default motor speed (1-8) when using a gamepad.",
-                    "format": "range",
-                    "default": 3,
-                    "minimum": 1.0,
-                    "maximum": 8.0
-                },
-                "default_keyboard_speed": {
-                    "$id": "#/properties/control/properties/default_keyboard_speed",
-                    "type": "integer",
-                    "title": "Default Keyboard Speed",
-                    "description": "The default motor speed (1-8) when using the keyboard.",
+                    "title": "Default Speed",
+                    "description": "The default motor speed (1-8).",
                     "format": "range",
                     "default": 3,
                     "minimum": 1.0,
