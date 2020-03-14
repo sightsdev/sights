@@ -184,6 +184,14 @@ function setSpeedIndicator(type, speed) {
 }
 
 $(document).on("ready", function () {
+    $("#speed_down").on("click", function () {
+        keyboardJS.pressKey('-');
+        keyboardJS.releaseKey('-');
+    });
+    $("#speed_up").on("click", function () {
+        keyboardJS.pressKey('=');
+        keyboardJS.releaseKey('=');
+    });
 	toggleSensorMode();
 	// Hide update instructions until user checks for an update
 	$('#update_instructions').hide();
