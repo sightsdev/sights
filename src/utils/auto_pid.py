@@ -2,7 +2,7 @@
 from pyax12.connection import Connection
 from serial import Serial
 from enum import IntEnum
-from motor_handler import Motors
+from motor_handler import MotorHandler
 import json
 import time
 import atexit
@@ -16,7 +16,7 @@ This script is currently deprecated, but still works if you tweak a few things.
 config = json.load(open('example.json'))
 
 # Servos
-motors = Motors(config)
+motors = MotorHandler(config)
 # Arduino
 sc_arduino = Serial(port=config['arduino']['port'],
                     baudrate=config['arduino']['baudrate'])

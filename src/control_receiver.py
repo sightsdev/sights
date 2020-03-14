@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from motor_handler import Motors
+from motor_handler import MotorHandler
 from websocket_process import WebSocketProcess
 import websockets
 import asyncio
@@ -14,8 +14,8 @@ class ControlReceiver (WebSocketProcess):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5555)
         # Setup logger
         self.logger = logging.getLogger(__name__)
-        # Create Motors object to handle servos
-        self.motors = Motors(self.config)
+        # Create MotorHandler object to handle motors
+        self.motors = MotorHandler(self.config)
         # When script exits or is interrupted stop all servos
         atexit.register(self.motors.close)
         # Default controller state object

@@ -7,7 +7,7 @@ from plugin_system import PluginManager
 from motor_wrapper import MotorWrapper
 from motors.virtual import VirtualConnection
 
-class Motors:
+class MotorHandler:
     def __init__(self, config):
         # Setup logger
         self.logger = logging.getLogger(__name__)
