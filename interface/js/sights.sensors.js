@@ -284,11 +284,8 @@ function sensorUpdate(obj) {
 
 	// Permanent/default "sensors"
 	// Speed indicators for keyboard and gamepad
-	if ("kb_speed" in obj) {
-		setSpeedIndicator("kb", obj["kb_speed"]);
-	}
-	if ("gp_speed" in obj) {
-		setSpeedIndicator("gp", obj["gp_speed"]);
+	if ("speed" in obj) {
+		setSpeedIndicator(obj["speed"]);
 	}
 }
 

@@ -115,15 +115,15 @@ class SensorStream(WebSocketProcess):
     async def pipe_message_handler(self, msg):
         # If we receive a message from ControLReceiver with a new speed, set that to our speed
         if msg[0] == "SYNC_SPEED":
-            await self.send_speed_value(msg[1], msg[2])
+            await self.send_speed_value(msg[1])
 
-    async def send_speed_value(self, typ, speed):
+    async def send_speed_value(self, speed):
         msg = {}
         # Create message with type and value of the speed
-        msg[typ + "_speed"] = speed
+        msg["speed"] = speed
         # Send current speed to be displayed on the interface
         await self.websocket.send(json.dumps(msg))
-        self.logger.debug("Syncronized speed setting")
+        self.logger.debug("Synchronised speed setting")
 
     async def send_init_info(self):
         msg = {}
