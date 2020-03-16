@@ -75,7 +75,10 @@
 				"location": "#textgroup_left",
 				"title": "Uptime"
 			}
-		]
+		],
+		"theme": {
+			"accent_colour": "#FF5A00"
+		}
 	},
 	"sensors": [
 		{
