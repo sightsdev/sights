@@ -263,9 +263,10 @@ $(document).on("ready", function () {
 
 	// If the camera stream doesn't load, default to fallback image
 	$('.stream-image').on('error', function () {
-		if (this.src != 'images/no-feed.png') {
-			this.src = 'images/no-feed.png';
+		if (this.src != 'images/no-feed.svg') {
+			this.src = 'images/no-feed.svg';
 			$('.stream-image').removeClass("rotated");
+			$('.stream-image').addClass("accent-colour");
 		}
 	});
 	// Make the image invisible until it has loaded, allowing us to see the loading spinner

@@ -120,6 +120,13 @@ function sensorUpdate(obj) {
 			// Keep a copy to work from
 			global_config = response;
 
+			// Set theme accent colour from config
+	        let accent_colour = loadConfigSetting(['interface', 'theme', 'accent_colour'], '#FF5A00');
+	        $('.accent-colour').each(function(i, element) {
+                $(element).css("color", accent_colour);
+                $(element).css("fill", accent_colour);
+            });
+
 			// Manually set output text of range slider elements
 			$('output', $('#visual_editor_container'))[0].innerText = response['control']['default_speed'];
 
@@ -286,6 +293,8 @@ function sensorUpdate(obj) {
 	if ("speed" in obj) {
 		setSpeedIndicator(obj["speed"]);
 	}
+
+
 }
 
 function sensorConnection() {
