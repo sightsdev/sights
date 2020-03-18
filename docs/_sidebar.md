@@ -2,6 +2,7 @@
 - [Getting started](getting_started.md)
 - [Manual installation](manual_install.md)
 - [Extending](extending.md)
+- [Setting up a development environment](dev_environment.md)
 - [Configuration file format](config_schema.md)
 - [Network information](network.md)
 - [JS Libraries](js_libraries.md)
