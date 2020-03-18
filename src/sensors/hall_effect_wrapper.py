@@ -1,18 +1,18 @@
 from sensor_wrapper import SensorWrapper
 
-# Try importing the RPi GPIO module but don't throw an error if it fails, instead try to import the Jetson one
-try:
-    import RPi.GPIO as GPIO                   
-except ImportError:
-    # If this fails too, throw an error
-    import Jetson.GPIO as GPIO
-
 class HallEffectWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'hall_effect'
     
     def __init__(self, config):
         SensorWrapper.__init__(self, config)
+
+        # Try importing the RPi GPIO module but don't throw an error if it fails, instead try to import the Jetson one
+        # If that fails too, let it throw an error
+        try:
+            import RPi.GPIO as GPIO                   
+        except ImportError:
+            import Jetson.GPIO as GPIO
 
         # Get assigned pin that hall effect sensor is attached to
         self.pin = config.get(int("pin"), 17)
