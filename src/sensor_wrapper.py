@@ -32,3 +32,6 @@ class SensorWrapper:
             return self.enabled
         else:
             return False
+
+    def close(self):
+        pass

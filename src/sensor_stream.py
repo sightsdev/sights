@@ -189,3 +189,6 @@ class SensorStream(WebSocketProcess):
             except websockets.exceptions.ConnectionClosed:
                 self.logger.info(f"Client disconnected ({websocket.remote_address[0]})")
                 break
+        # Close each sensor
+        for sensor in self.sensors:
+            sensor.close()
