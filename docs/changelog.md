@@ -1,4 +1,32 @@
 # Changelog {docsify-ignore-all}
+## [in dev]() (unreleased)
+
+A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
+
+### Features
+
+- Merged speed indicators with the ability to change speed through interface buttons as well
+- Support for GPIO digital switch devices (a basic button or even a hall effect switch) as sensors
+
+### Improvements
+
+- Reorganised JS folder for the interface. SIGHTS code is now seperate from external libraries
+- Improved and minifed gamepad.js. We now maintain a fork of this, along with a few modified libraries. Additional docs explain these changes.
+- Input improvements:
+  - Allow key repeats for more ergonomic speed change on the interface
+  - If multiple keys are pressed, return to the last function when the current key is released.
+  - Use gamepad left and right for speed changes (rather than up or down)
+- Updated JS libraries including Bootstrap and Highlight.js
+- Changed Highlight.js theme from Monokai to Railscasts
+- Unified the colour orange across the interface
+- Renamed class Motors to MotorHandler, in line with it's filename
+- Add close function to SensorWrapper in case a sensor wrapper needs to close a connection or cleanup
+- Open external links in a new tab
+
+### Bug fixes
+
+- No spacing in SSH tabs 
+- Shutdown and reboot functionality fails when it succeeds and succeeds when it fails
 
 ## [v1.1.1](https://github.com/SFXRescue/sights/releases/tag/v1.1.1) (2020-03-03)
 
