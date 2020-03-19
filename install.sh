@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # SIGHTS installer
-# Handles installing SIGHTS
+# Handles installing and updating SIGHTS
 # 
 # Created by the Semi-Autonomous Rescue Team
 # This file is part of the SIGHTS project

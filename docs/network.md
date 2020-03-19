@@ -1,5 +1,7 @@
 # Network Ports
 
+This is a list of network ports used by SIGHTS and related services.
+
 ## `:22` Secure Shell (SSH)
 
 SSH is enabled on the host to allow access to the underlying OS through the SSH window on the interface. A username and password is required for security.
@@ -7,6 +9,10 @@ SSH is enabled on the host to allow access to the underlying OS through the SSH 
 ## `:80` SIGHTS Interface (HTTP)
 
 This is the port that the main SIGHTS interface is hosted on. This will be the page you will see if you visit the host's IP address.
+
+## ':4200' ShellInABox (HTTP)
+
+ShellInABox is a web-based SSH client that is hosted on this port and available through the SSH window on the interface.
 
 ## `:5555` SIGHTS control receiver (WebSocket)
 
@@ -51,10 +57,13 @@ Data sent over this port is in the JSON format. Each key in the JSON data is usu
 
 ```json
 {
-    "co2": 122,
-    "temp": 44.5,
-    "thermal_camera": [22.5, 22.4, 22.4, 22.3, ...]
-    ...
+    "sensor_data": {
+		"memory_1": 7026,
+        "cpu_usage_1": 3.2,
+        "thermal_camera": [22.5, 22.4, 22.4, 22.3, ...]
+	}
+}
+...
 ```
 
 ## `:8080` Motion web interface (HTTP)

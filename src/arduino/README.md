@@ -1,6 +1,12 @@
 # S.A.R.T. Robot Arduino-side code
 Arduino compatible sketches for various sensors used on the **S.A.R.T. Mark III robot.**
 
+Arduino functionality is now deprecated. No support will be provided.
+
+Almost all sensors either use i2c or digital pins, thus can be used with a Raspberry Pi or Jetson Nano instead.
+
+At some point, it is possible that Arduino support will be revisited, let us know if this could be of use to you.
+
 ## SensorParty
 This is the main production code that runs on the Arduino. This collects data from the following sensors and streams it over serial to the robot's main computer.
 * **Adafruit VL53L0X** time-of-flight sensor

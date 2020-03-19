@@ -40,4 +40,4 @@ S.A.R.T. Integrated GUI and Host Teleoperation Service (SIGHTS) is a complete te
   - Support for adding additional motor connection handlers in a similar manner to sensors
 - Built entirely using open protocols and open-source software.
 
-All configuration for SIGHTS is done in the `.json` files within the `configs/` directory, which can be edited through the web interface. The active configuration file can be changed through the interface at any time, even if the SIGHTS service is stopped or has crashed. This gives you the ability to fix any configuration issue without physical access to the robot.
+All configuration for SIGHTS is done in a single `.json` file within the `configs/` directory, which can be edited through the web interface. Multiple of these config files can be kept for different configurations. The active configuration file can be changed through the interface at any time, even if the SIGHTS service is stopped or has crashed. This gives you the ability to fix any configuration issue without physical access to the robot.
