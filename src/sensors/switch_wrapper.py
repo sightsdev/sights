@@ -1,8 +1,8 @@
 from sensor_wrapper import SensorWrapper
 
-class HallEffectWrapper(SensorWrapper):
+class SwitchWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
-    type_ = 'hall_effect'
+    type_ = 'switch'
     
     def __init__(self, config):
         SensorWrapper.__init__(self, config)

@@ -12,6 +12,7 @@ import multiprocessing_logging
 
 class Manager:
     def __init__(self, config_file, logger):
+        # Set up the logger
         self.logger = logger
         self.logger.info("Starting main process...")
         # Store config file name
@@ -22,6 +23,7 @@ class Manager:
         # Terminate the two processes we spawn
         self.sensor_process.terminate()
         self.control_process.terminate()
+        # We should already have joined the processes, but just in case, this ensures we actually terminate
         self.sensor_process.join()
         self.control_process.join()
 

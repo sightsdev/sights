@@ -28,6 +28,7 @@ class WebSocketProcess (multiprocessing.Process):
 
     def run(self):
         self.logger.info("Starting " + self.name + " process at " + self.ip + ":" + str(self.port))
+        # Start the WebSocket server, run the main() function
         start_server = websockets.serve(self.main, self.ip, self.port)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
