@@ -77,6 +77,10 @@ function configRequestedAlert() {
     launchToast("Requested config file", "info", "file-alt");
 }
 
+function configUnsavedChangesAlert() {
+    launchToast("There are unsaved changes", "warning", "save");
+}
+
 /* Service Alerts */
 function serviceAlert(type, message) {
     launchToast(message, type, "server");

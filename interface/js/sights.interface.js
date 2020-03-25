@@ -192,6 +192,13 @@ function setSpeedIndicator(speed) {
 }
 
 $(document).on("ready", function () {
+	// Notify the user as soon as they close the settings modal that there are unsaved changes
+	$('#settings_modal').on('hidden.bs.modal', function () {
+		if (unsavedChanges) {
+			configUnsavedChangesAlert();
+		}
+	});
+
     $("#speed_down").on("click", function () {
         keyboardJS.pressKey('-');
         keyboardJS.releaseKey('-');
