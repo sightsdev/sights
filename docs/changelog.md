@@ -5,8 +5,8 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 
 ### Features
 
-- Merged speed indicators with the ability to change speed through interface buttons as well
-- Support for GPIO digital switch devices (a basic button or even a hall effect switch) as sensors
+- Add support for GPIO digital switch devices (a basic button or even a hall effect switch) as sensors
+- Notify the user if there are unsaved config changes when the config modal is closed and when the page is refreshed or closed
 
 ### Improvements
 
@@ -16,6 +16,7 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
   - Allow key repeats for more ergonomic speed change on the interface
   - If multiple keys are pressed, return to the last function when the current key is released.
   - Use gamepad left and right for speed changes (rather than up or down)
+  - Merged speed indicators with the ability to change speed through interface buttons as well
 - Updated JS libraries including Bootstrap and Highlight.js
 - Changed Highlight.js theme from Monokai to Railscasts
 - Unified the colour orange across the interface
