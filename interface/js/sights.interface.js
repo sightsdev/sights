@@ -263,6 +263,7 @@ $(document).on("ready", function () {
 
 	// Load no-feed.svg and append to .no-feed divs
 	$('.no-feed').load('images/no-feed.svg');
+	$('.no-feed-sights').load('images/no-feed-sights.svg');
 	// Make the image invisible until it has loaded, allowing us to see the fallback image
 	$('.stream-image').css('opacity', '0');
 	// Once it's loaded, remove transparency
