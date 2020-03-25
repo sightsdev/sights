@@ -12,8 +12,16 @@ var sensorMode = false;
 var configEditor;
 var editorBaseConfig;
 var editorSavedConfig;
+var unsavedChanges;
 
 var startTime;
+
+// Notify on refresh when there are unsaved changes
+window.addEventListener("beforeunload", function(event) {
+	if (unsavedChanges) {
+		event.returnValue = "We just need to return any value to show a pop-up confirmation to leave the page";
+	}
+});
 
 // Load syntax highlighting
 hljs.initHighlightingOnLoad();
@@ -82,7 +90,7 @@ function updateCheck(type, altRepo) {
 
 function updateConfigAlerts() {
 	var currentConfig = JSON.stringify(configEditor.getValue());
-
+	unsavedChanges = false;
 	if(editorBaseConfig == currentConfig && currentConfig == editorSavedConfig) {
 		// There are no changes. Hide all alerts.
 		$(".save-alert").slideUp();
@@ -103,6 +111,7 @@ function updateConfigAlerts() {
 		// There are unsaved changes.
 		$(".save-alert").slideDown();
 		$(".restart-service-alert").slideUp();
+		unsavedChanges = true;
 	}
 }
 
