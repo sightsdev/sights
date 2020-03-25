@@ -8,6 +8,12 @@
 # Licensed under GNU General Public License 3.0				#
 ###########################################################*/
 
+/* Set the default accent colour */
+.accent-colour {
+  color: #FF5A00;
+  fill: #FF5A00;
+}
+
 li.nav-item {
   padding-bottom: 5px;
 }
