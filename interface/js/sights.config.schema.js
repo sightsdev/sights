@@ -837,6 +837,7 @@ const schema = {
                         "accent_colour": {
                             "$id": "#/properties/interface/properties/theme/properties/accent_colour",
                             "type": "string",
+                            "format": "color",
                             "title": "Accent Colour",
                             "description": "Enter the hexadecimal colour code of the desired accent colour",
                             "default": '#FF5A00'
