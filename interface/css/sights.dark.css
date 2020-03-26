@@ -74,11 +74,6 @@
   background-color: #222222;
 }
 
-[data-theme="dark"] .c100.orange .bar,
-[data-theme="dark"] .c100.orange .fill {
-  border-color: #d65a31; /* Sacrilege */
-}
-
 /* Demo mode indicator */
 [data-theme="dark"] .ugly {
   color: #ffffff;

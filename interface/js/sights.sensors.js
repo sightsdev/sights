@@ -25,6 +25,7 @@ function updateCameras() {
 		if(!id) {
 			return;
 		}
+		camera.css('opacity', '1');
 		camera.attr("src", "http://" + ip + ":8081/" + id + "/stream");
 		camera.attr("data-id", id);
 	});
