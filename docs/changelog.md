@@ -7,6 +7,7 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 
 - Add support for GPIO digital switch devices (a basic button or even a hall effect switch) as sensors
 - Notify the user if there are unsaved config changes when the config modal is closed and when the page is refreshed or closed
+- Support for accent colour theming
 
 ### Improvements
 
