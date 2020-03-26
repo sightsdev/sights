@@ -822,6 +822,27 @@ const schema = {
                         "title": "Graph"
                     }
                 },
+                "theme": {
+                    "$id": "#/properties/interface/properties/theme",
+                    "type": "object",
+                    "options": {
+                        "collapsed": true
+                    },
+                    "title": "Theme",
+                    "description": "Customise the appearance of the SIGHTS interface.",
+                    "required": [
+                        "accent_colour"
+                    ],
+                    "properties": {
+                        "accent_colour": {
+                            "$id": "#/properties/interface/properties/theme/properties/accent_colour",
+                            "type": "string",
+                            "title": "Accent Colour",
+                            "description": "Enter the hexadecimal colour code of the desired accent colour",
+                            "default": '#FF5A00'
+                        }
+                    }
+                }
             }
         },
         "sensors": {

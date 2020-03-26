@@ -277,19 +277,18 @@ $(document).on("ready", function () {
 		$("#interface_info_pre").html("");
 	});
 
-	// If the camera stream doesn't load, default to fallback image
-	$('.stream-image').on('error', function () {
-		if (this.src != 'images/no-feed.png') {
-			this.src = 'images/no-feed.png';
-			$('.stream-image').removeClass("rotated");
-		}
-	});
-	// Make the image invisible until it has loaded, allowing us to see the loading spinner
+	// Load no-feed.svg and append to .no-feed divs
+	$('.no-feed').load('images/no-feed.svg');
+	$('.no-feed-sights').load('images/no-feed-sights.svg');
+	// Make the image invisible until it has loaded, allowing us to see the fallback image
 	$('.stream-image').css('opacity', '0');
-	// Once it's loaded, hide the spinner and remove transparency
+	// Once it's loaded, remove transparency
 	$('.stream-image').on('load', function () {
-		$("#spinner").hide();
-		$('.stream-image').css('opacity', '1');
+		$(this).css('opacity', '1');
+	});
+	// If a camera stream fails, change opacity to see the fallback image underneath
+	$('.stream-image').on('error', function () {
+		$(this).css('opacity', '0');
 	});
 
 	// Load demo mode if on public webserver

@@ -121,6 +121,14 @@ The pretty title to display on the graph.
 
 Some graphs may require additional fields specific to the type of graph. Refer to individual documentation provided in the config schema.
 
+### Theme
+
+Allows the customisation of how the SIGHTS interface appears.
+
+#### Accent Colour
+
+Change the accent colour of the interface to a different colour using a hexadecimal colour code.
+
 ## `sensors`
 
 Array of sensors. Each sensor can have a number of different configuration options but for every sensor, the required fields are:

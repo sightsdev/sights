@@ -8,6 +8,12 @@
 # Licensed under GNU General Public License 3.0				#
 ###########################################################*/
 
+/* Set the default accent colour */
+.accent-colour {
+  color: #FF5A00;
+  fill: #FF5A00;
+}
+
 li.nav-item {
   padding-bottom: 5px;
 }
@@ -70,6 +76,11 @@ li.nav-item {
   height: 100%;
 }
 
+.stream-image {
+  position: absolute;
+  width: 100%;
+}
+
 .loader {
   position: fixed;
   top: 50%;
@@ -84,13 +95,6 @@ li.nav-item {
   -ms-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
-}
-
-.loading-spinner {
-  position: absolute;
-  width: 3rem;
-  height: 3rem;
-  top: 120px;
 }
 
 .pb-en {
