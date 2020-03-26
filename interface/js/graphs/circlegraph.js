@@ -43,6 +43,7 @@ class CircleGraph extends Graph{
                     "class": 'bar'
                 }),
                 $("<div/>", {
+                    "id": this.config.uid + "_fill",
                     "class": 'fill'
                 })
             )
@@ -58,7 +59,9 @@ class CircleGraph extends Graph{
         // Get maximum from the initial message
         this.config.limit = data["limit"];
         // Set theme accent colour from config
-	    $('#' + this.config.uid + "_bar").css("border-color", loadConfigSetting(['interface', 'theme', 'accent_colour'], '#FF5A00'));
+        let accent_colour = loadConfigSetting(['interface', 'theme', 'accent_colour'], '#FF5A00');
+        $('#' + this.config.uid + "_bar").css("border-color", accent_colour);
+        $('#' + this.config.uid + "_fill").css("border-color", accent_colour);
     }
 
     update(index, data, name) {
