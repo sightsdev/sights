@@ -431,10 +431,10 @@ $(document).on("ready",function () {
                     if (response[0])
                         serviceAlert("success", "Updated successfully!");
                     else
-                        serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
+                        serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
                 },
                 error: function(jqXHR, status, error) {
-                    serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
+                    serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
                 }
             });
         } else {
@@ -453,10 +453,10 @@ $(document).on("ready",function () {
                     if (response[0])
                         serviceAlert("success", "Updated successfully!");
                     else
-                        serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
+                        serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
                 },
                 error: function(jqXHR, status, error) {
-                    serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
+                    serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
                 }
             });
         } else {
