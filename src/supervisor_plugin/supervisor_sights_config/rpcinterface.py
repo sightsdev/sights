@@ -196,7 +196,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         ]
         if (dev):
             update_commands[2].append('--dev')
-        with open('update.log', 'w') as f:
+        with open('/var/log/sights.update.log', 'w') as f:
             f.write(f"Update log for SIGHTS on {datetime.datetime.now()}\n")
             for command in update_commands:
                 f.write('> ' + ''.join(e + " " for e in command))
