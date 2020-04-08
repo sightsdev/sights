@@ -428,7 +428,10 @@ $(document).on("ready",function () {
                 methodName: 'sights_config.update',
                 params: {'dev' : false},
                 success: function(response, status, jqXHR) {
-                    serviceAlert("success", "Updated successfully!");
+                    if (response[0])
+                        serviceAlert("success", "Updated successfully!");
+                    else
+                        serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
@@ -447,7 +450,10 @@ $(document).on("ready",function () {
                 methodName: 'sights_config.update',
                 params: {'dev' : true},
                 success: function(response, status, jqXHR) {
-                    serviceAlert("success", "Updated successfully!");
+                    if (response[0])
+                        serviceAlert("success", "Updated successfully!");
+                    else
+                        serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
