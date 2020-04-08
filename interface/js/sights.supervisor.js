@@ -431,7 +431,7 @@ $(document).on("ready",function () {
                     serviceAlert("success", "Updated successfully!");
                 },
                 error: function(jqXHR, status, error) {
-                    serviceAlert("danger", "Update failed. Check /opt/sights/update.log");
+                    serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
                 }
             });
         } else {
@@ -450,7 +450,7 @@ $(document).on("ready",function () {
                     serviceAlert("success", "Updated successfully!");
                 },
                 error: function(jqXHR, status, error) {
-                    serviceAlert("danger", "Update failed. Check /opt/sights/update.log");
+                    serviceAlert("danger", "Update failed. Check /var/log/sights.update.log");
                 }
             });
         } else {
