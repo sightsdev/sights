@@ -196,14 +196,19 @@ class SIGHTSConfigNamespaceRPCInterface:
         ]
         if (dev):
             update_commands[2].append('--dev')
-        with open('/var/log/sights.update.log', 'w') as f:
-            f.write(f"Update log for SIGHTS on {datetime.datetime.now()}\n")
-            for command in update_commands:
-                f.write('> ' + ''.join(e + " " for e in command))
-                if _runCommand(f, command) != 0:
-                    f.write("\nUpdate failed.")
-                    return False
-            f.write("\nSIGHTS update succeeded!")
+        # Log output of commands to system log directory
+        f = open('/var/log/sights.update.log', 'w')
+        f.write(f"Update log for SIGHTS on {datetime.datetime.now()}\n")
+        # Run each command to perform an update
+        for command in update_commands:
+            f.write('> ' + ''.join(e + " " for e in command))
+            # Run this command, and if exit code is non-zero, consider the update failed
+            if _runCommand(f, command) != 0:
+                f.write("\nUpdate failed.")
+                f.close()
+                return False
+        f.write("\nUpdate succeeded!")
+        f.close()
         return True
 
 def make_sights_config_rpcinterface(supervisord, **config):
