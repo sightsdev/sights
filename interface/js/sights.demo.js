@@ -42,7 +42,7 @@ function demoMode() {
 
 	// Set demo related global variables
 	demo = true;
-	running_config = "demo.json";
+	running_config = active_config = "demo.json";
 	ssh_address = "https://gitsuppository.net/";
 
 	// Make sensors.js think that there's a real config running!

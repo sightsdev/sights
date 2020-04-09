@@ -1,6 +1,6 @@
 // The setInterval that calls updateService
 var serviceUpdater;
-var active_config;
+var active_config; // The selected config file (not necessarily running)
 
 function updateServiceInfo(response, status, jqXHR) {
     // Only runs on first call after connecting
@@ -63,8 +63,6 @@ function serviceDisconnected(jqXHR, status, error) {
     $("#service_info_status").addClass("btn-secondary");
     // Update log modal information
     $("#service_info_logfile").html("Couldn't get service information");
-    // Empty config selector
-    //$('#config_selector').html("");
     // Show 'Demo Mode' button and the separator near it
     $("#power_options_divider").show();
     $("#demo_mode_button").show();
@@ -105,7 +103,10 @@ function updateConfigSelector() {
             // Remove any line breaks from the "active config" string.
             active_config = response[0][1].replace(/(\r\n|\n|\r)/gm, "");
             // Get the active config and make it the currently selected config
-            $("#config_active_indicator").html(active_config)
+            $("#config_active_indicator").html(active_config);
+
+            getRevisions(active_config);  // Get the revisions of this config file and display in the revisions tab
+            $(".editor_filename").val(active_config.slice(0,-5));
 
             if (active_config != running_config) {
                 $("#config_status").removeClass("btn-success btn-danger btn-warning btn-secondary");
@@ -174,6 +175,11 @@ function updateConfigSelector() {
                 if (configs[i] == active_config) {
                     // Set active item to a disabled state
                     $(enable_button).addClass("disabled");
+                    $(delete_button).addClass("disabled");
+                }
+
+                if (configs[i] == running_config) {
+                    // Set active item to a disabled state
                     $(delete_button).addClass("disabled");
                 }
 

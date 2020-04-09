@@ -264,9 +264,6 @@ function sensorUpdate(obj) {
 		// Other items in the initial message
 		// Set running config
 		running_config = obj["running_config"];
-		getRevisions(running_config);  // Get the revisions of this config file and display in the revisions tab
-		$("#current_config").html(running_config);
-		$(".editor_filename").val(running_config.slice(0,-5));
 
 		updateConfigSelector();
 

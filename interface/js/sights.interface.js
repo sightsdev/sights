@@ -395,16 +395,6 @@ $(document).on("ready", function () {
 		//updateCheck("vision", "SIGHTSVision") // If the vision repository version is one day reported
 	});
 
-	$("#config_selector").on("change", function () {
-		let selected = $('#config_selector').val();
-		if (running_config == selected || active_config == selected) {
-			$("#config_delete_button").addClass("disabled");
-		}
-		else {
-			$("#config_delete_button").removeClass("disabled");
-		}
-	});
-
 	
 	// Documentation button
 	$("#docs_button").on("click", function () { 
