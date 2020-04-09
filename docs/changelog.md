@@ -7,33 +7,33 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 
 - Add support for GPIO digital switch devices (a basic button or even a hall effect switch) as sensors
 - Notify the user if there are unsaved config changes when the config modal is closed and when the page is refreshed or closed
-- Support for accent colour theming (#72, #75)
+- Add support for accent colour theming (#72, #75)
 
 ### Improvements
 
-- Reorganised JS folder for the interface. SIGHTS code is now seperate from external libraries (#68, #69)
-- Improved and minifed gamepad.js. We now maintain a fork of this, along with a few modified libraries. Additional docs explain these changes. (#68, #69)
+- Reorganise JS folder for the interface. SIGHTS code is now seperate from external libraries (#68, #69)
+- Improve and minify gamepad.js. We now maintain a fork of this, along with a few modified libraries. Additional docs explain these changes. (#68, #69)
 - Input improvements (#71):
   - Allow key repeats for more ergonomic speed change on the interface
-  - If multiple keys are pressed, return to the last function when the current key is released.
+  - Return to the last function when the current key is released if multiple keys are pressed.
   - Use gamepad left and right for speed changes (rather than up or down)
-  - Merged speed indicators with the ability to change speed through interface buttons as well
-- Updated JS libraries including Bootstrap and Highlight.js (#68, #69)
-- Changed Highlight.js theme from Monokai to Railscasts (#68, #69)
-- Unified the colour orange across the interface (#72, #75)
-- Renamed class Motors to MotorHandler, in line with it's filename
+  - Merge speed indicators with the ability to change speed through interface buttons as well
+- Update JS libraries including Bootstrap and Highlight.js (#68, #69)
+- Change Highlight.js theme from Monokai to Railscasts (#68, #69)
+- Unify the colour orange across the interface (#72, #75)
+- Rename class Motors to MotorHandler, in line with its filename
 - Add close function to SensorWrapper in case a sensor wrapper needs to close a connection or cleanup
 - Open external links in a new tab
 - Properly close update log filestream when an error occurs
-- Removed legacy Arduino support
+- Remove legacy Arduino support
 - Add tooltips to circle graphs (#78)
 
 ### Bug fixes
 
-- Fixed update log being created in the root directory. Update logs have been moved to `/var/log/`
-- Interface no longer reports update failures as successes
-- No spacing in SSH tabs 
-- Shutdown and reboot functionality fails when it succeeds and succeeds when it fails
+- Update log is created in the root directory.
+- Interface reports update failures as successes
+- Interface reports shutdown/reboot successes as failures
+- No spacing in SSH tabs
 
 ## [v1.1.1](https://github.com/SFXRescue/sights/releases/tag/v1.1.1) (2020-03-03)
 
