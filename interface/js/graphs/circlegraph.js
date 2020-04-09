@@ -18,7 +18,9 @@ class CircleGraph extends Graph{
 
         let circle = $("<div/>", {
             "id": this.config.uid + "_circle",
-            "class": 'c100 p0 med orange center'
+            "class": 'c100 p0 med orange center',
+            "data-placement": "bottom",
+            "title": "..."
         }).append(
             $("<span/>", {
                 "id": this.config.uid + "_parent"
@@ -55,6 +57,15 @@ class CircleGraph extends Graph{
         this.dom_object.append(card);
     }
 
+    appendTo(target) {
+        super.appendTo(target);
+        let id = "#" + this.config.uid + "_circle";
+        // Enable tooltips
+        $(id).tooltip({
+            trigger: "hover"
+        });
+    }
+
     setup(index, data, name) {
         // Get maximum from the initial message
         this.config.limit = data["limit"];
@@ -63,6 +74,7 @@ class CircleGraph extends Graph{
         $('#' + this.config.uid + "_bar").css("border-color", accent_colour);
         $('#' + this.config.uid + "_fill").css("border-color", accent_colour);
     }
+
 
     update(index, data, name) {
         // Maximum value of graph. Use the user's value if set, otherwise the value provided by sensor itself, else 100.
@@ -82,6 +94,7 @@ class CircleGraph extends Graph{
         let percent = Math.round((data / max) * 100);
         if (percent > 100) percent = 100;
         circle.attr('class', "c100 med orange center p" + percent);
+        circle.attr('data-original-title', data + " / " + max + " " + unit);
     }
 }
 
