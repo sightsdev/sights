@@ -25,6 +25,7 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 - Add close function to SensorWrapper in case a sensor wrapper needs to close a connection or cleanup
 - Open external links in a new tab
 - Properly close update log filestream when an error occurs
+- Removed legacy Arduino support
 
 ### Bug fixes
 
