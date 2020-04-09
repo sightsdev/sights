@@ -1,5 +1,5 @@
 # Changelog {docsify-ignore-all}
-## [in dev]() (unreleased)
+## [v1.1.2](https://github.com/SFXRescue/sights/releases/tag/v1.1.2) (2020-04-09)
 
 A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 
@@ -38,7 +38,8 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 - No spacing in SSH tabs
 - Refreshing the page with a different active and running
 config allows overwriting the running config with the active
-config
+config (#79)
+- There are unsaved config changes when the interface is loaded while service is stopped (#79)
 
 ## [v1.1.1](https://github.com/SFXRescue/sights/releases/tag/v1.1.1) (2020-03-03)
 
