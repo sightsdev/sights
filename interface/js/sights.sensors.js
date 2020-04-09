@@ -109,15 +109,8 @@ function sensorUpdate(obj) {
 	if("initial_message" in obj) {
 		interfaceLog("info", "sensors", "Received initial message");
 		requestConfig(function(response) {
-			configReceivedAlert();
 
-			// Populate visual editor
-			// Populating advanced editor happens on configEditor change, which fires when the inital config is set
-			configEditor.setValue(response);
-			// Keep a copy to track changes
-			editorBaseConfig = JSON.stringify(configEditor.getValue());
-			editorSavedConfig = editorBaseConfig;
-			updateConfigAlerts();
+			applyConfig(response);
 			// Keep a copy to work from
 			global_config = response;
 
@@ -127,9 +120,6 @@ function sensorUpdate(obj) {
                 $(element).css("color", accent_colour);
                 $(element).css("fill", accent_colour);
             });
-
-			// Manually set output text of range slider elements
-			$('output', $('#visual_editor_container'))[0].innerText = response['control']['default_speed'];
 
 			// Now handle loading stuff from the config file
 			// Enable / disable cameras and set their ports as defined by the config

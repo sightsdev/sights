@@ -195,7 +195,9 @@ function updateConfigSelector() {
             serviceAlert("danger", "Couldn't get available config files");
         }
     });
-    
+    requestConfig(function(response) {
+        applyConfig(response);
+    });
 }
 
 function requestConfig(callback) {

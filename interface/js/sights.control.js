@@ -266,22 +266,11 @@ $(document).on("ready", function () {
     });
 
 	$(".editor_reload_button").on("click", function () {
+		configRequestedAlert();
 		if(!$(".editor_reload_button").hasClass("disabled")) {
             requestConfig(function(response) {
-                configEditor.setValue(response);
-                // Keep a copy to track changes
-                editorBaseConfig = JSON.stringify(configEditor.getValue());
-                editorSavedConfig = editorBaseConfig;
-				// Stringify value of new config to remove key-value pairs with `undefined` value
-				var jsonString = JSON.stringify(response);
-				// Set advanced editor
-				var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
-				// Populate advanced editor
-				$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
-                updateConfigAlerts();
-                configReceivedAlert();
+                applyConfig(response);
             });
-			configRequestedAlert();
 		}
 	});
 });

@@ -115,6 +115,25 @@ function updateConfigAlerts() {
 	}
 }
 
+function applyConfig(response) {
+	// Certain tasks that should always take place when a config is received, regardless of whether the config was
+	// requested by the user or the interface, or if the service is online or offline
+	configReceivedAlert();
+	configEditor.setValue(response);
+	// Keep a copy to track changes
+    editorBaseConfig = JSON.stringify(configEditor.getValue());
+    editorSavedConfig = editorBaseConfig;
+    // Stringify value of new config to remove key-value pairs with `undefined` value
+	var jsonString = JSON.stringify(response);
+	// Set advanced editor
+	var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+	// Populate advanced editor
+	$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
+	// Manually set output text of range slider elements
+	$('output', $('#visual_editor_container'))[0].innerText = response['control']['default_speed'];
+	updateConfigAlerts();
+}
+
 // Function that appends a port to the IP address
 function portString(port) {
 	return "http://" + ip + ":" + port;
