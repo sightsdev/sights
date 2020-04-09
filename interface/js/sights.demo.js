@@ -4,7 +4,7 @@
 */
 var demo = false;
 var demo_config = {"network":{"ip":"*"},"control":{"default_speed":3},"motors":{
-	"type":"virtual"},"arduino":{"enabled":false},"interface":{"notifications":{"enabled":true,"timeout":7},"cameras":{
+	"type":"virtual"},"interface":{"notifications":{"enabled":true,"timeout":7},"cameras":{
 		"front":{"enabled":true,"id":1},"back":{"enabled":true,"id":2},"left":{"enabled":true,"id":3},"right":{
 			"enabled":true,"id":4}},"graphs":[{"uid":"cpu_temperature","type":"circle","enabled":true,"location":
 				"#left_view_sensors","title":"CPU Temp.","unit":"°C","unit_style":"font-size: 12px;","maximum":100},{

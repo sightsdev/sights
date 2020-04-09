@@ -22,19 +22,7 @@ class SensorStream(WebSocketProcess):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5556)
         # Setup logger
         self.logger = logging.getLogger(__name__)
-        # Check if Arduino is enabled in config file
-        self.arduino_enabled = self.config['arduino']['enabled']
-        # Attempt to open Arduino serial connection
-        if (self.arduino_enabled):
-            try:
-                # Attempt to open serial com with Arduino
-                self.ser = serial.Serial(port=self.config['arduino']['port'],
-                                    baudrate=self.config['arduino']['baudrate'])
-            except serial.serialutil.SerialException:
-                self.logger.error("Could not open Arduino serial port. Is the correct port configured 'robot.cfg'?")
-                self.logger.warning("Continuing without Arduino connection\n")
-                self.arduino_enabled = False
-
+        
         # Create new plugin manager looking for subclasses of SensorWrapper in "src/sensors/"
         self.pm = PluginManager(SensorWrapper, os.getcwd() + "/src/sensors")
         
@@ -86,29 +74,6 @@ class SensorStream(WebSocketProcess):
         # Print out each message if print_messages is enabled
         if self.config['debug']['print_messages'] and bool(msg): 
             self.logger.info(msg)
-
-        # Get data from Arduino. This is only here for backwards compatibility
-        if self.arduino_enabled:
-            buf = self.ser.readline().decode("UTF-8")
-            # If string begins with "D:", it's distance
-            if (buf[0] == "D"):
-                # Strip leading "D:" and split by comma, removing newline characters. Add to message
-                msg["distance"] = buf[2:-3].split(",")
-            # Temperature
-            elif (buf[0] == "T"):
-                # Strip and add to message
-                msg["temp"] = buf[2:-3].split(",")
-            # Gas (TVOC / CO2)
-            elif (buf[0] == "G"):
-                # Strip and add to message
-                data = buf[2:-3].split(",")
-                msg["co2"] = data[0]
-                msg["tvoc"] = data[1]
-            # Thermal Camera
-            elif (buf[0] == "C"):
-                # Strip and add to message
-                msg["thermal_camera"] = buf[2:-3].split(",")
-        
         # Return message to be sent to control panel
         return json.dumps(msg)
 

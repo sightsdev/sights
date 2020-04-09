@@ -8,9 +8,6 @@
 	"motors": {
 		"type": "virtual"
 	},
-	"arduino": {
-		"enabled": false
-	},
 	"interface": {
 		"notifications": {
 			"enabled": true,

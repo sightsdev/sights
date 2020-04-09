@@ -52,19 +52,6 @@ Configure the serial channel/s in use for each side of the robot. Currently only
 
 _Only required for Sabertooth connection._
 
-## `arduino`
-
-If `enabled` this allows a connected Arduino to collect sensor data (and thus allows for the use of Arduino compatible sensors).
-This feature is currently untested and has not been updated for the recent sensor rewrite. It's recommended you leave this capability disabled unless you are working on updating the Arduino features.
-
-`port`
-
-The serial port where the Arduino device is connected.
-
-`baudrate`
-
-The baud rate of the serial connection.
-
 ## `interface`
 
 ### `notifications`

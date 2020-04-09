@@ -2,10 +2,6 @@
 
 ## Directories
 
-### `arduino/`
-
-Contains Arduino scripts which is no longer supported. We used to use an attached Arduino instead of the I2C bus on the Pi / Jetson.
-
 ### `configs/`
 
 Internal configs used by the installer and SIGHTS. Not intended to be modified by the user.

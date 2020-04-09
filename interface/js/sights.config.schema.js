@@ -9,7 +9,6 @@ const schema = {
     "required": [
         "control",
         "motors",
-        "arduino",
         "interface",
         "sensors",
         "debug"
@@ -201,53 +200,6 @@ const schema = {
                                 "title": "Right Motor Channel",
                                 "description": "An integer representing a channel used by motors on the right side of the robot."
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "arduino": {
-            "$id": "#/properties/arduino",
-            "type": "object",
-            "options": {
-                "collapsed": true
-            },
-            "title": "Arduino",
-            "description": "Enable and configure the location of the robot's Arduino for legacy sensor capability.",
-            "required": [
-                "enabled"
-            ],
-            "properties": {
-                "enabled": {
-                    "$id": "#/properties/arduino/properties/enabled",
-                    "type": "boolean",
-                    "title": "Enable Arduino",
-                    "description": "Whether the Arduino is enabled.",
-                    "format": "checkbox",
-                    "default": false
-                },
-                "port": {
-                    "$id": "#/properties/arduino/properties/port",
-                    "type": "string",
-                    "title": "Serial Port",
-                    "description": "The location of the Arduino serial device.",
-                    "default": "/dev/serial/by-id/",
-                    "pattern": "^(.*)$",
-                    "options": {
-                        "dependencies": {
-                            "enabled": true
-                        }
-                    }
-                },
-                "baudrate": {
-                    "$id": "#/properties/arduino/properties/baudrate",
-                    "type": "integer",
-                    "title": "Serial Baud Rate",
-                    "description": "Baud rate of the serial port. Commonly set to 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600 or 115200.",
-                    "default": 115200,
-                    "options": {
-                        "dependencies": {
-                            "enabled": true
                         }
                     }
                 }
