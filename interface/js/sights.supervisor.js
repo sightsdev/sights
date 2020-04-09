@@ -428,8 +428,20 @@ $(document).on("ready",function () {
                 methodName: 'sights_config.update',
                 params: {'dev' : false},
                 success: function(response, status, jqXHR) {
-                    if (response[0])
+                    if (response[0]) {
                         serviceAlert("success", "Updated successfully!");
+                        $.xmlrpc({
+                            url: '/RPC2',
+                            methodName: 'supervisor.restart',
+                            params: {},
+                            success: function(response, status, jqXHR) {
+                                serviceAlert("success", "Restarting Supervisor");
+                            },
+                            error: function(jqXHR, status, error) {
+                                serviceAlert("danger", "Failed to restart Supervisor. You may need to reboot the host.");
+                            }
+                        });
+                    }
                     else
                         serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
                 },
