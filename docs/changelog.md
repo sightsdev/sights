@@ -27,6 +27,8 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 - Properly close update log filestream when an error occurs
 - Remove legacy Arduino support
 - Add tooltips to circle graphs (#78)
+- Change the editable config to the active (selected) config rather than the currently running config
+- Disable the delete button for both the running config in the event it is not the active config
 
 ### Bug fixes
 
@@ -34,6 +36,9 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 - Interface reports update failures as successes
 - Interface reports shutdown/reboot successes as failures
 - No spacing in SSH tabs
+- Refreshing the page with a different active and running
+config allows overwriting the running config with the active
+config
 
 ## [v1.1.1](https://github.com/SFXRescue/sights/releases/tag/v1.1.1) (2020-03-03)
 
