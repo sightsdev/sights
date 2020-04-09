@@ -53,6 +53,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         @return [string]  array of config file names 
         """
         files = [f for f in listdir(CONFIG_DIR) if isfile(CONFIG_DIR + f) and f.endswith(CONFIG_EXT)]
+        files.append("It worked")
         return files
 
     def setActiveConfig(self, value):
