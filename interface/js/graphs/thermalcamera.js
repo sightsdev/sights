@@ -2,7 +2,7 @@ class ThermalCamera extends Graph{
     constructor(config) {
         super(config);
 
-        this.overlayed = false;
+        this.overlaid = false;
         this.overlayCamera = this.config.camera;
 
         this.dom_object = $("<div/>", {
@@ -163,7 +163,7 @@ class ThermalCamera extends Graph{
         let opacity = $('#' + this.config.uid + '_thermal_overlay_opacity').val();
         let xscale = $('#' + this.config.uid + '_thermal_overlay_xscale').val();
         let yscale = $('#' + this.config.uid + '_thermal_overlay_yscale').val();
-        if(!this.overlayed) {
+        if(!this.overlaid) {
             if(this.overlayCamera != 'default') {
                 $('#' + this.config.uid + '_camera').css({ 'opacity' : opacity });
                 $('#camera_' + this.overlayCamera).css({'filter': 'grayscale(100%)'});
@@ -176,7 +176,7 @@ class ThermalCamera extends Graph{
                 $('#' + this.config.uid + '_camera').css({'width':'500px'})
             }
             $('#' + this.config.uid + '_overlay_button').toggleClass('fa-rotate-180');
-            this.overlayed = true;
+            this.overlaid = true;
         }
         else {
             $('#' + this.config.uid + '_camera').css({ 'opacity' : 1 });
@@ -186,7 +186,7 @@ class ThermalCamera extends Graph{
             $('#' + this.config.uid + '_overlay_controls').css({'display':'none'});
             $('#' + this.config.uid + '_camera').css({'transform' : 'scale(1,1)'});
             $('#' + this.config.uid + '_camera').css({'width':'100%'})
-            this.overlayed = false;
+            this.overlaid = false;
         }
     }
 

@@ -61,7 +61,7 @@ li.nav-item {
   background: gold;
 }
 
-/* Styling for table only when overlayed */
+/* Styling for table only when overlaid */
 .thermal-overlay .thermal-camera table {
   margin: 0;
   position: absolute;
