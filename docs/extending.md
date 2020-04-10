@@ -152,7 +152,7 @@ The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, 
 
     A new sensor graph class can extend the existing "abstract" class `Graph` (`sights/interface/js/graphs/graph.js`) for an easy framework to build your graph class around.
 
-5. Add the sensor and it's corresponding graph to your config file.
+5. Add the sensor and its corresponding graph to your config file.
 
     If you created the schema, following step 3, then you can create a new sensor through the visual editor in the interface. Otherwise, it can be created manually through the advanced editor.
 
