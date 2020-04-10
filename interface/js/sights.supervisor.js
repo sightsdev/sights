@@ -428,19 +428,15 @@ $(document).on("ready",function () {
         });
     });
 
-    $('#update_button').on("click", function() {
+    $('.update-button').on("click", function() {
         if ($("#service_info_status").attr("data-state") == "STOPPED") {
             serviceAlert("info", "Performing an update...");
             $.xmlrpc({
                 url: '/RPC2',
                 methodName: 'sights_config.update',
-                params: {'dev' : false},
+                params: {'dev' : this.id == "update_button_dev"},
                 success: function(response, status, jqXHR) {
-                    if (response[0]) {
-                        serviceAlert("success", "Updated successfully!");
-                    }
-                    else
-                        serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
+                    serviceAlert("success", "Updated successfully!");
                 },
                 error: function(jqXHR, status, error) {
                     serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
@@ -451,27 +447,6 @@ $(document).on("ready",function () {
         }
     });
 
-    $('#update_button_dev').on("click", function() {
-        if ($("#service_info_status").attr("data-state") == "STOPPED") {
-            serviceAlert("info", "Performing an update...");
-            $.xmlrpc({
-                url: '/RPC2',
-                methodName: 'sights_config.update',
-                params: {'dev' : true},
-                success: function(response, status, jqXHR) {
-                    if (response[0])
-                        serviceAlert("success", "Updated successfully!");
-                    else
-                        serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
-                },
-                error: function(jqXHR, status, error) {
-                    serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
-                }
-            });
-        } else {
-            serviceAlert("danger", "Service must be stopped first");
-        }
-    });
     
     $('#service_log_clear_button').on("click", function() {
         $.xmlrpc({
