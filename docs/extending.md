@@ -168,9 +168,9 @@ The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, 
 
 ### Adding additional configuration options
 
-You can add additional configuration options by overiding the `load_config` method in the sensor wrapper.
+You can add additional configuration options by overriding the `load_config` method in the sensor wrapper.
 
-This is done in the included MLX90614 wrapper. For example to add an `address` option, the following is done.
+This is done in the included MLX90614 wrapper. For example, to add an `address` option, the following is done.
 
 ```python
 # Load config using inherited method, then also load additional value 'address'
