@@ -7,6 +7,7 @@ from plugin_system import PluginManager
 from motor_wrapper import MotorWrapper
 from motors.virtual import VirtualConnection
 
+
 class MotorHandler:
     def __init__(self, config):
         # Setup logger
@@ -37,7 +38,7 @@ class MotorHandler:
         self.last_right = 0
         # Ensure Connection class has access to logging capabilities
         self.connection.logger = self.logger
-        
+
     def stop(self):
         # Set all servos to 0
         self.connection.stop()
@@ -55,15 +56,15 @@ class MotorHandler:
         left = round(left)
         right = round(right)
 
-        if (independent):
+        if independent:
             # Allow left and right to be independent
-            if (left != self.last_left):
+            if left != self.last_left:
                 self.connection.move_raw(left=left)
-            if (right != self.last_right):
+            if right != self.last_right:
                 self.connection.move_raw(right=right)
         else:
             # Not independent, both left and right must have changed
-            if (left != self.last_left and right != self.last_right):
+            if left != self.last_left and right != self.last_right:
                 self.connection.move_raw(left, right)
 
         # Store this message for comparison next time
