@@ -29,6 +29,8 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 - Add tooltips to circle graphs (#78)
 - Change the editable config to the active (selected) config rather than the currently running config
 - Disable the delete button for both the running config in the event it is not the active config
+- Condense regular and development update XMLRPC requests into a single function
+- Notify the user when an update will require a host restart (#80)
 
 ### Bug fixes
 
