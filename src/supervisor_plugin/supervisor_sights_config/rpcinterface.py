@@ -211,6 +211,7 @@ class SIGHTSConfigNamespaceRPCInterface:
                 return False
         f.write("\nUpdate succeeded!")
         f.close()
+        # Return new version number if the update requires a restart. If no restart is required, simply return true
         new_ver = pkg_resources.get_distribution("supervisor_sights_config").version
         if ver != new_ver:
             return new_ver
