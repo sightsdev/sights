@@ -36,7 +36,7 @@ _Not required for virtual connection._
 
 `baudrate`
 
-Baudrate to connect to the specified serial port with.
+Baud rate to connect to the specified serial port with.
 
 _Not required for virtual connection._
 
