@@ -6,6 +6,7 @@ from os.path import isfile, getmtime
 import subprocess
 import sys
 import datetime
+import pkg_resources
 
 API_VERSION = '0.2'
 ACTIVE_CONFIG_FILE = '/opt/sights/configs/ACTIVE_CONFIG'
@@ -35,7 +36,7 @@ def _runCommand(f, command):
     return process.returncode
 
 class SIGHTSConfigNamespaceRPCInterface:
-    """ An extension for Supervisor that implements a basic 
+    """ An extension for Supervisor that implements a basic
         configuration file handling thing
     """
 
@@ -50,7 +51,7 @@ class SIGHTSConfigNamespaceRPCInterface:
 
     def getConfigs(self):
         """ Returns all the available config files
-        @return [string]  array of config file names 
+        @return [string]  array of config file names
         """
         files = [f for f in listdir(CONFIG_DIR) if isfile(CONFIG_DIR + f) and f.endswith(CONFIG_EXT)]
         return files
@@ -186,7 +187,7 @@ class SIGHTSConfigNamespaceRPCInterface:
 
     def update(self, dev):
         """ Updates SIGHTS using the latest install script
-        @return boolean      Returns true if successful and false if not
+        @return boolean/string      Return true (or version string when requiring restart) if successful, false if not
         """
         update_commands = [
             ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O", "/tmp/sights.install.sh"],
@@ -194,6 +195,7 @@ class SIGHTSConfigNamespaceRPCInterface:
             ["/tmp/sights.install.sh", "--update", "--internal"],
             ["rm", "/tmp/sights.install.sh"]
         ]
+        ver = pkg_resources.get_distribution("supervisor_sights_config").version
         if (dev):
             update_commands[2].append('--dev')
         # Log output of commands to system log directory
@@ -209,7 +211,11 @@ class SIGHTSConfigNamespaceRPCInterface:
                 return False
         f.write("\nUpdate succeeded!")
         f.close()
-        return True
+        # Return new version number if the update requires a restart. If no restart is required, simply return true
+        new_ver = pkg_resources.get_distribution("supervisor_sights_config").version
+        if ver != new_ver:
+            return new_ver
+        else: return True
 
 def make_sights_config_rpcinterface(supervisord, **config):
     return SIGHTSConfigNamespaceRPCInterface(supervisord)
