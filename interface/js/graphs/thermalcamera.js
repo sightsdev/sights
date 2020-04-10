@@ -16,7 +16,7 @@ class ThermalCamera extends Graph{
         let x = 0;
         let table = $("<table>");
         for (let i = 0; i < height; i++) {
-            var row = $('<tr>');
+            let row = $('<tr>');
             for (let j = 0; j < width; j++) {
                 row.append("<td style='width: " + ((1 / width) * 100) + "%;position: relative;'><div class='content' id=p_" + this.config.uid + "_" + x + "></div></td>");
                 x++;
@@ -147,7 +147,7 @@ class ThermalCamera extends Graph{
     update(index, data, name) {
         for (let i = 0; i < data.length; i++) {
             // Apply colour to the appropriate HTML element
-            var hue = Math.round(data[i]);
+            let hue = Math.round(data[i]);
             $("#p_" + this.config.uid + "_" + i).css("background", 'hsl(' + hue + ', 100%, 50%)');
         }
     }
