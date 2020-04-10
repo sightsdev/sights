@@ -90,7 +90,7 @@ class CircleGraph extends Graph{
         let circle = $("#" + this.config.uid + "_circle");
         let unit = this.config.unit;
         level.html(data);
-        unit_text.html(unit)
+        unit_text.html(unit);
         let percent = Math.round((data / max) * 100);
         if (percent > 100) percent = 100;
         circle.attr('class', "c100 med orange center p" + percent);
