@@ -4,14 +4,15 @@ When developing for SIGHTS, it can be easier to work on a local development mach
 
 SIGHTS can be installed and used on your development workstation. While we only officially support running on the Linux-based operating systems listed in [Getting Started](getting_started.md), SIGHTS can also be run from Windows, through [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-Setup is the same as it would be on the robot.
+The setup process is the same as it would be if installed on a robot.
 
 Known limitations of running in WSL:
 
-- Hardware support is naturally limited, but most things do surprisingly work well
+- Hardware support is naturally limited, but most things do surprisingly work well.
   - Cameras do not work as they cannot be accessed through WSL.
   - The CPU temp wrapper will not work, as `psutil` does not have this information available to it. This isn't a WSL issue, native `psutil` on Windows can't access it either.
   - Most motors controllers do work, as Windows passes COM ports through to WSL and they should be available as expected under `/dev/tty*`.
+  - CPU, RAM, and HDD usage all work as expected. Although depending on your WSL setup, expect it to only be able to access a subset of the available RAM etc. (It might only show 12GB of total RAM instead of 16GB for example.)
   - Physical sensor support through an i2c to USB board has not been tested. This is something we'd like to explore.
 - Supervisor must be started manually, as WSL lacks systemd and will not run the Supervisor init script.
 - Apache must also be started manually for the same reason.
