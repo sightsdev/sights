@@ -201,28 +201,28 @@ class ThermalCamera extends Graph{
         $('#' + uid + '_thermal_overlay_yscale').val(defaultYScale);
         // Thermal Overlay Settings
         // Opacity slider
-        $('#' + uid + '_thermal_overlay_opacity').on("input", function() {
+        $('#' + uid + '_thermal_overlay_opacity').on("input", function () {
             $('#' + uid + '_camera').css({ 'opacity' : $(this).val() });
         });
         // Opacity slider reset button
-        $('#' + uid + '_thermal_overlay_opacity_reset').on("click", function() {
+        $('#' + uid + '_thermal_overlay_opacity_reset').on("click", function () {
             $('#' + uid + '_thermal_overlay_opacity').val(defaultOpacity);
             $('#' + uid + '_camera').css('opacity', defaultOpacity);
         });
         // X and Y scale sliders
-        $('.' + uid + '-thermal-overlay-scale').on("input", function() {
+        $('.' + uid + '-thermal-overlay-scale').on("input", function () {
             let xscale = $('#' + uid + '_thermal_overlay_xscale').val();
             let yscale = $('#' + uid + '_thermal_overlay_yscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
         });
         // X scale slider reset button
-        $('#' + uid + '_thermal_overlay_xscale_reset').on("click", function() {
+        $('#' + uid + '_thermal_overlay_xscale_reset').on("click", function () {
             $('#' + uid + '_thermal_overlay_xscale').val(defaultXScale);
             let yscale = $('#' + uid + '_thermal_overlay_yscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale(1,'+yscale+')'});
         });
         // Y scale slider reset button
-        $('#' + uid + '_thermal_overlay_yscale_reset').on("click", function() {
+        $('#' + uid + '_thermal_overlay_yscale_reset').on("click", function () {
             $('#' + uid + '_thermal_overlay_yscale').val(defaultYScale);
             let xscale = $('#' + uid + '_thermal_overlay_xscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale('+xscale+', 1)'});

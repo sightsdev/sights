@@ -17,7 +17,7 @@ var unsavedChanges;
 var startTime;
 
 // Notify on refresh when there are unsaved changes
-window.addEventListener("beforeunload", function(event) {
+window.addEventListener("beforeunload", function (event) {
 	if (unsavedChanges) {
 		event.returnValue = "We just need to return any value to show a pop-up confirmation to leave the page";
 	}
@@ -231,7 +231,7 @@ $(document).on("ready", function () {
 	$('#update_instructions').hide();
 	
 	// Dark mode toggle handler
-	$("#darkmode_toggle").on('change',function() {
+	$("#darkmode_toggle").on('change',function () {
 		if (this.checked) {
 			// Enabled dark theme CSS
 			document.body.setAttribute("data-theme", "dark");
@@ -321,13 +321,13 @@ $(document).on("ready", function () {
 		$("#" + this.getAttribute("focus")).focus();
 	});
   
-	$('.camera-refresh-button').on("click", function() {
+	$('.camera-refresh-button').on("click", function () {
 		let stream = $(this).closest('.camera-container').find('.stream-image');
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("data-id");
 		stream.attr('src', 'http://' + ip + ':8081/' + cameraId + '/stream/' + Math.random());
 	});
 	
-	$('.camera-screenshot-button').on("click", function() {
+	$('.camera-screenshot-button').on("click", function () {
 		// Get ID of camera
 		let streamImage = $(this).closest('.camera-container').find('.stream-image');
 		let cameraId = streamImage.attr("data-id");
@@ -405,11 +405,11 @@ $(document).on("ready", function () {
 	});
 
 	// Update the file name in both editors when one is changed
-	$(".editor_filename").on('change', function() {
+	$(".editor_filename").on('change', function () {
 		$(".editor_filename").val(this.value);
 	});
 
-	$("#update_check").on('click', function() {
+	$("#update_check").on('click', function () {
 		updateCheck("sights");
 		//updateCheck("vision", "SIGHTSVision") // If the vision repository version is one day reported
 	});

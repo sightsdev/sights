@@ -8,8 +8,7 @@ var ssh_current = 1;
 var ssh_address = "http://" + window.location.hostname + ":4200";
 
 function setCurrentSsh(tab) {
-	let tab_id = tab.attr("ssh_tab");
-	ssh_current = tab_id;
+	ssh_current = tab.attr("ssh_tab");
 }
 
 function closeSshTab(tab) {
@@ -32,8 +31,8 @@ function closeSshTab(tab) {
 }
 
 
-$(document).on("ready", function() {
-    $('#ssh_new_tab').on("click", function() {
+$(document).on("ready", function () {
+    $('#ssh_new_tab').on("click", function () {
 		ssh_count++;
 		
 		// Get ready to go to the new tab. Make sure no other tab is shown.

@@ -56,7 +56,7 @@ function createFunctionKeyBind(keys, ctrl, func) {
 				control: ctrl
 			};
 	keys.forEach(function (key) {
-		keyboardJS.bind(key, function() {
+		keyboardJS.bind(key, function () {
 			// Key down event
 			c_event["value"] = "DOWN";
 			safeSend(c_event);
@@ -64,7 +64,7 @@ function createFunctionKeyBind(keys, ctrl, func) {
 				// optional function was passed
 				func();
 			}
-		}, function() {
+		}, function () {
 			// Key up event
 			c_event["value"] = "UP";
 			safeSend(c_event);
@@ -97,7 +97,7 @@ function createMovementKeyBind(keys, ctrl) {
 			e.preventRepeat();
 			movementKeysPressed.unshift(ctrl);
 			sendMovementKeys();
-		}, function() {
+		}, function () {
 			// Key up event
 			movementKeysPressed.splice(movementKeysPressed.findIndex(e => e == ctrl), 1);
 			sendMovementKeys();
@@ -109,12 +109,12 @@ function controlConnection() {
 	if(!demo) {
 		// Create WebSocket
 		controlSocket = new WebSocket("ws://" + ip + ":5555");
-		controlSocket.onopen = function() {
+		controlSocket.onopen = function () {
 			controlConnected = true;
 			controlConnectedAlert();
 		};
 
-		controlSocket.onclose = function() {
+		controlSocket.onclose = function () {
 			if (controlConnected) {
 				controlDisconnectedAlert();
 				controlConnected = false;
@@ -136,7 +136,7 @@ $(document).on("ready", function () {
 	window.gamepad = new Gamepad();
 
 	// When the user changes the active gamepad using the dropdown box
-	$('#gamepad_select').on('change', function() {
+	$('#gamepad_select').on('change', function () {
 		currentGamepad = this.value;
 	});
 
@@ -251,11 +251,11 @@ $(document).on("ready", function () {
 		keyboardJS.resume();
 	});
 	// Allow toggling of camera / sensor mode via keyboard
-	keyboardJS.bind('1', null, function() {
+	keyboardJS.bind('1', null, function () {
 		if (sensorMode)
 			toggleSensorMode();
 	});
-	keyboardJS.bind('2', null, function() {
+	keyboardJS.bind('2', null, function () {
 		if (!sensorMode)
 			toggleSensorMode();
 	});
@@ -268,7 +268,7 @@ $(document).on("ready", function () {
 	$(".editor_reload_button").on("click", function () {
 		configRequestedAlert();
 		if(!$(".editor_reload_button").hasClass("disabled")) {
-            requestConfig(function(response) {
+            requestConfig(function (response) {
                 applyConfig(response);
             });
 		}

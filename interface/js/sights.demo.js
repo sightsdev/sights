@@ -130,13 +130,13 @@ function demoMode() {
 	$('#gamepad_monitor_pre').html(hljs.highlight("JSON", JSON.stringify(obj, null, '\t')).value);
 
 	let demo_speed = 3;
-	keyboardJS.bind('-', null, function() {
+	keyboardJS.bind('-', null, function () {
 		// Keep speed at a minimum of 1
 		demo_speed = Math.max(1, demo_speed - 1);
 		setSpeedIndicator(demo_speed);
 	});
 
-	keyboardJS.bind('=', null, function() {
+	keyboardJS.bind('=', null, function () {
 		// Keep speed at a max of 8
 		demo_speed = Math.min(8, demo_speed + 1);
 		setSpeedIndicator(demo_speed);

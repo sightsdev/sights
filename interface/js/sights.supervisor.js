@@ -2,7 +2,7 @@
 var serviceUpdater;
 var active_config; // The selected config file (not necessarily running)
 
-function updateServiceInfo(response, status, jqXHR) {
+function updateServiceInfo(response) {
     // Only runs on first call after connecting
     if ($("#service_info_status").attr("data-state") == "DISCONNECTED") {
          // Populate config file selector
@@ -10,7 +10,7 @@ function updateServiceInfo(response, status, jqXHR) {
     }
     
     // Get state of the SIGHTS service (RUNNING, STOPPED, etc)
-    var state = response[0].statename;
+    let state = response[0].statename;
     // Update service state indicator
     $("#service_info_status").attr("data-original-title", "Service " + state.toLowerCase());
     // Clear button style
@@ -46,16 +46,16 @@ function updateServiceInfo(response, status, jqXHR) {
         url: '/RPC2',
         methodName: 'supervisor.tailProcessStdoutLog',
         params: {name: 'sights', offset: '0', length: '10000'},
-        success: function(response, status, jqXHR) {
+        success: function (response) {
             $("#service_info_pre").html(hljs.highlight("YAML", response[0][0]).value);
         },
-        error: function(jqXHR, status, error) {
+        error: function () {
             $("#service_info_logfile").html("Couldn't get service information");
         }
     });
 }
 
-function serviceDisconnected(jqXHR, status, error) {
+function serviceDisconnected() {
     // Update service state indicator
     $("#service_info_status").attr("data-state", "DISCONNECTED");
     $("#service_info_status").attr("data-original-title", "Service disconnected");
@@ -76,11 +76,11 @@ function updateService() {
         success: updateServiceInfo,
         error: serviceDisconnected,
         statusCode: {
-            404: function (response) {
+            404: function () {
                 interfaceLog("warning", "supervisor", "404: Supervisor is not available. " +
                     "Retrying.");
             },
-            503: function (response) {
+            503: function () {
                 interfaceLog("warning", "supervisor", "503: Supervisor is not available. " +
                     "Retrying.");
             }
@@ -98,8 +98,8 @@ function updateConfigSelector() {
                 { 'methodName': 'sights_config.getActiveConfig', 'params': [] }
             ]
         },
-        success: function(response, status, jqXHR) {
-            configs = response[0][0];
+        success: function (response) {
+            let configs = response[0][0];
             // Remove any line breaks from the "active config" string.
             active_config = response[0][1].replace(/(\r\n|\n|\r)/gm, "");
             // Get the active config and make it the currently selected config
@@ -120,36 +120,36 @@ function updateConfigSelector() {
 
             $('#config_selector').html("");
             // Populate config selector
-            for (var i = 0; i < configs.length; i++) {
+            for (let i = 0; i < configs.length; i++) {
                 // Create item
-                var option = $('<div class="btn-group float-right">');
+                let option = $('<div class="btn-group float-right">');
                 // Fill the entire line so other configs cannot be displayed alongside this one
                 $(option).css('padding-left', '100%');
                 // Add a data attribute with the config file name so we can find it later
                 $(option).attr("data-file", configs[i]);
                 // Create button with file name that will select that config file
-                var enable_button = $('<a href="#" class="dropdown-item text-monospace config-item-button">');
-                var delete_button = $('<a href="#" class="dropdown-item config-delete-button"><i class="fa fa-fw fa-trash-alt"></i></a>');
+                let enable_button = $('<a href="#" class="dropdown-item text-monospace config-item-button">');
+                let delete_button = $('<a href="#" class="dropdown-item config-delete-button"><i class="fa fa-fw fa-trash-alt"></i></a>');
                 // Add filename to button
                 $(enable_button).html(configs[i]);
                 $(delete_button).attr("data-file", configs[i]);
 
-                $(enable_button).on("click", function() {
+                $(enable_button).on("click", function () {
                     $.xmlrpc({
                         url: '/RPC2',
                         methodName: 'sights_config.setActiveConfig',
                         params: {value: $(this).html()},
-                        success: function(response, status, jqXHR) {
+                        success: function () {
                             serviceAlert("success", "Set config file, restart service to apply");
                             updateConfigSelector();
                         },
-                        error: function(jqXHR, status, error) {
+                        error: function () {
                             serviceAlert("danger", "Couldn't set config file");
                         }
                     });
                 });
-                $(delete_button).on("click", function() {
-                    var conf = $(this).attr("data-file");
+                $(delete_button).on("click", function () {
+                    let conf = $(this).attr("data-file");
                     if (running_config == conf) {
                         serviceAlert("danger", "You cannot delete the current running config")
                     }
@@ -161,11 +161,11 @@ function updateConfigSelector() {
                             url: '/RPC2',
                             methodName: 'sights_config.deleteConfig',
                             params: {value: conf},
-                            success: function(response, status, jqXHR) {
+                            success: function () {
                                 serviceAlert("success", "Deleted config");
                                 updateConfigSelector();
                             },
-                            error: function(jqXHR, status, error) {
+                            error: function () {
                                 serviceAlert("danger", "Couldn't delete config file");
                             }
                         });
@@ -191,11 +191,11 @@ function updateConfigSelector() {
                 $('#config_selector').append(option)
             }
         },
-        error: function(jqXHR, status, error) {
+        error: function () {
             serviceAlert("danger", "Couldn't get available config files");
         }
     });
-    requestConfig(function(response) {
+    requestConfig(function (response) {
         applyConfig(response);
     });
 }
@@ -209,10 +209,10 @@ function requestConfig(callback) {
             url: '/RPC2',
             methodName: 'sights_config.requestConfig',
             params: {},
-            success: function(response, status, jqXHR) {
+            success: function (response) {
                 callback(JSON.parse(response));
             },
-            error: function(jqXHR, status, error) {
+            error: function () {
                 serviceAlert("danger", "Couldn't get active config file");
             }
         });
@@ -234,11 +234,11 @@ function saveConfig() {
             url: '/RPC2',
             methodName: 'sights_config.saveConfig',
             params: {value: val, name: fileName},
-            success: function(response, status, jqXHR) {
+            success: function () {
                 serviceAlert("success", "Saved config file");
                 updateConfigSelector();
             },
-            error: function(jqXHR, status, error) {
+            error: function () {
                 serviceAlert("danger", "Couldn't save config file");
             }
         });
@@ -256,12 +256,12 @@ function getRevisions(runningConfig) {
         url: '/RPC2',
         methodName: 'sights_config.getRevisions',
         params: {name: runningConfig},
-        success: function(response, status, jqXHR) {
+        success: function (response) {
             $('#revision_selector').html("");
             $('#revision_viewer_pre').html("");
             $('#revision_selector').append("<option value='none'>Select a revision...</option>");
             response[0].forEach(function (revision) {
-                var date = new Date(revision[1] * 1000);
+                let date = new Date(revision[1] * 1000);
                 let option = revision[0].split(".backup.")[0] + " on " + date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 $('#revision_selector').append("<option value=" + revision[0] + ">" + option + "</option>")
             });
@@ -276,7 +276,7 @@ function getRevisions(runningConfig) {
                 $('#revision_selector').append("<option value='none'>No revisions available</option>")
             }
         },
-        error: function(jqXHR, status, error) {
+        error: function () {
             serviceAlert("danger", "Couldn't get past revisions of the active config");
         }
     });
@@ -287,12 +287,12 @@ function requestRevision(revision) {
         url: '/RPC2',
         methodName: 'sights_config.requestRevision',
         params: {name: revision},
-        success: function(response, status, jqXHR) {
+        success: function (response) {
             let yaml = jsyaml.safeDump(JSON.parse(response[0]), indent = 4);
             // Populate revision viewer
             $("#revision_viewer_pre").html(hljs.highlight("YAML", yaml).value);
         },
-        error: function(jqXHR, status, error) {
+        error: function () {
             $("#revision_viewer_pre").html("");
             serviceAlert("danger", "Couldn't get revision");
         }
@@ -304,7 +304,7 @@ function deleteRevision(revision) {
         url: '/RPC2',
         methodName: 'sights_config.deleteRevision',
         params: {name: revision},
-        success: function(response, status, jqXHR) {
+        success: function () {
             $('#revision_selector').children().each(function () {
                 if ($(this).attr("value") == revision) {
                     $(this).remove();
@@ -320,7 +320,7 @@ function deleteRevision(revision) {
                 $('#revision_selector').append("<option value='none'>No revisions available</option>")
             }
         },
-        error: function(jqXHR, status, error) {
+        error: function () {
             serviceAlert("danger", "Couldn't delete revision");
         }
     });
@@ -338,10 +338,10 @@ $(document).on("ready",function () {
                 url: '/RPC2',
                 methodName: 'sights_config.poweroff',
                 params: {},
-                success: function (response, status, jqXHR) {
+                success: function () {
                     serviceAlert("danger", "Couldn't shut down");
                 },
-                error: function (jqXHR, status, error) {
+                error: function () {
                     serviceAlert("success", "Successfully shut down");
                 }
             });
@@ -357,10 +357,10 @@ $(document).on("ready",function () {
                 url: '/RPC2',
                 methodName: 'sights_config.reboot',
                 params: {},
-                success: function (response, status, jqXHR) {
+                success: function () {
                     serviceAlert("danger", "Couldn't reboot");
                 },
-                error: function (jqXHR, status, error) {
+                error: function () {
                     serviceAlert("success", "Rebooting...");
                 }
             });
@@ -369,73 +369,73 @@ $(document).on("ready",function () {
 
     serviceUpdater = setInterval(updateService, 500);
 
-    $('#service_start_button').on("click", function() {
+    $('#service_start_button').on("click", function () {
         serviceAlert("info", "Starting service");
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.startProcess',
             params: {name: 'sights'},
-            success: function(response, status, jqXHR) {
+            success: function () {
                 serviceAlert("success", "Service started");
                 updateConfigSelector();
             },
-            error: function(jqXHR, status, error) {
+            error: function () {
                 serviceAlert("danger", "Couldn't start service");
             }
         });
     });
-    $('#service_stop_button').on("click", function() {
+    $('#service_stop_button').on("click", function () {
         serviceAlert("info", "Stopping service");
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.stopProcess',
             params: {name: 'sights'},
-            success: function(response, status, jqXHR) {
+            success: function () {
                 serviceAlert("danger", "Service stopped");
                 controlSocket.close();
                 sensorSocket.close();
             },
-            error: function(jqXHR, status, error) {
+            error: function () {
                 serviceAlert("danger", "Couldn't stop service");
             }
         });
     });
-    $('#service_restart_button').on("click", function() {
+    $('#service_restart_button').on("click", function () {
         serviceAlert("info", "Restarting service");
 		$.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.stopProcess',
             params: {name: 'sights'},
-            success: function(response, status, jqXHR) {
+            success: function () {
                 controlSocket.close();
                 sensorSocket.close();
                 $.xmlrpc({
                     url: '/RPC2',
                     methodName: 'supervisor.startProcess',
                     params: {name: 'sights'},
-                    success: function(response, status, jqXHR) {
+                    success: function () {
                         serviceAlert("success", "Service restarted");
                         updateConfigSelector();
                     },
-                    error: function(jqXHR, status, error) {
+                    error: function () {
                         serviceAlert("danger", "Couldn't start service");
                     }
                 });
             },
-            error: function(jqXHR, status, error) {
+            error: function () {
                 serviceAlert("danger", "Couldn't stop service");
             }
         });
     });
 
-    $('.update-button').on("click", function() {
+    $('.update-button').on("click", function () {
         if ($("#service_info_status").attr("data-state") == "STOPPED") {
             serviceAlert("info", "Performing an update...");
             $.xmlrpc({
                 url: '/RPC2',
                 methodName: 'sights_config.update',
                 params: {'dev' : this.id == "update_button_dev"},
-                success: function(response, status, jqXHR) {
+                success: function (response) {
                     if (response) {
                         serviceAlert("success", "Updated successfully!");
                         if (response != true) {
@@ -446,7 +446,7 @@ $(document).on("ready",function () {
                         serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
                     }
                 },
-                error: function(jqXHR, status, error) {
+                error: function () {
                     serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
                 }
             });
@@ -456,15 +456,15 @@ $(document).on("ready",function () {
     });
 
     
-    $('#service_log_clear_button').on("click", function() {
+    $('#service_log_clear_button').on("click", function () {
         $.xmlrpc({
             url: '/RPC2',
             methodName: 'supervisor.clearProcessLog',
             params: {name: 'sights'},
-            success: function(response, status, jqXHR) {
+            success: function () {
                 serviceAlert("info", "Cleared service logs");
             },
-            error: function(jqXHR, status, error) {
+            error: function () {
                 serviceAlert("info", "Couldn't clear service logs");
             }
         });
