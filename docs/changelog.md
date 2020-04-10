@@ -1,5 +1,5 @@
 # Changelog {docsify-ignore-all}
-## [v1.1.2](https://github.com/SFXRescue/sights/releases/tag/v1.1.2) (2020-04-09)
+## [v1.1.2](https://github.com/SFXRescue/sights/releases/tag/v1.1.2) (2020-04-10)
 
 A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 
