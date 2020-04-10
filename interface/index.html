@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <!--#############################################################
 	# Created by the Semi Autonomous Rescue Team				#
 	# Licensed under the GNU General Public License 3.0			#
 	##########################################################-->
-
-<title>SIGHTS Interface</title>
 
 <head>
 	<!--Link CSS and scripts-->
@@ -60,6 +58,7 @@
 	<script src="js/graphs/thermalcamera.js"></script>
 	<script src="js/graphs/uptime.js"></script>
 
+	<title>SIGHTS Interface</title>
 </head>
 
 <body>
@@ -154,7 +153,7 @@
 								<i class="fa fa-fw fa-trash-alt"></i> Clear Log
 							</button>
 							<div class="float-right">
-								<p class="text-monospace" id="service_info_logfile" style="padding:6px;margin:0px"></p>
+								<p class="text-monospace" id="service_info_logfile" style="padding:6px;margin:0"></p>
 							</div>
 							<p>
 							<pre><code id="service_info_pre" class="shell rounded internal-scroll" contenteditable="false"></code></pre>
@@ -186,7 +185,7 @@
 							<p>
 								<pre><code id="gamepad_monitor_pre" class="JSON rounded" contenteditable="false"></code></pre>
 							</p>
-							<a class="btn btn-secondary float-right" href="/gamepad" tooltip data-placement="bottom" title="Test to see if your gamepad works with SIGHTS"><i class="fa fa-fw fa-gamepad"></i> Gamepad testing tool</a>
+							<a class="btn btn-secondary float-right" href="/gamepad" target="_blank" tooltip data-placement="bottom" title="Test to see if your gamepad works with SIGHTS"><i class="fa fa-fw fa-gamepad"></i> Gamepad testing tool</a>
 						</div>
 						<div class="tab-pane fade" id="sensor_monitor" role="tabpanel"
 							aria-labelledby="sensor_monitor_tab">
@@ -249,7 +248,7 @@
 								<div class="col">
 									<input type="text" class="text-monospace text-right editor_filename">
 									<span class="text-monospace text-center"
-										style="padding-top:6px;padding-bottom:6px;margin:0px">.json
+										style="padding-top:6px;padding-bottom:6px;margin:0">.json
 									</span>
 								</div>
 								<div class="col-auto">
@@ -290,7 +289,7 @@
 								<div class="col">
 									<input type="text" class="text-monospace text-right editor_filename">
 									<span class="text-monospace text-center"
-										style="padding-top:6px;padding-bottom:6px;margin:0px">.json
+										style="padding-top:6px;padding-bottom:6px;margin:0">.json
 									</span>
 								</div>
 								<div class="col-auto">
@@ -497,7 +496,7 @@
 					</button>
 				</div>
 				<button type="button" class="btn btn-outline-dark" tooltip data-placement="bottom"
-					title="Websocket connection status" style="margin-left:0px">
+					title="Websocket connection status" style="margin-left:0">
 					<i class="fa fa-fw fa-link"></i>
 				</button>
 			</div>		
@@ -505,7 +504,7 @@
 		<div class="navbar-brand" style="z-index:1">
 			<div class="btn-group" role="group">
 				<button type="button" class="btn btn-secondary" data-state="DISCONNECTED" id="service_info_status" tooltip data-placement="bottom" title="Service disconnected"><i class="fa fa-fw fa-server"></i></button>
-				<button type="button" class="btn btn-outline-dark btn-sm" style="margin-left:0px"  id="service_start_button" tooltip
+				<button type="button" class="btn btn-outline-dark btn-sm" style="margin-left:0"  id="service_start_button" tooltip
 					data-placement="bottom" title="Start service"><i class="fa fa-fw fa-play"></i>
 				</button>
 				<button type="button" class="btn btn-outline-dark btn-sm" id="service_stop_button" tooltip
@@ -522,7 +521,7 @@
 					<i class="fa fa-fw fa-file-alt"></i>
 				</button>
 				<button type="button" class="btn btn-outline-dark dropdown-toggle text-monospace" id="config_active_indicator" 
-					style="margin-left:0px" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+					style="margin-left:0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 				<div class="dropdown-menu float-right" id="config_selector">
 					<p class="dropdown-header">No config files available</p>
 				</div>
@@ -557,9 +556,7 @@
 				<button type="button" class="btn btn-light" id="nav_title" tooltip data-placement="bottom"
 					title="Reload page">
 					<span class="accent-colour">SIGHTS</span> Interface
-					<div class="float-right banner ugly" id="demo_mode_indicator">
-						<blink>Demo Mode</blink>
-					</div>
+					<blink class="float-right banner ugly" id="demo_mode_indicator">Demo Mode</blink>
 				</button>
 			</div>
 		</div>
@@ -591,7 +588,7 @@
 							tooltip data-placement="bottom" title="Open log window">
 							<i class="fa fa-fw fa-archive"></i>
 						</button>
-						<button type="button" class="btn btn-outline-dark" target="_blank" rel="noopener noreferrer" tooltip
+						<button type="button" class="btn btn-outline-dark" rel="noopener noreferrer" tooltip
 							data-placement="bottom" title="View documentation" id="docs_button">
 							<i class="fa fa-fw fa-book"></i>
 						</button>
@@ -648,7 +645,7 @@
 			</div>
 			<div class="col-md-auto" id="main_container">
 				<div class="camera-container" id="camera_front_card">
-					<div class="card" style="border: 0px">
+					<div class="card" style="border: 0">
 						<div class="no-feed-sights accent-colour" style="width: 512px"></div>
 						<img id="camera_front" class="rounded-top stream-image" src="" />
 						<div id="thermal_overlay_front" class="thermal-overlay" style="overflow:hidden"></div>
@@ -701,7 +698,7 @@
 		</div>
 		<div class="row justify-content-md-center no-gutters" id="btm_view_camera">
 			<div class="col-md-auto camera-container" id="camera_left_card">
-				<div class="card" style="border: 0px">
+				<div class="card" style="border: 0">
 					<div class="no-feed accent-colour" style="width: 420px"></div>
 					<img id="camera_left" class="img-fluid rounded-left stream-image" src="" />
 					<div id="thermal_overlay_left" class="thermal-overlay" style="overflow:hidden"></div>
@@ -718,7 +715,7 @@
 				</div>
 			</div>
 			<div class="col-md-auto camera-container" id="camera_back_card">
-				<div class="card" style="border: 0px">
+				<div class="card" style="border: 0">
 					<div class="no-feed accent-colour" style="width: 420px"></div>
 					<img id="camera_back" class="img-fluid stream-image" src="" />
 					<div id="thermal_overlay_back" class="thermal-overlay" style="overflow:hidden"></div>
@@ -735,7 +732,7 @@
 				</div>
 			</div>
 			<div class="col-md-auto camera-container" id="camera_right_card">
-				<div class="card" style="border: 0px">
+				<div class="card" style="border: 0">
 					<div class="no-feed accent-colour" style="width: 420px"></div>
 					<img id="camera_right" class="img-fluid rounded-right stream-image" src="" />
 					<div id="thermal_overlay_right" class="thermal-overlay" style="overflow:hidden"></div>
