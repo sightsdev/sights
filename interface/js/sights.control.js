@@ -200,7 +200,7 @@ $(document).on("ready", function () {
 	gamepad.bind(Gamepad.Event.AXIS_CHANGED, function (e) {
 		if (e.gamepad.index == currentGamepad) {
 			if (e.axis == "RIGHT_BOTTOM_SHOULDER" || e.axis == "LEFT_BOTTOM_SHOULDER") {
-				// We handle these seperately, since this wasn't providing the required performance
+				// We handle these separately, since this wasn't providing the required performance
 				return;
 			}
 			// Current value of specified control, to 1dp

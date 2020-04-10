@@ -94,7 +94,7 @@ class SensorStream(WebSocketProcess):
         msg = {}
         msg["initial_message"] = True
         msg["running_config"] = os.path.basename(self.config_file)
-        # Even though these are part of the config object, we send them seperately
+        # Even though these are part of the config object, we send them separately
         # Since we don't want the speed resetting every time we edit the config 
         msg["speed"] = self.config['control']['default_speed'] * 128 - 1
         # System uptime, as time in seconds since boot
