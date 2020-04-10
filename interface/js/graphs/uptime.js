@@ -26,9 +26,9 @@ class UptimeBox extends Graph{
         $(target).parent().parent().parent().show(); // Text group may be hidden. Show it.
         let id = "#" + this.config.uid + "_uptime_text";
         // Uptime updater
-        var daySecs = 60*60*24;
-        var hourSecs = 60*60;
-        var minSecs = 60; // minSecs rhymes with insects
+        let daySecs = 60*60*24;
+        let hourSecs = 60*60;
+        let minSecs = 60; // minSecs rhymes with insects
         setInterval(() => {
             if(startTime) {
                 // Calculate uptime based on time elapsed since reported time of boot
