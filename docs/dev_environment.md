@@ -16,6 +16,6 @@ Known limitations of running in WSL:
   - Physical sensor support through an i2c to USB board has not been tested. This is something we'd like to explore.
 - Supervisor must be started manually, as WSL lacks systemd and will not run the Supervisor init script.
 - Apache must also be started manually for the same reason.
-- Shutdown and reboot functioality will not work as WSL cannot shut down the host.
+- Shutdown and reboot functionality will not work as WSL cannot shut down the host.
 
 Another option that can potentially allow for better hardware support is running Linux within a full virtual machine. Unlike WSL it is possible to get cameras working through this method. Since this setup will have systemd, SIGHTS should start on boot, and shutdown and reboot functionality is available.
