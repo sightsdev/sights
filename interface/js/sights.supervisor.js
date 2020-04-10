@@ -436,9 +436,14 @@ $(document).on("ready",function () {
                 methodName: 'sights_config.update',
                 params: {'dev' : this.id == "update_button_dev"},
                 success: function(response, status, jqXHR) {
-                    serviceAlert("success", "Updated successfully!");
-                    if (response != true) {
-                        serviceAlert("warning", "A system restart is required for some changes to take effect.");
+                    if (response) {
+                        serviceAlert("success", "Updated successfully!");
+                        if (response != true) {
+                            serviceAlert("warning", "A system restart is required for some changes to take effect.");
+                        }
+                    }
+                    else {
+                        serviceAlert("danger", "Update failed. Check <code>/var/log/sights.update.log</code>");
                     }
                 },
                 error: function(jqXHR, status, error) {
