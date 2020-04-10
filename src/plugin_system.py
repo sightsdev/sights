@@ -23,7 +23,7 @@ class PluginManager:
         self.wrappers = {}
 
         # Add plugin directory to path to ensure we can import modules from there
-        if not self.plugin_dir in sys.path:
+        if self.plugin_dir not in sys.path:
             sys.path.insert(0, self.plugin_dir)
 
         # Load each plugin
