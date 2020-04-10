@@ -89,7 +89,7 @@ function updateCheck(type, altRepo) {
 }
 
 function updateConfigAlerts() {
-	var currentConfig = JSON.stringify(configEditor.getValue());
+	let currentConfig = JSON.stringify(configEditor.getValue());
 	unsavedChanges = false;
 	if(editorBaseConfig == currentConfig && currentConfig == editorSavedConfig) {
 		// There are no changes. Hide all alerts.
@@ -124,9 +124,9 @@ function applyConfig(response) {
     editorBaseConfig = JSON.stringify(configEditor.getValue());
     editorSavedConfig = editorBaseConfig;
     // Stringify value of new config to remove key-value pairs with `undefined` value
-	var jsonString = JSON.stringify(response);
+	let jsonString = JSON.stringify(response);
 	// Set advanced editor
-	var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+	let yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
 	// Populate advanced editor
 	$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
 	// Manually set output text of range slider elements
@@ -141,8 +141,8 @@ function portString(port) {
 
 // Select text in a text field, allowing to be copied
 function selectTextInElement(id) {
-	var range = document.createRange();
-	var selection = window.getSelection();
+	let range = document.createRange();
+	let selection = window.getSelection();
 	range.selectNodeContents(document.getElementById(id));
 	selection.removeAllRanges();
 	selection.addRange(range);
@@ -255,16 +255,16 @@ $(document).on("ready", function () {
 	// Sets dark mode based on OS or browser preference, but don't override the user's site-level setting
 	if (darkModeCookie === "true"
 		|| (darkModeMediaQuery.matches && darkModeCookie === null)) {
-		$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
+		$("#darkmode_toggle").trigger("click").prop('checked', true).parent('.btn').addClass('active');
 	}
 
 	darkModeMediaQuery.addEventListener("change", (e) => {
 		let darkModeOn = e.matches;
 		if(darkModeOn && localStorage.getItem("darkmode") === "false") { // Site is light, switch
-			$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
+			$("#darkmode_toggle").trigger("click").prop('checked', true).parent('.btn').addClass('active');
 		}
 		else if (!darkModeOn && localStorage.getItem("darkmode") === "true"){ // Site is dark, switch
-			$("#darkmode_toggle").click().prop('checked', false).parent('.btn').removeClass('active');
+			$("#darkmode_toggle").trigger("click").prop('checked', false).parent('.btn').removeClass('active');
 		}
 	});
 
@@ -392,8 +392,8 @@ $(document).on("ready", function () {
 
 	configEditor.on("change", function () {
 		// Stringify value of configEditor to remove key-value pairs with `undefined` value
-		var jsonString = JSON.stringify(configEditor.getValue());
-		var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+		let jsonString = JSON.stringify(configEditor.getValue());
+		let yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
 		// Populate advanced editor
 		$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
@@ -423,7 +423,7 @@ $(document).on("ready", function () {
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").on("click", function () {
 		// allow access to integrated blockchain layer
-		var _ua = ["\x68\x69\x64\x65", // Fixes IE < 9 rendering
+		let _ua = ["\x68\x69\x64\x65", // Fixes IE < 9 rendering
 		`ewoJIm1lc3NhZ2UiOiAiVGhlIFNlY
 		3JldCBTYXJ0aWV0eSB3YXMgaGVyZS
 		IsCgkidHlwZSI6ICJpbmZvIiwKCSJ
