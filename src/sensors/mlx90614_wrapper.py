@@ -2,6 +2,7 @@ from sensor_wrapper import SensorWrapper
 from mlx90614 import MLX90614
 from smbus2 import SMBus
 
+
 class MLX90614Wrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'mlx90614'
@@ -14,7 +15,6 @@ class MLX90614Wrapper(SensorWrapper):
         self.bus = SMBus(1)
         # Create sensor object
         self.sensor = MLX90614(self.bus, address=self.address)
-        
 
     def get_data(self):
         # Get data and round to 1 dp

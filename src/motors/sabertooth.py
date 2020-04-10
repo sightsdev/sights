@@ -3,6 +3,7 @@ from motor_wrapper import MotorWrapper
 import serial
 import logging
 
+
 class SabertoothConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'sabertooth'

@@ -5,6 +5,7 @@ import pyax12.connection
 import serial
 import logging
 
+
 class DynamixelConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'dynamixel'
@@ -16,13 +17,12 @@ class DynamixelConnection(MotorWrapper):
         self.ids = config.get('ids')
         self.motors = pyax12.connection.Connection(
             port=self.port, baudrate=self.baudrate)
-        
 
     def move_raw(self, left=None, right=None):
         # Both left and right are optional parameters
         if left is not None:
             # Different motors need to spin in different directions. We account for that here.
-            if (left < 0):
+            if left < 0:
                 left *= -1
                 left += 1024
             try:
@@ -32,7 +32,7 @@ class DynamixelConnection(MotorWrapper):
                 self.crash(left, None)
         if right is not None:
             # Again, different motors need to spin in different directions
-            if (right < 0):
+            if right < 0:
                 right *= -1
             elif right < 1024:
                 right += 1024
@@ -54,7 +54,8 @@ class DynamixelConnection(MotorWrapper):
 
     def crash(self, left, right):
         self.logger.error("Something went wrong sending message to servos:")
-        self.logger.error("Left: {} (was: {}) | Right: {} (was: {})".format(left, self.last_left, right, self.last_right))
+        self.logger.error(
+            "Left: {} (was: {}) | Right: {} (was: {})".format(left, self.last_left, right, self.last_right))
         self.logger.info("Attempting to reopen connection")
         # Reopen connection
         self.motors = pyax12.connection.Connection(
@@ -62,9 +63,7 @@ class DynamixelConnection(MotorWrapper):
         self.logger.info("Attempting to stop servos")
         self.stop()
 
-
     def setup_servo(self, dynamixel_id):
         # Set the "wheel mode"
         self.motors.set_cw_angle_limit(dynamixel_id, 0, degrees=False)
         self.motors.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
-

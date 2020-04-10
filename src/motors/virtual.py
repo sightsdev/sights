@@ -1,6 +1,7 @@
 # Virtual motor connection
 from motor_wrapper import MotorWrapper
 
+
 class VirtualConnection(MotorWrapper):
     # What type of motor this wrapper handles
     type_ = 'virtual'
