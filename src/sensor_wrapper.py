@@ -1,5 +1,6 @@
 import logging
 
+
 class SensorWrapper:
     def __init__(self, config):
         # Setup logger
@@ -15,7 +16,7 @@ class SensorWrapper:
         self.name = config.get('name', self.type_)
 
     def get_data(self):
-        return None   
+        return None
 
     def get_initial(self):
         return None
@@ -25,7 +26,7 @@ class SensorWrapper:
         elapsed_time = now - self.last_run
         # Only get data if it has been long enough since last run
         # Or if this is the first time checking since we need some data on the graph
-        if (elapsed_time > self.period or self.last_run == 0):
+        if elapsed_time > self.period or self.last_run == 0:
             # Store current time as last_time 
             self.last_run = now
             # Only return True if sensor is actually enabled
