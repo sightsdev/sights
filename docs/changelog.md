@@ -11,7 +11,7 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 
 ### Improvements
 
-- Reorganise JS folder for the interface. SIGHTS code is now seperate from external libraries (#68, #69)
+- Reorganise JS folder for the interface. SIGHTS code is now separate from external libraries (#68, #69)
 - Improve and minify gamepad.js. We now maintain a fork of this, along with a few modified libraries. Additional docs explain these changes. (#68, #69)
 - Input improvements (#71):
   - Allow key repeats for more ergonomic speed change on the interface
