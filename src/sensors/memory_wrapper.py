@@ -1,6 +1,7 @@
 from sensor_wrapper import SensorWrapper
 import psutil
 
+
 class MemoryWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'memory'

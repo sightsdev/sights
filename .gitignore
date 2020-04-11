@@ -107,6 +107,8 @@ ENV/
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/vcs.xml
+/.idea/jsLibraryMappings.xml
+/.idea/sights.iml
 
 # Config files
 /configs/last_invalid_config.json
@@ -114,3 +116,6 @@ ENV/
 
 # Ignore old SIGHTS installations
 /old/
+
+# NPM types and stuff
+/node_modules/*

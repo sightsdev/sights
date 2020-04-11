@@ -9,7 +9,8 @@ import math
 import atexit
 import logging
 
-class ControlReceiver (WebSocketProcess):
+
+class ControlReceiver(WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5555)
         # Setup logger
@@ -29,7 +30,7 @@ class ControlReceiver (WebSocketProcess):
         }
 
     def gamepad_movement_handler(self, type="TRIGGER"):
-        if (type == "TRIGGER"):
+        if type == "TRIGGER":
             # Set speed range to be from 0 to `speed`
             left = self.state["LEFT_BOTTOM_SHOULDER"] * self.motors.speed
             right = self.state["RIGHT_BOTTOM_SHOULDER"] * self.motors.speed
@@ -63,30 +64,28 @@ class ControlReceiver (WebSocketProcess):
             # Send command to servos
             self.motors.move(left, right)
 
-
     def keyboard_handler(self, control, value):
         speed = self.motors.speed
-        if (control == "FORWARD"):
+        if control == "FORWARD":
             self.motors.move(speed, speed)
-        elif (control == "BACKWARDS"):
+        elif control == "BACKWARDS":
             self.motors.move(-speed, -speed)
-        elif (control == "LEFT"):
+        elif control == "LEFT":
             self.motors.move(-speed, speed)
-        elif (control == "RIGHT"):
+        elif control == "RIGHT":
             self.motors.move(speed, -speed)
-        elif (control == "STOP"):
+        elif control == "STOP":
             self.motors.move(0, 0)
-        elif (control == "SPEED_UP"):
+        elif control == "SPEED_UP":
             if value == "DOWN":
                 self.motors.speed = min(1023, speed + 128)
                 # Send a message to SensorStream to update the interface with the current speed
                 self.pipe.send(["SYNC_SPEED", self.motors.speed])
-        elif (control == "SPEED_DOWN"):
+        elif control == "SPEED_DOWN":
             if value == "DOWN":
                 self.motors.speed = max(127, speed - 128)
                 # Send a message to SensorStream to update the interface with the current speed
                 self.pipe.send(["SYNC_SPEED", self.motors.speed])
-
 
     def message_handler(self, buf):
         # Load object from JSON
@@ -125,12 +124,11 @@ class ControlReceiver (WebSocketProcess):
                 self.gamepad_movement_handler(type="STICK")
             else:
                 self.gamepad_movement_handler(type="TRIGGER")
-            
 
     async def main(self, websocket, path):
         # Enter runtime loop
         while True:
-            # Recieve JSON formatted string from websockets
+            # Receive JSON formatted string from websocket
             try:
                 buf = await websocket.recv()
             except websockets.exceptions.ConnectionClosed:

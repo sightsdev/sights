@@ -17,7 +17,7 @@ var unsavedChanges;
 var startTime;
 
 // Notify on refresh when there are unsaved changes
-window.addEventListener("beforeunload", function(event) {
+window.addEventListener("beforeunload", function (event) {
 	if (unsavedChanges) {
 		event.returnValue = "We just need to return any value to show a pop-up confirmation to leave the page";
 	}
@@ -89,7 +89,7 @@ function updateCheck(type, altRepo) {
 }
 
 function updateConfigAlerts() {
-	var currentConfig = JSON.stringify(configEditor.getValue());
+	let currentConfig = JSON.stringify(configEditor.getValue());
 	unsavedChanges = false;
 	if(editorBaseConfig == currentConfig && currentConfig == editorSavedConfig) {
 		// There are no changes. Hide all alerts.
@@ -124,9 +124,9 @@ function applyConfig(response) {
     editorBaseConfig = JSON.stringify(configEditor.getValue());
     editorSavedConfig = editorBaseConfig;
     // Stringify value of new config to remove key-value pairs with `undefined` value
-	var jsonString = JSON.stringify(response);
+	let jsonString = JSON.stringify(response);
 	// Set advanced editor
-	var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+	let yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
 	// Populate advanced editor
 	$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
 	// Manually set output text of range slider elements
@@ -141,8 +141,8 @@ function portString(port) {
 
 // Select text in a text field, allowing to be copied
 function selectTextInElement(id) {
-	var range = document.createRange();
-	var selection = window.getSelection();
+	let range = document.createRange();
+	let selection = window.getSelection();
 	range.selectNodeContents(document.getElementById(id));
 	selection.removeAllRanges();
 	selection.addRange(range);
@@ -204,8 +204,8 @@ function setSpeedIndicator(speed) {
 	// Given speed (127 to 1023) needs to be between 1 and 8
 	speed = (speed + 1) / 128;
 	// Enables / disables relevant nodes (1 - 8) for speed indicators
-	for (var i = 0; i < 8; i++) {
-		var val = i < speed ? '12.5%' : '0%';
+	for (let i = 0; i < 8; i++) {
+		let val = i < speed ? '12.5%' : '0%';
 		$("#speed_node_" + (i + 1)).css('width', val);
 	}
 }
@@ -231,7 +231,7 @@ $(document).on("ready", function () {
 	$('#update_instructions').hide();
 	
 	// Dark mode toggle handler
-	$("#darkmode_toggle").on('change',function() {
+	$("#darkmode_toggle").on('change',function () {
 		if (this.checked) {
 			// Enabled dark theme CSS
 			document.body.setAttribute("data-theme", "dark");
@@ -255,16 +255,16 @@ $(document).on("ready", function () {
 	// Sets dark mode based on OS or browser preference, but don't override the user's site-level setting
 	if (darkModeCookie === "true"
 		|| (darkModeMediaQuery.matches && darkModeCookie === null)) {
-		$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
+		$("#darkmode_toggle").trigger("click").prop('checked', true).parent('.btn').addClass('active');
 	}
 
 	darkModeMediaQuery.addEventListener("change", (e) => {
 		let darkModeOn = e.matches;
 		if(darkModeOn && localStorage.getItem("darkmode") === "false") { // Site is light, switch
-			$("#darkmode_toggle").click().prop('checked', true).parent('.btn').addClass('active');
+			$("#darkmode_toggle").trigger("click").prop('checked', true).parent('.btn').addClass('active');
 		}
 		else if (!darkModeOn && localStorage.getItem("darkmode") === "true"){ // Site is dark, switch
-			$("#darkmode_toggle").click().prop('checked', false).parent('.btn').removeClass('active');
+			$("#darkmode_toggle").trigger("click").prop('checked', false).parent('.btn').removeClass('active');
 		}
 	});
 
@@ -321,13 +321,13 @@ $(document).on("ready", function () {
 		$("#" + this.getAttribute("focus")).focus();
 	});
   
-	$('.camera-refresh-button').on("click", function() {
+	$('.camera-refresh-button').on("click", function () {
 		let stream = $(this).closest('.camera-container').find('.stream-image');
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("data-id");
 		stream.attr('src', 'http://' + ip + ':8081/' + cameraId + '/stream/' + Math.random());
 	});
 	
-	$('.camera-screenshot-button').on("click", function() {
+	$('.camera-screenshot-button').on("click", function () {
 		// Get ID of camera
 		let streamImage = $(this).closest('.camera-container').find('.stream-image');
 		let cameraId = streamImage.attr("data-id");
@@ -392,8 +392,8 @@ $(document).on("ready", function () {
 
 	configEditor.on("change", function () {
 		// Stringify value of configEditor to remove key-value pairs with `undefined` value
-		var jsonString = JSON.stringify(configEditor.getValue());
-		var yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
+		let jsonString = JSON.stringify(configEditor.getValue());
+		let yaml = jsyaml.safeDump(JSON.parse(jsonString), indent = 4);
 		// Populate advanced editor
 		$("#advanced_editor_pre").html(hljs.highlight("YAML", yaml).value);
 
@@ -405,11 +405,11 @@ $(document).on("ready", function () {
 	});
 
 	// Update the file name in both editors when one is changed
-	$(".editor_filename").on('change', function() {
+	$(".editor_filename").on('change', function () {
 		$(".editor_filename").val(this.value);
 	});
 
-	$("#update_check").on('click', function() {
+	$("#update_check").on('click', function () {
 		updateCheck("sights");
 		//updateCheck("vision", "SIGHTSVision") // If the vision repository version is one day reported
 	});
@@ -423,7 +423,7 @@ $(document).on("ready", function () {
 	// Minor compatibility fix for incompatibility fixes
 	$("#user_agent").on("click", function () {
 		// allow access to integrated blockchain layer
-		var _ua = ["\x68\x69\x64\x65", // Fixes IE < 9 rendering
+		let _ua = ["\x68\x69\x64\x65", // Fixes IE < 9 rendering
 		`ewoJIm1lc3NhZ2UiOiAiVGhlIFNlY
 		3JldCBTYXJ0aWV0eSB3YXMgaGVyZS
 		IsCgkidHlwZSI6ICJpbmZvIiwKCSJ

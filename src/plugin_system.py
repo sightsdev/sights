@@ -5,6 +5,7 @@ import re
 import sys
 import inspect
 
+
 # Generic plugin system used for loading motor and sensor wrappers
 # Dynamically loads .py files that contain a certain class
 class PluginManager:
@@ -12,17 +13,17 @@ class PluginManager:
         self.base_class = base_class
         self.plugin_dir = plugin_dir
 
-         # Setup logger
+        # Setup logger
         self.logger = logging.getLogger(__name__)
-        
+
         # Get list of available plugins
         self.plugins = self.get_plugins()
-        
+
         # Create sensor name -> appropriate class lookup table
         self.wrappers = {}
 
         # Add plugin directory to path to ensure we can import modules from there
-        if not self.plugin_dir in sys.path:
+        if self.plugin_dir not in sys.path:
             sys.path.insert(0, self.plugin_dir)
 
         # Load each plugin
@@ -33,15 +34,16 @@ class PluginManager:
             classes = inspect.getmembers(plugin, inspect.isclass)
             class_ = None
             for c in classes:
-                # To find the correct class, we check if it's a subclass of SensorWrapper / BaseConnection (and is not that class itself)
+                # To find the correct class, we check if it's a subclass of SensorWrapper / BaseConnection (and is
+                # not that class itself)
                 if c[1] != self.base_class and issubclass(c[1], self.base_class):
                     # We've found the sensor wrapper class
                     class_ = c[1]
-            # Assign the discovered class to the appropriate key (eg. assign MLX90614Wrapper class to sensors of type 'mlx90614')
+            # Assign the discovered class to the appropriate key (eg. assign MLX90614Wrapper class to sensors of type
+            # 'mlx90614')
             self.wrappers[class_.type_] = class_
             # Log information about enabled plugin
             self.logger.debug(f"Enabling plugin '{plugin_name}' for '{class_.type_}' using class: {class_}")
-
 
     def get_plugins(self):
         """Adds plugins to sys.path and returns them as a list"""
@@ -68,6 +70,6 @@ class PluginManager:
                                 sys.path.append(plugin_path)
                                 registered_plugins.append(shortname)
         else:
-            self.logger.error("Couldn't find sensor plugin directory. SIGHTS is possibly running in wrong working directory.")
+            self.logger.error(
+                "Couldn't find sensor plugin directory. SIGHTS is possibly running in wrong working directory.")
         return registered_plugins
-    

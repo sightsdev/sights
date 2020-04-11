@@ -1,6 +1,7 @@
 from sensor_wrapper import SensorWrapper
 import random
 
+
 class MultiRandomWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'multirandom'
@@ -15,11 +16,10 @@ class MultiRandomWrapper(SensorWrapper):
         self.max_c = int(config.get('max_c', 30))
 
     def get_data(self):
-        msg = {}
-        msg["a"] = random.randint(self.min_a, self.max_a)
-
-        msg["b"] = random.randint(self.min_b, self.max_b)
-
-        msg["c"] = random.randint(self.min_c, self.max_c)
+        msg = {
+            "a": random.randint(self.min_a, self.max_a),
+            "b": random.randint(self.min_b, self.max_b),
+            "c": random.randint(self.min_c, self.max_c)
+        }
 
         return msg

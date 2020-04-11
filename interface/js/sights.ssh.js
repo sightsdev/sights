@@ -8,8 +8,7 @@ var ssh_current = 1;
 var ssh_address = "http://" + window.location.hostname + ":4200";
 
 function setCurrentSsh(tab) {
-	let tab_id = tab.attr("ssh_tab");
-	ssh_current = tab_id;
+	ssh_current = tab.attr("ssh_tab");
 }
 
 function closeSshTab(tab) {
@@ -32,8 +31,8 @@ function closeSshTab(tab) {
 }
 
 
-$(document).on("ready", function() {
-    $('#ssh_new_tab').on("click", function() {
+$(document).on("ready", function () {
+    $('#ssh_new_tab').on("click", function () {
 		ssh_count++;
 		
 		// Get ready to go to the new tab. Make sure no other tab is shown.
@@ -48,7 +47,7 @@ $(document).on("ready", function() {
 		ssh_current = ssh_count;
 		
 		// Create the tab and terminal
-		$('#ssh_new_tab').before('<li class="nav-item ssh-tab" id="ssh_tab_'+ ssh_current +'"><a class="nav-link text-dark active" ssh_tab="' + ssh_current + '" href="#ssh_term_' + ssh_current + '" role="tab" data-toggle="tab" aria-selected="true" onclick="setCurrentSsh($(this));"><i class="fa fa-fw fa-terminal"></i> ' + ssh_current + '<span style="padding-right: 1em"></span><span ssh_tab="' + ssh_current + '" id="ssh_tab_close_' + ssh_current + '" onclick="closeSshTab($(this));">&times</span></a></li>');
+		$('#ssh_new_tab').before('<li class="nav-item ssh-tab" id="ssh_tab_'+ ssh_current +'"><a class="nav-link text-dark active" ssh_tab="' + ssh_current + '" href="#ssh_term_' + ssh_current + '" role="tab" data-toggle="tab" aria-selected="true" onclick="setCurrentSsh($(this));"><i class="fa fa-fw fa-terminal"></i> ' + ssh_current + '<span style="padding-right: 1em"></span><span ssh_tab="' + ssh_current + '" id="ssh_tab_close_' + ssh_current + '" onclick="closeSshTab($(this));">&times;</span></a></li>');
         $('#ssh_term_content').append($('<div class="tab-pane fade active show ssh-term" id="ssh_term_' + ssh_current + '"><iframe id="ssh_iframe_'+ ssh_current +'" src="" width="100%" height="400px" class="rounded-bottom ssh-iframe"></iframe></div>'));
 		$("#ssh_iframe_" + ssh_current).attr("src", ssh_address);
     });

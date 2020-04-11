@@ -22,7 +22,7 @@ A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 - Change Highlight.js theme from Monokai to Railscasts (#68, #69)
 - Unify the colour orange across the interface (#72, #75)
 - Rename class Motors to MotorHandler, in line with its filename
-- Add close function to SensorWrapper in case a sensor wrapper needs to close a connection or cleanup
+- Add close function to SensorWrapper in case a sensor wrapper needs to close a connection or clean-up
 - Open external links in a new tab
 - Properly close update log filestream when an error occurs
 - Remove legacy Arduino support

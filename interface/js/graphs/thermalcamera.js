@@ -2,7 +2,7 @@ class ThermalCamera extends Graph{
     constructor(config) {
         super(config);
 
-        this.overlayed = false;
+        this.overlaid = false;
         this.overlayCamera = this.config.camera;
 
         this.dom_object = $("<div/>", {
@@ -16,7 +16,7 @@ class ThermalCamera extends Graph{
         let x = 0;
         let table = $("<table>");
         for (let i = 0; i < height; i++) {
-            var row = $('<tr>');
+            let row = $('<tr>');
             for (let j = 0; j < width; j++) {
                 row.append("<td style='width: " + ((1 / width) * 100) + "%;position: relative;'><div class='content' id=p_" + this.config.uid + "_" + x + "></div></td>");
                 x++;
@@ -147,7 +147,7 @@ class ThermalCamera extends Graph{
     update(index, data, name) {
         for (let i = 0; i < data.length; i++) {
             // Apply colour to the appropriate HTML element
-            var hue = Math.round(data[i]);
+            let hue = Math.round(data[i]);
             $("#p_" + this.config.uid + "_" + i).css("background", 'hsl(' + hue + ', 100%, 50%)');
         }
     }
@@ -163,7 +163,7 @@ class ThermalCamera extends Graph{
         let opacity = $('#' + this.config.uid + '_thermal_overlay_opacity').val();
         let xscale = $('#' + this.config.uid + '_thermal_overlay_xscale').val();
         let yscale = $('#' + this.config.uid + '_thermal_overlay_yscale').val();
-        if(!this.overlayed) {
+        if(!this.overlaid) {
             if(this.overlayCamera != 'default') {
                 $('#' + this.config.uid + '_camera').css({ 'opacity' : opacity });
                 $('#camera_' + this.overlayCamera).css({'filter': 'grayscale(100%)'});
@@ -176,7 +176,7 @@ class ThermalCamera extends Graph{
                 $('#' + this.config.uid + '_camera').css({'width':'500px'})
             }
             $('#' + this.config.uid + '_overlay_button').toggleClass('fa-rotate-180');
-            this.overlayed = true;
+            this.overlaid = true;
         }
         else {
             $('#' + this.config.uid + '_camera').css({ 'opacity' : 1 });
@@ -186,7 +186,7 @@ class ThermalCamera extends Graph{
             $('#' + this.config.uid + '_overlay_controls').css({'display':'none'});
             $('#' + this.config.uid + '_camera').css({'transform' : 'scale(1,1)'});
             $('#' + this.config.uid + '_camera').css({'width':'100%'})
-            this.overlayed = false;
+            this.overlaid = false;
         }
     }
 
@@ -201,28 +201,28 @@ class ThermalCamera extends Graph{
         $('#' + uid + '_thermal_overlay_yscale').val(defaultYScale);
         // Thermal Overlay Settings
         // Opacity slider
-        $('#' + uid + '_thermal_overlay_opacity').on("input", function() {
+        $('#' + uid + '_thermal_overlay_opacity').on("input", function () {
             $('#' + uid + '_camera').css({ 'opacity' : $(this).val() });
         });
         // Opacity slider reset button
-        $('#' + uid + '_thermal_overlay_opacity_reset').on("click", function() {
+        $('#' + uid + '_thermal_overlay_opacity_reset').on("click", function () {
             $('#' + uid + '_thermal_overlay_opacity').val(defaultOpacity);
             $('#' + uid + '_camera').css('opacity', defaultOpacity);
         });
         // X and Y scale sliders
-        $('.' + uid + '-thermal-overlay-scale').on("input", function() {
+        $('.' + uid + '-thermal-overlay-scale').on("input", function () {
             let xscale = $('#' + uid + '_thermal_overlay_xscale').val();
             let yscale = $('#' + uid + '_thermal_overlay_yscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale('+xscale+','+yscale+')'});
         });
         // X scale slider reset button
-        $('#' + uid + '_thermal_overlay_xscale_reset').on("click", function() {
+        $('#' + uid + '_thermal_overlay_xscale_reset').on("click", function () {
             $('#' + uid + '_thermal_overlay_xscale').val(defaultXScale);
             let yscale = $('#' + uid + '_thermal_overlay_yscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale(1,'+yscale+')'});
         });
         // Y scale slider reset button
-        $('#' + uid + '_thermal_overlay_yscale_reset').on("click", function() {
+        $('#' + uid + '_thermal_overlay_yscale_reset').on("click", function () {
             $('#' + uid + '_thermal_overlay_yscale').val(defaultYScale);
             let xscale = $('#' + uid + '_thermal_overlay_xscale').val();
             $('#' + uid + '_camera').css({'transform' : 'scale('+xscale+', 1)'});

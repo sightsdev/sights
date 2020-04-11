@@ -32,7 +32,7 @@ function logControl(e) {
 // Runs every tick to check changed axes and send values as required
 function axisUpdate(currGamepad, ctrl) {
 	// Current value of specified control, to 1dp
-	var val = currGamepad.state[ctrl].toFixed(1);
+	let val = currGamepad.state[ctrl].toFixed(1);
 	// Compare against last value
 	if (val != last_axis_state[ctrl]) {
 		// Update last value with current value
@@ -56,7 +56,7 @@ function createFunctionKeyBind(keys, ctrl, func) {
 				control: ctrl
 			};
 	keys.forEach(function (key) {
-		keyboardJS.bind(key, function (e) {
+		keyboardJS.bind(key, function () {
 			// Key down event
 			c_event["value"] = "DOWN";
 			safeSend(c_event);
@@ -64,7 +64,7 @@ function createFunctionKeyBind(keys, ctrl, func) {
 				// optional function was passed
 				func();
 			}
-		}, function (e) {
+		}, function () {
 			// Key up event
 			c_event["value"] = "UP";
 			safeSend(c_event);
@@ -97,7 +97,7 @@ function createMovementKeyBind(keys, ctrl) {
 			e.preventRepeat();
 			movementKeysPressed.unshift(ctrl);
 			sendMovementKeys();
-		}, function (e) {
+		}, function () {
 			// Key up event
 			movementKeysPressed.splice(movementKeysPressed.findIndex(e => e == ctrl), 1);
 			sendMovementKeys();
@@ -109,12 +109,12 @@ function controlConnection() {
 	if(!demo) {
 		// Create WebSocket
 		controlSocket = new WebSocket("ws://" + ip + ":5555");
-		controlSocket.onopen = function() {
+		controlSocket.onopen = function () {
 			controlConnected = true;
 			controlConnectedAlert();
 		};
 
-		controlSocket.onclose = function() {
+		controlSocket.onclose = function () {
 			if (controlConnected) {
 				controlDisconnectedAlert();
 				controlConnected = false;
@@ -136,7 +136,7 @@ $(document).on("ready", function () {
 	window.gamepad = new Gamepad();
 
 	// When the user changes the active gamepad using the dropdown box
-	$('#gamepad_select').on('change', function() {
+	$('#gamepad_select').on('change', function () {
 		currentGamepad = this.value;
 	});
 
@@ -200,18 +200,18 @@ $(document).on("ready", function () {
 	gamepad.bind(Gamepad.Event.AXIS_CHANGED, function (e) {
 		if (e.gamepad.index == currentGamepad) {
 			if (e.axis == "RIGHT_BOTTOM_SHOULDER" || e.axis == "LEFT_BOTTOM_SHOULDER") {
-				// We handle these seperately, since this wasn't providing the required performance
+				// We handle these separately, since this wasn't providing the required performance
 				return;
 			}
 			// Current value of specified control, to 1dp
-			var val = e.value.toFixed(1);
+			let val = e.value.toFixed(1);
 			// Deadzone threshold
 			if (val > -0.2 && val < 0.2) val = 0;
 			// Compare against last
 			if (val != last_axis_state[e.axis]) {
 				// Update last value with current value
 				last_axis_state[e.axis] = val;
-				var c_event = {
+				let c_event = {
 					type: "AXIS",
 					control: e.axis,
 					value: val
@@ -222,7 +222,7 @@ $(document).on("ready", function () {
 	});
 
 	gamepad.bind(Gamepad.Event.TICK, function (gamepads) {
-		var gamepad = gamepads[currentGamepad];
+		let gamepad = gamepads[currentGamepad];
 		if (gamepad) {
 			$("#gamepad_monitor_pre").html(hljs.highlight("JSON", JSON.stringify(gamepad.state, null, "\t")).value);
 
@@ -251,11 +251,11 @@ $(document).on("ready", function () {
 		keyboardJS.resume();
 	});
 	// Allow toggling of camera / sensor mode via keyboard
-	keyboardJS.bind('1', null, function (e) {
+	keyboardJS.bind('1', null, function () {
 		if (sensorMode)
 			toggleSensorMode();
 	});
-	keyboardJS.bind('2', null, function (e) {
+	keyboardJS.bind('2', null, function () {
 		if (!sensorMode)
 			toggleSensorMode();
 	});
@@ -268,7 +268,7 @@ $(document).on("ready", function () {
 	$(".editor_reload_button").on("click", function () {
 		configRequestedAlert();
 		if(!$(".editor_reload_button").hasClass("disabled")) {
-            requestConfig(function(response) {
+            requestConfig(function (response) {
                 applyConfig(response);
             });
 		}

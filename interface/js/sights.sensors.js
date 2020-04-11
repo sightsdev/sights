@@ -16,7 +16,7 @@ var global_config;
 function updateCameras() {
 	['front', 'left', 'right', 'back'].forEach(function (e) {
 		// Get parent div of camera stream image
-		var card = $("#camera_" + e + "_card");
+		let card = $("#camera_" + e + "_card");
 		// Enable the div, if camera is enabled in config file
 		loadConfigSetting(['interface', 'cameras', e, 'enabled'], false) ? card.show() : card.hide();
 		// Set image attributes to the relevant URL
@@ -108,7 +108,7 @@ function sensorUpdate(obj) {
 
 	if("initial_message" in obj) {
 		interfaceLog("info", "sensors", "Received initial message");
-		requestConfig(function(response) {
+		requestConfig(function (response) {
 
 			applyConfig(response);
 			// Keep a copy to work from
@@ -116,7 +116,7 @@ function sensorUpdate(obj) {
 
 			// Set theme accent colour from config
 	        let accent_colour = loadConfigSetting(['interface', 'theme', 'accent_colour'], '#FF5A00');
-	        $('.accent-colour').each(function(i, element) {
+	        $('.accent-colour').each(function (i, element) {
                 $(element).css("color", accent_colour);
                 $(element).css("fill", accent_colour);
             });
@@ -281,8 +281,6 @@ function sensorUpdate(obj) {
 	if ("speed" in obj) {
 		setSpeedIndicator(obj["speed"]);
 	}
-
-
 }
 
 function sensorConnection() {
@@ -298,15 +296,13 @@ function sensorConnection() {
 				sensorsDisconnectedAlert();
 				sensorConnected = false;
 			}
-
 			setTimeout(function () {
 				sensorConnection()
 			}, 5000);
 		};
 		// Setup update event
 		sensorSocket.onmessage = function (event) {
-			var obj = JSON.parse(event.data);
-
+			let obj = JSON.parse(event.data);
 			sensorUpdate(obj);
 		}
 	}

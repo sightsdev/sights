@@ -4,13 +4,14 @@ import multiprocessing
 import json
 import logging
 
-class WebSocketProcess (multiprocessing.Process):
+
+class WebSocketProcess(multiprocessing.Process):
     def __init__(self, mpid, pipe, config_file, port):
         multiprocessing.Process.__init__(self)
         self.logger = logging.getLogger(__name__)
         # Process ID
         self.mpid = mpid
-         # Communication port to allow for communication with other WebSocketProcess
+        # Communication port to allow for communication with other WebSocketProcess
         self.pipe = pipe
         # Store config filename
         self.config_file = config_file
@@ -20,7 +21,7 @@ class WebSocketProcess (multiprocessing.Process):
         self.port = port
         # Bind to specified IP address, if provided, otherwise bind to any address
         if 'network' in self.config:
-            self.ip = self.config['network']['ip'] 
+            self.ip = self.config['network']['ip']
         else:
             self.ip = '*'
         # Get nice name (e.g. "SensorStream")
@@ -33,4 +34,3 @@ class WebSocketProcess (multiprocessing.Process):
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
         self.logger.info("Exiting " + self.name + " process")
- 

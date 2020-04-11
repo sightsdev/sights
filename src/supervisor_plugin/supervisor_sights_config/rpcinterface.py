@@ -15,6 +15,7 @@ BACKUP_DIR = '/opt/sights/src/configs/sights/backup/'
 CONFIG_EXT = '.json'
 MINIMAL_CONFIG = "/opt/sights/src/configs/sights/minimal.json"
 
+
 def _runCommand(f, command):
     """ Run a command using subprocess, and log output
     @return integer     return code of command
@@ -34,6 +35,7 @@ def _runCommand(f, command):
     f.write(f"\nProcess returned: {process.returncode}\n")
     # Return the return code
     return process.returncode
+
 
 class SIGHTSConfigNamespaceRPCInterface:
     """ An extension for Supervisor that implements a basic
@@ -190,7 +192,8 @@ class SIGHTSConfigNamespaceRPCInterface:
         @return boolean/string      Return true (or version string when requiring restart) if successful, false if not
         """
         update_commands = [
-            ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O", "/tmp/sights.install.sh"],
+            ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O",
+             "/tmp/sights.install.sh"],
             ["chmod", "+x", "/tmp/sights.install.sh"],
             ["/tmp/sights.install.sh", "--update", "--internal"],
             ["rm", "/tmp/sights.install.sh"]
@@ -215,7 +218,9 @@ class SIGHTSConfigNamespaceRPCInterface:
         new_ver = pkg_resources.get_distribution("supervisor_sights_config").version
         if ver != new_ver:
             return new_ver
-        else: return True
+        else:
+            return True
+
 
 def make_sights_config_rpcinterface(supervisord, **config):
     return SIGHTSConfigNamespaceRPCInterface(supervisord)

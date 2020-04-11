@@ -1,6 +1,7 @@
 from sensor_wrapper import SensorWrapper
 import psutil
 
+
 class DiskUsageWrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'disk_usage'

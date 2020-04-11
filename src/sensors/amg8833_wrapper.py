@@ -1,6 +1,7 @@
 from sensor_wrapper import SensorWrapper
 import Adafruit_AMG88xx.Adafruit_AMG88xx as AMG88xx
 
+
 class AMG8833Wrapper(SensorWrapper):
     # What type of sensor this wrapper handles
     type_ = 'amg8833'
