@@ -315,11 +315,6 @@ $(document).on("ready", function () {
 		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com")
 			demoMode();
 	});
-
-	// Focus an element in a modal if it is specified
-	$(".modal").on('shown.bs.modal', function () {
-		$("#" + this.getAttribute("focus")).focus();
-	});
   
 	$('.camera-refresh-button').on("click", function () {
 		let stream = $(this).closest('.camera-container').find('.stream-image');
