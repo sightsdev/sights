@@ -235,6 +235,8 @@ $(document).on("ready", function () {
 	if (!gamepad.init()) {
 		alert('Your browser does not support gamepads, please update to a modern web browser');
 	}
+	// These keyboard commands should only be active in the main robot control view (not modals)
+	keyboardJS.setContext('main');
 
 	// Create keyboard bindings
 	createMovementKeyBind(['w', 'up'], "FORWARD");
@@ -245,10 +247,10 @@ $(document).on("ready", function () {
 	createFunctionKeyBind(['-', '_'], "SPEED_DOWN");
 	// Disable keyboard controls when modal is open
 	$(".modal").on('shown.bs.modal', function () {
-		keyboardJS.pause();
+		keyboardJS.setContext(this.id);
 	});
 	$(".modal").on('hidden.bs.modal', function () {
-		keyboardJS.resume();
+		keyboardJS.setContext('main');
 	});
 	// Allow toggling of camera / sensor mode via keyboard
 	keyboardJS.bind('1', null, function () {
@@ -258,6 +260,14 @@ $(document).on("ready", function () {
 	keyboardJS.bind('2', null, function () {
 		if (!sensorMode)
 			toggleSensorMode();
+	});
+
+	// Setup CTRL-S for settings modal
+	keyboardJS.withContext('settings_modal', function() {
+		keyboardJS.bind('ctrl+s', function(e) {
+			e.preventDefault();
+			saveConfig();
+		});
 	});
 
 	// Advanced config editor button actions
