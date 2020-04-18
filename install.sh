@@ -17,6 +17,8 @@ update_only='false'
 developer_versions='false'
 internal_update='false'
 
+apt_updated='false'
+
 set -e
 
 print_detected_ip () {
@@ -47,6 +49,7 @@ install_dependencies () {
     echo -e "\nInstalling dependencies..."
     apt update
     apt install -y git apache2 python3 python3-pip wget gdebi 
+    apt_updated='true'
     echo
 }
 
@@ -68,6 +71,7 @@ install_sights_repositories () {
     # Get SIGHTS
     git clone https://github.com/SFXRescue/sights
 
+    # Checkout to latest stable release
     checkout_release
 
     # Install all Python packages required by SIGHTS
@@ -159,10 +163,12 @@ install_motion () {
 
 install_shellinabox () {
     echo -e "\nInstalling ShellInABox..."
-    apt update
+    if [ $apt_updated == 'false' ]; then
+        apt update
+    fi
     apt install -y shellinabox
 
-    echo -e "\nDisabling SSL..."
+    echo -e "\nDisabling ShellInABox SSL..."
     sed -i 's/SHELLINABOX_ARGS=.*/SHELLINABOX_ARGS="--no-beep --disable-ssl"/' /etc/default/shellinabox
 
     if [ $DETECTED_OS == "raspbian" ]; then
