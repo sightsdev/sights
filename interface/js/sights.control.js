@@ -238,6 +238,26 @@ $(document).on("ready", function () {
 	// These keyboard commands should only be active in the main robot control view (not modals)
 	keyboardJS.setContext('main');
 
+	// Open terminal modal
+	keyboardJS.bind('alt+t', () => {
+		$('#ssh_modal').modal();
+	});
+
+	// Open settings modal
+	keyboardJS.bind('alt+s', () => {
+		$('#settings_modal').modal();
+	});
+
+	// Open log modal
+	keyboardJS.bind('alt+l', () => {
+		$('#log_modal').modal();
+	});
+
+	// Open documentation tab
+	keyboardJS.bind('alt+d', () => {
+		$("#docs_button").click()
+	});
+
 	// Create keyboard bindings
 	createMovementKeyBind(['w', 'up'], "FORWARD");
 	createMovementKeyBind(['a', 'left'], "LEFT");
@@ -264,7 +284,7 @@ $(document).on("ready", function () {
 
 	// Setup CTRL-S for settings modal
 	keyboardJS.withContext('settings_modal', function() {
-		keyboardJS.bind('ctrl+s', function(e) {
+		keyboardJS.bind('ctrl+s', function() {
 			e.preventDefault();
 			saveConfig();
 		});
