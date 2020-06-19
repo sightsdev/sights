@@ -338,19 +338,27 @@ fi
 cd $INSTALL_DIR
 
 # Print welcome message
-echo -e "\nSIGHTS installer"
+echo "  _____ _____ _____ _    _ _______ _____ "
+echo " / ____|_   _/ ____| |  | |__   __/ ____|"
+echo "| (___   | || |  __| |__| |  | | | (___  "
+echo " \___ \  | || | |_ |  __  |  | |  \___ \ "
+echo " ____) |_| || |__| | |  | |  | |  ____) |"
+echo "|_____/|_____\_____|_|  |_|  |_| |_____/ "
+
+echo -e "\nSIGHTS interactive installer"
+echo -e "Created by the Semi-Autonomous Rescue Team"
 
 DETECTED_OS=$(cat /etc/*-release | grep -E "\bID=" | sed 's/ID=//g')
 DETECTED_CODENAME=$(cat /etc/*-release | grep "VERSION_CODENAME" | sed 's/VERSION_CODENAME=//g')
 
-echo -e "\nDetected OS: $DETECTED_OS $DETECTED_CODENAME"
+echo -e "\nInstalling as: $SUDO_USER"
+echo -e "Detected OS: ${DETECTED_OS^} ${DETECTED_CODENAME^}"
 if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ] || [ $DETECTED_OS == "raspbian" ]
 then
-    echo -e "Using a supported OS"
+    echo -e "- Using a supported OS -"
 else
-    echo -e "Using an unsupported OS"
+    echo -e "- Using an unsupported OS -"
 fi
-echo -e "Installing as $SUDO_USER"
 echo
 
 # Check provided flags
