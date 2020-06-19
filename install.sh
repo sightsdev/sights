@@ -117,7 +117,22 @@ configure_apache () {
     print_detected_ip "/"
 }
 
-install_motion () {
+try_install_motion () {
+    echo -e "\nWould you like to attempt to install a prebuilt Motion package?"
+    echo -e "Currently only available on Raspberry Pi and x64-based platforms."
+    echo -e "NOTE: This option is not available for the Jetson Nano"
+
+    echo -e "\nOtherwise a manual install will be performed.\n"
+
+    read -p "Attempt to install a prebuilt package Motion? [y/n] " choice
+        case "$choice" in 
+        y|Y ) install_motion_auto;;
+        n|N ) install_motion_manual;;
+        * ) echo "Invalid response";;
+    esac
+}
+
+install_motion_auto () {
     # Only install prebuilt binaries which are available only on supported OSs
     if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ] || [ $DETECTED_OS == "raspbian" ]
     then
@@ -138,27 +153,51 @@ install_motion () {
             gdebi -n ./motion.deb
             rm ./motion.deb
 
-            echo -e "\nCreating symlink for Motion configuration files..."
-            rm -r /etc/motion
-            ln -sf $INSTALL_DIR/sights/src/configs/motion /etc
-
-            echo -e "\nEnabling Motion daemon flag..."
-            echo "start_motion_daemon=yes" > /etc/default/motion
-
-            echo -e "\nEnabling Motion service..."
-            systemctl enable motion
-
-            echo -e "\nStarting Motion service..."
-            service motion start
-            service motion restart
+            configure_motion
         else
-            echo -e "\n Unsupported release"
+            echo -e "\nUnsupported release"
         fi
     else
-        echo -e "\n Unsupported distribution"
+        echo -e "\nUnsupported distribution"
     fi
     echo
     print_detected_ip ":8080/"
+}
+
+install_motion_manual () {
+    cd /tmp/
+
+    echo -e "\nDownloading build script..."
+    wget https://raw.githubusercontent.com/Motion-Project/motion-packaging/master/builddeb.sh
+    chmod +x builddeb.sh
+
+    echo -e "\nBuilding Motion..."
+    ./builddeb.sh AdhocBuild AdhocBuild@nowhere.com master y any
+    rm builddeb.sh
+
+    echo -e "\nInstalling Motion..."
+    gdebi -n *motion*.deb
+    rm *motion*.deb
+
+    cd $INSTALL_DIR
+
+    configure_motion
+}
+
+configure_motion () {
+    echo -e "\nCreating symlink for Motion configuration files..."
+    rm -r /etc/motion
+    ln -sf $INSTALL_DIR/sights/src/configs/motion /etc
+
+    echo -e "\nEnabling Motion daemon flag..."
+    echo "start_motion_daemon=yes" > /etc/default/motion
+
+    echo -e "\nEnabling Motion service..."
+    systemctl enable motion
+
+    echo -e "\nStarting Motion service..."
+    service motion start
+    service motion restart
 }
 
 install_shellinabox () {
@@ -369,7 +408,7 @@ while true; do
         2) install_dependencies ;;
         3) install_sights_repositories ;;
         4) configure_apache ;;
-        5) install_motion ;;
+        5) try_install_motion ;;
         6) install_shellinabox ;;
         7) configure_supervisor ;;
         8) enable_i2c ;;
