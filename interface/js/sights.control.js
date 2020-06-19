@@ -239,22 +239,26 @@ $(document).on("ready", function () {
 	keyboardJS.setContext('main');
 
 	// Open terminal modal
-	keyboardJS.bind('alt+t', () => {
+	keyboardJS.bind('alt+t', (e) => {
+		e.preventDefault();
 		$('#ssh_modal').modal();
 	});
 
 	// Open settings modal
-	keyboardJS.bind('alt+s', () => {
+	keyboardJS.bind('alt+s', (e) => {
+		e.preventDefault();
 		$('#settings_modal').modal();
 	});
 
 	// Open log modal
-	keyboardJS.bind('alt+l', () => {
+	keyboardJS.bind('alt+l', (e) => {
+		e.preventDefault();
 		$('#log_modal').modal();
 	});
 
 	// Open documentation tab
-	keyboardJS.bind('alt+d', () => {
+	keyboardJS.bind('alt+d', (e) => {
+		e.preventDefault();
 		$("#docs_button").click()
 	});
 
@@ -284,7 +288,7 @@ $(document).on("ready", function () {
 
 	// Setup CTRL-S for settings modal
 	keyboardJS.withContext('settings_modal', function() {
-		keyboardJS.bind('ctrl+s', function() {
+		keyboardJS.bind('ctrl+s', function(e) {
 			e.preventDefault();
 			saveConfig();
 		});
