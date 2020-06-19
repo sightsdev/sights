@@ -1,4 +1,22 @@
 # Changelog {docsify-ignore-all}
+## [WIP](https://github.com/SFXRescue/sights/releases/tag/) (2020-XX-XX)
+
+### Features
+
+- Added support for building Motion from source in the installer. This implements Motion support for the Nvidia Jetson. Prebuilt packages are still available for the Raspberry Pi and x64 based systems.
+
+### Improvements
+
+- Improved the formatting of the welcome message in the installer
+- Added CTRL-S as a way to save modified config files in the interface
+- Added keyboard shortcuts to open each modal
+- Use Font Awesome for the speed buttons rather than unicode
+- Renamed SSH to Terminal in the interface
+- Only run apt update once during the install process
+
+### Bug fixes
+- Gamepad page was trying to load a non-minifed script that no longer exists
+
 ## [v1.2](https://github.com/SFXRescue/sights/releases/tag/v1.2) (2020-04-10)
 
 A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
