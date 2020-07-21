@@ -10,7 +10,7 @@ SSH is enabled on the host to allow access to the underlying OS through the SSH 
 
 This is the port that the main SIGHTS interface is hosted on. This will be the page you will see if you visit the host's IP address.
 
-## ':4200' ShellInABox (HTTP)
+## `:4200` ShellInABox (HTTP)
 
 ShellInABox is a web-based SSH client that is hosted on this port and available through the SSH window on the interface.
 

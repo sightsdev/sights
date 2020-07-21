@@ -204,6 +204,7 @@ install_shellinabox () {
     echo -e "\nInstalling ShellInABox..."
     if [ $apt_updated == 'false' ]; then
         apt update
+        apt_updated='true'
     fi
     apt install -y shellinabox
 

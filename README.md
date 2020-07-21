@@ -91,7 +91,7 @@ Then visit the robot's IP address in any web browser on the same network.
 
 ## Documentation
 
-Documentation can be found at [sfxrescue.github.io/sights](http://sfxrescue.github.io/sights).
+Documentation can be found at [https://sights.js.org](https://sights.js.org).
 
 It can also be accessed through the SIGHTS interface itself, even without an internet connection.
 
