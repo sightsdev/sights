@@ -154,8 +154,8 @@ class ThermalCamera extends Graph{
         for (let i = 0; i < data.length; i++) {
             // Apply colour to the appropriate HTML element
             let temp = Math.round(data[i]);
-            let max = Math.max(data)
-            let min = Math.min(data)
+            let max = Math.max(...data, 40)
+            let min = Math.min(...data, 10)
             let hue = (temp/(max - min)) * 180 + 240;
             $("#p_" + this.config.uid + "_" + i).css("background", 'hsl(' + hue + ', 100%, 50%)');
         }
