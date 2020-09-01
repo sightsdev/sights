@@ -13,8 +13,5 @@ class AMG8833Wrapper(SensorWrapper):
         # Create sensor object
         self.sensor = AMG88xx(address=self.address)
 
-    def get_initial(self):
-        return {"mintemp": 0, "maxtemp": 80}
-
     def get_data(self):
         return self.sensor.readPixels()

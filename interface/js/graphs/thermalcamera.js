@@ -4,8 +4,6 @@ class ThermalCamera extends Graph{
 
         this.overlaid = false;
         this.overlayCamera = this.config.camera;
-        this.maxtemp = 100;
-        this.mintemp = 100;
 
         this.dom_object = $("<div/>", {
             "id": this.config.uid + "_thermal_camera",
@@ -156,7 +154,9 @@ class ThermalCamera extends Graph{
         for (let i = 0; i < data.length; i++) {
             // Apply colour to the appropriate HTML element
             let temp = Math.round(data[i]);
-            let hue = (temp/(this.maxtemp - this.mintemp)) * 180 + 180 + Math.abs(this.mintemp);
+            let max = Math.max(data)
+            let min = Math.min(data)
+            let hue = (temp/(max - min)) * 180 + 240;
             $("#p_" + this.config.uid + "_" + i).css("background", 'hsl(' + hue + ', 100%, 50%)');
         }
     }
