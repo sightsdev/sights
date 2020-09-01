@@ -17,4 +17,10 @@ class MLX90640Wrapper(SensorWrapper):
     def get_data(self):
         data = [0] * 768
         self.sensor.getFrame(data)
-        return data
+        # Correct mirrored MLX90640 output.
+        mirror = []
+        matrix = [data[i:i + 32] for i in range(0, len(data), 32)]
+        for row in matrix:
+            row.reverse()
+            mirror.extend(row)
+        return mirror
