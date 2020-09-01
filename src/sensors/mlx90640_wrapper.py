@@ -14,6 +14,9 @@ class MLX90640Wrapper(SensorWrapper):
         self.sensor = seeed_mlx90640.grove_mxl90640()
         self.sensor.refresh_rate = seeed_mlx90640.RefreshRate.REFRESH_4_HZ
 
+    def get_initial(self):
+        return {"mintemp": -40, "maxtemp": 300}
+
     def get_data(self):
         data = [0] * 768
         self.sensor.getFrame(data)
