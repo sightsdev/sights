@@ -954,6 +954,12 @@ const schema = {
                                 "description": "The pretty name for the AMG8833 thermal camera.",
                                 "default": "New Sensor"
                             },
+                            "address": {
+                                "type": "string",
+                                "title": "I2C Address",
+                                "description": "The I2C Address for the AMG8833 thermal camera",
+                                "default": "0x69"
+                            },
                             "period": {
                                 "type": "number",
                                 "title": "Update Period",
@@ -1009,6 +1015,12 @@ const schema = {
                                 "title": "Name",
                                 "description": "The pretty name for the MLX90640 thermal camera.",
                                 "default": "New Sensor"
+                            },
+                            "address": {
+                                "type": "string",
+                                "title": "I2C Address",
+                                "description": "The I2C Address for the MLX90640 thermal camera",
+                                "default": "0x33"
                             },
                             "period": {
                                 "type": "number",
