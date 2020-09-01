@@ -316,7 +316,7 @@ complete_install () {
     install_dependencies
     install_sights_repositories
     configure_apache
-    install_motion
+    try_install_motion
     install_shellinabox
     configure_supervisor
     echo -e "\nInstallation complete! Reboot to ensure proper functionality."
