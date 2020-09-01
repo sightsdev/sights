@@ -1,5 +1,5 @@
 from sensor_wrapper import SensorWrapper
-import seeed_mlx90640
+import seeed_mlx9064x
 
 
 class MLX90641Wrapper(SensorWrapper):
@@ -11,8 +11,8 @@ class MLX90641Wrapper(SensorWrapper):
         # Additional config option for i2c address, default to 0x33
         self.address = int(config.get('address', "0x33"), 16)
         # Create sensor object
-        self.sensor = seeed_mlx90640.grove_mxl90641(address=self.address)
-        self.sensor.refresh_rate = seeed_mlx90640.RefreshRate.REFRESH_4_HZ
+        self.sensor = seeed_mlx9064x.grove_mxl90641(address=self.address)
+        self.sensor.refresh_rate = seeed_mlx9064x.RefreshRate.REFRESH_4_HZ
 
     def get_data(self):
         data = [0] * 192
