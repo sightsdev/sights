@@ -983,6 +983,62 @@ const schema = {
                     },
                     {
                         "type": "object",
+                        "title": "MLX90640 (Thermal Camera)",
+                        "options": {
+                            "collapsed": true
+                        },
+                        "properties": {
+                            "enabled": {
+                                "type": "boolean",
+                                "title": "Enable",
+                                "description": "Whether the MLX90640 thermal camera is enabled",
+                                "format": "checkbox",
+                                "default": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "title": "Type",
+                                "enum": [
+                                    "mlx90640"
+                                ],
+                                "default": "mlx90640",
+                                "format": "radio"
+                            },
+                            "name": {
+                                "type": "string",
+                                "title": "Name",
+                                "description": "The pretty name for the MLX90640 thermal camera.",
+                                "default": "New Sensor"
+                            },
+                            "period": {
+                                "type": "number",
+                                "title": "Update Period",
+                                "description": "How often, in seconds, frames are pulled from the MLX90460 thermal camera.",
+                                "default": 3
+                            },
+                            "width": {
+                                "type": "integer",
+                                "title": "Thermal Camera Width",
+                                "description": "The width, in pixels, of the thermal camera."
+                            },
+                            "height": {
+                                "type": "integer",
+                                "title": "Thermal Camera Height",
+                                "description": "The height, in pixels, of the thermal camera."
+                            },
+                            "display_on": {
+                                "type": "array",
+                                "title": "Display On",
+                                "description": "A list of graph UIDs to display this sensor's data on.",
+                                "items": {
+                                    "type": "string",
+                                    "title": "Graph UID"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
                         "title": "Host Memory Usage Monitor",
                         "options": {
                             "collapsed": true
