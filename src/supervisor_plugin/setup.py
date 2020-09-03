@@ -5,7 +5,7 @@ setuptools.setup(
     name='supervisor_sights_config',
     version='0.1.6',
     license='License :: OSI Approved :: MIT License',
-    url='https://github.com/SFXRescue/sights',
+    url='https://github.com/sightsdev/sights',
     description="supervisor_sights_config RPC extension for supervisor. Config file management for SIGHTS software",
     classifiers=[
         'Environment :: No Input/Output (Daemon)',
@@ -24,7 +24,7 @@ setuptools.setup(
         'Topic :: System :: Systems Administration',
     ],
     author='Connor Kneebone',
-    author_email='connor@sfxrescue.com',
+    author_email='connor@sights.dev',
     packages=setuptools.find_packages(),
     install_requires=['supervisor >= 3.0a6'],
     namespace_packages=['supervisor_sights_config']

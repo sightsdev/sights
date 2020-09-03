@@ -8,6 +8,7 @@
 - [JS Libraries](js_libraries.md)
 - [Changelog](changelog.md)
 - **Links**
-- [![S.A.R.T. Website](assets/logo.svg)S.A.R.T. Website](https://www.sfxrescue.com/)
-- [![GitHub](assets/github.svg)GitHub](https://www.github.com/SFXRescue/)
+- [![Sights Development Website](assets/logo.svg)Sights Development Website](https://www.sights.dev/)
+- [![S.A.R.T. Website](assets/logo.svg)S.A.R.T. Website](https://www.sightsdev.com/)
+- [![GitHub](assets/github.svg)GitHub](https://www.github.com/sightsdev/)
 - [![Thingiverse](assets/thingiverse.svg)Thingiverse](https://www.thingiverse.com/SFXRescue/designs)

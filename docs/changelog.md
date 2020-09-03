@@ -1,5 +1,5 @@
 # Changelog {docsify-ignore-all}
-## [WIP](https://github.com/SFXRescue/sights/releases/tag/) (2020-XX-XX)
+## [WIP](https://github.com/sightsdev/sights/releases/tag/) (2020-XX-XX)
 
 ### Features
 
@@ -17,7 +17,7 @@
 ### Bug fixes
 - Gamepad page was trying to load a non-minifed script that no longer exists
 
-## [v1.2](https://github.com/SFXRescue/sights/releases/tag/v1.2) (2020-04-10)
+## [v1.2](https://github.com/sightsdev/sights/releases/tag/v1.2) (2020-04-10)
 
 A special thank you to @matt-w99 for his first contribution to SIGHTS on GitHub!
 
@@ -61,7 +61,7 @@ config allows overwriting the running config with the active
 config (#79)
 - There are unsaved config changes when the interface is loaded while service is stopped (#79)
 
-## [v1.1.1](https://github.com/SFXRescue/sights/releases/tag/v1.1.1) (2020-03-03)
+## [v1.1.1](https://github.com/sightsdev/sights/releases/tag/v1.1.1) (2020-03-03)
 
 ### Features
 
@@ -83,7 +83,7 @@ config (#79)
 - Update checker fails in v1.1
 - Secondary camera streams aren't visible when demo mode is first activated
 
-## [v1.1](https://github.com/SFXRescue/sights/releases/tag/v1.1) (2020-02-28)
+## [v1.1](https://github.com/sightsdev/sights/releases/tag/v1.1) (2020-02-28)
 
 ### Features
 
@@ -99,6 +99,6 @@ This update merges the following repositories into a single `sights` repository:
 
 This allows far easier versioning, feature parity and updating, as well as simplifying the workflow on GitHub.
 
-## [v1.0](https://github.com/SFXRescue/sights/releases/tag/v1.0) (2020-02-10)
+## [v1.0](https://github.com/sightsdev/sights/releases/tag/v1.0) (2020-02-10)
 
 Initial public release

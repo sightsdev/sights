@@ -164,7 +164,7 @@ The purpose of a sensor wrapper is to implement a set of methods (`get_data()`, 
 
     We're always happy to merge pull requests that add features. Just make sure your code follows our guidelines!
 
-    Check out our [contributing guidelines](https://github.com/SFXRescue/.github/blob/master/CONTRIBUTING.md) for more information about contributing to the SIGHTS project.
+    Check out our [contributing guidelines](https://github.com/sightsdev/.github/blob/master/CONTRIBUTING.md) for more information about contributing to the SIGHTS project.
 
 ### Adding additional configuration options
 

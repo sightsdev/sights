@@ -6,8 +6,8 @@
 # Created by the Semi-Autonomous Rescue Team
 # This file is part of the SIGHTS project
 #
-# https://www.sfxrescue.com
-# https://www.github.com/SFXRescue
+# https://www.sights.dev/
+# https://www.github.com/sightsdev
 
 
 INSTALL_DIR=/opt
@@ -69,7 +69,7 @@ install_sights_repositories () {
     echo -e "\nDownloading SIGHTS repositories..."
 
     # Get SIGHTS
-    git clone https://github.com/SFXRescue/sights
+    git clone https://github.com/sightsdev/sights
 
     # Checkout to latest stable release
     checkout_release
@@ -346,7 +346,7 @@ echo " \___ \  | || | |_ |  __  |  | |  \___ \ "
 echo " ____) |_| || |__| | |  | |  | |  ____) |"
 echo "|_____/|_____\_____|_|  |_|  |_| |_____/ "
 
-echo -e "\nSIGHTS interactive installer"
+echo -e "\nSights interactive installer"
 echo -e "Created by the Semi-Autonomous Rescue Team"
 
 DETECTED_OS=$(cat /etc/*-release | grep -E "\bID=" | sed 's/ID=//g')

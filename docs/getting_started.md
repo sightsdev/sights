@@ -15,7 +15,7 @@ Python >= 3.6 is required. All the officially supported distributions ship with 
 To install on a robot, just download and run the installer as root:
 
 ```shell
-wget https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh
+wget https://raw.githubusercontent.com/sightsdev/sights/master/install.sh
 chmod +x install.sh
 sudo ./install.sh
 ```

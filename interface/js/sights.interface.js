@@ -50,7 +50,7 @@ function updateCheck(type, altRepo) {
 	let update_field = $("#update_" + type);
 	let warning_field = $("#update_warning_" + type);
 	let version_field = $("#version_" + type);
-	let repo = altRepo == undefined ? "SFXRescue/" + type : altRepo;
+	let repo = altRepo == undefined ? "sightsdev/" + type : altRepo;
 	update_field.html("Checking for update");
 	update_field.css("color", "#28a745");
 	update_field.css("opacity", "20%");
@@ -312,7 +312,7 @@ $(document).on("ready", function () {
 
 	// Load demo mode if on public webserver
 	$(window).on('load', function () {
-		if (ip == "sfxrescue.github.io" || ip == "www.sfxrescue.com")
+		if (ip == "sightsdev.github.io" || ip == "www.sights.dev")
 			demoMode();
 	});
   

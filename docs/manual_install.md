@@ -1,6 +1,6 @@
 # Manual Installation
 
-!> This page is maintained for posterity, however small changes in installation instructions may escape future revisions. The most up-to-date installation instructions can always be inferred by reading the current [install.sh](https://github.com/SFXRescue/sights/blob/master/install.sh) script.
+!> This page is maintained for posterity, however small changes in installation instructions may escape future revisions. The most up-to-date installation instructions can always be inferred by reading the current [install.sh](https://github.com/sightsdev/sights/blob/master/install.sh) script.
 
 Installation is preferably done to the `/opt/sights/` directory. This was chosen to make it easier to manage running the software (e.g. making it run on boot) as putting it in the home folder can cause permission issues. Installing to other locations will require changes to various config files.
 
@@ -12,7 +12,7 @@ Next clone this repository
 
 ```shell
 cd /opt/
-git clone https://github.com/SFXRescue/sights
+git clone https://github.com/sightsdev/sights
 ```
 
 We'll make it owned by the current user for convenience:

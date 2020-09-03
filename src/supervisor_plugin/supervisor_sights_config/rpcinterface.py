@@ -192,7 +192,7 @@ class SIGHTSConfigNamespaceRPCInterface:
         @return boolean/string      Return true (or version string when requiring restart) if successful, false if not
         """
         update_commands = [
-            ["wget", "https://raw.githubusercontent.com/SFXRescue/sights/master/install.sh", "-O",
+            ["wget", "https://raw.githubusercontent.com/sightsdev/sights/master/install.sh", "-O",
              "/tmp/sights.install.sh"],
             ["chmod", "+x", "/tmp/sights.install.sh"],
             ["/tmp/sights.install.sh", "--update", "--internal"],
