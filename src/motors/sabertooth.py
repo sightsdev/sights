@@ -1,4 +1,4 @@
-# Sabertooth motor connection using serial
+# Sabertooth motor connection using simplified serial
 from motor_wrapper import MotorWrapper
 import serial
 import logging
@@ -12,7 +12,6 @@ class SabertoothConnection(MotorWrapper):
         MotorWrapper.__init__(self, config)
         self.port = config.get('port')
         self.baudrate = config.get('baudrate')
-        # Try
         self.serial = serial.Serial(port=self.port, baudrate=self.baudrate)
 
     def move_raw(self, left=None, right=None):
