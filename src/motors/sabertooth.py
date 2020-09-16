@@ -18,11 +18,11 @@ class SabertoothConnection(MotorWrapper):
     def move_raw(self, left=None, right=None):
         # Left side
         if left is not None:
-            msg = 64 + round(63 / 100 * max(min(left, 100), -100))
+            msg = 64 + round(63 / 100 * max(min(left/1023*100, 100), -100))
             self.serial.write(bytes([msg]))
         # Right side
         if right is not None:
-            msg = 192 + round(63 / 100 * max(min(right, 100), -100))
+            msg = 192 + round(63 / 100 * max(min(right/1023*100, 100), -100))
             self.serial.write(bytes([msg]))
 
     def stop(self):
