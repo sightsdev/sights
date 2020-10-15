@@ -8,3 +8,4 @@ git+https://github.com/adafruit/Adafruit_AMG88xx_python#egg=Adafruit_AMG88xx
 git+https://github.com/adafruit/Adafruit_bitfield_python#egg=Adafruit_bitfield
 smbus2
 multiprocessing-logging
+seeed-python-mlx9064x
