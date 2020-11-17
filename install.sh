@@ -11,7 +11,7 @@
 
 
 INSTALL_DIR=/opt
-MOTION_VER=4.2.2
+MOTION_VER=4.3.2
 
 update_only='false'
 developer_versions='false'
@@ -136,17 +136,17 @@ install_motion_auto () {
     # Only install prebuilt binaries which are available only on supported OSs
     if [ $DETECTED_OS == "ubuntu" ] || [ $DETECTED_OS == "debian" ] || [ $DETECTED_OS == "raspbian" ]
     then
-        if [ $DETECTED_CODENAME == "bionic" ] || [ $DETECTED_CODENAME == "cosmic" ] || [ $DETECTED_CODENAME == "buster" ]
+        if [ $DETECTED_CODENAME == "bionic" ] || [ $DETECTED_CODENAME == "cosmic" ] || [ $DETECTED_CODENAME == "buster" ] || [ $DETECTED_CODENAME == "focal" ]
         then
             echo -e "\nDownloading Motion..."
             
             if [ $DETECTED_OS == "raspbian" ]
             then 
                 # Get the armhf binaries (with the pi prefix) for Raspbian
-                wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/pi_${DETECTED_CODENAME}_motion_${MOTION_VER}-1_armhf.deb -O motion.deb
+                wget https://github.com/Motion-Project/motion/releases/download/release-${MOTION_VER}/pi_${DETECTED_CODENAME}_motion_${MOTION_VER}-1_armhf.deb -O motion.deb
             else
                 # For x86 systems, just use the normal amd64 binaries
-                wget https://github.com/Motion-Project/motion/releases/download/release-4.2.2/${DETECTED_CODENAME}_motion_${MOTION_VER}-1_amd64.deb -O motion.deb
+                wget https://github.com/Motion-Project/motion/releases/download/release-${MOTION_VER}/${DETECTED_CODENAME}_motion_${MOTION_VER}-1_amd64.deb -O motion.deb
             fi
 
             echo -e "\nInstalling Motion..."
