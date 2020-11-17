@@ -53,6 +53,7 @@ All configuration for Sights is done in the `.json` files within the `configs/` 
 Officially supported operating systems:
 
 - Ubuntu 18.04 LTS Bionic Beaver
+- Ubuntu 20.04 LTS Focal Fossa
 - Debian 10 Buster
 - Raspbian 10 Buster
 
