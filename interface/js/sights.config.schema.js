@@ -78,11 +78,11 @@ const schema = {
                     "format": "radio",
                     "enum": [
                         "dynamixel",
-                        "serial",
+                        "sabertooth",
                         "virtual"
                     ],
                     "title": "Motor Type",
-                    "description": "dynamixel (Dynamixel AX-series servos), serial (Sabertooth motor controllers), virtual (virtual motor connection for testing without motors).",
+                    "description": "dynamixel (Dynamixel AX-series servos), sabertooth (Sabertooth motor controllers), virtual (virtual motor connection for testing without motors).",
                     "default": "dynamixel",
                     "pattern": "^(.*)$"
                 },
@@ -97,7 +97,7 @@ const schema = {
                         "dependencies": {
                             "type": [
                                 "dynamixel",
-                                "serial"
+                                "sabertooth"
                             ]
                         }
                     }
@@ -106,13 +106,13 @@ const schema = {
                     "$id": "#/properties/motors/properties/baudrate",
                     "type": "integer",
                     "title": "Serial Baud Rate",
-                    "description": "Baud rate of the serial port. Some common values include 1000000 for dynamixel or 9600 for serial.",
+                    "description": "Baud rate of the serial port. Some common values include 1000000 for dynamixel or 9600 for sabertooth.",
                     "default": 1000000,
                     "options": {
                         "dependencies": {
                             "type": [
                                 "dynamixel",
-                                "serial"
+                                "sabertooth"
                             ]
                         }
                     }
@@ -164,10 +164,10 @@ const schema = {
                     "$id": "#/properties/motors/properties/channels",
                     "type": "object",
                     "title": "Motor Channels",
-                    "description": "Configure serial motor controller channel assignment for left or right. 'Left' and 'right' groups define which channels control motors on the left and right side. For servo controllers with more than 2 channels, multiple channels can be added to each group.",
+                    "description": "Configure sabertooth motor controller channel assignment for left or right. 'Left' and 'right' groups define which channels control motors on the left and right side. For servo controllers with more than 2 channels, multiple channels can be added to each group.",
                     "options": {
                         "dependencies": {
-                            "type": "serial"
+                            "type": "sabertooth"
                         }
                     },
                     "required": [
