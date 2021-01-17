@@ -9,8 +9,8 @@ class RandomSensorConfig:
 
 class RandomSensor:
     def __init__(self, config):
-        self.minimum = config.minimum
-        self.maximum = config.maximum
+        self.minimum = int(config.minimum)
+        self.maximum = int(config.maximum)
 
     def get(self):
         return random.randint(self.minimum, self.maximum)

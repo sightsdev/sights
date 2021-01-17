@@ -64,4 +64,9 @@ def sensors_id():
         return "Error: No id field provided. Please specify an id."
     return jsonify(api.get_sensor_data(id))
 
+@app.route('/api/v1/sensors', methods=['POST'])
+def create_sensor():
+    api.create_sensor(request.get_json())
+    return '', 204
+
 app.run()
