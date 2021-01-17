@@ -5,7 +5,6 @@ import sights.plugins
 import flask
 from flask import request, jsonify
 from sights.api import v1
-from sights.components.command import Commands
 from sights.components.sensor import Sensors
 
 def iter_namespace(ns_pkg):
@@ -63,7 +62,7 @@ def sensors_all():
     sensors: Sensors = v1._private.sensor_plugins
     new = []
     for sensor in sensors:
-        new.append(sensor.name)
+        new.append(sensor)
     return flask.jsonify(new)
 
 @app.route('/api/v1/sensors', methods=['GET'])
@@ -73,6 +72,6 @@ def sensors_id():
     else:
         return "Error: No id field provided. Please specify an id."
 
-    return jsonify(sensors[id].getdata())
+    return jsonify(sensors[id].get())
 
 app.run()

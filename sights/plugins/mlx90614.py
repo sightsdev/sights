@@ -15,10 +15,15 @@ class MLX90614:
         # Create sensor object
         self.sensor = mlx90614.MLX90614(i2cbus, address=self.address)
 
-    def __call__(self):
+    def get(self):
         # Get data and round to 1 dp
         return round(self.sensor.get_object_1(), 2)
 
-sensor = api.Sensor(name="MLX90614", description="MLX90614", sensor_class=MLX90614, config_class=MLX90614Config)
+sensor = api.Sensor(
+    name="MLX90614", 
+    description="MLX90614", 
+    sensor_class=MLX90614, 
+    config_class=MLX90614Config
+)
 
 api.register_sensor_plugin(sensor)
