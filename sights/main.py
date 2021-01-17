@@ -25,4 +25,8 @@ def home():
 def api_all():
     return "test"
 
+@app.route('/api/v1/commands/', methods=['GET'])
+def commands_all():
+    return "test"
+
 app.run()

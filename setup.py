@@ -1,4 +1,4 @@
-from setuptools import find_packages, setup
+from setuptools import find_packages, find_namespace_packages, setup
 
 setup(
     name="sights",
@@ -8,8 +8,7 @@ setup(
     author_email="cjkneebone@gmail.com",
     url="https://github.com/sightsdev/sights",
     license='GPL',
-    packages=find_packages(exclude=['tests', 'notebooks']),
-    namespace_packages=['sights'],
+    packages=find_namespace_packages(include=['sights.*']),
     classifiers=[
         "Programming Language :: Python :: 3",
         'Intended Audience :: Developers',
