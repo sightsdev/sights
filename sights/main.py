@@ -4,7 +4,7 @@ import sys
 import sights.plugins
 import flask
 from flask import request, jsonify
-from sights.api import v1
+from sights.api import v1 as api
 from sights.components.sensor import Sensors
 
 def iter_namespace(ns_pkg):
@@ -15,17 +15,8 @@ def load_plugins():
         importlib.import_module(name)
 
 def load_sensors(sensors):
-    plugins: Sensors = v1._private.sensor_plugins
-    result = {}
-    # foreach sensor in the config file
     for sensor in sensors:
-        # find the corresponding sensor class defined in a plugin
-        plugin = plugins[sensor["type"]]
-        # create the appropriate configuration class with the args defined in the config file
-        config = plugin.config_class(**sensor["config"])
-        # Retrieve an instance of the sensor class with dependencies injected
-        result[sensor["id"]] = plugin.sensor_class(config)
-    return result
+        api.create_sensor(sensor)
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -51,7 +42,7 @@ sensors_config = [
 
 load_plugins()
 
-sensors = load_sensors(sensors_config)
+load_sensors(sensors_config)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -59,7 +50,7 @@ def home():
 
 @app.route('/api/v1/plugins/sensors/', methods=['GET'])
 def sensors_all():
-    sensors: Sensors = v1._private.sensor_plugins
+    sensors: Sensors = api._private.sensor_plugins
     new = []
     for sensor in sensors:
         new.append(sensor)
@@ -71,7 +62,6 @@ def sensors_id():
         id = request.args['id']
     else:
         return "Error: No id field provided. Please specify an id."
-
-    return jsonify(sensors[id].get())
+    return jsonify(api.get_sensor_data(id))
 
 app.run()

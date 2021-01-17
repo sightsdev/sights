@@ -1,4 +1,4 @@
-from sights.api import v1
+from sights.api import v1 as api
 import random
 from dataclasses import dataclass
 
@@ -15,11 +15,11 @@ class RandomSensor:
     def get(self):
         return random.randint(self.minimum, self.maximum)
 
-sensor = v1.Sensor(
+sensor = api.Sensor(
     name="RandomSensor", 
     description="RandomSensor", 
     sensor_class=RandomSensor, 
     config_class=RandomSensorConfig
 )
 
-v1.register_sensor_plugin(sensor)
+api.register_sensor_plugin(sensor)
