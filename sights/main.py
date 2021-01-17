@@ -3,8 +3,10 @@ import pkgutil
 import sys
 import sights.plugins
 import flask
+from flask import request, jsonify
 from sights.api import v1
-from sights.components.commands import Commands
+from sights.components.command import Commands
+from sights.components.sensor import Sensors
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
@@ -13,26 +15,74 @@ def load_plugins():
     for _, name, _ in iter_namespace(sights.plugins):
         importlib.import_module(name)
 
+def load_sensors(sensors):
+    sensor_classes: Sensors = v1._private.container[Sensors]
+    result = {}
+    # foreach sensor in the config file
+    for sensor in sensors:
+        # find the corresponding sensor class defined in a plugin
+        for plugin in sensor_classes:
+            if plugin.name == sensor["type"]:
+                # create the appropriate configuration class with the args defined in the config file
+                conf = plugin.config_class(**sensor["config"])
+                v1._private.container[plugin.config_class] = conf
+                # Retrieve an instance of the sensor class with dependencies injected
+                result[sensor["id"]] = v1._private.container[plugin.sensor_class]
+    return result
+
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
+sensors_config = [
+    {
+        "id": "1",
+        "type": "RandomSensor",
+        "config": {
+            "minimum": 40,
+            "maximum": 99
+        }
+    },
+    {
+        "id": "2",
+        "type": "RandomSensor",
+        "config": {
+            "minimum": 1,
+            "maximum": 2
+        }
+    }
+]
+
 load_plugins()
+
+sensors = load_sensors(sensors_config)
 
 @app.route('/', methods=['GET'])
 def home():
     return "<h1>sights api</h1><p>This site is a prototype API</p>"
 
-# A route to return all of the available entries in our catalog.
-@app.route('/api/v1/sensors/all', methods=['GET'])
-def api_all():
-    return "test"
-
-@app.route('/api/v1/commands/', methods=['GET'])
+@app.route('/api/v1/commands/list/', methods=['GET'])
 def commands_all():
     commands: Commands = v1._private.container[Commands]
     new = []
     for command in commands:
         new.append(command.name)
     return flask.jsonify(new)
+
+@app.route('/api/v1/sensors/list/', methods=['GET'])
+def sensors_all():
+    sensors: Sensors = v1._private.container[Sensors]
+    new = []
+    for sensor in sensors:
+        new.append(sensor.name)
+    return flask.jsonify(new)
+
+@app.route('/api/v1/sensors', methods=['GET'])
+def sensors_id():
+    if 'id' in request.args:
+        id = request.args['id']
+    else:
+        return "Error: No id field provided. Please specify an id."
+
+    return jsonify(sensors[id].getdata())
 
 app.run()
