@@ -3,6 +3,8 @@ import pkgutil
 import sys
 import sights.plugins
 import flask
+from sights.api import v1
+from sights.components.commands import Commands
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
@@ -27,6 +29,10 @@ def api_all():
 
 @app.route('/api/v1/commands/', methods=['GET'])
 def commands_all():
-    return "test"
+    commands: Commands = v1._private.container[Commands]
+    new = []
+    for command in commands:
+        new.append(command.name)
+    return flask.jsonify(new)
 
 app.run()
