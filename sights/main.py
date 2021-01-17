@@ -16,18 +16,16 @@ def load_plugins():
         importlib.import_module(name)
 
 def load_sensors(sensors):
-    sensor_classes: Sensors = v1._private.container[Sensors]
+    plugins: Sensors = v1._private.sensor_plugins
     result = {}
     # foreach sensor in the config file
     for sensor in sensors:
         # find the corresponding sensor class defined in a plugin
-        for plugin in sensor_classes:
-            if plugin.name == sensor["type"]:
-                # create the appropriate configuration class with the args defined in the config file
-                conf = plugin.config_class(**sensor["config"])
-                v1._private.container[plugin.config_class] = conf
-                # Retrieve an instance of the sensor class with dependencies injected
-                result[sensor["id"]] = v1._private.container[plugin.sensor_class]
+        plugin = plugins[sensor["type"]]
+        # create the appropriate configuration class with the args defined in the config file
+        config = plugin.config_class(**sensor["config"])
+        # Retrieve an instance of the sensor class with dependencies injected
+        result[sensor["id"]] = plugin.sensor_class(config)
     return result
 
 app = flask.Flask(__name__)
@@ -60,17 +58,9 @@ sensors = load_sensors(sensors_config)
 def home():
     return "<h1>sights api</h1><p>This site is a prototype API</p>"
 
-@app.route('/api/v1/commands/list/', methods=['GET'])
-def commands_all():
-    commands: Commands = v1._private.container[Commands]
-    new = []
-    for command in commands:
-        new.append(command.name)
-    return flask.jsonify(new)
-
-@app.route('/api/v1/sensors/list/', methods=['GET'])
+@app.route('/api/v1/plugins/sensors/', methods=['GET'])
 def sensors_all():
-    sensors: Sensors = v1._private.container[Sensors]
+    sensors: Sensors = v1._private.sensor_plugins
     new = []
     for sensor in sensors:
         new.append(sensor.name)
