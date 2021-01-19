@@ -49,22 +49,24 @@ def home():
     return "<h1>sights api</h1><p>This site is a prototype API</p>"
 
 @app.route('/api/v1/plugins/sensors/', methods=['GET'])
-def sensors_all():
-    sensors: Sensors = api._private.sensor_plugins
-    new = []
-    for sensor in sensors:
-        new.append(sensor)
-    return flask.jsonify(new)
+def plugins_sensors_all():
+    sensor_plugins: Sensors = api._private.sensor_plugins
+    return flask.jsonify([plugin for plugin in sensor_plugins])
 
 @app.route('/api/v1/sensors', methods=['GET'])
-def sensors_id():
-    if 'id' in request.args:
-        id = request.args['id']
-    else:
-        return "Error: No id field provided. Please specify an id."
-    return jsonify(api.get_sensor_data(id))
+def sensors_all():
+    sensors: Sensors = api._private.sensors
+    return jsonify([sensor for sensor in sensors])
 
-@app.route('/api/v1/sensors', methods=['POST'])
+@app.route('/api/v1/sensors/<sensor_id>', methods=['GET'])
+def sensors_id(sensor_id):
+    return jsonify(api.get_sensor_info(sensor_id))
+
+@app.route('/api/v1/sensors/<sensor_id>/data', methods=['GET'])
+def sensors_data(sensor_id):
+    return jsonify(api.get_sensor_data(sensor_id))
+
+@app.route('/api/v1/sensors', methods=['PUT'])
 def create_sensor():
     api.create_sensor(request.get_json())
     return '', 204
