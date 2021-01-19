@@ -1,5 +1,6 @@
 import time
 import threading
+import cv2
 try:
     from greenlet import getcurrent as get_ident
 except ImportError:
@@ -51,20 +52,26 @@ class CameraEvent(object):
         self.events[get_ident()][0].clear()
 
 
-class BaseCamera(object):
+class Camera:
     thread = None  # background thread that reads frames from camera
     frame = None  # current frame is stored here by background thread
     last_access = 0  # time of last client access to the camera
     event = CameraEvent()
 
+    restart_event = threading.Event()
+
+    video_source = 0
+    width = 640
+    height = 480
+
     def start(self):
         """Start the background camera thread if it isn't running yet."""
-        if BaseCamera.thread is None:
-            BaseCamera.last_access = time.time()
+        if self.thread is None:
+            self.last_access = time.time()
 
             # start background frame thread
-            BaseCamera.thread = threading.Thread(target=self._thread)
-            BaseCamera.thread.start()
+            self.thread = threading.Thread(target=self._thread)
+            self.thread.start()
 
             # wait until frames are available
             while self.get_frame() is None:
@@ -72,39 +79,66 @@ class BaseCamera(object):
 
     def get_frame(self):
         """Return the current camera frame."""
-        BaseCamera.last_access = time.time()
+        self.last_access = time.time()
 
         # wait for a signal from the camera thread
-        BaseCamera.event.wait()
-        BaseCamera.event.clear()
+        self.event.wait()
+        self.event.clear()
 
-        return BaseCamera.frame
+        return self.frame
+    
+    def set_video_source(self, source: int):
+        self.video_source = source
 
-    @classmethod
-    def set_size(cls, width, height):
+    def restart(self):
+        self.restart_event.set()
+        self.thread.join()
+        self.restart_event.clear()
+        self.start()
+
+    def set_size(self, width, height):
         """Set size of camera"""
-        cls.width = width
-        cls.height = height
+        self.width = width
+        self.height = height
+        print('State has changed.')
+        self.restart()
 
-    @staticmethod
-    def frames():
-        """Generator that returns frames from the camera."""
-        raise RuntimeError('Must be implemented by subclasses.')
+    def frames(self):
+        capture = cv2.VideoCapture(self.video_source)
+        print(self.width)
+        print(self.height)
+        capture.set(3, float(self.width))
+        capture.set(4, float(self.height))
+        
+        if not capture.isOpened():
+            raise RuntimeError('Could not start camera.')
 
-    @classmethod
-    def _thread(cls):
+        while True:
+            # read current frame
+            _, img = capture.read()
+
+            # encode as a jpeg image and return it
+            yield cv2.imencode('.jpg', img)[1].tobytes()
+
+    def _thread(self):
         """Camera background thread."""
         print('Starting camera thread.')
-        frames_iterator = cls.frames()
+        frames_iterator = self.frames()
         for frame in frames_iterator:
-            BaseCamera.frame = frame
-            BaseCamera.event.set()  # send signal to clients
+            self.frame = frame
+            self.event.set()  # send signal to clients
             time.sleep(0)
 
             # if there hasn't been any clients asking for frames in
             # the last 10 seconds then stop the thread
-            if time.time() - BaseCamera.last_access > 10:
+            if time.time() - self.last_access > 10:
                 frames_iterator.close()
                 print('Stopping camera thread due to inactivity.')
                 break
-        BaseCamera.thread = None
+
+            if (self.restart_event.is_set()):
+                # If state has changed, break and restart
+                print('State has changed. Stopping camera')
+                break
+
+        self.thread = None

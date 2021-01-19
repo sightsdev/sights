@@ -9,7 +9,7 @@ from sights.api import v1 as api
 from sights.components.sensor import Sensors
 
 # import camera driver
-from camera.camera_opencv import Camera
+from camera.camera import Camera
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
@@ -51,19 +51,16 @@ camera = Camera()
 
 def create_camera():
     """Video streaming generator function."""
-    #camera = Camera()
     camera.start()
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-
 @app.route('/stream')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(create_camera(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(create_camera(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/', methods=['GET'])
 def home():
