@@ -126,10 +126,6 @@ class Camera:
         if (self._framerate is not 0):
             cap.set(cv2.CAP_PROP_FPS, float(self._framerate))
 
-        print(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        print(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        print(cap.get(cv2.CAP_PROP_FPS))
-
         self._width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
         self._height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
         self._framerate = cap.get(cv2.CAP_PROP_FPS)
