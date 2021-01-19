@@ -132,3 +132,8 @@ bin/
 share/
 lib64
 pyvenv.cfg
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/prism.iml
+.idea/vcs.xml
