@@ -6,7 +6,8 @@ from .base_camera import BaseCamera
 class Camera(BaseCamera):
     video_source = 0
 
-    def __init__(self):
+    def __init__(self, video_source=0):
+        Camera.video_source = video_source
         super(Camera, self).__init__()
 
     @staticmethod

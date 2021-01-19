@@ -55,11 +55,15 @@ def gen(camera):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-@app.route('/video_feed')
-def video_feed():
+@app.route('/video_feed/<camera_id>')
+def video_feed(camera_id):
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(Camera()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    try:
+        camera_id = int(camera_id)
+    except ValueError:
+        return f"ValueError: Expected integer video device ID, given {camera_id}"
+    return Response(gen(Camera(video_source=camera_id)),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/', methods=['GET'])
 def home():
