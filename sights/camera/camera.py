@@ -64,9 +64,10 @@ class Camera:
     width = 640
     height = 480
 
-    def start(self):
+    def start(self, video_source=0):
         """Start the background camera thread if it isn't running yet."""
         if self.thread is None:
+            self.video_source = video_source
             self.last_access = time.time()
 
             # start background frame thread
@@ -86,7 +87,7 @@ class Camera:
         self.event.clear()
 
         return self.frame
-    
+
     def set_video_source(self, source: int):
         self.video_source = source
 
@@ -109,7 +110,7 @@ class Camera:
         print(self.height)
         capture.set(3, float(self.width))
         capture.set(4, float(self.height))
-        
+
         if not capture.isOpened():
             raise RuntimeError('Could not start camera.')
 
