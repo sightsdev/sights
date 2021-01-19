@@ -3,9 +3,18 @@ import pkgutil
 import sys
 import sights.plugins
 import flask
-from flask import request, jsonify
+import os
+from flask import render_template, Response,  request, jsonify
+
 from sights.api import v1 as api
 from sights.components.sensor import Sensors
+
+# import camera driver
+from camera_opencv import Camera
+'''if os.environ.get('CAMERA'):
+    Camera = importlib.import_module('camera_' + os.environ['CAMERA']).Camera
+else:
+    from camera import Camera'''
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
@@ -43,6 +52,20 @@ sensors_config = [
 load_plugins()
 
 load_sensors(sensors_config)
+
+def gen(camera):
+    """Video streaming generator function."""
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+
+@app.route('/video_feed')
+def video_feed():
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    return Response(gen(Camera()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/', methods=['GET'])
 def home():

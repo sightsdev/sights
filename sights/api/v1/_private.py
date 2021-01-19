@@ -2,7 +2,6 @@ import argparse
 import sys
 from configparser import ConfigParser
 from typing import Any, Type
-from smbus2 import SMBus
 
 from ...components.sensor import Sensor, Sensors
 
