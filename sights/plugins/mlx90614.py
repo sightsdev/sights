@@ -1,4 +1,4 @@
-from sights.api import v1 as api
+'''from sights.api import v1 as api
 import mlx90614
 from dataclasses import dataclass
 from smbus2 import SMBus
@@ -26,4 +26,4 @@ sensor = api.Sensor(
     config_class=MLX90614Config
 )
 
-api.register_sensor_plugin(sensor)
+api.register_sensor_plugin(sensor)'''
