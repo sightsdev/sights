@@ -47,18 +47,22 @@ sensors_config = [
 load_plugins()
 load_sensors(sensors_config)
 
-def gen(camera):
+camera = Camera()
+
+def create_camera():
     """Video streaming generator function."""
+    #camera = Camera()
+    camera.start()
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-@app.route('/video_feed')
+@app.route('/stream')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(Camera()),
+    return Response(create_camera(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/', methods=['GET'])
@@ -87,5 +91,13 @@ def sensors_data(sensor_id):
 def create_sensor():
     api.create_sensor(request.get_json())
     return '', 204
+
+@app.route('/api/v1/cameras/1/resolution', methods=['POST'])
+def set_camera_resolution():
+    width = request.get_json()["width"]
+    height = request.get_json()["height"]
+    camera.set_size(width, height)
+    camera.start()
+    return '', 200
 
 app.run(host="0.0.0.0")
