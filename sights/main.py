@@ -11,10 +11,6 @@ from sights.components.sensor import Sensors
 
 # import camera driver
 from camera_opencv import Camera
-'''if os.environ.get('CAMERA'):
-    Camera = importlib.import_module('camera_' + os.environ['CAMERA']).Camera
-else:
-    from camera import Camera'''
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
@@ -92,4 +88,4 @@ def create_sensor():
     api.create_sensor(request.get_json())
     return '', 204
 
-app.run()
+app.run(host="0.0.0.0")
