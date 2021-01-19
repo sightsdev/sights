@@ -19,5 +19,16 @@ def create_sensor(sensor):
 def get_sensor_data(id): 
     return sensors[id].get()
 
+def get_sensor_info(id):
+    sensor = {
+        "guid": id,
+        "type": "example",
+        "config": {
+            "config_option_1": "true",
+            "config_option_2": "false"
+        }
+    }
+    return sensor
+
 sensor_plugins = {}
 sensors = {}

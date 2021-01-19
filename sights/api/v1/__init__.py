@@ -2,4 +2,4 @@
 # that can be used by plugins.
 
 from ...components.sensor import Sensor
-from ._private import register_sensor_plugin, create_sensor, get_sensor_data
+from ._private import register_sensor_plugin, create_sensor, get_sensor_data, get_sensor_info
