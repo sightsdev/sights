@@ -61,9 +61,9 @@ class Camera:
     restart_event = threading.Event()
 
     video_source = 0
-    width = 640
-    height = 480
-    framerate = 30
+    _width = 640
+    _height = 480
+    _framerate = 30
 
     def start(self, video_source=0):
         """Start the background camera thread if it isn't running yet."""
@@ -98,24 +98,41 @@ class Camera:
         self.restart_event.clear()
         self.start()
 
-    def set_size(self, width, height):
+    def set_resolution(self, width, height):
         """Set size of camera"""
-        self.width = width
-        self.height = height
-        print('State has changed.')
+        self._width = width
+        self._height = height
         self.restart()
 
+    def get_resolution(self):
+        """Get resolution of camera"""
+        return (self._width, self._height)
+
     def set_framerate(self, framerate):
-        self.framerate = framerate
+        self._framerate = framerate
         self.restart()
+
+    def get_framerate(self):
+        return self._framerate
 
     def frames(self):
         cap = cv2.VideoCapture(self.video_source)
+
         # Resolution
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, float(self.width))
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self.height))
+        if (self._width is not 0 and self._height is not 0):
+            cap.set(cv2.CAP_PROP_FRAME_WIDTH, float(self._width))
+            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self._height))
         # Framerate
-        cap.set(cv2.CAP_PROP_FPS, float(self.framerate))
+        if (self._framerate is not 0):
+            cap.set(cv2.CAP_PROP_FPS, float(self._framerate))
+
+        print(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        print(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        print(cap.get(cv2.CAP_PROP_FPS))
+
+        self._width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        self._height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        self._framerate = cap.get(cv2.CAP_PROP_FPS)
 
         if not cap.isOpened():
             raise RuntimeError('Could not start camera.')

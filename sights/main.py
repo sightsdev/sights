@@ -113,18 +113,21 @@ def create_sensor():
     api.create_sensor(request.get_json())
     return '', 204
 
+
 @app.route('/api/v1/cameras/<int:camera_id>/resolution', methods=['POST'])
 def set_camera_resolution(camera_id: int):
-    size = request.get_json()
-    cameras[camera_id].set_size(size["width"], size["height"])
+    res = request.get_json()
+    cameras[camera_id].set_resolution(res["width"], res["height"])
     return '', 200
 
 @app.route('/api/v1/cameras/<int:camera_id>/resolution', methods=['GET'])
 def get_camera_resolution(camera_id: int):
+    res = cameras[camera_id].get_resolution()
     return jsonify({
-        "width": cameras[camera_id].width,
-        "height": cameras[camera_id].height
+        "width": res[0],
+        "height": res[1]
     })
+
 
 @app.route('/api/v1/cameras/<int:camera_id>/framerate', methods=['POST'])
 def set_camera_framerate(camera_id: int):
@@ -133,6 +136,6 @@ def set_camera_framerate(camera_id: int):
 
 @app.route('/api/v1/cameras/<int:camera_id>/framerate', methods=['GET'])
 def get_camera_framerate(camera_id: int):
-    return str(cameras[camera_id].framerate)
+    return str(cameras[camera_id].get_framerate())
 
 app.run(host="0.0.0.0")
