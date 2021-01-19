@@ -63,6 +63,7 @@ class Camera:
     video_source = 0
     width = 640
     height = 480
+    framerate = 30
 
     def start(self, video_source=0):
         """Start the background camera thread if it isn't running yet."""
@@ -104,19 +105,24 @@ class Camera:
         print('State has changed.')
         self.restart()
 
-    def frames(self):
-        capture = cv2.VideoCapture(self.video_source)
-        print(self.width)
-        print(self.height)
-        capture.set(3, float(self.width))
-        capture.set(4, float(self.height))
+    def set_framerate(self, framerate):
+        self.framerate = framerate
+        self.restart()
 
-        if not capture.isOpened():
+    def frames(self):
+        cap = cv2.VideoCapture(self.video_source)
+        # Resolution
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, float(self.width))
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self.height))
+        # Framerate
+        cap.set(cv2.CAP_PROP_FPS, float(self.framerate))
+
+        if not cap.isOpened():
             raise RuntimeError('Could not start camera.')
 
         while True:
             # read current frame
-            _, img = capture.read()
+            _, img = cap.read()
 
             # encode as a jpeg image and return it
             yield cv2.imencode('.jpg', img)[1].tobytes()

@@ -25,27 +25,39 @@ def load_sensors(sensors):
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-sensors_config = [
+config = {
+    "cameras": 
     {
-        "id": "1",
-        "type": "RandomSensor",
-        "config": {
-            "minimum": 40,
-            "maximum": 99
+        "front": {
+            "id": 0,
+            "width": 640,
+            "height": 480,
+            "framerate": 30
         }
     },
-    {
-        "id": "2",
-        "type": "RandomSensor",
-        "config": {
-            "minimum": 1,
-            "maximum": 2
+    "sensors": 
+    [
+        {
+            "id": "1",
+            "type": "RandomSensor",
+            "config": {
+                "minimum": 40,
+                "maximum": 99
+            }
+        },
+        {
+            "id": "2",
+            "type": "RandomSensor",
+            "config": {
+                "minimum": 1,
+                "maximum": 2
+            }
         }
-    }
-]
+    ]
+}
 
 load_plugins()
-load_sensors(sensors_config)
+load_sensors(config["sensors"])
 cameras = []
 
 def create_camera(camera_id):
@@ -64,8 +76,8 @@ def create_camera(camera_id):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-@app.route('/stream/<camera_id>')
-def video_feed(camera_id):
+@app.route('/stream/<int:camera_id>')
+def video_feed(camera_id: int):
     """Video streaming route. Put this in the src attribute of an img tag."""
     try:
         camera_id = int(camera_id)
@@ -88,12 +100,12 @@ def sensors_all():
     sensors: Sensors = api._private.sensors
     return jsonify([sensor for sensor in sensors])
 
-@app.route('/api/v1/sensors/<sensor_id>', methods=['GET'])
-def sensors_id(sensor_id):
+@app.route('/api/v1/sensors/<int:sensor_id>', methods=['GET'])
+def sensors_id(sensor_id: int):
     return jsonify(api.get_sensor_info(sensor_id))
 
-@app.route('/api/v1/sensors/<sensor_id>/data', methods=['GET'])
-def sensors_data(sensor_id):
+@app.route('/api/v1/sensors/<int:sensor_id>/data', methods=['GET'])
+def sensors_data(sensor_id: int):
     return jsonify(api.get_sensor_data(sensor_id))
 
 @app.route('/api/v1/sensors', methods=['PUT'])
@@ -101,18 +113,26 @@ def create_sensor():
     api.create_sensor(request.get_json())
     return '', 204
 
-@app.route('/api/v1/cameras/<camera_id>/resolution', methods=['POST'])
-def set_camera_resolution(camera_id):
+@app.route('/api/v1/cameras/<int:camera_id>/resolution', methods=['POST'])
+def set_camera_resolution(camera_id: int):
     size = request.get_json()
-    cameras[int(camera_id)].set_size(size["width"], size["height"])
-    cameras[int(camera_id)].start()
+    cameras[camera_id].set_size(size["width"], size["height"])
     return '', 200
 
-@app.route('/api/v1/cameras/<camera_id>/resolution', methods=['GET'])
-def get_camera_resolution(camera_id):
+@app.route('/api/v1/cameras/<int:camera_id>/resolution', methods=['GET'])
+def get_camera_resolution(camera_id: int):
     return jsonify({
         "width": cameras[camera_id].width,
         "height": cameras[camera_id].height
     })
+
+@app.route('/api/v1/cameras/<int:camera_id>/framerate', methods=['POST'])
+def set_camera_framerate(camera_id: int):
+    cameras[camera_id].set_framerate(request.get_data())
+    return '', 200
+
+@app.route('/api/v1/cameras/<int:camera_id>/framerate', methods=['GET'])
+def get_camera_framerate(camera_id: int):
+    return str(cameras[camera_id].framerate)
 
 app.run(host="0.0.0.0")

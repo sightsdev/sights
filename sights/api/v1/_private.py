@@ -14,9 +14,9 @@ def create_sensor(sensor):
     # create the appropriate configuration class with the args defined in the config file
     config = plugin.config_class(**sensor["config"])
     # Retrieve an instance of the sensor class with dependencies injected
-    sensors[sensor["id"]] = plugin.sensor_class(config)
+    sensors[int(sensor["id"])] = plugin.sensor_class(config)
     # populate sensor info
-    sensors[sensor["id"]].info = config
+    sensors[int(sensor["id"])].info = config
 
 def get_sensor_data(id): 
     return sensors[id].get()
