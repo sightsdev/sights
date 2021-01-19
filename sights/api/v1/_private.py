@@ -15,20 +15,14 @@ def create_sensor(sensor):
     config = plugin.config_class(**sensor["config"])
     # Retrieve an instance of the sensor class with dependencies injected
     sensors[sensor["id"]] = plugin.sensor_class(config)
+    # populate sensor info
+    sensors[sensor["id"]].info = config
 
 def get_sensor_data(id): 
     return sensors[id].get()
 
 def get_sensor_info(id):
-    sensor = {
-        "guid": id,
-        "type": "example",
-        "config": {
-            "config_option_1": "true",
-            "config_option_2": "false"
-        }
-    }
-    return sensor
+    return sensors[id].info
 
 sensor_plugins = {}
 sensors = {}
