@@ -9,7 +9,7 @@ from sights.api import v1 as api
 from sights.components.sensor import Sensors
 
 # import camera driver
-from camera.camera_opencv import Camera
+from camera.camera import Camera
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
@@ -47,22 +47,24 @@ sensors_config = [
 load_plugins()
 load_sensors(sensors_config)
 
-def gen(camera):
+camera = Camera()
+
+def create_camera(camera_id):
     """Video streaming generator function."""
+    camera.start(video_source=camera_id)
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-
-@app.route('/video_feed/<camera_id>')
+@app.route('/stream/<camera_id>')
 def video_feed(camera_id):
     """Video streaming route. Put this in the src attribute of an img tag."""
     try:
         camera_id = int(camera_id)
     except ValueError:
         return f"ValueError: Expected integer video device ID, given {camera_id}"
-    return Response(gen(Camera(video_source=camera_id)),
+    return Response(create_camera(camera_id),
                         mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/', methods=['GET'])
@@ -91,5 +93,13 @@ def sensors_data(sensor_id):
 def create_sensor():
     api.create_sensor(request.get_json())
     return '', 204
+
+@app.route('/api/v1/cameras/1/resolution', methods=['POST'])
+def set_camera_resolution():
+    width = request.get_json()["width"]
+    height = request.get_json()["height"]
+    camera.set_size(width, height)
+    camera.start()
+    return '', 200
 
 app.run(host="0.0.0.0")
