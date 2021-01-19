@@ -101,12 +101,18 @@ def create_sensor():
     api.create_sensor(request.get_json())
     return '', 204
 
-@app.route('/api/v1/cameras/1/resolution', methods=['POST'])
-def set_camera_resolution():
-    width = request.get_json()["width"]
-    height = request.get_json()["height"]
-    camera.set_size(width, height)
-    camera.start()
+@app.route('/api/v1/cameras/<camera_id>/resolution', methods=['POST'])
+def set_camera_resolution(camera_id):
+    size = request.get_json()
+    cameras[int(camera_id)].set_size(size["width"], size["height"])
+    cameras[int(camera_id)].start()
     return '', 200
+
+@app.route('/api/v1/cameras/<camera_id>/resolution', methods=['GET'])
+def get_camera_resolution(camera_id):
+    return jsonify({
+        "width": cameras[camera_id].width,
+        "height": cameras[camera_id].height
+    })
 
 app.run(host="0.0.0.0")
