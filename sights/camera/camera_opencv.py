@@ -1,12 +1,12 @@
 import os
 import cv2
-from base_camera import BaseCamera
+from .base_camera import BaseCamera
 
 
 class Camera(BaseCamera):
     video_source = 0
 
-    def __init__(self, source):
+    def __init__(self):
         super(Camera, self).__init__()
 
     @staticmethod

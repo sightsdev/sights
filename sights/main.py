@@ -5,12 +5,11 @@ import sights.plugins
 import flask
 import os
 from flask import render_template, Response,  request, jsonify
-
 from sights.api import v1 as api
 from sights.components.sensor import Sensors
 
 # import camera driver
-from camera_opencv import Camera
+from camera.camera_opencv import Camera
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
@@ -46,7 +45,6 @@ sensors_config = [
 ]
 
 load_plugins()
-
 load_sensors(sensors_config)
 
 def gen(camera):
