@@ -46,12 +46,19 @@ sensors_config = [
 
 load_plugins()
 load_sensors(sensors_config)
-
-camera = Camera()
+cameras = []
 
 def create_camera(camera_id):
     """Video streaming generator function."""
-    camera.start(video_source=camera_id)
+    camera = None
+    for existing_camera in cameras:
+        if existing_camera.video_source == camera_id:
+            camera = existing_camera
+    if not camera:
+        camera = Camera()
+        camera.start(video_source=camera_id)
+        cameras.append(camera)
+
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
