@@ -1,7 +1,7 @@
 from flask_restx import Api
-from sights.restapi.cameras import api as cameras
-from sights.restapi.sensors import api as sensors
-from sights.restapi.plugins import api as plugins
+from sights.restapi.cameras import restapi as cameras
+from sights.restapi.sensors import restapi as sensors
+from sights.restapi.plugins import restapi as plugins
 
 api = Api(
     title='Sights REST API',
