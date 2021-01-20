@@ -1,7 +1,7 @@
 from ._private import sensor_plugins, sensors
 
 
-def create_sensor(sensor):
+def create(sensor):
     # find the corresponding sensor class defined in a plugin
     plugin = sensor_plugins[sensor["type"]]
     # create the appropriate configuration class with the args defined in the config file
@@ -12,9 +12,9 @@ def create_sensor(sensor):
     sensors[int(sensor["id"])].info = config
 
 
-def get_sensor_data(id):
+def get_data(id):
     return sensors[id].get()
 
 
-def get_sensor_info(id):
+def get_info(id):
     return sensors[id].info

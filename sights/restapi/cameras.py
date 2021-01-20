@@ -8,14 +8,14 @@ restapi = Namespace('cameras', description='Camera stream related operations')
 @restapi.route('/')
 class Cameras(Resource):
     def get(self):
-        return [camera for camera in api._private.cameras]
+        return api.cameras.list_all()
 
 
 @restapi.route('/<int:camera_id>/stream')
 class Stream(Resource):
     def get(self, camera_id: int):
         """Video streaming route. Put this in the src attribute of an img tag."""
-        return Response(api.create_camera(camera_id),
+        return Response(api.cameras.stream(camera_id),
                         mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -27,11 +27,11 @@ class CameraResolution(Resource):
     }))
     def post(self, camera_id: int):
         res = request.get_json()
-        api.set_camera_resolution(camera_id, res["width"], res["height"])
+        api.cameras.set_resolution(camera_id, res["width"], res["height"])
         return '', 200
 
     def get(self, camera_id: int):
-        res = api.get_camera_resolution(camera_id)
+        res = api.cameras.get_resolution(camera_id)
         return {
             "width": res[0],
             "height": res[1]
@@ -40,9 +40,9 @@ class CameraResolution(Resource):
 @restapi.route('/<int:camera_id>/framerate')
 class CameraFramerate(Resource):
     def post(self, camera_id: int):
-        api.set_camera_framerate(camera_id, request.get_data())
+        api.cameras.set_framerate(camera_id, request.get_data())
         return '', 200
 
     def get(self, camera_id: int):
-        return api.get_camera_framerate(camera_id)
+        return api.cameras.get_framerate(camera_id)
 

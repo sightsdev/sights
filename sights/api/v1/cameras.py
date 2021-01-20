@@ -2,17 +2,20 @@ from ._private import cameras
 from ...components.camera import Camera
 
 
-def create_camera(id):
+def stream(id):
     """Video streaming generator function."""
-    camera = get_camera(id)
+    camera = get(id)
 
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+def list_all():
+    return [camera for camera in cameras]
 
-def get_camera(id):
+
+def get(id):
     camera = None
     try:
         camera = cameras[id]
@@ -23,17 +26,17 @@ def get_camera(id):
     return camera
 
 
-def set_camera_resolution(id, width, height):
-    get_camera(id).set_resolution(width, height)
+def set_resolution(id, width, height):
+    get(id).set_resolution(width, height)
 
 
-def get_camera_resolution(id):
-    return get_camera(id).get_resolution()
+def get_resolution(id):
+    return get(id).get_resolution()
 
 
-def set_camera_framerate(id, framerate):
-    get_camera(id).set_framerate(framerate)
+def set_framerate(id, framerate):
+    get(id).set_framerate(framerate)
 
 
-def get_camera_framerate(id):
-    return get_camera(id).get_framerate()
+def get_framerate(id):
+    return get(id).get_framerate()

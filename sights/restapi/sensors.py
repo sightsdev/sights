@@ -12,17 +12,17 @@ class Sensors(Resource):
         return [sensor for sensor in api._private.sensors]
 
     def put(self):
-        api.create_sensor(request.get_json())
+        api.sensors.create(request.get_json())
         return '', 204
 
 
 @restapi.route('/<int:sensor_id>')
 class Sensor(Resource):
     def get(self, sensor_id: int):
-        return api.get_sensor_info(sensor_id)
+        return api.sensors.get_info(sensor_id)
 
 
 @restapi.route('/<int:sensor_id>/data')
 class Data(Resource):
     def get(self, sensor_id: int):
-        return api.get_sensor_data(sensor_id)
+        return api.sensors.get_data(sensor_id)
