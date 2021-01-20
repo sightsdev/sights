@@ -9,8 +9,7 @@ restapi = Namespace('sensors', description='Sensor related operations')
 @restapi.route('/')
 class Sensors(Resource):
     def get(self):
-        sensors: Sensors = api._private.sensors
-        return jsonify([sensor for sensor in sensors])
+        return jsonify([sensor for sensor in api._private.sensors])
 
     def put(self):
         api.create_sensor(request.get_json())
