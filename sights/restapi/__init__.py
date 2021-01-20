@@ -9,6 +9,6 @@ api = Api(
     description='An API for clients to interact with the Sights service'
 )
 
-api.add_namespace(cameras, path="/api/v1/cameras/")
-api.add_namespace(sensors, path="/api/v1/sensors/")
-api.add_namespace(plugins, path="/api/v1/plugins/")
+api.add_namespace(cameras, path="/api/v1/cameras")
+api.add_namespace(sensors, path="/api/v1/sensors")
+api.add_namespace(plugins, path="/api/v1/plugins")
