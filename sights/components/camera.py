@@ -116,7 +116,7 @@ class Camera:
         return self._framerate
 
     def frames(self):
-        cap = cv2.VideoCapture(self.video_source)
+        cap = cv2
 
         # Resolution
         if (self._width is not 0 and self._height is not 0):

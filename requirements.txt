@@ -9,3 +9,5 @@ Werkzeug
 pillow
 opencv-python
 #picamera
+flask-restplus
+werkzeug==0.16.1
