@@ -57,10 +57,4 @@ config = {
 load_plugins()
 load_sensors(config["sensors"])
 
-
-@app.route('/', methods=['GET'])
-def home():
-    return "<h1>sights api</h1><p>This site is a prototype API</p>"
-
-
 app.run(host="0.0.0.0")
