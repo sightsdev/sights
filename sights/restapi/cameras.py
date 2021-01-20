@@ -12,7 +12,7 @@ class Cameras(Resource):
 
 
 @restapi.route('/<int:camera_id>/stream')
-class VideoFeed(Resource):
+class Stream(Resource):
     def get(self, camera_id: int):
         """Video streaming route. Put this in the src attribute of an img tag."""
         return Response(api._private.create_camera(camera_id),
@@ -21,6 +21,10 @@ class VideoFeed(Resource):
 
 @restapi.route('/<int:camera_id>/resolution')
 class CameraResolution(Resource):
+    @restapi.expect(restapi.model('Resolution', {
+        'width': fields.Integer,
+        'height': fields.Integer,
+    }))
     def post(self, camera_id: int):
         res = request.get_json()
         api._private.set_camera_resolution(camera_id, res["width"], res["height"])
