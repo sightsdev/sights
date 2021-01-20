@@ -9,3 +9,4 @@ Werkzeug
 pillow
 opencv-python
 #picamera
+flask-restx

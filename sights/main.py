@@ -3,10 +3,7 @@ import pkgutil
 import sights.plugins
 import flask
 from sights.api import v1 as api
-
-from sights.endpoints.sensors import sensors_blueprint
-from sights.endpoints.cameras import cameras_blueprint
-
+from sights.restapi import api as restapi
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
@@ -24,8 +21,7 @@ def load_sensors(sensors):
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
-app.register_blueprint(sensors_blueprint)
-app.register_blueprint(cameras_blueprint)
+restapi.init_app(app)
 
 config = {
     "cameras":
