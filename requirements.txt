@@ -5,7 +5,7 @@ Flask
 itsdangerous
 Jinja2
 MarkupSafe
-Werkzeug==0.16.0
+Werkzeug
 pillow
 opencv-python
 #picamera
