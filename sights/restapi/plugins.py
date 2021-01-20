@@ -10,4 +10,4 @@ restapi = Namespace('plugins', description='Plugin related operations')
 class Sensors(Resource):
     def get(self):
         sensor_plugins: Sensors = api._private.sensor_plugins
-        return jsonify([plugin for plugin in sensor_plugins])
+        return [plugin for plugin in sensor_plugins]

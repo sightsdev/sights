@@ -8,7 +8,7 @@ restapi = Namespace('cameras', description='Camera stream related operations')
 @restapi.route('/')
 class Cameras(Resource):
     def get(self):
-        return jsonify([camera for camera in api._private.cameras])
+        return [camera for camera in api._private.cameras]
 
 
 @restapi.route('/<int:camera_id>/stream')
@@ -28,11 +28,10 @@ class CameraResolution(Resource):
 
     def get(self, camera_id: int):
         res = api._private.cameras[camera_id].get_resolution()
-        return jsonify({
+        return {
             "width": res[0],
             "height": res[1]
-        })
-
+        }
 
 @restapi.route('/<int:camera_id>/framerate')
 class CameraFramerate(Resource):
@@ -41,5 +40,5 @@ class CameraFramerate(Resource):
         return '', 200
 
     def get(self, camera_id: int):
-        return str(api._private.cameras[camera_id].get_framerate())
+        return api._private.cameras[camera_id].get_framerate()
 
