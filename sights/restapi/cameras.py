@@ -1,5 +1,5 @@
 from flask import request, jsonify, Response
-from flask_restx import Namespace, Resource
+from flask_restx import Namespace, Resource, fields
 from sights.api import v1 as api
 
 restapi = Namespace('cameras', description='Camera stream related operations')
@@ -23,11 +23,11 @@ class VideoFeed(Resource):
 class CameraResolution(Resource):
     def post(self, camera_id: int):
         res = request.get_json()
-        api._private.cameras[camera_id].set_resolution(res["width"], res["height"])
+        api._private.set_camera_resolution(camera_id, res["width"], res["height"])
         return '', 200
 
     def get(self, camera_id: int):
-        res = api._private.cameras[camera_id].get_resolution()
+        res = api._private.get_camera_resolution(camera_id)
         return {
             "width": res[0],
             "height": res[1]
@@ -36,9 +36,9 @@ class CameraResolution(Resource):
 @restapi.route('/<int:camera_id>/framerate')
 class CameraFramerate(Resource):
     def post(self, camera_id: int):
-        api._private.cameras[camera_id].set_framerate(request.get_data())
+        api._private.set_camera_framerate(camera_id, request.get_data())
         return '', 200
 
     def get(self, camera_id: int):
-        return api._private.cameras[camera_id].get_framerate()
+        return api._private.get_camera_framerate(camera_id)
 
