@@ -22,4 +22,4 @@ sensor = api.Sensor(
     config_class=RandomSensorConfig
 )
 
-api.register_sensor_plugin(sensor)
+api.plugins.register_sensor_plugin(sensor)

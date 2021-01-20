@@ -16,7 +16,7 @@ def load_plugins():
 
 def load_sensors(sensors):
     for sensor in sensors:
-        api.create_sensor(sensor)
+        api.sensors.create(sensor)
 
 
 app = flask.Flask(__name__)
