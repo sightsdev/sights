@@ -2,6 +2,7 @@ import importlib
 import pkgutil
 import sights.plugins
 import flask
+
 from sights.api import v1 as api
 
 from sights.endpoints.sensors import sensors_blueprint

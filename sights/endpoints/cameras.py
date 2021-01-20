@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify, Response
 from sights.components.camera import Camera
+from flask_restplus import Resource, Api
 
-cameras_blueprint = Blueprint('cameras_blueprint', __name__)
+cameras_blueprint = Blueprint('cameras_blueprint', __name__, url_prefix='/api/v1/cameras')
+api = Api(cameras_blueprint)
+
 cameras = []
-
 
 def create_camera(camera_id):
     """Video streaming generator function."""
@@ -22,39 +24,30 @@ def create_camera(camera_id):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-@cameras_blueprint.route('/stream/<int:camera_id>')
-def video_feed(camera_id: int):
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    try:
-        camera_id = int(camera_id)
-    except ValueError:
-        return f"ValueError: Expected integer video device ID, given {camera_id}"
-    return Response(create_camera(camera_id),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+@api.route('/<int:id>/stream')
+class CameraStream(Resource):
+    def get(self, id):
+        """Video streaming route. Put this in the src attribute of an img tag."""
+        return Response(create_camera(id),
+            mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@api.route('/<int:id>/resolution')
+class CameraResolution(Resource):
+    def get(self, id):
+        res = cameras[id].get_resolution()
+        return jsonify({
+            "width": res[0],
+            "height": res[1]
+        })
+    def post(self, id):
+        res = request.get_json()
+        cameras[id].set_resolution(res["width"], res["height"])
+        return '', 200
 
-@cameras_blueprint.route('/api/v1/cameras/<int:camera_id>/resolution', methods=['POST'])
-def set_camera_resolution(camera_id: int):
-    res = request.get_json()
-    cameras[camera_id].set_resolution(res["width"], res["height"])
-    return '', 200
-
-
-@cameras_blueprint.route('/api/v1/cameras/<int:camera_id>/resolution', methods=['GET'])
-def get_camera_resolution(camera_id: int):
-    res = cameras[camera_id].get_resolution()
-    return jsonify({
-        "width": res[0],
-        "height": res[1]
-    })
-
-
-@cameras_blueprint.route('/api/v1/cameras/<int:camera_id>/framerate', methods=['POST'])
-def set_camera_framerate(camera_id: int):
-    cameras[camera_id].set_framerate(request.get_data())
-    return '', 200
-
-
-@cameras_blueprint.route('/api/v1/cameras/<int:camera_id>/framerate', methods=['GET'])
-def get_camera_framerate(camera_id: int):
-    return str(cameras[camera_id].get_framerate())
+@api.route('/<int:id>/framerate')
+class CameraFramerate(Resource):
+    def get(self, id):
+        return str(cameras[id].get_framerate())
+    def post(self, id):
+        cameras[id].set_framerate(request.get_data())
+        return '', 200
