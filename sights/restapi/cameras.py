@@ -1,5 +1,5 @@
 from flask import request, jsonify, Response
-from flask_restplus import Namespace, Resource,
+from flask_restx import Namespace, Resource
 from sights.components.camera import Camera
 
 api = Namespace('cameras', description='Camera stream related operations')
