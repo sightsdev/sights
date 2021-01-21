@@ -6,6 +6,10 @@ from dataclasses import dataclass
 class RandomSensorConfig:
     minimum: int
     maximum: int
+        
+@dataclass
+class RandomSensorReturns
+    temperature: float
 
 class RandomSensor:
     def __init__(self, config):
