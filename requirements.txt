@@ -1,0 +1,12 @@
+wheel
+numpy
+click
+Flask
+itsdangerous
+Jinja2
+MarkupSafe
+Werkzeug
+pillow
+opencv-python
+#picamera
+flask-restx
