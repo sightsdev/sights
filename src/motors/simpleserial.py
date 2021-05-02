@@ -42,17 +42,26 @@ class SimpleSerialConnection(MotorWrapper):
         self.port = config.get('port')
         self.baudrate = config.get('baudrate')
         self.serial = serial.Serial(port=self.port, baudrate=self.baudrate)
+        self.channels = config.get('channels')
+        try:
+            self.channels.get('left')
+            self.channels.get('right')
+        except AttributeError:
+            self.channels['left'] = 1
+            self.channels['right'] = 0
 
     def move_raw(self, left=None, right=None):
         # Left side
         if left is not None:
             offset = 64 if left > 0 else 0
-            msg = offset + abs(round(62 / 1000 * left))
+            channel = self.channels.get('left') * 128
+            msg = offset + channel + abs(round(62 / 1000 * left))
             self.serial.write(bytes([msg]))
         # Right side
         if right is not None:
             offset = 64 if right > 0 else 0
-            msg = offset + 128 + abs(round(62 / 1000 * right))
+            channel = self.channels.get('right') * 128
+            msg = offset + channel + abs(round(62 / 1000 * right))
             self.serial.write(bytes([msg]))
 
     def stop(self):
