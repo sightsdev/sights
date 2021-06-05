@@ -1,13 +1,15 @@
-'''from sights.api import v1 as api
-import mlx90614
+from sights.api import v1 as api
 from dataclasses import dataclass
-from smbus2 import SMBus
 
 @dataclass
 class MLX90614Config:
     i2c_address: int
 
-class MLX90614:
+class MLX90614(Sensor):
+    # Only import when trying to use this library
+    import mlx90614
+    from smbus2 import SMBus
+
     def __init__(self, config):
         i2cbus = SMBus(1)
         # Additional config option for i2c address, default to 0x5A
@@ -19,11 +21,11 @@ class MLX90614:
         # Get data and round to 1 dp
         return round(self.sensor.get_object_1(), 2)
 
-sensor = api.Sensor(
+plugin = api.SensorPlugin(
     name="MLX90614", 
     description="MLX90614", 
     sensor_class=MLX90614, 
     config_class=MLX90614Config
 )
 
-api.register_sensor_plugin(sensor)'''
+api.register_sensor_plugin(plugin)

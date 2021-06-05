@@ -1,4 +1,4 @@
-from ._private import sensor_plugins, sensors
+from ._private import motor_plugins, sensors
 
 
 def create(sensor):

@@ -11,6 +11,7 @@ def stream(id):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+
 def list_all():
     return [camera for camera in cameras]
 
