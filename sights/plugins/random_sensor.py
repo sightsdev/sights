@@ -1,4 +1,5 @@
 from sights.api import v1 as api
+from sights.components.sensor import *
 from dataclasses import dataclass
 import random
 

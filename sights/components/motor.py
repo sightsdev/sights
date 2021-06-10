@@ -35,3 +35,5 @@ class Motor:
         enabled = False
 
 MotorPlugins = List[MotorPlugin]
+Motors = List[Motor]
+MotorConnections = List[MotorConnection]

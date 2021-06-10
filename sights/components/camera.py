@@ -1,6 +1,10 @@
 import time
 import threading
-import cv2
+try:
+    import cv2 
+except ImportError:
+    print("Could not import OpenCV")
+
 try:
     from greenlet import getcurrent as get_ident
 except ImportError:

@@ -20,3 +20,4 @@ class Sensor:
         enabled = False
 
 SensorPlugins = List[SensorPlugin]
+Sensors = List[Sensor]

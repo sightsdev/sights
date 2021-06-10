@@ -1,4 +1,5 @@
 from sights.api import v1 as api
+from sights.components.motor import *
 from dataclasses import dataclass
 
 class SimpleSerialMotor(Motor):
@@ -11,9 +12,8 @@ class SimpleSerialMotor(Motor):
             self.connection.move_motor(self.channel, speed)
 
 class SimpleSerialConnection(MotorConnection):
-    import serial
-    
     def __init__(self, config):
+        import serial
         MotorConnection.__init__(self, config)
 
         self.port = config.get('port')
@@ -69,4 +69,4 @@ plugin = api.MotorPlugin(
     motor_class=SimpleSerialMotor
 )
 
-api.register_motor_plugin(plugin)
+api.plugins.register_motor_plugin(plugin)

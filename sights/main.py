@@ -55,6 +55,7 @@ config = {
 }
 
 load_plugins()
+
 load_sensors(config["sensors"])
 
 app.run(host="0.0.0.0")
