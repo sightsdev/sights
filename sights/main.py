@@ -5,6 +5,7 @@ import flask
 from sights.api import v1 as api
 from sights.restapi import api as restapi
 
+
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
 

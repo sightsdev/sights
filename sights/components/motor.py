@@ -2,6 +2,7 @@ import argparse
 from dataclasses import dataclass, field
 from typing import Callable, List, Any
 
+
 @dataclass
 class MotorPlugin:
     name: str
@@ -10,6 +11,7 @@ class MotorPlugin:
     motor_class: Any
     channels: int
     info: dict = field(init=False)
+
 
 class MotorConnection:
     def __init__(self, config):
@@ -25,6 +27,7 @@ class MotorConnection:
     def close(self):
         pass
 
+
 class Motor:
     enabled = True
 
@@ -33,6 +36,7 @@ class Motor:
 
     def disable(self):
         enabled = False
+
 
 MotorPlugins = List[MotorPlugin]
 Motors = List[Motor]

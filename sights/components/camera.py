@@ -110,7 +110,7 @@ class Camera:
 
     def get_resolution(self):
         """Get resolution of camera"""
-        return (self._width, self._height)
+        return self._width, self._height
 
     def set_framerate(self, framerate):
         self._framerate = framerate
@@ -123,11 +123,11 @@ class Camera:
         cap = cv2.VideoCapture(self.video_source)
 
         # Resolution
-        if (self._width is not 0 and self._height is not 0):
+        if self._width != 0 and self._height != 0:
             cap.set(cv2.CAP_PROP_FRAME_WIDTH, float(self._width))
             cap.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self._height))
         # Framerate
-        if (self._framerate is not 0):
+        if self._framerate != 0:
             cap.set(cv2.CAP_PROP_FPS, float(self._framerate))
 
         self._width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
@@ -160,7 +160,7 @@ class Camera:
                 print('Stopping camera thread due to inactivity.')
                 break
 
-            if (self.restart_event.is_set()):
+            if self.restart_event.is_set():
                 # If state has changed, break and restart
                 print('State has changed. Stopping camera')
                 break

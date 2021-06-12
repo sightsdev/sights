@@ -69,7 +69,7 @@ class DynamixelMotor(Motor):
         self.channel = channel
     
     def move(self, speed, force: bool = False):
-        if (self.enabled or force):
+        if self.enabled or force:
             self.connection.move_motor(self.channel, speed)
 
     def setup_servo(self, dynamixel_id):

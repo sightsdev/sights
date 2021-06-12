@@ -2,14 +2,16 @@ from sights.api import v1 as api
 from sights.components.motor import *
 from dataclasses import dataclass
 
+
 class SimpleSerialMotor(Motor):
     def __init__(self, connection: MotorConnection, channel: int):
         self.connection = connection
         self.channel = channel
-    
+
     def move(self, speed):
-        if (self.enabled):
+        if self.enabled:
             self.connection.move_motor(self.channel, speed)
+
 
 class SimpleSerialConnection(MotorConnection):
     def __init__(self, config):
@@ -27,7 +29,7 @@ class SimpleSerialConnection(MotorConnection):
             self.channels['left'] = 1
             self.channels['right'] = 0
 
-    def move_motor (self, channel, speed):
+    def move_motor(self, channel, speed):
         # Left channel
         if channel == 0:
             offset = 64 if speed > 0 else 0
@@ -61,11 +63,12 @@ class SimpleSerialConnection(MotorConnection):
     def close(self):
         self.serial.close()
 
+
 plugin = api.MotorPlugin(
-    name="SimpleSerial", 
-    description="Simple Serial Connection", 
-    channels = 2,
-    connection_class=SimpleSerialConnection, 
+    name="SimpleSerial",
+    description="Simple Serial Connection",
+    channels=2,
+    connection_class=SimpleSerialConnection,
     motor_class=SimpleSerialMotor
 )
 
