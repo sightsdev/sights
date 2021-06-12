@@ -1,21 +1,24 @@
 # Changelog {docsify-ignore-all}
-## [WIP](https://github.com/sightsdev/sights/releases/tag/) (2020-XX-XX)
+## [v1.3](https://github.com/sightsdev/sights/releases/tag/v1.3) (2020-12-20)
 
 ### Features
 
 - Added support for building Motion from source in the installer. This implements Motion support for the Nvidia Jetson. Prebuilt packages are still available for the Raspberry Pi and x64 based systems.
+- Added sensor wrappers for MLX9064x 32x24 and 16x12 thermal cameras (#86)
+- Added support for Ubuntu 20.04 (#94)
 
 ### Improvements
 
 - Improved the formatting of the welcome message in the installer
-- Added CTRL-S as a way to save modified config files in the interface
+- Added CTRL+S as a way to save modified config files in the interface
 - Added keyboard shortcuts to open each modal
 - Use Font Awesome for the speed buttons rather than unicode
 - Renamed SSH to Terminal in the interface
 - Only run apt update once during the install process
 
 ### Bug fixes
-- Gamepad page was trying to load a non-minifed script that no longer exists
+- Gamepad page tries to load a non-minifed script that no longer exists
+- Host service fails to start when the motor type is set to the incorrectly named "serial" option.
 
 ## [v1.2](https://github.com/sightsdev/sights/releases/tag/v1.2) (2020-04-10)
 
