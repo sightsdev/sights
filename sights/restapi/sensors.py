@@ -7,7 +7,7 @@ restapi = Namespace('sensors', description='Sensor related operations')
 
 
 @restapi.route('/')
-class Sensors(Resource):
+class HandleSensors(Resource):
     def get(self):
         return [sensor for sensor in api._private.sensors]
 
@@ -17,7 +17,7 @@ class Sensors(Resource):
 
 
 @restapi.route('/<int:sensor_id>')
-class Sensor(Resource):
+class HandleSensor(Resource):
     def get(self, sensor_id: int):
         return api.sensors.get_info(sensor_id)
 
@@ -29,4 +29,4 @@ class Data(Resource):
         if (result is not None):
             return result
         else:
-            return {'error', 'Sensor does not exist'}, 404
+            return {'error': 'Sensor does not exist'}, 404

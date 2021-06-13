@@ -7,7 +7,7 @@ class SensorPlugin:
     name: str
     description: str
     sensor_class: Any
-    info: dict = field(init=False)
+    info: dict
 
 class Sensor:
     enabled = True
