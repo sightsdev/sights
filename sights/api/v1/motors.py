@@ -1,4 +1,4 @@
-from ._private import motor_plugins, sensors
+from ._private import motor_plugins, motors
 
 
 def create(motor):
@@ -8,9 +8,5 @@ def create(motor):
     motors[int(motor["id"])] = plugin.connection_class(**motor["config"])
 
 
-def get_data(id):
-    return sensors[id].get()
-
-
 def get_info(id):
-    return sensors[id].info
+    return motors[id].info

@@ -25,4 +25,8 @@ class Sensor(Resource):
 @restapi.route('/<int:sensor_id>/data')
 class Data(Resource):
     def get(self, sensor_id: int):
-        return api.sensors.get_data(sensor_id)
+        result = api.sensors.get_data(sensor_id)
+        if (result is not None):
+            return result
+        else:
+            return {'error', 'Sensor does not exist'}, 404

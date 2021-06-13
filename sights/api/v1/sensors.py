@@ -9,7 +9,10 @@ def create(sensor):
 
 
 def get_data(id):
-    return sensors[id].get()
+    if (id in sensors):
+        return sensors[id].get()
+    else:
+        return None
 
 
 def get_info(id):
