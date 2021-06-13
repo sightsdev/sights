@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import request
 from flask_restx import Namespace, Resource
 from sights.components.sensor import sensors
 from sights.api import v1 as api

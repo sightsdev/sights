@@ -1,0 +1,30 @@
+{
+    "cameras":
+        {
+            "front": {
+                "id": 0,
+                "width": 640,
+                "height": 480,
+                "framerate": 30
+            }
+        },
+    "sensors":
+        [
+            {
+                "id": "1",
+                "type": "RandomSensor",
+                "config": {
+                    "minimum": 40,
+                    "maximum": 99
+                }
+            },
+            {
+                "id": "2",
+                "type": "RandomSensor",
+                "config": {
+                    "minimum": 1,
+                    "maximum": 2
+                }
+            }
+        ]
+}

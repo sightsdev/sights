@@ -2,6 +2,7 @@ import importlib
 import pkgutil
 import sights.plugins
 import flask
+import json
 from sights.api import v1 as api
 from sights.restapi import api as restapi
 
@@ -24,39 +25,9 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 restapi.init_app(app)
 
-config = {
-    "cameras":
-        {
-            "front": {
-                "id": 0,
-                "width": 640,
-                "height": 480,
-                "framerate": 30
-            }
-        },
-    "sensors":
-        [
-            {
-                "id": "1",
-                "type": "RandomSensor",
-                "config": {
-                    "minimum": 40,
-                    "maximum": 99
-                }
-            },
-            {
-                "id": "2",
-                "type": "RandomSensor",
-                "config": {
-                    "minimum": 1,
-                    "maximum": 2
-                }
-            }
-        ]
-}
+settings = json.loads(open("settings.json"))
 
 load_plugins()
-
-load_sensors(config["sensors"])
+load_sensors(settings["sensors"])
 
 app.run(host="0.0.0.0")
