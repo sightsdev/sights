@@ -4,16 +4,17 @@ from sights.components.motor import *
 from dataclasses import dataclass
 import logging
 
+@dataclass
 class DynamixelConnection(MotorConnection):
-
-    def __init__(self, **config):
+    port: str
+    baudrate: int
+    ids: dict 
+       
+    # Called by plugin lifetime handler
+    def init(self):
         from pyax12.status_packet import RangeError
         import pyax12.connection
         import serial   
-        MotorConnection.__init__(self, config)
-        self.port = config.get('port')
-        self.baudrate = config.get('baudrate')
-        self.ids = config.get('ids')
         self.con = pyax12.connection.Connection(
             port=self.port, baudrate=self.baudrate)
 
@@ -63,10 +64,10 @@ class DynamixelConnection(MotorConnection):
         self.logger.info("Attempting to stop servos")
         self.stop()
 
+@dataclass
 class DynamixelMotor(Motor):
-    def __init__(self, connection: DynamixelConnection, channel: int):
-        self.connection = connection
-        self.channel = channel
+    connection: DynamixelConnection
+    channel: int
     
     def move(self, speed, force: bool = False):
         if self.enabled or force:

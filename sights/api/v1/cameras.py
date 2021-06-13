@@ -1,12 +1,12 @@
-from sights.components.camera import Camera, cameras
+from sights.components.camera import Camera
+from sights.components.state import State
+
+def list_all():
+    return [camera for camera in State.cameras]
 
 def create(name, settings):
     # Create a new camera
     cameras[name] = Camera(**settings)
-
-def create_from_list(cams: list):
-    for name, settings in cams.items():
-        create(name, settings)
 
 def stream(id):
     """Video streaming generator function."""
@@ -17,19 +17,14 @@ def stream(id):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-
-def list_all():
-    return [camera for camera in cameras]
-
-
 def get(id):
     camera = None
     try:
-        camera = cameras[id]
+        camera = State.cameras[id]
     except KeyError:
         camera = Camera()
         camera.start(video_source=id)
-        cameras[id] = camera
+        State.cameras[id] = camera
     return camera
 
 

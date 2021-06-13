@@ -1,28 +1,26 @@
 from flask import request
 from flask_restx import Namespace, Resource
-from sights.components.sensor import sensors
 from sights.api import v1 as api
-
+import jsonpickle
 restapi = Namespace('sensors', description='Sensor related operations')
 
 
 @restapi.route('/')
 class HandleSensors(Resource):
     def get(self):
-        return [sensor for sensor in sensors]
-
+        return api.sensors.list_all()
     def put(self):
         api.sensors.create(request.get_json())
         return '', 204
 
 
-@restapi.route('/<int:sensor_id>')
+@restapi.route('/<sensor_id>')
 class HandleSensor(Resource):
     def get(self, sensor_id: int):
         return api.sensors.get_info(sensor_id)
 
 
-@restapi.route('/<int:sensor_id>/data')
+@restapi.route('/<sensor_id>/data')
 class Data(Resource):
     def get(self, sensor_id: int):
         result = api.sensors.get_data(sensor_id)

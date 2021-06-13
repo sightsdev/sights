@@ -16,7 +16,7 @@ except ImportError:
         from _thread import get_ident
 
 @dataclass
-class CameraSettings:
+class CameraConfig:
     width: int
     height: int
     framerate: int
@@ -72,7 +72,7 @@ class Camera:
 
     restart_event = threading.Event()
 
-    settings: CameraSettings = None
+    settings: CameraConfig = None
 
     def start(self, video_source=0):
         """Start the background camera thread if it isn't running yet."""
@@ -171,5 +171,3 @@ class Camera:
                 break
 
         self.thread = None
-
-cameras: list[Camera] = [] 

@@ -3,7 +3,6 @@ from dataclasses import dataclass, field
 from typing import Callable, List, Any
 import logging
 
-
 @dataclass
 class MotorPlugin:
     name: str
@@ -28,9 +27,10 @@ class MotorConnection:
     def close(self):
         pass
 
-
+@dataclass
 class Motor:
-    enabled = True
+    id: int
+    enabled: bool
 
     def enable(self):
         self.enabled = True
@@ -40,5 +40,3 @@ class Motor:
 
 
 motor_plugins: dict[MotorPlugin] = {}
-motors: dict[Motor] = {}
-motor_connection: list[MotorConnection] = []

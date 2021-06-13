@@ -2,26 +2,24 @@ from sights.api import v1 as api
 from sights.components.motor import *
 from dataclasses import dataclass
 
-
+@dataclass
 class SimpleSerialMotor(Motor):
-    def __init__(self, connection: MotorConnection, channel: int):
-        self.connection = connection
-        self.channel = channel
+    connection: MotorConnection
+    channel: int
 
     def move(self, speed):
         if self.enabled:
             self.connection.move_motor(self.channel, speed)
 
-
+@dataclass
 class SimpleSerialConnection(MotorConnection):
-    def __init__(self, **config):
-        import serial
-        MotorConnection.__init__(self, config)
+    port: str
+    baudrate: int
+    channels: dict
 
-        self.port = config.get('port')
-        self.baudrate = config.get('baudrate')
+    def init(self):
+        import serial
         self.serial = serial.Serial(port=self.port, baudrate=self.baudrate)
-        self.channels = config.get('channels')
         try:
             self.channels.get('left')
             self.channels.get('right')

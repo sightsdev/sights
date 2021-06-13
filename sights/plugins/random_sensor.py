@@ -4,14 +4,12 @@ from sights.components.sensor import *
 import random
 
 @dataclass
-class RandomSensorConfig:
-    minimum: int
-    maximum: int
-
 class RandomSensor(Sensor):
-    def __init__(self, config):
-        self.minimum = config.minimum
-        self.maximum = config.maximum
+    minimum: int = 10
+    maximum: int = 20
+
+    def __post_init__(self):
+        print("Min and max are:", self.minimum, "and", self.maximum)
 
     def get(self):
         return random.randint(self.minimum, self.maximum)
@@ -19,8 +17,7 @@ class RandomSensor(Sensor):
 plugin = api.SensorPlugin(
     name="RandomSensor", 
     description="RandomSensor", 
-    sensor_class=RandomSensor,
-    config_class=RandomSensorConfig
+    sensor_class=RandomSensor
 )
 
 api.plugins.register_sensor_plugin(plugin)
