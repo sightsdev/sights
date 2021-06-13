@@ -1,6 +1,7 @@
 import argparse
 from dataclasses import dataclass, field
 from typing import Callable, List, Any
+import logging
 
 
 @dataclass
@@ -32,10 +33,10 @@ class Motor:
     enabled = True
 
     def enable(self):
-        enabled = True
+        self.enabled = True
 
     def disable(self):
-        enabled = False
+        self.enabled = False
 
 
 motor_plugins: dict[MotorPlugin] = {}
