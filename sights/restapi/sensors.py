@@ -15,13 +15,13 @@ class HandleSensors(Resource):
 
 
 @restapi.route('/<sensor_id>')
-class HandleSensor(Resource):
+class HandleSensorInfo(Resource):
     def get(self, sensor_id: int):
         return api.sensors.get_info(sensor_id)
 
 
 @restapi.route('/<sensor_id>/data')
-class Data(Resource):
+class HandleSensorData(Resource):
     def get(self, sensor_id: int):
         result = api.sensors.get_data(sensor_id)
         if (result is not None):
