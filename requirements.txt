@@ -1,11 +1,11 @@
 wheel
 numpy
 click
-Flask
+Flask<2.0
 itsdangerous
 Jinja2
 MarkupSafe
-Werkzeug>=2.0
+Werkzeug<2.0
 pillow
 opencv-python
 #picamera

@@ -176,3 +176,4 @@ pyvenv.cfg
 .idea/prism.iml
 .idea/vcs.xml
 .idea/inspectionProfiles/Project_Default.xml
+/.vs

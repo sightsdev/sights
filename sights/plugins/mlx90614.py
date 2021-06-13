@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from sights.api import v1 as api
 from sights.components.sensor import *
 
@@ -23,7 +24,8 @@ class MLX90614(Sensor):
 plugin = api.SensorPlugin(
     name="MLX90614", 
     description="MLX90614", 
-    sensor_class=MLX90614
+    sensor_class=MLX90614,
+    config_class=MLX90614Config
 )
 
 api.plugins.register_sensor_plugin(plugin)
