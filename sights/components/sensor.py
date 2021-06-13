@@ -14,10 +14,10 @@ class Sensor:
     enabled = True
 
     def enable(self):
-        enabled = True
+        self.enabled = True
 
     def disable(self):
-        enabled = False
+        self.enabled = False
 
 SensorPlugins = List[SensorPlugin]
 Sensors = List[Sensor]
