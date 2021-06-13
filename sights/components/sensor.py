@@ -18,5 +18,5 @@ class Sensor:
     def disable(self):
         self.enabled = False
 
-SensorPlugins = List[SensorPlugin]
-Sensors = List[Sensor]
+sensor_plugins: list[SensorPlugin] = []
+sensors: dict[Sensor] = {}

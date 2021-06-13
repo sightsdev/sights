@@ -1,6 +1,5 @@
-from ._private import sensor_plugins, motor_plugins
-from ...components.sensor import Sensor
-from ...components.motor import Motor
+from ...components.sensor import Sensor, sensor_plugins
+from ...components.motor import Motor, motor_plugins
 
 
 def register_sensor_plugin(sensor: Sensor):

@@ -38,6 +38,6 @@ class Motor:
         enabled = False
 
 
-MotorPlugins = List[MotorPlugin]
-Motors = List[Motor]
-MotorConnections = List[MotorConnection]
+motor_plugins: list[MotorPlugin] = []
+motors: dict[Motor] = {}
+motor_connection: list[MotorConnection] = []

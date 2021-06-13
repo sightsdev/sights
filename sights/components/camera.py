@@ -166,3 +166,6 @@ class Camera:
                 break
 
         self.thread = None
+
+
+cameras: list[Camera] = [] 

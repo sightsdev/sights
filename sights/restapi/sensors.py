@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_restx import Namespace, Resource
-from sights.components.sensor import Sensors
+from sights.components.sensor import sensors
 from sights.api import v1 as api
 
 restapi = Namespace('sensors', description='Sensor related operations')
@@ -9,7 +9,7 @@ restapi = Namespace('sensors', description='Sensor related operations')
 @restapi.route('/')
 class HandleSensors(Resource):
     def get(self):
-        return [sensor for sensor in api._private.sensors]
+        return [sensor for sensor in sensors]
 
     def put(self):
         api.sensors.create(request.get_json())

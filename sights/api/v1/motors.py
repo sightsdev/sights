@@ -1,4 +1,4 @@
-from ._private import motor_plugins, motors
+from ...components.motor import motor_plugins, motors
 
 
 def create(motor):
