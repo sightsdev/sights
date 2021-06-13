@@ -9,11 +9,6 @@ import json
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
 
-# Flask and REST setup
-app = flask.Flask(__name__)
-app.config["DEBUG"] = True
-restapi.init_app(app)
-
 # Load any plugins on the system
 for _, name, _ in iter_namespace(sights.plugins):
     importlib.import_module(name)
@@ -21,5 +16,10 @@ for _, name, _ in iter_namespace(sights.plugins):
 # Load the settings file
 settings = json.load(open("settings.json"))
 api.sensors.create_from_list(settings["sensors"])
+
+# Flask and REST setup
+app = flask.Flask(__name__)
+app.config["DEBUG"] = True
+restapi.init_app(app)
 
 app.run(host="0.0.0.0")
