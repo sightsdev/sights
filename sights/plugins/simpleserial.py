@@ -43,7 +43,7 @@ class SimpleSerialConnection(MotorConnection):
             msg = offset + channel + abs(round(62 / 1000 * speed))
             self.serial.write(bytes([msg]))
 
-    def move(self, speed: List[int]):
+    def move(self, speed: list[int]):
         # Left side
         if speed[0] is not None:
             offset = 64 if speed[0] > 0 else 0

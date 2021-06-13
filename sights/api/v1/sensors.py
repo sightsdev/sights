@@ -1,4 +1,4 @@
-from ...components.sensor import sensors, sensor_plugins
+from sights.components.sensor import sensors, sensor_plugins
 
 
 def create(sensor):

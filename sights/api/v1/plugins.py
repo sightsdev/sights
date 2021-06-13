@@ -1,5 +1,5 @@
-from ...components.sensor import Sensor, sensor_plugins
-from ...components.motor import Motor, motor_plugins
+from sights.components.sensor import Sensor, sensor_plugins
+from sights.components.motor import Motor, motor_plugins
 
 
 def register_sensor_plugin(sensor: Sensor):

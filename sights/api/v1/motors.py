@@ -1,4 +1,4 @@
-from ...components.motor import motor_plugins, motors
+from sights.components.motor import motor_plugins, motors
 
 
 def create(motor):

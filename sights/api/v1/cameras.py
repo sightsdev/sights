@@ -1,4 +1,4 @@
-from ...components.camera import Camera, cameras
+from sights.components.camera import Camera, cameras
 
 
 def stream(id):
