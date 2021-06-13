@@ -76,3 +76,12 @@ class DynamixelMotor(Motor):
         # Set the "wheel mode"
         self.connection.con.set_cw_angle_limit(dynamixel_id, 0, degrees=False)
         self.connection.con.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
+
+
+api.plugins.register_motor_plugin(api.MotorPlugin(
+    name="Dynamixel",
+    description="Dynamixel Servo Connection",
+    channels=2,
+    connection_class=DynamixelConnection,
+    motor_class=DynamixelMotor
+))
