@@ -7,8 +7,10 @@ import pkgutil
 import flask
 import jsonpickle
 
+
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
+
 
 # Load any plugins on the system
 for _, name, _ in iter_namespace(sights.plugins):

@@ -113,7 +113,7 @@ class Camera:
         self.settings.height = height
         self.restart()
 
-    def get_resolution(self):
+    def get_resolution(self) -> (int, int):
         """Get resolution of camera"""
         return self.settings.width, self.settings.height
 
@@ -121,7 +121,7 @@ class Camera:
         self.settings.framerate = framerate
         self.restart()
 
-    def get_framerate(self):
+    def get_framerate(self) -> int:
         return self.settings.framerate
 
     def frames(self):

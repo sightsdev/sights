@@ -6,7 +6,7 @@ def list_all():
 
 def create(name, settings):
     # Create a new camera
-    cameras[name] = Camera(**settings)
+    State.cameras[name] = Camera(**settings)
 
 def stream(id):
     """Video streaming generator function."""
@@ -28,17 +28,17 @@ def get(id):
     return camera
 
 
-def set_resolution(id, width, height):
+def set_resolution(id: str, width: int, height: int):
     get(id).set_resolution(width, height)
 
 
-def get_resolution(id):
+def get_resolution(id: str):
     return get(id).get_resolution()
 
 
-def set_framerate(id, framerate):
+def set_framerate(id: str, framerate: int):
     get(id).set_framerate(framerate)
 
 
-def get_framerate(id):
-    return get(id).get_framerate()
+def get_framerate(id: str):
+    return get(id).framerate

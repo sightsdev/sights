@@ -24,7 +24,7 @@ class HandleSensorInfo(Resource):
 class HandleSensorData(Resource):
     def get(self, sensor_id: int):
         result = api.sensors.get_data(sensor_id)
-        if (result is not None):
+        if result is not None:
             return result
         else:
             return {'error': 'Sensor does not exist'}, 404
