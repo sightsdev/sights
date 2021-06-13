@@ -1,33 +1,25 @@
-import importlib
-import pkgutil
-import sights.plugins
-import flask
-import json
 from sights.api import v1 as api
 from sights.restapi import api as restapi
-
+import sights.plugins
+import importlib
+import pkgutil
+import flask
+import json
 
 def iter_namespace(ns_pkg):
     return pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + ".")
 
-
-def load_plugins():
-    for _, name, _ in iter_namespace(sights.plugins):
-        importlib.import_module(name)
-
-
-def load_sensors(sensors):
-    for sensor in sensors:
-        api.sensors.create(sensor)
-
-
+# Flask and REST setup
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 restapi.init_app(app)
 
-settings = json.loads(open("settings.json"))
+# Load any plugins on the system
+for _, name, _ in iter_namespace(sights.plugins):
+    importlib.import_module(name)
 
-load_plugins()
-load_sensors(settings["sensors"])
+# Load the settings file
+settings = json.load(open("settings.json"))
+api.sensors.create_from_list(settings["sensors"])
 
 app.run(host="0.0.0.0")

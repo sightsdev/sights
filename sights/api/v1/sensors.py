@@ -7,9 +7,12 @@ def create(sensor):
     # Retrieve an instance of the sensor class with dependencies injected
     sensors[int(sensor["id"])] = plugin.sensor_class(**sensor["config"])
 
+def create_from_list(sensors: list):
+    for sensor in sensors:
+        create(sensor)
 
 def get_data(id):
-    if (id in sensors):
+    if id in sensors:
         return sensors[id].get()
     else:
         return None
