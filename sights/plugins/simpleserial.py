@@ -14,7 +14,7 @@ class SimpleSerialMotor(Motor):
 
 
 class SimpleSerialConnection(MotorConnection):
-    def __init__(self, config):
+    def __init__(self, **config):
         import serial
         MotorConnection.__init__(self, config)
 

@@ -6,7 +6,7 @@ import logging
 
 class DynamixelConnection(MotorConnection):
 
-    def __init__(self, config):
+    def __init__(self, **config):
         from pyax12.status_packet import RangeError
         import pyax12.connection
         import serial   

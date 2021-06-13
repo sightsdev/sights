@@ -1,15 +1,11 @@
 from ._private import motor_plugins, sensors
 
 
-def create(sensor):
+def create(motor):
     # find the corresponding sensor class defined in a plugin
-    plugin = sensor_plugins[sensor["type"]]
-    # create the appropriate configuration class with the args defined in the config file
-    config = plugin.config_class(**sensor["config"])
+    plugin = motor_plugins[motor["type"]]
     # Retrieve an instance of the sensor class with dependencies injected
-    sensors[int(sensor["id"])] = plugin.sensor_class(config)
-    # populate sensor info
-    sensors[int(sensor["id"])].info = config 
+    motors[int(motor["id"])] = plugin.connection_class(**motor["config"])
 
 
 def get_data(id):
