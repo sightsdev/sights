@@ -1,5 +1,7 @@
+from dataclasses import dataclass
 import time
 import threading
+
 try:
     import cv2 
 except ImportError:
@@ -13,6 +15,12 @@ except ImportError:
     except ImportError:
         from _thread import get_ident
 
+@dataclass
+class CameraSettings:
+    width: int
+    height: int
+    framerate: int
+    source: int
 
 class CameraEvent(object):
     """An Event-like class that signals all active clients when a new frame is
@@ -64,15 +72,12 @@ class Camera:
 
     restart_event = threading.Event()
 
-    video_source = 0
-    _width = 640
-    _height = 480
-    _framerate = 30
+    settings: CameraSettings = None
 
     def start(self, video_source=0):
         """Start the background camera thread if it isn't running yet."""
         if self.thread is None:
-            self.video_source = video_source
+            self.settings.source = video_source
             self.last_access = time.time()
 
             # start background frame thread
@@ -94,7 +99,7 @@ class Camera:
         return self.frame
 
     def set_video_source(self, source: int):
-        self.video_source = source
+        self.settings.source = source
 
     def restart(self):
         self.restart_event.set()
@@ -104,35 +109,35 @@ class Camera:
 
     def set_resolution(self, width, height):
         """Set size of camera"""
-        self._width = width
-        self._height = height
+        self.settings.width = width
+        self.settings.height = height
         self.restart()
 
     def get_resolution(self):
         """Get resolution of camera"""
-        return self._width, self._height
+        return self.settings.width, self.settings.height
 
     def set_framerate(self, framerate):
-        self._framerate = framerate
+        self.settings.framerate = framerate
         self.restart()
 
     def get_framerate(self):
-        return self._framerate
+        return self.settings.framerate
 
     def frames(self):
-        cap = cv2.VideoCapture(self.video_source)
+        cap = cv2.VideoCapture(self.settings.video_source)
 
         # Resolution
-        if self._width != 0 and self._height != 0:
-            cap.set(cv2.CAP_PROP_FRAME_WIDTH, float(self._width))
-            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self._height))
+        if self.settings.width != 0 and self.settings.height != 0:
+            cap.set(cv2.CAP_PROP_FRAME_WIDTH, float(self.settings.width))
+            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self.settings.height))
         # Framerate
         if self._framerate != 0:
-            cap.set(cv2.CAP_PROP_FPS, float(self._framerate))
+            cap.set(cv2.CAP_PROP_FPS, float(self.settings.framerate))
 
-        self._width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-        self._height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        self._framerate = cap.get(cv2.CAP_PROP_FPS)
+        self.settings.width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        self.settings.height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        self.settings.framerate = cap.get(cv2.CAP_PROP_FPS)
 
         if not cap.isOpened():
             raise RuntimeError('Could not start camera.')
@@ -166,6 +171,5 @@ class Camera:
                 break
 
         self.thread = None
-
 
 cameras: list[Camera] = [] 

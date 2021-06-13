@@ -1,14 +1,18 @@
 from sights.api import v1 as api
 from sights.components.sensor import *
 
+@dataclass
+class MLX90614Config(SensorConfig):
+    i2c_address: int = 0x5A
+
 class MLX90614(Sensor):
-    def __init__(self, i2c_address: int = 0x5A):
+    def __init__(self, config):
         # Only import when trying to use this library
         import mlx90614
         from smbus2 import SMBus
         i2cbus = SMBus(1)
         # Additional config option for i2c address, default to 0x5A
-        self.address = i2c_address
+        self.address = config.i2c_address
         # Create sensor object
         self.sensor = mlx90614.MLX90614(i2cbus, address=self.address)
 

@@ -13,9 +13,12 @@ def iter_namespace(ns_pkg):
 for _, name, _ in iter_namespace(sights.plugins):
     importlib.import_module(name)
 
+settings = Settings()
+
 # Load the settings file
 settings = json.load(open("settings.json"))
 api.sensors.create_from_list(settings["sensors"])
+api.cameras.create_from_list(settings["cameras"])
 
 # Flask and REST setup
 app = flask.Flask(__name__)

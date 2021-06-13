@@ -2,7 +2,7 @@
     "cameras":
         {
             "front": {
-                "id": 0,
+                "source": 0,
                 "width": 640,
                 "height": 480,
                 "framerate": 30

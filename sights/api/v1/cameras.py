@@ -1,5 +1,12 @@
 from sights.components.camera import Camera, cameras
 
+def create(name, settings):
+    # Create a new camera
+    cameras[name] = Camera(**settings)
+
+def create_from_list(cams: list):
+    for name, settings in cams.items():
+        create(name, settings)
 
 def stream(id):
     """Video streaming generator function."""
