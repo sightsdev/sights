@@ -9,7 +9,7 @@ class RandomSensorConfig:
     maximum: int
 
 class RandomSensor(Sensor):
-    def __init__(self, minimum:int, maximum:int):
+    def __init__(self, config):
         self.minimum = int(config.minimum)
         self.maximum = int(config.maximum)
 
