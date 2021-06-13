@@ -1,9 +1,9 @@
-from ...components.sensor import sensors, sensors_plugins
+from ...components.sensor import sensors, sensor_plugins
 
 
 def create(sensor):
     # find the corresponding sensor class defined in a plugin
-    plugin = sensors_plugins[sensor["type"]]
+    plugin = sensor_plugins[sensor["type"]]
     # Retrieve an instance of the sensor class with dependencies injected
     sensors[int(sensor["id"])] = plugin.sensor_class(**sensor["config"])
 

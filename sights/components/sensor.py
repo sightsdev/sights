@@ -7,7 +7,7 @@ class SensorPlugin:
     name: str
     description: str
     sensor_class: Any
-    info: dict
+    info: dict = field(default_factory=dict)
 
 class Sensor:
     enabled = True
@@ -18,5 +18,5 @@ class Sensor:
     def disable(self):
         self.enabled = False
 
-sensor_plugins: list[SensorPlugin] = []
+sensor_plugins: dict[SensorPlugin] = {}
 sensors: dict[Sensor] = {}
