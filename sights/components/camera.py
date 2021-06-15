@@ -74,10 +74,9 @@ class Camera:
 
     settings: CameraConfig = None
 
-    def start(self, video_source=0):
+    def start(self):
         """Start the background camera thread if it isn't running yet."""
         if self.thread is None:
-            self.settings.source = video_source
             self.last_access = time.time()
 
             # start background frame thread
@@ -125,14 +124,14 @@ class Camera:
         return self.settings.framerate
 
     def frames(self):
-        cap = cv2.VideoCapture(self.settings.video_source)
+        cap = cv2.VideoCapture(self.settings.source, cv2.CAP_DSHOW)
 
         # Resolution
         if self.settings.width != 0 and self.settings.height != 0:
             cap.set(cv2.CAP_PROP_FRAME_WIDTH, float(self.settings.width))
             cap.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self.settings.height))
         # Framerate
-        if self._framerate != 0:
+        if self.settings.framerate != 0:
             cap.set(cv2.CAP_PROP_FPS, float(self.settings.framerate))
 
         self.settings.width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
