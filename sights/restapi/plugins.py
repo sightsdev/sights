@@ -5,19 +5,19 @@ from sights.api import v1 as api
 restapi = Namespace('plugins', description='Plugin related operations')
 
 
-@restapi.route('/plugins')
+@restapi.route('/')
 class HandlePlugins(Resource):
     def get(self):
         return api.plugins.list_all()
 
 
-@restapi.route('/plugins/sensors')
+@restapi.route('/sensors')
 class HandleSensorPlugins(Resource):
     def get(self):
         return api.plugins.list_sensor_plugins()
 
 
-@restapi.route('/plugins/motors')
+@restapi.route('/motors')
 class HandleMotorPlugins(Resource):
     def get(self):
         return api.plugins.list_motor_plugins()

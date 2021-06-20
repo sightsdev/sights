@@ -3,4 +3,4 @@
 
 from sights.components.sensor import SensorPlugin
 from sights.components.motor import MotorPlugin
-from ..v1 import cameras, sensors, plugins
+from . import cameras, motors, sensors, plugins
