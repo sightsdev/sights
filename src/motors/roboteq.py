@@ -26,11 +26,11 @@ class RoboteqConnection(MotorWrapper):
     def move_raw(self, left=None, right=None):
         # Left side
         if left is not None:
-            last_left = abs(round(1000 / 1024 * left))
+            self.last_left = round(1000 / 1024 * left)
         # Right side
         if right is not None:
-            last_right = abs(round(1000 / 1024 * right))
-        self.controller.send_command(cmds.DUAL_DRIVE, last_left, last_right)
+            self.last_right = round(1000 / 1024 * right)
+        self.controller.send_command(cmds.DUAL_DRIVE, self.last_left, self.last_right)
 
     def stop(self):
         self.controller.send_command(cmds.DUAL_DRIVE, 0, 0)
