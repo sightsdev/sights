@@ -8,6 +8,9 @@
 	"motors": {
 		"type": "virtual"
 	},
+	"paddles": {
+		"type": "virtual"
+	},
 	"interface": {
 		"notifications": {
 			"enabled": true,

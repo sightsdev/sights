@@ -19,6 +19,7 @@ class ControlReceiver(WebSocketProcess):
         self.motors = MotorHandler(self.config)
         # When script exits or is interrupted stop all servos
         atexit.register(self.motors.close)
+        atexit.register(self.motors.close_paddle())
         # Default controller state object
         self.state = {
             "LEFT_STICK_X": 0.0,
@@ -86,6 +87,10 @@ class ControlReceiver(WebSocketProcess):
                 self.motors.speed = max(127, speed - 128)
                 # Send a message to SensorStream to update the interface with the current speed
                 self.pipe.send(["SYNC_SPEED", self.motors.speed])
+        elif control == "PADDLE_FORWARD":
+            self.motors.move_paddle(speed, -speed)
+        elif control == "PADDLE_REVERSE":
+            self.motors.move_paddle(-speed, speed)
 
     def message_handler(self, buf):
         # Load object from JSON
@@ -114,6 +119,16 @@ class ControlReceiver(WebSocketProcess):
                 if value == "DOWN":
                     self.motors.speed = max(127, self.motors.speed - 128)
                     self.pipe.send(["SYNC_SPEED", self.motors.speed])
+            elif control == "DPAD_UP":
+                if value == "DOWN":
+                    self.keyboard_handler("PADDLE_FORWARD", self.motors.speed)
+                elif value == "UP":
+                    self.motors.stop_paddle()
+            elif control == "DPAD_DOWN":
+                if value == "DOWN":
+                    self.keyboard_handler("PADDLE_REVERSE", self.motors.speed)
+                elif value == "UP":
+                    self.motors.stop_paddle()
         elif typ == "AXIS":
             # If axis, store as float
             value = float(msg["value"])

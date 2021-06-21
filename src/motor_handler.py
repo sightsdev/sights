@@ -16,10 +16,11 @@ class MotorHandler:
         self.pm = PluginManager(MotorWrapper, os.getcwd() + "/src/motors")
         # Load values from configuration file
         self.type = config['motors']['type'].lower()
+        self.paddle_type = config['paddles']['type'].lower()
         # Log loaded type
         self.logger.info(f"Opening motor connection of type '{self.type}'")
+        # Create motor connection (from a list loaded by the plugin manager) using class specified in the config
         try:
-            # Create motor connection (from a list loaded by the plugin manager) using class specified in the config
             self.connection = self.pm.wrappers[self.type](config['motors'])
         except Exception as e:
             if isinstance(e, KeyError):
@@ -29,9 +30,23 @@ class MotorHandler:
             else:
                 traceback.print_exc()
             # Fall back to virtual connection common to all motor connection errors
-            self.logger.warning("Falling back to virtual connection")
+            self.logger.warning("Falling back to virtual connection for motors")
             self.connection = VirtualConnection(config['motors'])
             self.type = 'virtual'
+        # Create paddle connection
+        try:
+            self.paddle_connection = self.pm.wrappers[self.paddle_type](config['paddles'])
+        except Exception as e:
+            if isinstance(e, KeyError):
+                self.logger.error(f"Could not determine motor connection type '{self.paddle_type}'")
+            elif isinstance(e, serial.serialutil.SerialException):
+                self.logger.error(f"Could not open motor connection of type '{self.paddle_type}'")
+            else:
+                traceback.print_exc()
+            # Fall back to virtual connection common to all motor connection errors
+            self.logger.warning("Falling back to virtual connection for paddles")
+            self.paddle_connection = VirtualConnection(config['paddles'])
+            self.paddle_type = 'virtual'
         # Load speed defaults
         self.speed = config['control']['default_speed'] * 128 - 1
         self.last_left = 0
@@ -70,3 +85,16 @@ class MotorHandler:
         # Store this message for comparison next time
         self.last_left = left
         self.last_right = right
+
+    def move_paddle(self, probably_left, probably_right):
+        self.paddle_connection.move_raw(left=probably_left, right=probably_right)
+
+    def stop_paddle(self):
+        # Set all servos to 0
+        self.paddle_connection.stop()
+
+    def close_paddle(self):
+        self.logger.info("Closing Paddle connection")
+        # Set all servos to 0 and close connection
+        self.paddle_connection.stop()
+        self.paddle_connection.close()

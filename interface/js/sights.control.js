@@ -269,6 +269,8 @@ $(document).on("ready", function () {
 	createMovementKeyBind(['d', 'right'], "RIGHT");
 	createFunctionKeyBind(['+', '='], "SPEED_UP");
 	createFunctionKeyBind(['-', '_'], "SPEED_DOWN");
+	createFunctionKeyBind(['i', 'space'], "PADDLE_FORWARD");
+	createFunctionKeyBind(['k', 'shift'], "PADDLE_REVERSE");
 	// Disable keyboard controls when modal is open
 	$(".modal").on('shown.bs.modal', function () {
 		keyboardJS.setContext(this.id);
