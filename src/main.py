@@ -91,6 +91,6 @@ if __name__ == '__main__':
     # Main program loop
     try:
         manager.run()
-    except (KeyError, json.decoder.JSONDecodeError):
-        logger.error("Configuration file error! SIGHTS will now terminate.")
+    except (KeyError, json.decoder.JSONDecodeError) as e:
+        logger.error(f"Configuration file error! {e}  SIGHTS will now terminate.")
         logger.error("Review your config file or restore a backup.")
