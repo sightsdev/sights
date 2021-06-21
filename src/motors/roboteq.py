@@ -1,3 +1,6 @@
+# To use this with a Roboteq motor controller, run the setup function
+# to set the right motor movement mode and disable the watchdog time-out
+
 from motor_wrapper import MotorWrapper
 from PyRoboteq import RoboteqHandler
 from PyRoboteq import roboteq_commands as cmds
@@ -37,3 +40,9 @@ class RoboteqConnection(MotorWrapper):
 
     def close(self):
         self.controller = None
+
+    def setup(self):
+        # Set channels to seperate mode
+        self.controller.send_raw_command("^MXMD 0 ")
+        # Set watchdog time-out to off
+        self.controller.send_raw_command("^RWD 0 ")
