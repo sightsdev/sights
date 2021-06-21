@@ -6,7 +6,7 @@ import serial
 import struct
 #from pycrc.CRCCCITT import CRCCCITT
 
-from roboclaw.roboclaw_cmd import Cmd
+from pyroboclaw.roboclaw_cmd import Cmd
 
 logger = logging.getLogger('pyroboclaw')
 logger.setLevel(logging.WARNING)
