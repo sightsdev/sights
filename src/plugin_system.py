@@ -18,6 +18,7 @@ class PluginManager:
 
         # Get list of available plugins
         self.plugins = self.get_plugins()
+        self.logger.debug(f"All my plugins: {self.plugins}")
 
         # Create sensor name -> appropriate class lookup table
         self.wrappers = {}
@@ -33,17 +34,20 @@ class PluginManager:
             # Iterate through all the available classes for this module and find the class that is the sensor wrapper
             classes = inspect.getmembers(plugin, inspect.isclass)
             class_ = None
+            self.logger.debug(f"Looking for {self.base_class}")
             for c in classes:
                 # To find the correct class, we check if it's a subclass of SensorWrapper / BaseConnection (and is
                 # not that class itself)
+                self.logger.debug(c)
                 if c[1] != self.base_class and issubclass(c[1], self.base_class):
                     # We've found the sensor wrapper class
                     class_ = c[1]
             # Assign the discovered class to the appropriate key (eg. assign MLX90614Wrapper class to sensors of type
             # 'mlx90614')
-            self.wrappers[class_.type_] = class_
+                    self.wrappers[class_.type_] = class_
             # Log information about enabled plugin
-            self.logger.debug(f"Enabling plugin '{plugin_name}' for '{class_.type_}' using class: {class_}")
+                    self.logger.debug(f"Enabling plugin '{plugin_name}' for '{class_.type_}' using class: {class_}")
+                    break
 
     def get_plugins(self):
         """Adds plugins to sys.path and returns them as a list"""

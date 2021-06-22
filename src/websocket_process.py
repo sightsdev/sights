@@ -1,3 +1,4 @@
+
 import websockets
 import asyncio
 import multiprocessing
@@ -14,6 +15,7 @@ class WebSocketProcess(multiprocessing.Process):
         # Communication port to allow for communication with other WebSocketProcess
         self.pipe = pipe
         # Store config filename
+        self.logger.info(f"config file is: {config_file}")
         self.config_file = config_file
         # Load config file to dictionary object
         self.config = json.load(open(self.config_file))
