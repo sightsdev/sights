@@ -269,8 +269,8 @@ $(document).on("ready", function () {
 	createMovementKeyBind(['d', 'right'], "RIGHT");
 	createFunctionKeyBind(['+', '='], "SPEED_UP");
 	createFunctionKeyBind(['-', '_'], "SPEED_DOWN");
-	createFunctionKeyBind(['i', 'space'], "PADDLE_FORWARD");
-	createFunctionKeyBind(['k', 'shift'], "PADDLE_REVERSE");
+	createFunctionKeyBind(['i'], "PADDLE_FORWARD");
+	createFunctionKeyBind(['k'], "PADDLE_REVERSE");
 	createFunctionKeyBind(['h'], "HOME");
 	createFunctionKeyBind(['m'], "MAPPING");
 	
