@@ -48,6 +48,7 @@ class MaestroConnection(ServoWrapper):
         x = self.Controller.getPosition(channel)
         while x != pos:
             x = self.Controller.getPosition(channel)
+            self.logger.info(f"Current pos for channel {channel} is {x}")
         self.logger.info(f"Finished moving channel {channel} to position {pos}")
 
 
