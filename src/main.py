@@ -9,7 +9,6 @@ import json
 import logging
 import multiprocessing_logging
 
-
 class Manager:
     def __init__(self, config_file, logger):
         # Set up the logger
