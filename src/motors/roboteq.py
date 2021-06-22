@@ -25,6 +25,7 @@ class RoboteqConnection(MotorWrapper):
             self.channels['right'] = 0
         self.last_left = 0
         self.last_right = 0
+        self.setup()
 
     def move_raw(self, left=None, right=None):
         # Left side

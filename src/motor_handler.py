@@ -34,6 +34,8 @@ class MotorHandler:
             self.connection = VirtualConnection(config['motors'])
             self.type = 'virtual'
         # Create paddle connection
+        # Log loaded type
+        self.logger.info(f"Opening motor connection of type '{self.paddle_type}'")
         try:
             self.paddle_connection = self.pm.wrappers[self.paddle_type](config['paddles'])
         except Exception as e:
