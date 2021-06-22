@@ -138,22 +138,22 @@ class ControlReceiver(WebSocketProcess):
                 self.logger.info("GOING HOME")
                 self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
                 self.logger.info("GOING HOME: 1")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 3680)
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 3712)
                 self.logger.info("GOING HOME: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 5600)
+                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 6208)
                 self.logger.info("GOING HOME: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3668)
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3840)
                 self.logger.info("GOING HOME: 4")
         elif control == "MAPPING":
             if value == "DOWN":
                 self.logger.info("GOING EXPLORING")
                 self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
                 self.logger.info("GOING EXPLORING: 1")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3600)
+                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3584)
                 self.logger.info("GOING EXPLORING: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 6000)
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 6592)
                 self.logger.info("GOING EXPLORING: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3668)
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3840)
                 self.logger.info("GOING EXPLORING: 4")
 
     def message_handler(self, buf):

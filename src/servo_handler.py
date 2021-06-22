@@ -49,7 +49,7 @@ class ServoBackgroundService(multiprocessing.Process):
                 elif message[0] == "STOP":
                     self.logger.info("STOP")
                     self.stop(message[1])
-            await asyncio.sleep(0.05)
+            await aio.sleep(0.05)
             if (perf_counter()-self.t)* 1_000 > 10:  
                 self.logger.info(f"Updating {self.moving_servos}")
                 for channel, vel in self.moving_servos.items():
