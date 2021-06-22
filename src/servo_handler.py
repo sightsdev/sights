@@ -5,6 +5,7 @@ import serial
 import os
 import traceback
 from multiprocessing import Pipe
+import multiprocessing
 from websocket_process import WebSocketProcess
 import asyncio as aio
 from plugin_system import PluginManager
@@ -13,13 +14,15 @@ from servos.virtual import VirtualConnection
 from typing import List, Optional
 
 
-class ServoBackgroundService(WebSocketProcess):
+class ServoBackgroundService(multiprocessing.Process):
     def __init__(self, mpid, pipe, connection, servos: List[ServoModel]):
-        WebSocketProcess.__init__(self, mpid, pipe, "src/configs/sights/minimal.json", 5557)
+        multiprocessing.Process.__init__(self)
+        self.mpid = mpid
+        self.pipe = pipe
+        self.connection = connection
         self.logger = logging.getLogger(__name__)
         self.moving_servos = dict()
         self.servos = dict([(s.channel, s) for s in servos])
-        self.connection = connection
 
     def set_speed(self, channel, vel):
         if vel == 0:
@@ -38,14 +41,15 @@ class ServoBackgroundService(WebSocketProcess):
         self.t = -10000000000000000000000
         # Enter runtime loop
         while True:
-            if websocket.poll():
+            if self.pipe.poll():
+                message = self.pipe.recv()
                 if message[0] == "SPEED":
                     self.logger.info(f"Set Speed: ch {message[1]} @ {message[2]}")
                     self.set_speed(message[1], message[2])
                 elif message[0] == "STOP":
                     self.logger.info("STOP")
                     self.stop(message[1])
-            
+            await asyncio.sleep(0.05)
             if (perf_counter()-self.t)* 1_000 > 10:  
                 self.logger.info(f"Updating {self.moving_servos}")
                 for channel, vel in self.moving_servos.items():
@@ -58,6 +62,7 @@ class ServoHandler:
     def __init__(self, config):
         # Setup logger
         self.logger = logging.getLogger(__name__)
+
         # Create new plugin manager looking for subclasses of MotorWrapper in "src/motors/"
         self.pm = PluginManager(ServoWrapper, os.getcwd() + "/src/servos")
         # Load values from configuration file
@@ -80,15 +85,21 @@ class ServoHandler:
             self.logger.warning("Falling back to virtual connection")
             self.connection = VirtualConnection(config['servos'])
             self.type = 'virtual'
+        self.logger.info(f"Debug message 3")
         # Ensure Connection class has access to logging capabilities
         self.connection.logger = self.logger
         Servos = []
+        self.logger.info(f"Debug message 4")
         for servo, conf in config['servos']['instances'].items():
             Servos.append(self.connection.create_servo_model(int(servo), conf))
+        self.logger.info(f"Debug message 5")
+
         piper, self.pipe = Pipe(duplex=False)
+        self.logger.info("Background service will shortly begin")
         self.background_service = ServoBackgroundService(3, piper, self.connection, Servos)
         # Start new processes
         self.background_service.start()
+        self.logger.info("Background service has begun")
     
     def go_to_pos(self, channel, pos):
         self.connection.go_to(channel, pos)

@@ -33,6 +33,7 @@ class Controller:
         self.usb = serial.Serial(port)
         # Command lead-in and device number are sent for each Pololu serial command.
         self.PololuCmd = chr(0xaa) + chr(device)
+        self.DeviceId = device
         # Track target position for each servo. The function isMoving() will
         # use the Target vs Current servo position to determine if movement is
         # occuring.  Upto 24 servos on a Maestro, (0-23). Targets start at 0.
