@@ -30,6 +30,7 @@ class PluginManager:
         # Load each plugin
         for plugin_name in self.plugins:
             # Import the module
+            self.logger.info(f"Importing {plugin_name}")
             plugin = importlib.import_module(plugin_name)
             # Iterate through all the available classes for this module and find the class that is the sensor wrapper
             classes = inspect.getmembers(plugin, inspect.isclass)

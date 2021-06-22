@@ -30,7 +30,7 @@ class ControlReceiver(WebSocketProcess):
         self.servos: ServoHandler = ServoHandler(self.config)
         # When script exits or is interrupted stop all servos
         atexit.register(self.motors.close)
-        atexit.register(self.motors.close_paddle())
+        atexit.register(self.motors.close_paddle)
         # Default controller state object
         self.state = {
             "LEFT_STICK_X": 0.0,
@@ -121,9 +121,15 @@ class ControlReceiver(WebSocketProcess):
                 # Send a message to SensorStream to update the interface with the current speed
                 self.pipe.send(["SYNC_SPEED", self.motors.speed])
         elif control == "PADDLE_FORWARD":
-            self.motors.move_paddle(speed, -speed)
+            if value == "DOWN":
+                self.motors.move_paddle(speed)
+            else:
+                self.motors.stop_paddle()
         elif control == "PADDLE_REVERSE":
-            self.motors.move_paddle(-speed, speed)
+            if value == "DOWN":
+                self.motors.move_paddle(-speed)
+            else:
+                self.motors.stop_paddle()
         elif control == "ENTER":
             if value == "DOWN":
                 self.state["ARM"] = not self.state["ARM"]

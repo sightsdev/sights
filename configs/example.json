@@ -6,10 +6,25 @@
 		"default_speed": 3
 	},
 	"motors": {
-		"type": "virtual"
+		"type": "roboteq",
+		"port": "/dev/serial/by-id/usb-Roboteq_Motor_Controller_SDC2XXX-if00",
+		"channels": {
+			"left": [
+				0
+			],
+			"right": [
+				1
+			]
+		}
 	},
 	"paddles": {
-		"type": "virtual"
+		"type": "roboclaw",
+		"port": "/dev/serial/by-id/usb-03eb_USB_Roboclaw_Solo_30A-if00",
+		"address": 128,
+		"channels": {
+			"left": 0,
+			"right": 1
+		}
 	},
 	"interface": {
 		"notifications": {

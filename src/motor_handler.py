@@ -88,8 +88,9 @@ class MotorHandler:
         self.last_left = left
         self.last_right = right
 
-    def move_paddle(self, probably_left, probably_right):
-        self.paddle_connection.move_raw(left=probably_left, right=probably_right)
+    def move_paddle(self, speed):
+        self.logger.info(f"Gonna move that paddle at a speed of Mach {speed}")
+        self.paddle_connection.move_raw(left=speed, right=speed)
 
     def stop_paddle(self):
         # Set all servos to 0
