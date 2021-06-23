@@ -30,7 +30,7 @@ class ControlReceiver(WebSocketProcess):
         self.servos: ServoHandler = ServoHandler(self.config)
         # When script exits or is interrupted stop all servos
         atexit.register(self.motors.close)
-        atexit.register(self.motors.close_paddle())
+        atexit.register(self.motors.close_paddle)
         # Default controller state object
         self.state = {
             "LEFT_STICK_X": 0.0,
@@ -121,9 +121,15 @@ class ControlReceiver(WebSocketProcess):
                 # Send a message to SensorStream to update the interface with the current speed
                 self.pipe.send(["SYNC_SPEED", self.motors.speed])
         elif control == "PADDLE_FORWARD":
-            self.motors.move_paddle(speed, -speed)
+            if value == "DOWN":
+                self.motors.move_paddle(speed)
+            else:
+                self.motors.stop_paddle()
         elif control == "PADDLE_REVERSE":
-            self.motors.move_paddle(-speed, speed)
+            if value == "DOWN":
+                self.motors.move_paddle(-speed)
+            else:
+                self.motors.stop_paddle()
         elif control == "ENTER":
             if value == "DOWN":
                 self.state["ARM"] = not self.state["ARM"]
@@ -132,22 +138,22 @@ class ControlReceiver(WebSocketProcess):
                 self.logger.info("GOING HOME")
                 self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
                 self.logger.info("GOING HOME: 1")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 3680)
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 3712)
                 self.logger.info("GOING HOME: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 5600)
+                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 6208)
                 self.logger.info("GOING HOME: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3668)
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3840)
                 self.logger.info("GOING HOME: 4")
         elif control == "MAPPING":
             if value == "DOWN":
                 self.logger.info("GOING EXPLORING")
                 self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
                 self.logger.info("GOING EXPLORING: 1")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3600)
+                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3584)
                 self.logger.info("GOING EXPLORING: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 6000)
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 6592)
                 self.logger.info("GOING EXPLORING: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3668)
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3840)
                 self.logger.info("GOING EXPLORING: 4")
 
     def message_handler(self, buf):

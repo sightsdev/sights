@@ -6,10 +6,54 @@
 		"default_speed": 3
 	},
 	"motors": {
-		"type": "virtual"
+		"type": "roboteq",
+		"port": "/dev/serial/by-id/usb-Roboteq_Motor_Controller_SDC2XXX-if00",
+		"channels": {
+			"left": [
+				0
+			],
+			"right": [
+				1
+			]
+		}
 	},
 	"paddles": {
-		"type": "virtual"
+		"type": "roboclaw",
+		"port": "/dev/serial/by-id/usb-03eb_USB_Roboclaw_Solo_30A-if00",
+		"address": 128,
+		"channels": {
+			"left": 0,
+			"right": 1
+		}
+	},
+	"servos": {
+		"type": "maestro",
+                "port": "/dev/serial/by-id/usb-Pololu_Corporation_Pololu_Mini_Maestro_18-Channel_USB_Servo_Controller_00009329-if00",
+                "address": 12,
+		"instances": {
+			"0": {
+				"speed": 0.17,
+				"neutral": 0
+			},
+			"1": {
+				"speed": 0.17,
+				"neutral": "0"
+			},
+			"2": {
+				"speed": 0.17,
+				"neutral": 0
+			},
+			"3": {
+				"speed": 0.17,
+				"neutral": 0
+			}
+		}
+	},
+	"arm": {
+		"shoulder": "0",
+		"elbow": "1",
+		"wrist": "2",
+		"gripper": "3"
 	},
 	"interface": {
 		"notifications": {
