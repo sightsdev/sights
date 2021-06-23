@@ -72,6 +72,14 @@ function createFunctionKeyBind(keys, ctrl, func) {
 	});
 }
 
+let sliderHistory = [];
+function sendSliderInput(e) {
+    document.getElementById(e.target.id+"_text").textContent = val;
+    let c_event = {type: "SLIDER", id:e.target.id, value:e.target.value}
+    sliderHistory.append((e.target.id, e.target.id))
+    safeSend(c_event)
+}
+
 let movementKeysPressed = [];
 function sendMovementKeys() {
 	let c_event = {type: "KEYBOARD", control: "STOP"};
