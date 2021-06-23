@@ -756,9 +756,9 @@
 			<div class="col-md-auto camera-container" id="arm_control_sliders">
 				<div>
 					<label for="slider1" class="form-label">Slider 1</label>
-					<input type="range" class="form-range" id="slider1"
-						   oninput="sendSliderInput()">
-					<span id="slider1_text"> </span>
+					<input type="range" class="form-range" id="slider1" min="3000" max="9000" >
+					<input id="slider1_text"></input>
+					<button id="slider1_reset">HOME</button>
 				</div>
 			</div>
 		</div>

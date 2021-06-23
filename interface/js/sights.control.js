@@ -72,12 +72,12 @@ function createFunctionKeyBind(keys, ctrl, func) {
 	});
 }
 
-let sliderHistory = [];
+
 function sendSliderInput(e) {
-    document.getElementById(e.target.id+"_text").textContent = val;
-    let c_event = {type: "SLIDER", id:e.target.id, value:e.target.value}
-    sliderHistory.append((e.target.id, e.target.id))
-    safeSend(c_event)
+    document.getElementById(e.target.id+"_text").innerText = e.target.value;
+    let c_event = {type: "SLIDER", control:"ARM", id:e.target.id, value:e.target.value};
+    sliderHistory.push(e.target.value);
+    safeSend(c_event);
 }
 
 let movementKeysPressed = [];
@@ -135,6 +135,9 @@ function controlConnection() {
 }
 
 $(document).on("ready", function () {
+	$("#slider1").on("input", function(event) {
+		sendSliderInput(event);
+	});
 	controlConnection();
 
 	// Hide 'Controller Connected' indicator, until connected 
