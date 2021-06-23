@@ -148,17 +148,30 @@ class ControlReceiver(WebSocketProcess):
                 self.logger.info("GOING HOME: 5")
         elif control == "MAPPING":
             if value == "DOWN":
+                self.logger.info("GOING MAPPING")
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
+                self.logger.info("GOING MAPPING: 1")
+                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3724)
+                self.logger.info("GOING MAPPING: 2")
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 5960)
+                self.logger.info("GOING MAPPING: 3")
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3820)
+                self.logger.info("GOING MAPPING: 4")
+                self.servos.go_to_pos(int(self.config["arm"]["gripper"]), 4112)
+                self.logger.info("GOING MAPPING: 5")
+        elif control == "RUNNING":
+            if value == "DOWN":
                 self.logger.info("GOING EXPLORING")
                 self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
-                self.logger.info("GOING EXPLORING: 1")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3724)
-                self.logger.info("GOING EXPLORING: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 5960)
-                self.logger.info("GOING EXPLORING: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3820)
-                self.logger.info("GOING EXPLORING: 4")
+                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 1")
+                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 5600)
+                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 2")
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 3712)
+                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 3")
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3776)
+                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 4")
                 self.servos.go_to_pos(int(self.config["arm"]["gripper"]), 4112)
-                self.logger.info("GOING EXPLORING: 5")
+                self.logger.info("GOING EXPLORING (but with the camera and without mapping): 5")
 
     def message_handler(self, buf):
         # Load object from JSON
