@@ -140,21 +140,25 @@ class ControlReceiver(WebSocketProcess):
                 self.logger.info("GOING HOME: 1")
                 self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 3712)
                 self.logger.info("GOING HOME: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 6208)
+                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3456)
                 self.logger.info("GOING HOME: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3840)
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3776)
                 self.logger.info("GOING HOME: 4")
+                self.servos.go_to_pos(int(self.config["arm"]["gripper"]), 4112)
+                self.logger.info("GOING HOME: 5")
         elif control == "MAPPING":
             if value == "DOWN":
                 self.logger.info("GOING EXPLORING")
                 self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 4800)
                 self.logger.info("GOING EXPLORING: 1")
-                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3584)
+                self.servos.go_to_pos(int(self.config["arm"]["wrist"]), 3724)
                 self.logger.info("GOING EXPLORING: 2")
-                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 6592)
+                self.servos.go_to_pos(int(self.config["arm"]["shoulder"]), 5960)
                 self.logger.info("GOING EXPLORING: 3")
-                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3840)
+                self.servos.go_to_pos(int(self.config["arm"]["elbow"]), 3820)
                 self.logger.info("GOING EXPLORING: 4")
+                self.servos.go_to_pos(int(self.config["arm"]["gripper"]), 4112)
+                self.logger.info("GOING EXPLORING: 5")
 
     def message_handler(self, buf):
         # Load object from JSON
