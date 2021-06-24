@@ -94,15 +94,19 @@ class ServoHandler:
             Servos.append(self.connection.create_servo_model(int(servo), conf))
         self.logger.info(f"Debug message 5")
 
-        piper, self.pipe = Pipe(duplex=False)
-        self.logger.info("Background service will shortly begin")
-        self.background_service = ServoBackgroundService(3, piper, self.connection, Servos)
+        #piper, self.pipe = Pipe(duplex=False)
+        #self.logger.info("Background service will shortly begin")
+        #self.background_service = ServoBackgroundService(3, piper, self.connection,
+        # Servos)
         # Start new processes
-        self.background_service.start()
-        self.logger.info("Background service has begun")
+        #self.background_service.start()
+        #self.logger.info("Background service has begun")
     
     def go_to_pos(self, channel, pos):
         self.connection.go_to(channel, pos)
+
+    def go_to_pos_async(self, channel, pos):
+        self.connection.go_to_async(channel, pos)
     
     def move(self, channel, speed):
         self.logger.info(f"Moving channel {channel} at {speed}")

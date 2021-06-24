@@ -752,17 +752,63 @@
 				</div>
 			</div>
 		</div>
-		<div class="row justify-content-md-center no-gutters" id="arm_control">
+		<div class="row justify-content-md-center" id="arm_control">
 			<div class="col-md-auto camera-container" id="arm_control_sliders">
-				<div>
-					<label for="slider1" class="form-label">Slider 1</label>
-					<input type="range" class="form-range" id="slider1" min="3000" max="9000" >
-					<input id="slider1_text"></input>
-					<button id="slider1_reset">HOME</button>
+				<div class="card">
+					<div class="card-header">
+						Arm Control
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col">
+									<label for="shoulder" class="form-label">Shoulder</label>
+								</div>
+								<div class="col-md-auto">
+									<input type="range" class="form-range" id="shoulder" min="3000" max="9000" value="6000">
+									<input type="number" id="shoulder_text" min="3000" max="9000" value="6000">
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col">
+									<label for="elbow" class="form-label">Elbow</label>
+								</div>
+								<div class="col-md-auto">
+									<input type="range" class="form-range" id="elbow" min="3000" max="9000" value="6000">
+									<input type="number" id="elbow_text" min="3000" max="9000" value="6000">
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col">
+									<label for="wrist" class="form-label">Wrist</label>
+								</div>
+								<div class="col-md-auto">
+									<input type="range" class="form-range" id="wrist" min="3000" max="9000" value="6000">
+									<input type="number" id="wrist_text" min="3000" max="9000" value="6000">
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col">
+									<label for="gripper" class="form-label">Gripper</label>
+								</div>
+								<div class="col-md-auto">
+									<input type="range" class="form-range" id="gripper" min="3000" max="9000" value="6000">
+									<input type="number" id="gripper_text" min="3000" max="9000" value="6000">
+								</div>
+							</div>
+						</li>
+					</ul>	
 				</div>
 			</div>
 		</div>
 	</div>
+<div style="height:100px"></div>
 
 </body>
 

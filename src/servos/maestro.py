@@ -51,6 +51,10 @@ class MaestroConnection(ServoWrapper):
             self.logger.info(f"Current pos for channel {channel} is {x}")
         self.logger.info(f"Finished moving channel {channel} to position {pos}")
 
+    def go_to_async(self, channel, pos):
+        self.logger.info(f"Trying to moving channel {channel} to position {pos}")
+        self.Controller.setTarget(channel, pos)
+
 
     def stop(self):
         pass

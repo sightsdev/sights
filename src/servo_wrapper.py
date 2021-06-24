@@ -18,6 +18,9 @@ class ServoWrapper:
     def go_to(self, channel, pos):
         pass
 
+    def go_to_async(self, channel, pos):
+        pass
+
     def stop(self, channel=None):
         pass
 
