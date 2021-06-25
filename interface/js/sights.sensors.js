@@ -281,6 +281,12 @@ function sensorUpdate(obj) {
 	if ("speed" in obj) {
 		setSpeedIndicator(obj["speed"]);
 	}
+
+	if ("arm_position" in obj) {
+		obj["arm_position"].forEach(function (item) {
+			setArmPosition(item["target"], item["position"])
+		});
+	}
 }
 
 function sensorConnection() {

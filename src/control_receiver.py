@@ -27,9 +27,10 @@ class ControlReceiver(WebSocketProcess):
         self.logger = logging.getLogger(__name__)
         # Create MotorHandler object to handle motors
         self.motors: MotorHandler = MotorHandler(self.config)
-        self.servos: ServoHandler = ServoHandler(self.config)
-        # When script exits or is interrupted stop all servos
+        self.servos: ServoHandler = ServoHandler(self.config, pipe)
+        # When script exits or is interrupted stop all motors
         atexit.register(self.motors.close)
+        atexit.register(self.servos.close)
         atexit.register(self.motors.close_paddle)
         # Default controller state object
         self.state = {
@@ -206,6 +207,9 @@ class ControlReceiver(WebSocketProcess):
                 self.gamepad_movement_handler(type="STICK")
             else:
                 self.gamepad_movement_handler(type="TRIGGER")
+
+    def get_initial_messages(self):
+        return self.servos.get_initial_messages()
 
     async def main(self, websocket, path):
         # Enter runtime loop

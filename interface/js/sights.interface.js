@@ -210,6 +210,11 @@ function setSpeedIndicator(speed) {
 	}
 }
 
+function setArmPosition(target, position) {
+	$("#"+target).val(position)
+	$("#"+target+"_text").val(position)
+}
+
 $(document).on("ready", function () {
 	// Notify the user as soon as they close the settings modal that there are unsaved changes
 	$('#settings_modal').on('hidden.bs.modal', function () {

@@ -14,55 +14,12 @@ from servos.virtual import VirtualConnection
 from typing import List, Optional
 
 
-class ServoBackgroundService(multiprocessing.Process):
-    def __init__(self, mpid, pipe, connection, servos: List[ServoModel]):
-        multiprocessing.Process.__init__(self)
-        self.mpid = mpid
-        self.pipe = pipe
-        self.connection = connection
-        self.logger = logging.getLogger(__name__)
-        self.moving_servos = dict()
-        self.servos = dict([(s.channel, s) for s in servos])
-
-    def set_speed(self, channel, vel):
-        if vel == 0:
-            self.stop([channel])
-        else:
-            self.moving_servos[channel] = int(vel*self.servos[channel].speed)
-
-    def stop(self, channels=None):
-        if channels is None:
-            self.moving_servos = dict()
-        else:
-            for channel in channels:
-                self.moving_servos.pop(channel, None)
-
-    async def main(self, websocket, path):
-        self.t = -10000000000000000000000
-        # Enter runtime loop
-        while True:
-            if self.pipe.poll():
-                message = self.pipe.recv()
-                if message[0] == "SPEED":
-                    self.logger.info(f"Set Speed: ch {message[1]} @ {message[2]}")
-                    self.set_speed(message[1], message[2])
-                elif message[0] == "STOP":
-                    self.logger.info("STOP")
-                    self.stop(message[1])
-            await aio.sleep(0.05)
-            if (perf_counter()-self.t)* 1_000 > 10:  
-                self.logger.info(f"Updating {self.moving_servos}")
-                for channel, vel in self.moving_servos.items():
-                    self.servos[channel].pos = self.connection.go_to(self.servos[channel].pos +
-                                                                vel)
-                self.t = perf_counter()
-
-
 class ServoHandler:
-    def __init__(self, config):
+    def __init__(self, config, pipe):
         # Setup logger
         self.logger = logging.getLogger(__name__)
-
+        self.pipe = pipe
+        self.config = config
         # Create new plugin manager looking for subclasses of MotorWrapper in "src/motors/"
         self.pm = PluginManager(ServoWrapper, os.getcwd() + "/src/servos")
         # Load values from configuration file
@@ -88,43 +45,46 @@ class ServoHandler:
         self.logger.info(f"Debug message 3")
         # Ensure Connection class has access to logging capabilities
         self.connection.logger = self.logger
-        Servos = []
+        Servos = {}
         self.logger.info(f"Debug message 4")
         for servo, conf in config['servos']['instances'].items():
-            Servos.append(self.connection.create_servo_model(int(servo), conf))
+            if servo in config['arm'].values():
+                part = [k for k, v in config['arm'].items() if v == servo][0]
+            else:
+                part = None
+            Servos[int(servo)] = self.connection.create_servo_model(int(servo), conf, part)
         self.logger.info(f"Debug message 5")
+        self.Servos = Servos
 
-        #piper, self.pipe = Pipe(duplex=False)
-        #self.logger.info("Background service will shortly begin")
-        #self.background_service = ServoBackgroundService(3, piper, self.connection,
-        # Servos)
-        # Start new processes
-        #self.background_service.start()
-        #self.logger.info("Background service has begun")
+    def get_initial_messages(self):
+        msg = []
+        for servo in [s for s in self.Servos.values() if s.part is not None]:
+            msg.append([servo.part, servo.pos])
+        return {"SERVO_POS": msg}
+
     
     def go_to_pos(self, channel, pos):
+        self.Servos[channel].pos = pos
         self.connection.go_to(channel, pos)
+        if self.Servos[channel].part is not None:
+            self.logger.debug("Sending updated servo pos of {}".format(self.Servos[channel].part))
+            self.pipe.send(["SERVO_POS", self.Servos[channel].part, pos])
 
     def go_to_pos_async(self, channel, pos):
+        self.Servos[channel].pos = pos
         self.connection.go_to_async(channel, pos)
+        if self.Servos[channel].part is not None:
+            self.pipe.send(["SERVO_POS", self.Servos[channel].part, pos])
     
     def move(self, channel, speed):
-        self.logger.info(f"Moving channel {channel} at {speed}")
-        self.pipe.send(["SPEED", channel, max(-1, min(1, speed))])
+        pass
     
-    def stop(self, channel=None):
-        if channel is None:
-            # stop all servos
-            self.pipe.send(["STOP", None])
-            self.connection.stop()
-        else:
-            self.pipe.send(["STOP", channel])
-            self.connection.stop(channel)
+    def stop(self):
+        self.connection.stop()
 
 
     def close(self):
         self.logger.info("Closing servo connection")
         # Set all servos to 0 and close connection
         self.stop()
-        self.background_service.close()
         self.connection.close()
