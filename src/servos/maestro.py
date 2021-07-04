@@ -1,6 +1,7 @@
 from servo_wrapper import ServoWrapper, ServoModel
 import maestromaster.maestro as mae
 import logging
+import time
 
 class MaestroConnection(ServoWrapper):
     type_ = 'maestro'
@@ -31,14 +32,15 @@ class MaestroConnection(ServoWrapper):
         print("Calc Speed: ", out)
         return out
 
-    def create_servo_model(self, channel, config):
+    def create_servo_model(self, channel, config, part=None):
         self.logger.info("Creating a servo model, well, just starting that process")
         sm = ServoModel(channel, self.calc_speed(config["speed"]), config["neutral"],
-                          self.Controller.getPosition(channel))
+                        6000, part)
         self.logger.info("We have created the servo model object")
         self.Controller.setRange(channel, self.CENTRE-self.RANGE, self.CENTRE+self.RANGE)
         self.Controller.setSpeed(channel, sm.speed)
         self.Controller.setAccel(channel, 0)
+        #sm.pos = self.Controller.getPosition(channel)
         self.logger.info("Finishing creating a servo model")
         return sm
 
@@ -46,10 +48,15 @@ class MaestroConnection(ServoWrapper):
         self.logger.info(f"Trying to moving channel {channel} to position {pos}")
         self.Controller.setTarget(channel, pos)
         x = self.Controller.getPosition(channel)
-        while x != pos:
+        t = time.perf_counter()
+        while x != pos and time.perf_counter()-t < 5:
             x = self.Controller.getPosition(channel)
-            self.logger.info(f"Current pos for channel {channel} is {x}")
+            # self.logger.info(f"Current pos for channel {channel} is {x}")
         self.logger.info(f"Finished moving channel {channel} to position {pos}")
+
+    def go_to_async(self, channel, pos):
+        self.logger.info(f"Trying to moving channel {channel} to position {pos}")
+        self.Controller.setTarget(channel, pos)
 
 
     def stop(self):

@@ -9,8 +9,8 @@ class VirtualConnection(ServoWrapper):
     def __init__(self, config):
         ServoWrapper.__init__(self, config)
 
-    def create_servo_model(self, channel, config):
-        return ServoModel(channel, config["speed"], config["neutral"])
+    def create_servo_model(self, channel, config, part=None):
+        return ServoModel(channel, config["speed"], config["neutral"], part=part)
 
     def go_to(self, channel, pos):
         pass

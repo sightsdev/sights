@@ -27,9 +27,10 @@ class ControlReceiver(WebSocketProcess):
         self.logger = logging.getLogger(__name__)
         # Create MotorHandler object to handle motors
         self.motors: MotorHandler = MotorHandler(self.config)
-        self.servos: ServoHandler = ServoHandler(self.config)
-        # When script exits or is interrupted stop all servos
+        self.servos: ServoHandler = ServoHandler(self.config, pipe)
+        # When script exits or is interrupted stop all motors
         atexit.register(self.motors.close)
+        atexit.register(self.servos.close)
         atexit.register(self.motors.close_paddle)
         # Default controller state object
         self.state = {
@@ -41,14 +42,7 @@ class ControlReceiver(WebSocketProcess):
             "RIGHT_BOTTOM_SHOULDER": 0.0,
             "LEFT_TOP_SHOULDER": False,
             "RIGHT_TOP_SHOULDER": False,
-            "ARM_MODE": ARM_MODES.SHOULDER,
-            "ARM_MODE_FLAG": False,
-            "GRIPPER": False,
         }
-
-    def set_arm_mode(self, mode):
-        self.state[FLAG_ARM] |= self.state[ARM] != mode
-        self.state[ARM] = mode
 
 
     def gamepad_movement_handler(self, type="TRIGGER"):
@@ -85,17 +79,6 @@ class ControlReceiver(WebSocketProcess):
             right *= self.motors.speed
             # Send command to servos
             self.motors.move(left, right)
-
-    def arm_movement_handler(self):
-        vel = 0
-        if abs(self.state["RIGHT_STICK_Y"]) > 0.5:
-            vel = math.copysign(1, self.state["RIGHT_STICK_Y"])
-        if self.state[ARM] == ARM_MODES.SHOULDER:
-            self.servos.move(int(self.config["arm"]["shoulder"]), vel)
-        elif self.state[ARM] == ARM_MODES.ELBOW:
-            self.servos.move(int(self.config["arm"]["elbow"]), vel)
-        elif self.state[ARM] == ARM_MODES.WRIST:
-            self.servos.move(int(self.config["arm"]["wrist"]), vel)
 
 
     def keyboard_handler(self, control, value):
@@ -184,6 +167,10 @@ class ControlReceiver(WebSocketProcess):
             value = msg["value"] if "value" in msg else False  # UP, DOWN
             # Handle directional movement etc
             self.keyboard_handler(control, value)
+        elif typ == "SLIDER":
+            value = int(msg["value"])
+            self.logger.info("Slider value type is {}".format(type(value)))
+            self.servos.go_to_pos_async(int(self.config["arm"][control]), value)
         elif typ == "BUTTON":
             value = msg["value"]  # UP, DOWN
             # Store in state, because it might be useful (e.g. for modifiers)
@@ -210,20 +197,6 @@ class ControlReceiver(WebSocketProcess):
                     self.keyboard_handler("PADDLE_REVERSE", self.motors.speed)
                 elif value == "UP":
                     self.motors.stop_paddle()
-            # TOGGLE GRIPPER
-            elif control == "FACE_3":
-                if value == "DOWN":
-                    self.state["GRIPPER"] = not self.state["GRIPPER"]
-            #ARM MODES
-            elif control == "FACE_3":
-                if value == "DOWN":
-                    self.set_arm_mode(ARM_MODES.SHOULDER)
-            elif control == "FACE_1":
-                if value == "DOWN":
-                    self.set_arm_mode(ARM_MODES.ELBOW)
-            elif control == "FACE_3":
-                if value == "DOWN":
-                    self.set_arm_mode(ARM_MODES.WRIST)
         elif typ == "AXIS":
             # If axis, store as float
             value = float(msg["value"])
@@ -232,13 +205,11 @@ class ControlReceiver(WebSocketProcess):
             # Handle trigger and stick controls
             if control == "LEFT_STICK_X" or control == "LEFT_STICK_Y":
                 self.gamepad_movement_handler(type="STICK")
-            elif control == "RIGHT_STICK_X":
-                if self.state["GRIPPER"] and abs(self.state["RIGHT_STICK_X"]) > 0.5:
-                    self.servos.move(int(self.config["arm"]["gripper"]), math.copysign(1, self.state["RIGHT_STICK_X"]))
-            elif control == "RIGHT_STICK_Y":
-                self.arm_movement_handler()
             else:
                 self.gamepad_movement_handler(type="TRIGGER")
+
+    def get_initial_messages(self):
+        return self.servos.get_initial_messages()
 
     async def main(self, websocket, path):
         # Enter runtime loop

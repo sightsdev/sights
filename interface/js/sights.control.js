@@ -1,3 +1,4 @@
+
 /*
 	Created by the Semi Autonomous Rescue Team
 	Licensed under the GNU General Public License 3.0
@@ -72,6 +73,21 @@ function createFunctionKeyBind(keys, ctrl, func) {
 	});
 }
 
+//Slider input for arm
+function sendSliderInput(e) {
+    document.getElementById(e.target.id+"_text").value = e.target.value;
+    let c_event = {type: "SLIDER", control:e.target.id, value:e.target.value};
+    safeSend(c_event);
+}
+
+//number input for arm
+function sendNumberInput(e) {
+	var id = e.target.id.replace("_text","");
+    document.getElementById(id).value = e.target.value;
+    let c_event = {type: "SLIDER", control:id, value:e.target.value};
+    safeSend(c_event);
+}
+
 let movementKeysPressed = [];
 function sendMovementKeys() {
 	let c_event = {type: "KEYBOARD", control: "STOP"};
@@ -127,6 +143,18 @@ function controlConnection() {
 }
 
 $(document).on("ready", function () {
+	const armJoints = ["shoulder", "elbow", "wrist", "gripper"];
+	armJoints.forEach(function (item, index) {
+		$("#"+item).on("input", function(event) {
+			sendSliderInput(event);
+		});
+        $("#"+item+"_text").on("change", function(event){
+        	if (event.target.value < 3000) event.target.value = 3000;
+        	if (event.target.value > 9000) event.target.value = 9000;
+			sendNumberInput(event);
+		});
+	});
+
 	controlConnection();
 
 	// Hide 'Controller Connected' indicator, until connected 

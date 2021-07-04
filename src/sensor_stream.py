@@ -19,7 +19,7 @@ from plugin_system import PluginManager
 
 
 class SensorStream(WebSocketProcess):
-    def __init__(self, mpid, pipe, config_file):
+    def __init__(self, mpid, pipe, config_file, init_msgs=None):
         WebSocketProcess.__init__(self, mpid, pipe, config_file, 5556)
         # Setup logger
         self.logger = logging.getLogger(__name__)
@@ -27,6 +27,8 @@ class SensorStream(WebSocketProcess):
         # Create new plugin manager looking for subclasses of SensorWrapper in "src/sensors/"
         self.pm = PluginManager(SensorWrapper, os.getcwd() + "/src/sensors")
 
+        # Save any messages to send in first message to websock
+        self.init_msgs = init_msgs
         # Create dict to store the number of each type of sensor
         self.sensor_count = {}
 
@@ -82,6 +84,13 @@ class SensorStream(WebSocketProcess):
         # If we receive a message from ControlReceiver with a new speed, set that to our speed
         if msg[0] == "SYNC_SPEED":
             await self.send_speed_value(msg[1])
+        elif msg[0] == "SERVO_POS":
+            await self.send_pos_value(msg[1], msg[2])
+
+    async def send_pos_value(self, target, value):
+        msg = {"arm_position": [{"target": target, "position": value}]}
+        await self.websocket.send(json.dumps(msg))
+        self.logger.debug("Synchronised {} position".format(target))
 
     async def send_speed_value(self, speed):
         # Create message with type and value of the speed
@@ -92,6 +101,14 @@ class SensorStream(WebSocketProcess):
 
     async def send_init_info(self):
         msg = {}
+        if self.init_msgs is not None:
+            for message in self.init_msgs:
+                if message == "SERVO_POS":
+                    pos = []
+                    for sp in self.init_msgs[message]:
+                        pos.append({"target": sp[0], "position": sp[1]})
+                    msg["arm_position"] = pos
+
         msg["initial_message"] = True
         msg["running_config"] = os.path.basename(self.config_file)
         # Even though these are part of the config object, we send them separately
