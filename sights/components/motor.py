@@ -18,8 +18,13 @@ class MotorConnection:
         # Setup logger
         self.logger = logging.getLogger(__name__)
 
-    def move_raw(self, left=None, right=None):
+    # The main initialization method that is called after the object has been created
+    def configure(self):
         pass
+    
+    # We call the configure function using Python's built in __post_init__ method
+    def __post_init__(self):
+        self.configure(self)
 
     def stop(self):
         pass
@@ -32,11 +37,27 @@ class Motor:
     id: int
     enabled: bool
 
+    # The main initialization method that is called after the object has been created
+    def configure(self):
+        pass
+    
+    # We call the configure function using Python's built in __post_init__ method
+    def __post_init__(self):
+        self.configure(self)
+
     def enable(self):
         self.enabled = True
 
     def disable(self):
         self.enabled = False
 
+    def set_speed(self):
+        pass
 
-motor_plugins: dict[MotorPlugin] = {}
+    def set_position(self):
+        pass
+
+@dataclass
+class MotorConfig:
+    id: int
+    enabled: bool

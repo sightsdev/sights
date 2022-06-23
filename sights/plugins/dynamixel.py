@@ -8,42 +8,14 @@ import logging
 class DynamixelConnection(MotorConnection):
     port: str
     baudrate: int
-    ids: dict 
        
     # Called by plugin lifetime handler
-    def init(self):
+    def configure(self):
         from pyax12.status_packet import RangeError
         import pyax12.connection
         import serial   
-        self.con = pyax12.connection.Connection(
+        self.driver = pyax12.connection.Connection(
             port=self.port, baudrate=self.baudrate)
-
-    def move_raw(self, left=None, right=None):
-        # Both left and right are optional parameters
-        if left is not None:
-            # Different motors need to spin in different directions. We account for that here.
-            if left < 0:
-                left *= -1
-                left += 1024
-            try:
-                for servo in self.ids['left']:
-                    self.con.set_speed(servo, left)
-            except:
-                self.crash(left, None)
-        if right is not None:
-            # Again, different motors need to spin in different directions
-            if right < 0:
-                right *= -1
-            elif right < 1024:
-                right += 1024
-            try:
-                for servo in self.ids['right']:
-                    self.con.set_speed(servo, right)
-            except:
-                self.crash(None, right)
-
-    def move_motor(self, channel, speed):
-        self.con.set_speed(channel, speed)
 
     def stop(self):
         # Set all motors to 0
@@ -69,9 +41,9 @@ class DynamixelMotor(Motor):
     connection: DynamixelConnection
     channel: int
     
-    def move(self, speed, force: bool = False):
+    def set_speed(self, speed, force: bool = False):
         if self.enabled or force:
-            self.connection.move_motor(self.channel, speed)
+            self.connection.driver.set_speed(self.channel, speed)
 
     def setup_servo(self, dynamixel_id):
         # Set the "wheel mode"

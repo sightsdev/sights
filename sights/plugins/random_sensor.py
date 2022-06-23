@@ -8,7 +8,7 @@ class RandomSensor(Sensor):
     minimum: int = 10
     maximum: int = 20
 
-    def __post_init__(self):
+    def configure(self):
         print("Min and max are:", self.minimum, "and", self.maximum)
 
     def get(self):
@@ -16,7 +16,7 @@ class RandomSensor(Sensor):
 
 plugin = api.SensorPlugin(
     name="RandomSensor", 
-    description="RandomSensor", 
+    description="A random sensor", 
     sensor_class=RandomSensor
 )
 

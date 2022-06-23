@@ -4,7 +4,7 @@ click
 Flask<2.0
 itsdangerous
 Jinja2
-MarkupSafe
+markupsafe==2.0.1 # https://github.com/pallets/markupsafe/issues/284
 Werkzeug<2.0
 pillow
 opencv-python

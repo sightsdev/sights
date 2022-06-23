@@ -1,5 +1,5 @@
-from sights.components.sensor import Sensor, sensor_plugins
-from sights.components.motor import Motor, motor_plugins
+from sights.components.sensor import Sensor, SensorPlugin, sensor_plugins
+from sights.components.motor import Motor, MotorPlugin, motor_plugins
 
 
 def list_all():
@@ -11,8 +11,8 @@ def list_sensor_plugins():
 def list_motor_plugins():
     return [plugin for plugin in motor_plugins]
 
-def register_sensor_plugin(sensor: Sensor):
-    sensor_plugins[sensor.name] = sensor
+def register_sensor_plugin(plugin: SensorPlugin):
+    sensor_plugins[plugin.name] = plugin
 
-def register_motor_plugin(motor: Motor):
-    motor_plugins[motor.name] = motor
+def register_motor_plugin(plugin: MotorPlugin):
+    motor_plugins[plugin.name] = plugin

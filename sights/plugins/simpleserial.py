@@ -17,7 +17,7 @@ class SimpleSerialConnection(MotorConnection):
     baudrate: int
     channels: dict
 
-    def init(self):
+    def configure(self):
         import serial
         self.serial = serial.Serial(port=self.port, baudrate=self.baudrate)
         try:

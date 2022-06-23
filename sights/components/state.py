@@ -1,15 +1,16 @@
 from dataclasses import dataclass, field
 from typing import Any
-import jsonpickle
-
-@dataclass
-class Settings:
-    cameras: dict[Any] = field(default_factory=dict)
-    sensors: dict[Any] = field(default_factory=dict)
-    motors: list[Any] = field(default_factory=list)
+from sights.components.camera import Camera
+from sights.components.motor import Motor, MotorConnection, MotorPlugin
+from sights.components.sensor import Sensor, SensorPlugin
 
 class State:
-    def __init__(self, settings: Settings):
-        State.sensors = settings.sensors
-        State.motors = settings.motors
-        State.cameras = settings.cameras
+    cameras: dict[Camera] = field(default_factory=dict)
+
+    motor_plugins: dict[MotorPlugin] = {}
+    motor_connections: dict[MotorConnection] = {}
+    motors: dict[Motor] = {}
+
+    sensor_plugins: dict[SensorPlugin] = {}
+    sensors: dict[Sensor] = {}
+
