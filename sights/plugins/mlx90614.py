@@ -6,10 +6,7 @@ from sights.components.sensor import *
 class MLX90614Config(SensorConfig):
     address: int = 0x5A
 
-@dataclass()
 class MLX90614(Sensor):
-    address: int = 0x5A
-
     def configure(self):
         # Only import SMBus when trying to use this library
         # to prevent import errors on non-i2c-enabled systems
@@ -17,7 +14,7 @@ class MLX90614(Sensor):
         from smbus2 import SMBus
         i2cbus = SMBus(1)
         # Create sensor object
-        self.sensor = mlx90614.MLX90614(i2cbus, address=self.address)
+        self.sensor = mlx90614.MLX90614(i2cbus, address=self.config.address)
 
     def get(self):
         # Get data and round to 1 dp
@@ -26,7 +23,8 @@ class MLX90614(Sensor):
 plugin = api.SensorPlugin(
     name="MLX90614", 
     description="MLX90614 Temperature Sensor", 
-    sensor_class=MLX90614
+    sensor_class=MLX90614,
+    sensor_config=MLX90614Config
 )
 
 api.plugins.register_sensor_plugin(plugin)

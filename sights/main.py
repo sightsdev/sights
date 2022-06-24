@@ -16,8 +16,9 @@ def iter_namespace(ns_pkg):
 for _, name, _ in iter_namespace(sights.plugins):
     importlib.import_module(name)
 
-# Load the settings file
-State(jsonpickle.decode(open("settings.json").read()))
+# Load the config file
+config = open("settings.json").read()
+api.load_settings(jsonpickle.decode(config))
 
 # Flask and REST setup
 app = flask.Flask(__name__)

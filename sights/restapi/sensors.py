@@ -1,7 +1,6 @@
 from flask import request
 from flask_restx import Namespace, Resource
 from sights.api import v1 as api
-import jsonpickle
 restapi = Namespace('sensors', description='Sensor related operations')
 
 

@@ -1,9 +1,17 @@
-from sights.components.camera import Camera
+import logging
+from sights.components.camera import Camera, CameraConfig
 from sights.components.state import State
 
 def list_all():
-    return [camera for camera in State.cameras]
+    return [camera for camera in State.cameras.items()]
 
+def create(config : CameraConfig) -> Camera:
+    if (config.id in State.cameras):
+        logging.error(f"Camera with id {config.id} already exists! Will not create a duplicate")
+        return
+    # Create an instance of the camera class
+    State.cameras[config.id] = Camera(config)
+    return State.cameras[config.id]
 
 def stream(id):
     """Video streaming generator function."""
@@ -18,7 +26,7 @@ def stream(id):
 def get(id):
     # TODO get camera if exists
     camera = Camera()
-    camera.settings = State.cameras[id]
+    camera.config = State.cameras[id]
     camera.start()
     return camera
 

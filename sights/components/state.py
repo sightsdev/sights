@@ -1,16 +1,12 @@
-from dataclasses import dataclass, field
-from typing import Any
 from sights.components.camera import Camera
-from sights.components.motor import Motor, MotorConnection, MotorPlugin
+from sights.components.motor import Motor, Connection, MotorPlugin
 from sights.components.sensor import Sensor, SensorPlugin
 
 class State:
-    cameras: dict[Camera] = field(default_factory=dict)
+    motor_plugins: list[MotorPlugin] = {}
+    sensor_plugins: list[SensorPlugin] = {}
 
-    motor_plugins: dict[MotorPlugin] = {}
-    motor_connections: dict[MotorConnection] = {}
-    motors: dict[Motor] = {}
-
-    sensor_plugins: dict[SensorPlugin] = {}
-    sensors: dict[Sensor] = {}
-
+    cameras: dict[int, Camera]
+    connections: dict[int, Connection] = {}
+    motors: dict[int, Motor] = {}
+    sensors: dict[int, Sensor] = {}

@@ -11,7 +11,7 @@
   },
   "sensors": {
     "3": {
-      "py/object": "sights.plugins.random_sensor.RandomSensor",
+      "py/object": "sights.plugins.random_sensor.RandomSensorConfig",
       "enabled": true,
       "minimum": 40,
       "maximum": 78

@@ -3,23 +3,28 @@ from sights.components.motor import *
 from dataclasses import dataclass
 
 @dataclass
-class SimpleSerialMotor(Motor):
-    connection: MotorConnection
+class SimpleSerialMotorConfig(MotorConfig):
+    connection: Connection
     channel: int
 
+class SimpleSerialMotor(Motor):
     def move(self, speed):
         if self.enabled:
-            self.connection.move_motor(self.channel, speed)
+            self.config.connection.move_motor(self.channel, speed)
+
+    def stop(self):
+        self.config.connection.move_motor(self.channel, 0)
 
 @dataclass
-class SimpleSerialConnection(MotorConnection):
+class SimpleSerialConnectionConfig(ConnectionConfig):
     port: str
     baudrate: int
     channels: dict
 
+class SimpleSerialConnection(Connection):
     def configure(self):
         import serial
-        self.serial = serial.Serial(port=self.port, baudrate=self.baudrate)
+        self.serial = serial.Serial(port=self.config.port, baudrate=self.config.baudrate)
         try:
             self.channels.get('left')
             self.channels.get('right')
@@ -67,7 +72,9 @@ plugin = api.MotorPlugin(
     description="Simple Serial Connection",
     channels=2,
     connection_class=SimpleSerialConnection,
-    motor_class=SimpleSerialMotor
+    connection_config=SimpleSerialConnectionConfig,
+    motor_class=SimpleSerialMotor,
+    motor_config=SimpleSerialMotorConfig
 )
 
 api.plugins.register_motor_plugin(plugin)
