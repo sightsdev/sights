@@ -10,14 +10,14 @@ class RandomSensorConfig(SensorConfig):
 
 class RandomSensor(Sensor):
     def configure(self):
-        print("Min and max are:", self.config.minimum, "and", self.config.maximum)
+        print(f"RandomSensor: Min and max are {self.config.minimum} and {self.config.maximum}")
 
     def get(self):
         return random.randint(self.config.minimum, self.config.maximum)
 
 plugin = SensorPlugin(
     name="RandomSensor", 
-    description="A random sensor", 
+    description="A random number generator masquerading as a sensor", 
     sensor_class=RandomSensor,
     sensor_config=RandomSensorConfig
 )
