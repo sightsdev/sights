@@ -5,15 +5,15 @@ import time
 
 # Note that we use the api to create the Dynamixel Connection object. 
 # You could create it directly but using the create function also 
-# registers it with the api, making it available to other functions
+# registers it with the api, making it available to other plugins etc
 connection : DynamixelConnection = api.connections.create(DynamixelConnectionConfig("/dev/ttyAMA0", 9600))
 
-# Creating the individual config options first is similar to loading them from a config file
+# Creating the individual config options first (similar to loading them from a config file)
 servoLeftConfig  = DynamixelMotorConfig(id=0, enabled=True, connection=connection, channel=0)
 servoRightConfig = DynamixelMotorConfig(id=1, enabled=True, connection=connection, channel=1)
 
-# Creating the actual motor objects 
-servoLeft  : DynamixelMotor = api.motors.create(servoLeftConfig)
+# Then creating the actual motor objects 
+servoLeft : DynamixelMotor  = api.motors.create(servoLeftConfig)
 servoRight : DynamixelMotor = api.motors.create(servoRightConfig)
 
 # Now they can be directly controlled

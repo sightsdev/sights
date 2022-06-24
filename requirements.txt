@@ -11,3 +11,4 @@ opencv-python
 #picamera
 flask-restx
 jsonpickle
+pyserial

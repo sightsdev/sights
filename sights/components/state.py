@@ -6,7 +6,7 @@ class State:
     motor_plugins: list[MotorPlugin] = {}
     sensor_plugins: list[SensorPlugin] = {}
 
-    cameras: dict[int, Camera]
+    cameras: dict[int, Camera] = {}
     connections: dict[int, Connection] = {}
     motors: dict[int, Motor] = {}
     sensors: dict[int, Sensor] = {}

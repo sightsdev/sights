@@ -3,7 +3,7 @@ from sights.components.motor import Motor, MotorConfig, MotorPlugin
 from sights.components.state import State
 import logging
 
-def list_all():
+def list_all() -> list[Motor]:
     return [i for i in State.motors.items()]
 
 def create(config : MotorConfig) -> Motor:
@@ -16,11 +16,11 @@ def create(config : MotorConfig) -> Motor:
     State.motors[config.id] = plugin.motor_class(config)
     return State.motors[config.id]
 
-def set_motor_speed(id, speed):
+def set_motor_speed(id: int, speed: int) -> None:
     State.motors[id].set_speed(speed)
 
-def set_motor_position(id, pos):
-    State.motors[id].set_pos(pos)
+def set_motor_position(id: int, pos: int) -> None:
+    State.motors[id].set_position(pos)
 
 def get_info(id):
     return State.motors[id].info

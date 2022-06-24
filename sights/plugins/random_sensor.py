@@ -15,7 +15,7 @@ class RandomSensor(Sensor):
     def get(self):
         return random.randint(self.config.minimum, self.config.maximum)
 
-plugin = api.SensorPlugin(
+plugin = SensorPlugin(
     name="RandomSensor", 
     description="A random sensor", 
     sensor_class=RandomSensor,

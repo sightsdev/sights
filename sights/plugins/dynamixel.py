@@ -13,8 +13,7 @@ class DynamixelConnection(Connection):
     # Called by plugin lifetime handler
     def configure(self):
         from pyax12.status_packet import RangeError
-        import pyax12.connection
-        import serial   
+        import pyax12.connection   
         self.con = pyax12.connection.Connection(
             port=self.config.port, baudrate=self.config.baudrate)
 
@@ -55,10 +54,12 @@ class DynamixelMotor(Motor):
         self.config.connection.con.set_ccw_angle_limit(dynamixel_id, 0, degrees=False)
 
 
-api.plugins.register_motor_plugin(api.MotorPlugin(
+api.plugins.register_motor_plugin(MotorPlugin(
     name="Dynamixel",
     description="Dynamixel Servo Connection",
     channels=2,
     connection_class=DynamixelConnection,
-    motor_class=DynamixelMotor
+    connection_config=DynamixelConnectionConfig,
+    motor_class=DynamixelMotor,
+    motor_config=DynamixelMotorConfig
 ))

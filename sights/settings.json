@@ -1,21 +1,15 @@
 {
-  "py/object": "sights.components.state.Settings",
-  "cameras": {
-    "front": {
-      "py/object": "sights.components.camera.CameraConfig",
-      "width": 1920,
-      "height": 1080,
-      "framerate": 30,
-      "source": 0
-    }
-  },
-  "sensors": {
-    "3": {
-      "py/object": "sights.plugins.random_sensor.RandomSensorConfig",
-      "enabled": true,
-      "minimum": 40,
-      "maximum": 78
-    }
-  },
-  "motors": {}
+    "py/object": "sights.components.settings.Settings",
+    "cameras": [],
+    "motors": [],
+    "connections": [],
+    "sensors": [
+        {
+            "py/object": "sights.plugins.random_sensor.RandomSensorConfig",
+            "id": 1,
+            "enabled": true,
+            "minimum": 12,
+            "maximum": 24
+        }
+    ]
 }

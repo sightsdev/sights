@@ -1,3 +1,4 @@
+from sights.components.settings import Settings
 from sights.components.state import State
 from sights.api import v1 as api
 from sights.restapi import api as restapi
@@ -18,7 +19,7 @@ for _, name, _ in iter_namespace(sights.plugins):
 
 # Load the config file
 config = open("settings.json").read()
-api.load_settings(jsonpickle.decode(config))
+api.load_settings_to_state(jsonpickle.decode(config))
 
 # Flask and REST setup
 app = flask.Flask(__name__)

@@ -58,6 +58,7 @@ class CameraEvent(object):
 
 @dataclass
 class CameraConfig:
+    id: str
     width: int
     height: int
     framerate: int
@@ -136,6 +137,8 @@ class Camera:
         if self.config.framerate != 0:
             cap.set(cv2.CAP_PROP_FPS, float(self.config.framerate))
 
+        # Set the config values to the actual used values. 
+        # TODO: do we want this functionality?
         self.config.width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
         self.config.height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
         self.config.framerate = cap.get(cv2.CAP_PROP_FPS)

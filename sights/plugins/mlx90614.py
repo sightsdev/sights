@@ -20,7 +20,7 @@ class MLX90614(Sensor):
         # Get data and round to 1 dp
         return round(self.sensor.get_object_1(), 2)
 
-plugin = api.SensorPlugin(
+plugin = SensorPlugin(
     name="MLX90614", 
     description="MLX90614 Temperature Sensor", 
     sensor_class=MLX90614,

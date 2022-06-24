@@ -67,7 +67,7 @@ class SimpleSerialConnection(Connection):
         self.serial.close()
 
 
-plugin = api.MotorPlugin(
+plugin = MotorPlugin(
     name="SimpleSerial",
     description="Simple Serial Connection",
     channels=2,

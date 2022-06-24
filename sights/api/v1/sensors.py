@@ -4,12 +4,14 @@ from sights.components.sensor import Sensor, SensorConfig, SensorPlugin
 from sights.components.state import State
 import logging
 
-def list_all() -> list[Sensor]:
-    return [sensor for sensor in State.sensors.items()]
+def list_all() -> list[int]:
+    return [sensor.config.id for sensor in State.sensors.values()]
 
 def create(config : SensorConfig) -> Sensor:
     # Find the corresponding plugin class for this sensor
     plugin : SensorPlugin = get_plugin_from_config(config)
+    if (plugin is None):
+        logging.getLogger(__name__).error(f"Couldn't find plugin for config {config}.")
     # Create an instance of the sensor class
     State.sensors[config.id] = plugin.sensor_class(config)
     return State.sensors[config.id]

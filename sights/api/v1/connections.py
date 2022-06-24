@@ -3,7 +3,7 @@ from sights.components.motor import Connection, ConnectionConfig, MotorPlugin
 from sights.components.state import State
 import logging
 
-def list_all():
+def list_all() -> list[Connection]:
     return [i for i in State.connections.items()]
 
 def create(config : ConnectionConfig) -> Connection:
