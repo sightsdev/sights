@@ -3,6 +3,7 @@ from sights.restapi.motors import restapi as motors
 from sights.restapi.cameras import restapi as cameras
 from sights.restapi.sensors import restapi as sensors
 from sights.restapi.plugins import restapi as plugins
+from sights.restapi.system import restapi as system
 
 api = flask_restx.Api(
     title='Sights REST API',
@@ -12,6 +13,7 @@ api = flask_restx.Api(
 
 custom_api = Namespace('custom', description='Plugin-defined endpoints')
 
+api.add_namespace(system, path="/api/v1/system")
 api.add_namespace(motors, path="/api/v1/motors")
 api.add_namespace(cameras, path="/api/v1/cameras")
 api.add_namespace(sensors, path="/api/v1/sensors")
