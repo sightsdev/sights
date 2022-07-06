@@ -10,7 +10,10 @@ api = flask_restx.Api(
     description='An API for clients to interact with the Sights service'
 )
 
+custom_api = Namespace('custom', description='Plugin-defined endpoints')
+
 api.add_namespace(motors, path="/api/v1/motors")
 api.add_namespace(cameras, path="/api/v1/cameras")
 api.add_namespace(sensors, path="/api/v1/sensors")
 api.add_namespace(plugins, path="/api/v1/plugins")
+api.add_namespace(custom_api, path="/api/v1/custom")

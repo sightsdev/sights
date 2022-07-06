@@ -1,7 +1,8 @@
 from sights.components.sensor import SensorConfig, SensorPlugin
 from sights.components.motor import ConnectionConfig, MotorConfig, MotorPlugin
 from sights.components.state import State
-
+from sights.restapi import api as restapi
+from sights.restapi import custom_api
 
 def list_all() -> list[SensorPlugin | MotorPlugin]:
     return [plugin for plugin in State.sensor_plugins | State.motor_plugins]
@@ -17,6 +18,9 @@ def register_sensor_plugin(plugin: SensorPlugin):
 
 def register_motor_plugin(plugin: MotorPlugin):
     State.motor_plugins[plugin.name] = plugin
+
+def register_new_endpoint(resource, id, url):
+    custom_api.add_resource(resource, f"{id}/{url}")
 
 def get_plugin_from_config(config: MotorConfig | SensorConfig | ConnectionConfig) -> SensorPlugin | MotorPlugin:
     if isinstance(config, (MotorConfig, ConnectionConfig)):
