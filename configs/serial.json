@@ -7,8 +7,12 @@
 	},
 	"motors": {
 		"type": "simpleserial",
-		"port": "/dev/ttys0",
-		"baudrate": "9600"
+		"port": "/dev/ttyS0",
+		"baudrate": 9600,
+		"channels": {
+			"left": [],
+			"right": []
+		}
 	},
 	"interface": {
 		"notifications": {
@@ -21,7 +25,8 @@
 				"id": 1
 			},
 			"back": {
-				"enabled": false
+				"enabled": true,
+				"id": 2
 			},
 			"left": {
 				"enabled": false

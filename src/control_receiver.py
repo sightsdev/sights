@@ -75,7 +75,7 @@ class ControlReceiver(WebSocketProcess):
         elif control == "RIGHT":
             self.motors.move(speed, -speed)
         elif control == "STOP":
-            self.motors.move(0, 0)
+            self.motors.stop()
         elif control == "SPEED_UP":
             if value == "DOWN":
                 self.motors.speed = min(1023, speed + 128)

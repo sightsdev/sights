@@ -46,13 +46,13 @@ class SimpleSerialConnection(MotorWrapper):
     def move_raw(self, left=None, right=None):
         # Left side
         if left is not None:
-            offset = 64 if left > 0 else 0
-            msg = offset + abs(round(62 / 1000 * left))
+            offset = 64 #if left > 0 else 0
+            msg = offset + (round(62 / 1000 * left))
             self.serial.write(bytes([msg]))
         # Right side
         if right is not None:
-            offset = 64 if right > 0 else 0
-            msg = offset + 128 + abs(round(62 / 1000 * right))
+            offset = 64 #if right > 0 else 0
+            msg = offset + 128 + (round(62 / 1000 * right))
             self.serial.write(bytes([msg]))
 
     def stop(self):

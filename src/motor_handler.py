@@ -26,6 +26,7 @@ class MotorHandler:
                 self.logger.error(f"Could not determine motor connection type '{self.type}'")
             elif isinstance(e, serial.serialutil.SerialException):
                 self.logger.error(f"Could not open motor connection of type '{self.type}'")
+                self.logger.error(f"error: '{e}'")
             else:
                 traceback.print_exc()
             # Fall back to virtual connection common to all motor connection errors
