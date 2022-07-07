@@ -321,6 +321,13 @@ $(document).on("ready", function () {
 		let cameraId = $(this).closest('.camera-container').find('.stream-image').attr("data-id");
 		stream.attr('src', 'http://' + ip + ':8081/' + cameraId + '/stream/' + Math.random());
 	});
+
+	$('.camera-rotate-button').on("click", function () {
+		let stream = $(this).closest('.camera-container').find('.stream-image');
+		if(stream.hasClass("rotated"))
+			stream.removeClass("rotated");
+		else stream.addClass("rotated");
+	});
 	
 	$('.camera-screenshot-button').on("click", function () {
 		// Get ID of camera
