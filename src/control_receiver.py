@@ -8,7 +8,7 @@ import json
 import math
 import atexit
 import logging
-
+from arm_servos import ArmServos
 
 class ControlReceiver(WebSocketProcess):
     def __init__(self, mpid, pipe, config_file):
@@ -28,6 +28,16 @@ class ControlReceiver(WebSocketProcess):
             "LEFT_TOP_SHOULDER": False,
             "RIGHT_TOP_SHOULDER": False
         }
+        self.arm = ArmServos()
+
+    def numkey_handler(self, control, value):
+        if control == 'NUM8':
+            ANGLES = self.arm.step_angles(ANGLES, self.arm.DIFF, self.arm.ACTUATION_RANGE, 1)
+            self.arm.set_angles(ANGLES, [1,2])
+
+        if control == 'NUM2':
+            ANGLES = self.arm.step_angles(ANGLES, self.arm.DIFF, self.arm.ACTUATION_RANGE, -1)
+            self.arm.set_angles(ANGLES, [1,2])
 
     def gamepad_movement_handler(self, type="TRIGGER"):
         if type == "TRIGGER":
@@ -86,6 +96,8 @@ class ControlReceiver(WebSocketProcess):
                 self.motors.speed = max(127, speed - 128)
                 # Send a message to SensorStream to update the interface with the current speed
                 self.pipe.send(["SYNC_SPEED", self.motors.speed])
+        elif "NUM" in control:
+            self.numkey_handler(control, value)
 
     def message_handler(self, buf):
         # Load object from JSON

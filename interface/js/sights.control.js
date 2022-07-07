@@ -269,6 +269,23 @@ $(document).on("ready", function () {
 	createMovementKeyBind(['d', 'right'], "RIGHT");
 	createFunctionKeyBind(['+', '='], "SPEED_UP");
 	createFunctionKeyBind(['-', '_'], "SPEED_DOWN");
+
+	createFunctionKeyBind(['num0'], "NUM0");
+	createFunctionKeyBind(['num1'], "NUM1");
+	createFunctionKeyBind(['num2'], "NUM2");
+	createFunctionKeyBind(['num3'], "NUM3");
+	createFunctionKeyBind(['num4'], "NUM4");
+	createFunctionKeyBind(['num5'], "NUM5");
+	createFunctionKeyBind(['num6'], "NUM6");
+	createFunctionKeyBind(['num7'], "NUM7");
+	createFunctionKeyBind(['num8'], "NUM8");
+	createFunctionKeyBind(['num9'], "NUM9");
+	createFunctionKeyBind(['num.'], "NUM.");
+	createFunctionKeyBind(['num-'], "NUM-");
+	createFunctionKeyBind(['num+'], "NUM-");
+	createFunctionKeyBind(['num/'], "NUM/");
+	createFunctionKeyBind(['num*'], "NUM*");
+	
 	// Disable keyboard controls when modal is open
 	$(".modal").on('shown.bs.modal', function () {
 		keyboardJS.setContext(this.id);
