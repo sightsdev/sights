@@ -29,7 +29,8 @@
 				"id": 2
 			},
 			"left": {
-				"enabled": false
+				"enabled": true,
+				"id": 3
 			},
 			"right": {
 				"enabled": false
@@ -81,7 +82,7 @@
 			}
 		],
 		"theme": {
-			"accent_colour": "#ff5a00"
+			"accent_colour": "#ff5900"
 		}
 	},
 	"sensors": [
