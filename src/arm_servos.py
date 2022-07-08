@@ -11,15 +11,15 @@ from adafruit_servokit import ServoKit
 import RPi.GPIO as GPIO
 
 class ArmServos:
-    SHOULDER = 0
-    ELBOW = 1
-    WRISTUD = 2
-    WRISTLR = 3
-    CLAW = 4
-    ANGLES = [180, 180, 90, 90, 90]
-    HOME = [180, 180, 90, 90, 90]
 
     def __init__(self):
+        self.SHOULDER = 0
+        self.ELBOW = 1
+        self.WRISTUD = 2
+        self.WRISTLR = 3
+        self.CLAW = 4
+        self.ANGLES = [180, 180, 90, 90, 90]
+        self.HOME = [180, 180, 90, 90, 90]
         self.kit = ServoKit (channels = 16)
         for i in [0,1,2]:
             self.kit.servo[i].set_pulse_width_range(500, 2370)

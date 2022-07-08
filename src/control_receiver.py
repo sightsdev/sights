@@ -31,7 +31,7 @@ class ControlReceiver(WebSocketProcess):
         self.arm = ArmServos()
 
     def numkey_handler(self, control, value):
-        if value is not "DOWN":
+        if value == "UP":
             return
         if control == 'NUM0':
             self.arm.home()

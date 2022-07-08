@@ -282,7 +282,7 @@ $(document).on("ready", function () {
 	createFunctionKeyBind(['num9'], "NUM9");
 	createFunctionKeyBind(['num.'], "NUM.");
 	createFunctionKeyBind(['num-'], "NUM-");
-	createFunctionKeyBind(['num+'], "NUM-");
+	createFunctionKeyBind(['numadd'], "NUM+");
 	createFunctionKeyBind(['num/'], "NUM/");
 	createFunctionKeyBind(['num*'], "NUM*");
 	
