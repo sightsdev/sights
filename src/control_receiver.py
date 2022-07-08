@@ -31,13 +31,30 @@ class ControlReceiver(WebSocketProcess):
         self.arm = ArmServos()
 
     def numkey_handler(self, control, value):
-        if control == 'NUM8':
-            ANGLES = self.arm.step_angles(ANGLES, self.arm.DIFF, self.arm.ACTUATION_RANGE, 1)
-            self.arm.set_angles(ANGLES, [1,2])
-
+        if value is not "DOWN":
+            return
+        if control == 'NUM0':
+            self.arm.home()
+        if control == 'NUM1':
+            self.arm.increment_angle(self.arm.SHOULDER, True)
         if control == 'NUM2':
-            ANGLES = self.arm.step_angles(ANGLES, self.arm.DIFF, self.arm.ACTUATION_RANGE, -1)
-            self.arm.set_angles(ANGLES, [1,2])
+            self.arm.increment_angle(self.arm.ELBOW, True)
+        if control == 'NUM3':
+            self.arm.increment_angle(self.arm.WRISTUD, False)
+        if control == 'NUM4':
+            self.arm.increment_angle(self.arm.SHOULDER, False)
+        if control == 'NUM5':
+            self.arm.increment_angle(self.arm.ELBOW, False)
+        if control == 'NUM6':
+            self.arm.increment_angle(self.arm.WRISTUD, True)
+        if control == 'NUM7':
+            self.arm.increment_angle(self.arm.WRISTLR, False)
+        if control == 'NUM9':
+            self.arm.increment_angle(self.arm.WRISTLR, True)
+        if control == 'NUM-':
+            self.arm.increment_angle(self.arm.CLAW, False)
+        if control == 'NUM+':
+            self.arm.increment_angle(self.arm.CLAW, True)
 
     def gamepad_movement_handler(self, type="TRIGGER"):
         if type == "TRIGGER":

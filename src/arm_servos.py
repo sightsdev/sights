@@ -1,40 +1,39 @@
-'''Notes For Sart ARM Code:
-- Reverse Throttle (.throttle = -1)
-- To stop continuous rotation set (throttle to 0:)
-- To create new object for each HAT with
-- pwm = PWM (0x40)
+'''
 Numeric Keypad Controls:          
  _ _ _
-|_|8|_|   8 > Up,   2 > Down
-|4|5|6|   4 > Left, 6 > Right 
-|_|2|_|   5 > Home Device
+|_|8|_|   TBC
+|4|5|6|   
+|_|2|_|   0 > Home Device
 '''
 
 #Importing Extra Functionality 
 from adafruit_servokit import ServoKit
+import RPi.GPIO as GPIO
 
 class ArmServos:
+    SHOULDER = 0
+    ELBOW = 1
+    WRISTUD = 2
+    WRISTLR = 3
+    CLAW = 4
+    ANGLES = [180, 180, 90, 90, 90]
+    HOME = [180, 180, 90, 90, 90]
 
     def __init__(self):
-        self.ACTUATION_RANGE = 180
-        self.ANGLES = [0, 90]
-        self.DIFF = 1/10 # as ratio of actuation range
-        self.DIFF *= self.ACTUATION_RANGE
-
-        #intialising statement starting that we will have acesses to 16 PWM channels of the hat
         self.kit = ServoKit (channels = 16)
-        for i in range(16):
-            self.kit.servo[i].actuation_range = self.ACTUATION_RANGE
+        for i in [0,1,2]:
+            self.kit.servo[i].set_pulse_width_range(500, 2370)
+        for i in [3,4]:
+            self.kit.servo[i].set_pulse_width_range(350, 2450)
 
-        self.set_angles(self.ANGLES, [1,2])
+        self.home()
 
-    def step_angles(self, angles, diff, actuation_range, direction):
-        """step the angles by the difference"""
-        return [(angles[0] - direction*diff + actuation_range) % actuation_range,
-                (angles[1] + direction*diff + actuation_range) % actuation_range]
-
-    def set_angles(self, angles, indices):
-        """set angles of motors to new angles"""
-        assert len(indices) == len(angles), "Must have same number of ANGLES as servo indices"
-        for i, a in zip(indices, angles):
+    def home(self):
+        for i, a in zip(range(5), self.HOME):
             self.kit.servo[i].angle = a
+            self.ANGLES[i] = self.HOME[i]
+
+    def increment_angle(self, joint, direction, amount=180/100):
+        """step the angles by the difference"""
+        self.ANGLES[joint] =  max(min(self.ANGLES[joint] + amount * (1 if direction else -1),180),0)
+        self.kit.servo[joint].angle = self.ANGLES[joint]
