@@ -23,4 +23,4 @@ class MLX90640Wrapper(SensorWrapper):
         for row in matrix:
             row.reverse()
             mirror.extend(row)
-        return mirror
+        return [round(i) for i in mirror]
