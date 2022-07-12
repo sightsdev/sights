@@ -13,7 +13,7 @@ import RPi.GPIO as GPIO
 class ArmServos:
 
     def __init__(self, config):
-        self.enabled = config['enabled'
+        self.enabled = config['enabled']
         if not self.enabled:
             return
         self.SHOULDER = 0
