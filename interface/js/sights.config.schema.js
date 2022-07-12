@@ -9,6 +9,7 @@ const schema = {
     "required": [
         "control",
         "motors",
+        "arm",
         "interface",
         "sensors",
         "debug"
@@ -202,6 +203,28 @@ const schema = {
                             }
                         }
                     }
+                }
+            }
+        },
+        "arm": {
+            "$id": "#/properties/arm",
+            "type": "object",
+            "options": {
+                "collapsed": true
+            },
+            "title": "Arm",
+            "description": "Arm settings",
+            "required": [
+                "enabled"
+            ],
+            "properties": {
+                "enabled": {
+                    "$id": "#/properties/arm/properties/enabled",
+                    "type": "boolean",
+                    "title": "Enabled",
+                    "description": "Whether the arm is enabled",
+                    "format": "checkbox",
+                    "default": false
                 }
             }
         },

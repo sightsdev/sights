@@ -12,7 +12,12 @@ import RPi.GPIO as GPIO
 
 class ArmServos:
 
-    def __init__(self):
+    def __init__(self, config):
+        self.enabled = config['enabled']
+        for i in range(0, 100):
+            print(self.enabled)
+        if not self.enabled:
+            return
         self.SHOULDER = 0
         self.ELBOW = 1
         self.WRISTUD = 2
@@ -29,11 +34,15 @@ class ArmServos:
         self.home()
 
     def home(self):
+        if not self.enabled:
+            return
         for i, a in zip(range(5), self.HOME):
             self.kit.servo[i].angle = a
             self.ANGLES[i] = self.HOME[i]
 
     def increment_angle(self, joint, direction, amount=180/100):
+        if not self.enabled:
+            return
         """step the angles by the difference"""
         self.ANGLES[joint] =  max(min(self.ANGLES[joint] + amount * (1 if direction else -1),180),0)
         self.kit.servo[joint].angle = self.ANGLES[joint]

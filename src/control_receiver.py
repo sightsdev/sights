@@ -28,7 +28,7 @@ class ControlReceiver(WebSocketProcess):
             "LEFT_TOP_SHOULDER": False,
             "RIGHT_TOP_SHOULDER": False
         }
-        self.arm = ArmServos()
+        self.arm = ArmServos(self.config['arm'])
 
     def numkey_handler(self, control, value):
         if value == "UP":
