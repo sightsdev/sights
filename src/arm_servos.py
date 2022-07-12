@@ -23,13 +23,14 @@ class ArmServos:
         self.WRISTUD = 2
         self.WRISTLR = 3
         self.CLAW = 4
-        self.ANGLES = [180, 180, 90, 90, 90]
-        self.HOME = [180, 180, 90, 90, 90]
+        self.ANGLES = [180, 160, 100, 76, 20]
+        self.HOME = [180, 160, 100, 76, 20]
         self.kit = ServoKit (channels = 16)
-        for i in [0,1,2]:
-            self.kit.servo[i].set_pulse_width_range(500, 2370)
-        for i in [3,4]:
-            self.kit.servo[i].set_pulse_width_range(350, 2450)
+        self.kit.servo[0].set_pulse_width_range(900, 2218)
+        self.kit.servo[1].set_pulse_width_range(900, 2355)
+        self.kit.servo[2].set_pulse_width_range(550, 2370)
+        self.kit.servo[3].set_pulse_width_range(350, 2450)
+        self.kit.servo[4].set_pulse_width_range(350, 2450)
 
         self.home()
 
