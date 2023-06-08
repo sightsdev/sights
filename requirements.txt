@@ -1,14 +1,8 @@
-wheel
-numpy
-click
 Flask<2.0
-itsdangerous
-Jinja2
-markupsafe==2.0.1 # https://github.com/pallets/markupsafe/issues/284
-Werkzeug<2.0
-pillow
-opencv-python
+opencv-python~=4.5.5.64
 #picamera
-flask-restx
-jsonpickle
-pyserial
+jsonpickle~=2.1.0
+setuptools~=57.4.0
+#sights~=2.0.0
+flask_restx
+markupsafe==2.0.1
