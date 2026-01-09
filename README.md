@@ -5,6 +5,11 @@
 [![GitHub issues](https://img.shields.io/github/issues/sightsdev/sights)](https://github.com/sightsdev/sights/issues)
 [![GitHub forks](https://img.shields.io/github/forks/sightsdev/sights)](https://github.com/sightsdev/sights/network)
 
+> [!CAUTION]
+> This repository contains **SIGHTS 1.0**.\
+> 1.0 is **End-of-Life** and will recieve **no further support or updates** by the Semi-Autonomous Rescue Team.\
+> 2.0 is being built from the ground up, and will be ready to supersede v1 soon. See [sightsdev/sights-v2](https://github.com/sightsdev/sights-v2).
+
 Sights is a complete teleoperation interface for a wide range of robotics hardware.
 
 ![Screenshot of the interface](https://github.com/sightsdev/sights/blob/master/docs/assets/interface-screenshot.jpg)
@@ -98,3 +103,4 @@ It can also be accessed through the Sights interface itself, even without an int
 ## Contributing
 
 If you have an idea, suggestion or bug report for the Sights project, or want to make a contribution of your own, we'd love to work with you to make it happen! Take a look at our [contributing page](https://github.com/sightsdev/.github/blob/master/CONTRIBUTING.md) for more information.
+
